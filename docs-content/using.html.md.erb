@@ -30,7 +30,7 @@ the docker images, and any additional files for the release.
 
 To see all available flags (for example, `-r` to choose a specific version), run
 
-###<a id='using'></a> Shared instances and Add-ons
+###<a id='shared'></a> Shared instances and Add-ons
 
 ```bash
 bazaar chart install --help
@@ -60,7 +60,7 @@ values yaml file. On a successful install run, Bazaar will output information ab
 (how to get credentials, etc).
 
 
-###<a id='using'></a> Dedicated instances
+###<a id='dedicated'></a> Dedicated instances
 Dedicated instances are provided through a broker installed via the Bazaar tile. When a
 [Pivotal Application Service](https://pivotal.io/platform/pivotal-application-service)
 developer uses `cf create-service`, the broker creates a dedicated instance of
@@ -93,8 +93,84 @@ These values are described by an additional file, `plans.yaml` at root level of 
 For additional examples, see
 [https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
 
-<span style="color: deeppink; font-weight: bold">todo: update tar file</a>
+####<a id='updatetar'></a> Define Plans
+To add plans to charts get your previously downloaded product tgz file form (./tmp)
+
+```bash
+cd ./tmp
+tar -xvf your-product.tgz
+```
+Add plans.yaml, for example
+
+```bash
+cat > plans.yaml
+- name: "small"
+  description: "default (small) plan for mysql"
+  file: "small.yaml"
+- name: "medium"
+  description: "medium sized plan for mysql"
+  file: "medium.yaml"
+```
+Define one or more plans with set of override values in (your plan).yaml for example
+
+```bash
+mkdir plans
+cd plans
+cat > small.yaml
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+```
+
+Re-package your helm chart
+
+```bash
+helm package (your product)
+```
+
+To add service offering to bazaar that can then be used by the developer to provision from cf marketplace
+
+```bash
+bazaar -t (bazaar api url) -u (username) -p (password) offer save ./tmp/(your product).tgz
+```
+
+To list existing service offerings available in bazaar
+
+```bash
+bazaar -t (bazaar api url) -u (username) -p (password) offer list ./tmp/(your product).tgz
+```
+
+To delete any service offerings from bazaar
+
+```bash
+bazaar -t (bazaar api url) -u (username) -p (password) offer delete ./tmp/(your product).tgz
+```
+
+For air-gapped environments that cannot reach out to common registries such as
+[Docker Hub](https://hub.docker.com/) and
+[Quay](https://quay.io/), or for images that aren't public, Bazaar's `download` command will also
+get the container images off of Pivotal Network. These images need to be loaded into a private registry. The `docker`
+cli [can add images](https://docs.docker.com/engine/reference/commandline/load/). The Bazaar cli does, however,
+include a command that can handle many use cases. To load an image into a private registry, run
+
+```bash
+docker login -u (username) -p (password) (private registry url)
+bazaar image push -r (private registry url ) -d (directory with private images)
+```
+
+managing images in private registry
+
+Adapting open source chart
+Ingress
+storage
+
 
 ##<a id='troubleshooting'></a> Troubleshooting
+service doesn't come healthy
+service command purge
+
+kibosh tiller
+
 
 <span style="color: deeppink; font-weight: bold">TODO</a>
