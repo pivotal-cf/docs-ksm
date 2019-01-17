@@ -9,8 +9,91 @@ This topic describes how to use Pivotal Bazaar for PCF.
 
 ##<a id='using'></a> Using Pivotal Bazaar for PCF
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. 
-Give procedures for how to perform the different functions offered by your product and provide screenshots where necessary.** 
+###<a id='using'></a> Downloading Services
+
+The Bazaar command line interface (cli) can download PKS integrations off of Pivotal Network.
+
+To list available integrations, run:
+
+```bash
+bazaar chart pivnet-list -a (pivnet-token)
+```
+
+To download an integration into a local directory `./tmp`, run
+
+```bash
+bazaar chart download -a (pivnet token) -p (product) -d (./tmp)
+```
+
+This downloads a release's files from Pivotal Network, including the [Helm](https://helm.sh/) chart,
+the docker images, and any additional files for the release.
+
+To see all available flags (for example, `-r` to choose a specific version), run
+
+###<a id='using'></a> Shared instances and Add-ons
+
+```bash
+bazaar chart install --help
+```
+This will install helm chart to provide a shared instance service on a PKS cluster.
+
+Keep in mind that some integrations may require additional setup, so be sure to read the documentation
+to validate compatibility and prerequisites.
+
+Before running `bazaar`'s install, download and install the
+[PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html). You also need to the login
+PKS cluster where you want to install services. See the
+[PKS documentation](https://docs.pivotal.io/runtimes/pks/index.html) for additional information.
+
+```bash
+pks login -a (pks uaa host) -u (username) -p (password)
+```
+
+Now the integration that was previously downloaded into `./tmp` can be installed with
+
+```bash
+bazaar chart install -d ./tmp -c (cluster name) -n (name of installation) -f (values yaml file)
+```
+
+Each service will likely need some service specific configuration, which is specified by the
+values yaml file. On a successful install run, Bazaar will output information about the service
+(how to get credentials, etc).
+
+
+###<a id='using'></a> Dedicated instances
+Dedicated instances are provided through a broker installed via the Bazaar tile. When a
+[Pivotal Application Service](https://pivotal.io/platform/pivotal-application-service)
+developer uses `cf create-service`, the broker creates a dedicated instance of
+the service in the backing cluster.
+
+In the Cloud Foundry marketplace, each service has a set of plans that developers can provision. A plan is the template
+for the service instances. For example, different plans might represent a large or a small instance
+of a database.
+
+For Kubernetes based services, each plan represents a set of values overriding the helm charts default values.
+These values are described by an additional file, `plans.yaml` at root level of the chart
+
+```yaml
+- name: "small"
+  description: "default (small) plan for mysql"
+  file: "small.yaml"
+- name: "medium"
+  description: "medium sized plan for mysql"
+  file: "medium.yaml"
+```
+
+* `file` is a filename that exists in the `plans` subdirectory of the chart.
+   File names should consist of only lowercase letters, digits, `.`, or `-`.
+   The standard `values.yaml` file in the helm chart sets the defaults.
+   Each plan's yaml file is a set of values overriding the defaults present in `values.yaml`.
+   Copy any key/value pairs to override from `values.yaml` into a new plan file and change their value.
+* `description` describes the plan and is shown to developers in the marketplace.
+* `name` is the name of the plan, typed by developers when provision (choose a cli-friendly value: lower only, no special characters).
+
+For additional examples, see
+[https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
+
+<span style="color: deeppink; font-weight: bold">todo: update tar file</a>
 
 ##<a id='troubleshooting'></a> Troubleshooting
 

@@ -24,8 +24,9 @@ PKS service integrations can take a lot of forms. Bazaar tackles two large class
 
 * Installing a single Helm chart to a particular cluster (`shared-instance`).
 * Provisioning services as needed by individual teams from the [Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html) (`dedicated-instances`).
+* Installing a cluster add-on, such as a observability or security tool.
 
-In the shared-instance case, bazaar helps by providing a consistent operator experience for installing a chart
+In the shared-instance and add-on cases, bazaar helps by providing a consistent operator experience for installing a chart
 into a particular cluster.
 
 In the dedicated-instances case, Bazaar lets the operator offer an ISV or open source Helm charts to
@@ -94,7 +95,7 @@ Bazaar has the following requirements:
 
 * For disconnected environments, a container registry like [Harbor](https://network.pivotal.io/products/harbor-container-registry)
   is needed to manage images.
-
+* The [PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html)
 
 ## <a id="limitations"></a>Limitations
 
