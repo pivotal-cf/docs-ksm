@@ -178,9 +178,33 @@ In addition to defining plans, there are some other items things to keep in mind
 
 
 ##<a id='troubleshooting'></a> Troubleshooting
+### <a id='issue-debugging'></a> Advanced Debugging
+Advanced Debugging might require talking directly to the underlying Helm and Kubernetes:
 
-<span style="color: deeppink; font-weight: bold">Several `must be no more than 63 characters`</a>
-<span style="color: deeppink; font-weight: bold">service doesn't come healthy</a>
-<span style="color: deeppink; font-weight: bold">service command purge</a>
-<span style="color: deeppink; font-weight: bold">kibosh tiller is installed in kibosh namespace, explain that</a>
-<span style="color: deeppink; font-weight: bold">TODO</a>
+* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Bazaar installs
+Tiller into a specific namespace, `kibosh`. To manual run Helm commands, log into the Kubernetes
+cluster and include the namespace flag to talk to Kibosh's helm `--tiller-namespace=kibosh`.
+* <span style="color: deeppink; font-weight: bold">todo: mTLS credentials - need tile to test</a>
+
+####<a id='issue-name'></a> Name Length Issues
+Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
+will fail immediately, with an error message including
+
+* `must be no more than 63 characters`
+
+The Helm chart will need to be enhanced with additional truncation and name protection. Visit
+[the Helm docs](https://docs.helm.sh/chart_template_guide/#adding-a-simple-template-call)
+for some additional details on truncation an naming.
+
+####<a id='issue-cleanup'></a> Cleanup
+The Cloud Foundry platform, by default, gives an asynchronously provisioned service seven days to become healthy. It
+sometimes requires manual cleanup to remove services earlier in some failure modes.
+[Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
+will remove the service from Pivotal Cloud Foundry, but might leave resources in the backing cluster.
+To fully cleanup, delete the Helm release and the namespace, if either is still present, in the PKS cluster.
+Both the cluster and the Helm resources are named after the service's GUID.
+
+```bash
+helm delete namespace kibosh-GUID
+kubectl delete namespace kibosh-GUID
+```
