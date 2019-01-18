@@ -30,7 +30,7 @@ the docker images, and any additional files for the release.
 
 To see all available flags (for example, `-r` to choose a specific version), run
 
-###<a id='shared'></a> Shared instances and Add-ons
+###<a id='shared'></a> Shared Instances and Add-ons
 
 ```bash
 bazaar chart install --help
@@ -60,7 +60,7 @@ values yaml file. On a successful install run, Bazaar will output information ab
 (how to get credentials, etc).
 
 
-###<a id='dedicated'></a> Dedicated instances
+###<a id='dedicated'></a> Dedicated Instances
 Dedicated instances are provided through a broker installed via the Bazaar tile. When a
 [Pivotal Application Service](https://pivotal.io/platform/pivotal-application-service)
 developer uses `cf create-service`, the broker creates a dedicated instance of
@@ -93,7 +93,7 @@ These values are described by an additional file, `plans.yaml` at root level of 
 For additional examples, see
 [https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
 
-####<a id='updatetar'></a> Define Plans
+####<a id='plans'></a> Define Plans
 To add plans to charts get your previously downloaded product tgz file form (./tmp)
 
 ```bash
@@ -147,6 +147,8 @@ To delete any service offerings from bazaar
 bazaar -t (bazaar api url) -u (username) -p (password) offer delete ./tmp/(your product).tgz
 ```
 
+####<a id='images'></a> Manage Container Images
+
 For air-gapped environments that cannot reach out to common registries such as
 [Docker Hub](https://hub.docker.com/) and
 [Quay](https://quay.io/), or for images that aren't public, Bazaar's `download` command will also
@@ -159,18 +161,26 @@ docker login -u (username) -p (password) (private registry url)
 bazaar image push -r (private registry url ) -d (directory with private images)
 ```
 
-managing images in private registry
+####<a id='requirements'></a> Other Chart Requirements
+In addition to defining plans, there are some other items things to keep in mind:
 
-Adapting open source chart
-Ingress
-storage
+* When defining a `Service`, to expose this back to any applications that are bound,
+  `type: LoadBalancer` is a current requirement.
+  `NodePort` is also an option and Kibosh will add externalIPs and nodePort to bind json, but `NodePort` does carry
+  significant risks and probably should **not** be used in production: is not robust to cluster scaling events, upgrades or other IP changes.
+* In many cases, the `storageClass` for persistent volume claims needs to be customized to what's available for
+  the IaaS PKS is running on. The [PKS documentation](https://docs.pivotal.io/runtimes/pks/volumes.html)
+  has additional details.
+* Selectors are [immutable](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector)
+    - This means that *chart name cannot change* (the name is generally used in selectors)
+* Resizing disks has limitations. To support upgrade:
+    - You can't resize a persistent volume claim (currently behind an [alpha feature gate](https://kubernetes.io/docs/reference/feature-gates/))
 
 
 ##<a id='troubleshooting'></a> Troubleshooting
-service doesn't come healthy
-service command purge
 
-kibosh tiller
-
-
+<span style="color: deeppink; font-weight: bold">Several `must be no more than 63 characters`</a>
+<span style="color: deeppink; font-weight: bold">service doesn't come healthy</a>
+<span style="color: deeppink; font-weight: bold">service command purge</a>
+<span style="color: deeppink; font-weight: bold">kibosh tiller is installed in kibosh namespace, explain that</a>
 <span style="color: deeppink; font-weight: bold">TODO</a>
