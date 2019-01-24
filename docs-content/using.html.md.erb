@@ -1,6 +1,6 @@
 ---
 title: Using Pivotal Bazaar for PCF
-owner: Partners
+owner: ISM
 ---
 
 <strong><%= modified_date %></strong>
@@ -11,7 +11,7 @@ This topic describes how to use Pivotal Bazaar for PCF.
 
 ###<a id='using'></a> Downloading Services
 
-The Bazaar command line interface (cli) can download PKS integrations off of Pivotal Network.
+The Bazaar command line interface (CLI) can download PKS integrations off of Pivotal Network.
 
 To list available integrations, run:
 
@@ -30,18 +30,24 @@ the docker images, and any additional files for the release.
 
 To see all available flags (for example, `-r` to choose a specific version), run
 
+```bash
+bazaar ??? <---- this is not finished
+```
+
 ###<a id='shared'></a> Shared Instances and Add-ons
+Shared instances and add-ons are installed directly into a PKS cluster.
+
+To install a helm chart for a shared instance service on a PKS cluster, run
 
 ```bash
 bazaar chart install --help
 ```
-This will install helm chart to provide a shared instance service on a PKS cluster.
 
 Keep in mind that some integrations may require additional setup, so be sure to read the documentation
 to validate compatibility and prerequisites.
 
 Before running `bazaar`'s install, download and install the
-[PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html). You also need to the login
+[PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html). You also need to log into the
 PKS cluster where you want to install services. See the
 [PKS documentation](https://docs.pivotal.io/runtimes/pks/index.html) for additional information.
 
@@ -62,7 +68,7 @@ values yaml file. On a successful install run, Bazaar will output information ab
 
 ###<a id='dedicated'></a> Dedicated Instances
 Dedicated instances are provided through a broker installed via the Bazaar tile. When a
-[Pivotal Application Service](https://pivotal.io/platform/pivotal-application-service)
+[Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
 developer uses `cf create-service`, the broker creates a dedicated instance of
 the service in the backing cluster.
 
@@ -70,8 +76,8 @@ In the Cloud Foundry marketplace, each service has a set of plans that developer
 for the service instances. For example, different plans might represent a large or a small instance
 of a database.
 
-For Kubernetes based services, each plan represents a set of values overriding the helm charts default values.
-These values are described by an additional file, `plans.yaml` at root level of the chart
+For Kubernetes-based services, each plan represents a set of values overriding the helm chart's default values.
+These values are described by an additional file, `plans.yaml` at the root level of the chart
 
 ```yaml
 - name: "small"
@@ -88,13 +94,13 @@ These values are described by an additional file, `plans.yaml` at root level of 
    Each plan's yaml file is a set of values overriding the defaults present in `values.yaml`.
    Copy any key/value pairs to override from `values.yaml` into a new plan file and change their value.
 * `description` describes the plan and is shown to developers in the marketplace.
-* `name` is the name of the plan, typed by developers when provision (choose a cli-friendly value: lower only, no special characters).
+* `name` is the name of the plan, typed by developers when provisioning (choose a CLI-friendly value: lower only, no special characters).
 
 For additional examples, see
 [https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
 
 ####<a id='plans'></a> Define Plans
-To add plans to charts get your previously downloaded product tgz file form (./tmp)
+To add plans to charts, get your previously downloaded product tgz file from (./tmp)
 
 ```bash
 cd ./tmp
@@ -111,7 +117,7 @@ cat > plans.yaml
   description: "medium sized plan for mysql"
   file: "medium.yaml"
 ```
-Define one or more plans with set of override values in (your plan).yaml for example
+Define one or more plans with set of override values in (your plan).yaml, for example
 
 ```bash
 mkdir plans
@@ -129,19 +135,19 @@ Re-package your helm chart
 helm package (your product)
 ```
 
-To add service offering to bazaar that can then be used by the developer to provision from cf marketplace
+To add service offering to bazaar that can then be used by the developer to provision from cf marketplace, run
 
 ```bash
 bazaar -t (bazaar api url) -u (username) -p (password) offer save ./tmp/(your product).tgz
 ```
 
-To list existing service offerings available in bazaar
+To list existing service offerings available in bazaar, run
 
 ```bash
 bazaar -t (bazaar api url) -u (username) -p (password) offer list ./tmp/(your product).tgz
 ```
 
-To delete any service offerings from bazaar
+To delete any service offerings from bazaar, run
 
 ```bash
 bazaar -t (bazaar api url) -u (username) -p (password) offer delete ./tmp/(your product).tgz
@@ -153,7 +159,7 @@ For air-gapped environments that cannot reach out to common registries such as
 [Docker Hub](https://hub.docker.com/) and
 [Quay](https://quay.io/), or for images that aren't public, Bazaar's `download` command will also
 get the container images off of Pivotal Network. These images need to be loaded into a private registry. The `docker`
-cli [can add images](https://docs.docker.com/engine/reference/commandline/load/). The Bazaar cli does, however,
+CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The Bazaar CLI does, however,
 include a command that can handle many use cases. To load an image into a private registry, run
 
 ```bash
@@ -164,12 +170,12 @@ bazaar image push -r (private registry url ) -d (directory with private images)
 ####<a id='requirements'></a> Other Chart Requirements
 In addition to defining plans, there are some other items things to keep in mind:
 
-* When defining a `Service`, to expose this back to any applications that are bound,
-  `type: LoadBalancer` is a current requirement.
-  `NodePort` is also an option and Kibosh will add externalIPs and nodePort to bind json, but `NodePort` does carry
+* When defining a `Service` to expose this back to any applications that are bound,
+    - `type: LoadBalancer` is a current requirement.
+    - `NodePort` is also an option and Kibosh will add externalIPs and nodePort to bind json, but `NodePort` does carry
   significant risks and probably should **not** be used in production: is not robust to cluster scaling events, upgrades or other IP changes.
 * In many cases, the `storageClass` for persistent volume claims needs to be customized to what's available for
-  the IaaS PKS is running on. The [PKS documentation](https://docs.pivotal.io/runtimes/pks/volumes.html)
+  the IaaS on which PKS is running. The [PKS documentation](https://docs.pivotal.io/runtimes/pks/volumes.html)
   has additional details.
 * Selectors are [immutable](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector)
     - This means that *chart name cannot change* (the name is generally used in selectors)
@@ -194,14 +200,14 @@ will fail immediately, with an error message including
 
 The Helm chart will need to be enhanced with additional truncation and name protection. Visit
 [the Helm docs](https://docs.helm.sh/chart_template_guide/#adding-a-simple-template-call)
-for some additional details on truncation an naming.
+for some additional details on truncation and naming.
 
 ####<a id='issue-cleanup'></a> Cleanup
 The Cloud Foundry platform, by default, gives an asynchronously provisioned service seven days to become healthy. It
 sometimes requires manual cleanup to remove services earlier in some failure modes.
 [Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
 will remove the service from Pivotal Cloud Foundry, but might leave resources in the backing cluster.
-To fully cleanup, delete the Helm release and the namespace, if either is still present, in the PKS cluster.
+To fully clean up, delete the Helm release and the namespace, if either is still present, from the PKS cluster.
 Both the cluster and the Helm resources are named after the service's GUID.
 
 ```bash
