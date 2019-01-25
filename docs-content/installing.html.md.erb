@@ -1,12 +1,8 @@
 ---
 title: Installing and Configuring Pivotal Bazaar for PCF
-owner: Partners
+owner: ISM
 ---
-
 <strong><%= modified_date %></strong>
-
-###<span style="color: deeppink; font-weight: bold">TODO:This section isn't started yet</a>
-
 This topic describes how to install and configure Pivotal Bazaar for PCF.
 
 ##<a id='install'></a> Install and Configure Pivotal Bazaar for PCF
@@ -24,7 +20,26 @@ This adds the tile to your staging area.
 
 1. **This portion of the procedure should tell the users how to configure the newly added tile by
 walking them through the sections. Which fields should they fill out? What are the different
-checkboxes? Include relevant screenshots here.** 
+checkboxes? Include relevant screenshots here.**
+
+## Required Settings
+
+### Assign AZs and Networks
+
+1. From the Settings tab of the Bazaar tile, click Assign AZs and Networks.
+1. Under AZ and Network Assignments, choose the availability zones and network where the Bazaar deployment should run.
+
+
+### Bazaar Cluster Configuration
+1. Enter k8s API endpoint, For example https://192.168.1.100:8443
+1. Enter the PEM encoded Cluster CA certificate, For example -----BEGIN CERTIFICATE-----.....
+1. Enter Cluster JWT token
+
+### Helm Configuration
+Bazaar deploys Helm and Tiller into PKS cluster.
+
+1. Enter certificate for Tiller's security
+1. Enter certificate to connect to Helm via a client
 
 1. Click **Save**.
 
