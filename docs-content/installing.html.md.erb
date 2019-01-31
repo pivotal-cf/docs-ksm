@@ -26,24 +26,75 @@ checkboxes? Include relevant screenshots here.**
 
 ### Assign AZs and Networks
 
-1. From the Settings tab of the Bazaar tile, click Assign AZs and Networks.
-1. Under AZ and Network Assignments, choose the availability zones and network where the Bazaar deployment should run.
+ 1. Configure the fields on the **Assign AZs and Networks** as follows:
+   <table>
+     <tr><th>Field</th><th>Instructions</th></tr>
+     <tr>
+        <td><strong>Place singleton jobs in</strong></td>
+        <td>Select the region that you want for singleton VMs. This selection does not affect Bazaar.</td>
+     </tr>
+     <tr>
+        <td><strong>Balance other jobs in</strong></td>
+        <td>Select additional region. This selection control the regions that Bazaar is deployed to.</td>
+     </tr>
+     <tr>
+        <td><strong>Network</strong></td>
+        <td>Select the network used for the Pivotal Application Service (PAS) or Elastic Runtime components.</td>
+     </tr>
+   </table>
+
+    <p class="note warning"><strong>WARNING</strong>: Changing the Network after you have configured them, or changing their IP configurations,
+       results in a failed deployment.
+       For more information, see <a href="./changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
+
+ 2. Click **Save**.
 
 
-### Bazaar Cluster Configuration
-1. Enter k8s API endpoint, For example https://192.168.1.100:8443
-1. Enter the PEM encoded Cluster CA certificate, For example -----BEGIN CERTIFICATE-----.....
-1. Enter Cluster JWT token
+### Bazaar Default Kubernetes Config
+Run  `pks get-credentials` to get values for following fields.
+To get more information visit the [PKS CLI docs](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html)
+
+1. **PEM encoded Cluster CA certificate**: Enter CA cert, This value begins with
+
+    ```-----BEGIN CERTIFICATE-----```
+
+    For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/)
+
+1. **Kubernetes API endpoint**: Enter API endpoint,  For example https://<ip>:<port>
+1. **Cluster JWT token**: Enter token
+
 
 ### Helm Configuration
 Bazaar deploys Helm and Tiller into PKS cluster.
 
-1. Enter certificate for Tiller's security
-1. Enter certificate to connect to Helm via a client
+1. **Tiller Security Certificate**: Click on generate RSA certificate.  Enter a domain; the system domain will work. The actual value of domain does not matter
+    since this is used for mutual TLS. This certificate used to authenticate Bazaar's internal components.
+
+1. **Helm Client Certificate**: Click on generate RSA certificate. Enter a domain; the system domain will work. The actual value of domain does not matter
+    since this is used for mutual TLS. This certificate used to authenticate Bazaar's internal components.
 
 1. Click **Save**.
 
+### Container Registry Configuration
+
+When configured with a private registry, Bazaar will transform the helm chart to point to images in private registry. It is advisable to use a private registry in production.
+
+1. Enter the **Registry Server URL**
+1. Enter the **Registry Username**
+1. Enter the **Registry Password**
+
 1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to install Pivotal Bazaar for PCF.
+
+### Errands
+**De-Registrar**
+
+Removes the pre-provisioned Bazaar service from the Marketplace and deletes all associated service instances and bindings.
+
+### Resource Config
+
+For HA deployment, deploy Bazaar with 2 or more instances.
+
+
 
 **If needed, include additional configuration information below. For example, maybe there are
 configuration options not required for installation but which could be useful for certain users.**
