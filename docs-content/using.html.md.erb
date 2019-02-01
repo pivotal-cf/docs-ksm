@@ -9,31 +9,6 @@ This topic describes how to use Pivotal Bazaar for PCF.
 
 ##<a id='using'></a> Using Pivotal Bazaar for PCF
 
-###<a id='using'></a> Downloading Services
-
-The Bazaar command line interface (CLI) can download PKS integrations off of Pivotal Network.
-
-To list available integrations, run:
-
-```bash
-bazaar chart pivnet-list -a (pivnet-token)
-```
-
-To download an integration into a local directory `./tmp`, run
-
-```bash
-bazaar chart download -a (pivnet token) -p (product) -d (./tmp)
-```
-
-This downloads a release's files from Pivotal Network, including the [Helm](https://helm.sh/) chart,
-the docker images, and any additional files for the release.
-
-To see all available flags (for example, `-r` to choose a specific release version), run
-
-```bash
-bazaar chart download --help
-```
-
 ###<a id='shared'></a> Shared Instances and Add-ons
 Shared instances and add-ons are installed directly into a PKS cluster.
 
@@ -138,19 +113,19 @@ helm package (your product)
 To add service offering to bazaar that can then be used by the developer to provision from cf marketplace, run
 
 ```bash
-bazaar -t (bazaar api url) -u (username) -p (password) offer save ./tmp/(your product).tgz
+bazaar -t (bazaar api) -u (username) -p (password) offer save ./tmp/(your product).tgz
 ```
 
 To list existing service offerings available in bazaar, run
 
 ```bash
-bazaar -t (bazaar api url) -u (username) -p (password) offer list ./tmp/(your product).tgz
+bazaar -t (bazaar api) -u (username) -p (password) offer list ./tmp/(your product).tgz
 ```
 
 To delete any service offerings from bazaar, run
 
 ```bash
-bazaar -t (bazaar api url) -u (username) -p (password) offer delete ./tmp/(your product).tgz
+bazaar -t (bazaar api) -u (username) -p (password) offer delete ./tmp/(your product).tgz
 ```
 
 ####<a id='images'></a> Manage Container Images
