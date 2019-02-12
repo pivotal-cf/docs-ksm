@@ -1,22 +1,22 @@
 ---
-title: Installing and Configuring Pivotal Bazaar for PCF
+title: Installing and Configuring Kubernetes Service Manager for PCF
 owner: ISM
 ---
 <strong><%= modified_date %></strong>
-This topic describes how to install and configure Pivotal Bazaar for PCF.
+This topic describes how to install and configure Kubernetes Service Manager for PCF
 
-##<a id='install'></a> Install and Configure Pivotal Bazaar for PCF
+##<a id='install'></a> Install and Configure Kubernetes Service Manager for PCF
 
-To install the Pivotal Bazaar for PCF file on the Ops Manager Installation Dashboard, do the following:
+To install the Kubernetes Service Manager for PCF file on the Ops Manager Installation Dashboard, do the following:
 
 1. Download the product file from Pivotal Network.
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
-1. Under the **Import a Product** button, click **+** next to the version number of Pivotal Bazaar for PCF.
+1. Under the **Import a Product** button, click **+** next to the version number of Kubernetes Service Manager for PCF.
 This adds the tile to your staging area.
 
-1. Click the newly added **Pivotal Bazaar for PCF** tile.
+1. Click the newly added **Kubernetes Service Manager for PCF** tile.
 
 1. **This portion of the procedure should tell the users how to configure the newly added tile by
 walking them through the sections. Which fields should they fill out? What are the different
@@ -31,11 +31,11 @@ checkboxes? Include relevant screenshots here.**
      <tr><th>Field</th><th>Instructions</th></tr>
      <tr>
         <td><strong>Place singleton jobs in</strong></td>
-        <td>Select the region that you want for singleton VMs. This selection does not affect Bazaar.</td>
+        <td>Select the region that you want for singleton VMs. This selection does not affect the Kubernetes Service Manager for PCF.</td>
      </tr>
      <tr>
         <td><strong>Balance other jobs in</strong></td>
-        <td>Select additional region. This selection control the regions that Bazaar is deployed to.</td>
+        <td>Select additional region. This selection controls the regions in which Kubernetes Service Manager for PCF is deployed.</td>
      </tr>
      <tr>
         <td><strong>Network</strong></td>
@@ -50,7 +50,7 @@ checkboxes? Include relevant screenshots here.**
  2. Click **Save**.
 
 
-### Bazaar Default Kubernetes Config
+### Kubernetes Service Manager for PCF Default Kubernetes Config
 Run  `pks get-credentials` to get values for following fields.
 To get more information visit the [PKS CLI docs](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html)
 
@@ -65,31 +65,31 @@ To get more information visit the [PKS CLI docs](https://docs.pivotal.io/runtime
 
 
 ### Helm Configuration
-Bazaar deploys Helm and Tiller into PKS cluster.
+The Bazaar component of the Kubernetes Service Manager for PCF deploys Helm and Tiller into a PKS cluster.
 
 1. **Tiller Security Certificate**: Click on generate RSA certificate.  Enter a domain; the system domain will work. The actual value of domain does not matter
-    since this is used for mutual TLS. This certificate used to authenticate Bazaar's internal components.
+    since this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
 
 1. **Helm Client Certificate**: Click on generate RSA certificate. Enter a domain; the system domain will work. The actual value of domain does not matter
-    since this is used for mutual TLS. This certificate used to authenticate Bazaar's internal components.
+    since this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
 
 1. Click **Save**.
 
 ### Container Registry Configuration
 
-When configured with a private registry, Bazaar will transform the helm chart to point to images in private registry. It is advisable to use a private registry in production.
+When configured with a private registry, the Bazaar component will transform the helm chart to point to images in private registry. It is advisable to use a private registry in production.
 
 1. Enter the **Registry Server URL**
 1. Enter the **Registry Username**
 1. Enter the **Registry Password**
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to install Pivotal Bazaar for PCF.
+1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to install Kubernetes Service Manager for PCF.
 
 ### Errands
 **De-Registrar**
 
-Removes the pre-provisioned Bazaar service from the Marketplace and deletes all associated service instances and bindings.
+Removes the pre-provisioned kubernetes service from the Marketplace and deletes all associated service instances and bindings.
 
 ### Resource Config
 
-For HA deployment, deploy Bazaar with 2 or more instances.
+For HA deployment, deploy Kubernetes Service Manager for PCF with 2 or more instances.
