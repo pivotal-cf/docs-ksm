@@ -9,7 +9,7 @@ This topic describes how to use Kubernetes Service Manager for PCF.
 
 ##<a id='using'></a> Using Kubernetes Service Manager for PCF
 
-Kubernetes Service Manager for PCF utilizes both the Bazaar CLI and a generic broker.
+Kubernetes Service Manager for PCF uses both the `bazaar` CLI and a generic broker.
 
 ###<a id='shared'></a> Shared Instances and Add-ons
 Shared instances and add-ons are installed directly into a PKS cluster.
@@ -71,13 +71,13 @@ These values are described by an additional file, `plans.yaml` at the root level
    Each plan's yaml file is a set of values overriding the defaults present in `values.yaml`.
    Copy any key/value pairs to override from `values.yaml` into a new plan file and change their value.
 * `description` describes the plan and is shown to developers in the marketplace.
-* `name` is the name of the plan, typed by developers when provisioning (choose a CLI-friendly value: lower only, no special characters).
+* `name` is the name of the plan, typed by developers when provisioning (choose a CLI-friendly value: lower case only, no special characters).
 
 For additional examples, see
 [https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
 
 ####<a id='plans'></a> Define Plans
-To add plans to charts, get your previously downloaded product tgz file from (./tmp)
+To add plans to charts, get your previously downloaded product tgz file from `./tmp`
 
 ```bash
 cd ./tmp
@@ -94,7 +94,8 @@ cat > plans.yaml
   description: "medium sized plan for mysql"
   file: "medium.yaml"
 ```
-Define one or more plans with set of override values in (your plan).yaml, for example
+
+Define one or more plans with set of override values in `YOUR_PLAN.yaml`, for example
 
 ```bash
 mkdir plans
@@ -109,35 +110,35 @@ resources:
 Re-package your helm chart
 
 ```bash
-helm package (your product)
+helm package (YOUR PRODUCT)
 ```
 
-To add service offering to Kubernetes Service Manager for PCF that can then be used by the developer to provision from cf marketplace, run
+To add a dedicated instance service offering to Kubernetes Service Manager for PCF, run
 
 ```bash
-bazaar -t (bazaar api) -u (username) -p (password) offer save ./tmp/(your product).tgz
+bazaar -t (bazaar api) -u (username) -p (password) offer save ./tmp/(YOUR PRODUCT).tgz
 ```
 
-To list existing service offerings available in Kubernetes Service Manager for PCF, run
+To list existing service offerings, run
 
 ```bash
-bazaar -t (bazaar api) -u (username) -p (password) offer list ./tmp/(your product).tgz
+bazaar -t (bazaar api) -u (username) -p (password) offer list ./tmp/(YOUR PRODUCT).tgz
 ```
 
-To delete any service offerings from Kubernetes Service Manager for PCF, run
+To delete any service offerings, run
 
 ```bash
-bazaar -t (bazaar api) -u (username) -p (password) offer delete ./tmp/(your product).tgz
+bazaar -t (bazaar api) -u (username) -p (password) offer delete ./tmp/(YOUR PRODUCT).tgz
 ```
 
 ####<a id='images'></a> Manage Container Images
 
 For air-gapped environments that cannot reach out to common registries such as
 [Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/), or for images that aren't public, the Bazaar CLI's `download` command will also
+[Quay](https://quay.io/), or for images that aren't public, the `bazaar` CLI's `download` command will also
 get the container images off of Pivotal Network. These images need to be loaded into a private registry. The `docker`
-CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The Bazaar CLI does, however,
-include a command that can handle many use cases. To load an image into a private registry, run
+CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The `bazaar` CLI does
+include a command to cover this use case. To load an image into a private registry, run
 
 ```bash
 docker login -u (username) -p (password) (private registry url)
@@ -147,8 +148,8 @@ bazaar image push -r (private registry url ) -d (directory with private images)
 ####<a id='requirements'></a> Other Chart Requirements
 In addition to defining plans, there are some other items things to keep in mind:
 
-* When defining a `Service` to expose this back to any applications that are bound,
-    - `type: LoadBalancer` is a current requirement.
+* When defining a [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), only a subset of options will work for the `type` value:
+    - `LoadBalancer` is a current requirement.
     - `NodePort` is also an option and Kibosh will add externalIPs and nodePort to bind json, but `NodePort` does carry
   significant risks and probably should **not** be used in production: is not robust to cluster scaling events, upgrades or other IP changes.
 * In many cases, the `storageClass` for persistent volume claims needs to be customized to what's available for
@@ -165,8 +166,8 @@ In addition to defining plans, there are some other items things to keep in mind
 Advanced Debugging might require talking directly to the underlying Helm and Kubernetes:
 
 * [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Kubernetes Service Manager for PCF installs
-Tiller into a specific namespace, `kibosh`. To manual run Helm commands, log into the Kubernetes
-cluster and include the namespace flag to talk to Kibosh's helm `--tiller-namespace=kibosh`.
+Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log into the Kubernetes
+cluster and include the namespace flag in order to talk the Kubernetes Service Manager for PCF's helm `--tiller-namespace=kibosh`.
 * <span style="color: deeppink; font-weight: bold">todo: mTLS credentials - need tile to test</a>
 
 ####<a id='issue-name'></a> Name Length Issues
@@ -180,11 +181,12 @@ The Helm chart will need to be enhanced with additional truncation and name prot
 for some additional details on truncation and naming.
 
 ####<a id='issue-cleanup'></a> Cleanup
-The Cloud Foundry platform, by default, gives an asynchronously provisioned service seven days to become healthy. It
+Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
 sometimes requires manual cleanup to remove services earlier in some failure modes.
 [Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
-will remove the service from Pivotal Cloud Foundry, but might leave resources in the backing cluster.
-To fully clean up, delete the Helm release and the namespace, if either is still present, from the PKS cluster.
+will remove the service from Pivotal Cloud Foundry. This might, however, leave resources in the backing cluster.
+
+To fully clean up, delete the Helm release and the namespace, if either is still present.
 Both the cluster and the Helm resources are named after the service's GUID.
 
 ```bash

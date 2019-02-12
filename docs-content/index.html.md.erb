@@ -11,7 +11,7 @@ The Kubernetes Service Manager for PCF tile is currently in Beta and is intended
 Do not use this product in a PCF production environment.
 </p>
 
-Kubernetes Service Manager for PCF enables the platform operator to provide app development team(s) with access to services running on
+Kubernetes Service Manager for PCF enables the platform operator to provide application development team(s) with access to services running on
 [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service)
 via the
 [Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
@@ -20,11 +20,11 @@ for consumption by PAS applications.
 
 ## <a id='overview'></a>Overview
 
-PKS service integrations can take a lot of forms. Kubernetes Service Manager for PCF tackles two large classes of services:
+PKS service integrations can take a lot of forms. Kubernetes Service Manager for PCF tackles three large classes of services:
 
 * Installing a single Helm chart to a particular cluster (`shared-instance`).
 * Provisioning services as needed by individual teams from the [Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html) (`dedicated-instances`).
-* Installing a cluster add-on, such as a observability or security tool.
+* Installing a cluster add-on, such as an observability or security tool.
 
 In the shared-instance and add-on cases, Kubernetes Service Manager for PCF helps by providing a consistent operator experience for installing a Helm chart
 into a particular cluster.
@@ -39,7 +39,7 @@ to the service's backing cluster.
 Kubernetes Service Manager for PCF includes the following key features:
 
 * A broker tile that provisions dedicated service instances into a PKS cluster.
-* A CLI for downloading PKS integrations off Pivotal Network, managing broker dedicated-instance offerings,
+* A CLI for managing broker dedicated-instance offerings
   and installing a shared-instance into a cluster.
 
 
@@ -52,15 +52,15 @@ The following table provides version and version-support information about the K
     <th>Details</th>
     <tr>
         <td>Tile version</td>
-        <td>v0.4.0</td>
+        <td><span style="color: deeppink">v0.4.0</span></td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td><span style="color: deeppink; font-weight: bold">TODO</a></td>
+        <td>February 15, 2019</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>v0.4.0</td>
+        <td><span style="color: deeppink">v0.4.0</span></td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
@@ -84,7 +84,7 @@ The following table provides version and version-support information about the K
     </tr>
     <tr>
         <td>IPsec support?</td>
-        <td><span style="color: deeppink; font-weight: bold">TODO</a></td>
+        <td>No</td>
     </tr>
 </table>
 
@@ -100,12 +100,12 @@ Kubernetes Service Manager for PCF has the following requirements:
 
 ## <a id="limitations"></a>Limitations
 
-* Dedicated-instances created by the Kubernetes Service Manager for PCF provision an IaaS load balancer for ingress to each instance.
+* Dedicated-instances created by the Kubernetes Service Manager for PCF provision an IaaS load balancer for ingress into each instance.
 
 ## <a id="feedback"></a>Feedback
 
-If you have a feature request, questions, or information about a bug, please email
-[Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io) list.
+If you have a feature request, questions, or information about a bug, please send an email to
+the [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io) list.
 
 ## <a id='license'></a>License
 
