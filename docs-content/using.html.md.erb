@@ -1,17 +1,195 @@
 ---
-title: Using YOUR-PRODUCT-NAME
-owner: Partners
+title: Using Kubernetes Service Manager for PCF
+owner: ISM
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use Kubernetes Service Manager for PCF.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
+##<a id='using'></a> Using Kubernetes Service Manager for PCF
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. 
-Give procedures for how to perform the different functions offered by your product and provide screenshots where necessary.** 
+Kubernetes Service Manager for PCF uses both the `bazaar` CLI and a generic broker.
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. 
-If you include a Troubleshooting section, follow the Symptom/Explanation format used in the 
-[Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+###<a id='shared'></a> Shared Instances and Add-ons
+Shared instances and add-ons are installed directly into a PKS cluster.
+
+To install a helm chart for a shared instance service on a PKS cluster, run
+
+```bash
+bazaar chart install --help
+```
+
+Keep in mind that some integrations may require additional setup, so be sure to read the documentation
+to validate compatibility and prerequisites.
+
+Before running `bazaar`'s install, download and install the
+[PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html). You also need to log into the
+PKS cluster where you want to install services. See the
+[PKS documentation](https://docs.pivotal.io/runtimes/pks/index.html) for additional information.
+
+```bash
+pks login -a (pks uaa host) -u (username) -p (password)
+```
+
+Now the integration that was previously downloaded into `./tmp` can be installed with
+
+```bash
+bazaar chart install -d ./tmp -c (cluster name) -n (name of installation) -f (values yaml file)
+```
+
+Each service will likely need some service specific configuration, which is specified by the
+values yaml file. On a successful install run, Kubernetes Service Manager for PCF will output information about the service
+(how to get credentials, etc).
+
+
+###<a id='dedicated'></a> Dedicated Instances
+Dedicated instances are provided through a broker installed via the Kubernetes Service Manager for PCF tile. When a
+[Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
+developer uses `cf create-service`, the broker creates a dedicated instance of
+the service in the backing cluster.
+
+In the Cloud Foundry marketplace, each service has a set of plans that developers can provision. A plan is the template
+for the service instances. For example, different plans might represent a large or a small instance
+of a database.
+
+For Kubernetes-based services, each plan represents a set of values overriding the helm chart's default values.
+These values are described by an additional file, `plans.yaml` at the root level of the chart
+
+```yaml
+- name: "small"
+  description: "default (small) plan for mysql"
+  file: "small.yaml"
+- name: "medium"
+  description: "medium sized plan for mysql"
+  file: "medium.yaml"
+```
+
+* `file` is a filename that exists in the `plans` subdirectory of the chart.
+   File names should consist of only lowercase letters, digits, `.`, or `-`.
+   The standard `values.yaml` file in the helm chart sets the defaults.
+   Each plan's yaml file is a set of values overriding the defaults present in `values.yaml`.
+   Copy any key/value pairs to override from `values.yaml` into a new plan file and change their value.
+* `description` describes the plan and is shown to developers in the marketplace.
+* `name` is the name of the plan, typed by developers when provisioning (choose a CLI-friendly value: lower case only, no special characters).
+
+For additional examples, see
+[https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
+
+####<a id='plans'></a> Define Plans
+To add plans to charts, get your previously downloaded product tgz file from `./tmp`
+
+```bash
+cd ./tmp
+tar -xvf your-product.tgz
+```
+Add plans.yaml, for example
+
+```bash
+cat > plans.yaml
+- name: "small"
+  description: "default (small) plan for mysql"
+  file: "small.yaml"
+- name: "medium"
+  description: "medium sized plan for mysql"
+  file: "medium.yaml"
+```
+
+Define one or more plans with set of override values in `YOUR_PLAN.yaml`, for example
+
+```bash
+mkdir plans
+cd plans
+cat > small.yaml
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+```
+
+Re-package your helm chart
+
+```bash
+helm package (YOUR PRODUCT)
+```
+
+To add a dedicated instance service offering to Kubernetes Service Manager for PCF, run
+
+```bash
+bazaar -t (bazaar api) -u (username) -p (password) offer save ./tmp/(YOUR PRODUCT).tgz
+```
+
+To list existing service offerings, run
+
+```bash
+bazaar -t (bazaar api) -u (username) -p (password) offer list ./tmp/(YOUR PRODUCT).tgz
+```
+
+To delete any service offerings, run
+
+```bash
+bazaar -t (bazaar api) -u (username) -p (password) offer delete ./tmp/(YOUR PRODUCT).tgz
+```
+
+####<a id='images'></a> Manage Container Images
+
+For air-gapped environments that cannot reach out to common registries such as
+[Docker Hub](https://hub.docker.com/) and
+[Quay](https://quay.io/), or for images that aren't public, the `bazaar` CLI's `download` command will also
+get the container images off of Pivotal Network. These images need to be loaded into a private registry. The `docker`
+CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The `bazaar` CLI does
+include a command to cover this use case. To load an image into a private registry, run
+
+```bash
+docker login -u (username) -p (password) (private registry url)
+bazaar image push -r (private registry url ) -d (directory with private images)
+```
+
+####<a id='requirements'></a> Other Chart Requirements
+In addition to defining plans, there are some other items things to keep in mind:
+
+* When defining a [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), only a subset of options will work for the `type` value:
+    - `LoadBalancer` is a current requirement.
+    - `NodePort` is also an option and Kibosh will add externalIPs and nodePort to bind json, but `NodePort` does carry
+  significant risks and probably should **not** be used in production: is not robust to cluster scaling events, upgrades or other IP changes.
+* In many cases, the `storageClass` for persistent volume claims needs to be customized to what's available for
+  the IaaS on which PKS is running. The [PKS documentation](https://docs.pivotal.io/runtimes/pks/volumes.html)
+  has additional details.
+* Selectors are [immutable](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector)
+    - This means that *chart name cannot change* (the name is generally used in selectors)
+* Resizing disks has limitations. To support upgrade:
+    - You can't resize a persistent volume claim (currently behind an [alpha feature gate](https://kubernetes.io/docs/reference/feature-gates/))
+
+
+##<a id='troubleshooting'></a> Troubleshooting
+### <a id='issue-debugging'></a> Advanced Debugging
+Advanced Debugging might require talking directly to the underlying Helm and Kubernetes:
+
+* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Kubernetes Service Manager for PCF installs
+Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log into the Kubernetes
+cluster and include the namespace flag in order to talk the Kubernetes Service Manager for PCF's helm `--tiller-namespace=kibosh`.
+* <span style="color: deeppink; font-weight: bold">todo: mTLS credentials - need tile to test</a>
+
+####<a id='issue-name'></a> Name Length Issues
+Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
+will fail immediately, with an error message including
+
+* `must be no more than 63 characters`
+
+The Helm chart will need to be enhanced with additional truncation and name protection. Visit
+[the Helm docs](https://docs.helm.sh/chart_template_guide/#adding-a-simple-template-call)
+for some additional details on truncation and naming.
+
+####<a id='issue-cleanup'></a> Cleanup
+Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
+sometimes requires manual cleanup to remove services earlier in some failure modes.
+[Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
+will remove the service from Pivotal Cloud Foundry. This might, however, leave resources in the backing cluster.
+
+To fully clean up, delete the Helm release and the namespace, if either is still present.
+Both the cluster and the Helm resources are named after the service's GUID.
+
+```bash
+helm delete namespace kibosh-GUID
+kubectl delete namespace kibosh-GUID
+```

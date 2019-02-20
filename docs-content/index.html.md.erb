@@ -1,121 +1,121 @@
 ---
-title: YOUR-PRODUCT-NAME (Beta)
-owner: Partners
+title: Kubernetes Service Manager for PCF (Beta)
+owner: ISM
 ---
 
 <strong><%= modified_date %></strong>
 
 <p class="note warning">
 <strong>WARNING! </strong>
-The PRODUCT-NAME for PCF tile is currently in beta and is intended for evaluation and test purposes only. 
+The Kubernetes Service Manager for PCF tile is currently in Beta and is intended for evaluation and test purposes only.
 Do not use this product in a PCF production environment.
 </p>
 
-**This topic begins with a brief description of what the product tile (e.g. Apigee Edge Service Broker for PCF) does, 
-whereas the Overview section below describes what the service itself (e.g. Apigee Edge) does. See below for an example.**
+Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables the platform operator
+to provide application development teams with access to services running on
+[Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service)
+through the
+[Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
+for consumption by PAS applications.
 
-This documentation describes the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF). The Apigee Edge Service 
-Broker for PCF enables developers to manage APIs for their PCF apps through the Apigee Edge management console.
-
-**Note**: This description will appear under **OVERVIEW** in the tile's listing on 
-[Pivotal Network](http://network.pivotal.io).
 
 ## <a id='overview'></a>Overview
 
-**The overview describes the service that your product offers to PCF developers. 
-Make sure to overview the features of the integration.
-Don't focus only on the overview of your product that is being integrated.
-See below for an example.**
+PKS service integrations can take a lot of forms.
+Kubernetes Service Manager for PCF tackles three large classes of services:
 
-The Apigee Edge Service Broker for PCF registers a service broker with PCF and exposes its service plans on the 
-Marketplace. Developers can then create service plan instances using Apps Manager or the Cloud Foundry Command 
-Line Interface (cf CLI) and bind them to their apps.
+* Installing a single Helm chart to a particular cluster (`shared-instance`).
+* Provisioning services as needed by individual teams
+  from the [Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
+  (`dedicated-instances`).
+* Installing a cluster add-on, such as an observability or security tool.
 
-Creating an Apigee Edge for PCF service instance and binding it to an app creates an Apigee Edge API proxy that 
-handles requests for the app. This lets developers use the Apigee Edge management console to manage API request 
-handling between clients and the app.
+In the shared-instance and add-on cases, Kubernetes Service Manager for PCF helps
+by providing a consistent operator experience for installing a Helm chart
+into a particular cluster.
 
-**Note**: This overview will appear under **OVERVIEW**, combined with the description above in the tile's listing on 
-[Pivotal Network](http://network.pivotal.io).
+In the dedicated-instances case, Kubernetes Service Manager for PCF lets the operator offer an ISV
+or open source Helm chart to
+[Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
+developers on demand.
+Developers who use the `cf create-service` command will, in realtime, provision a chart
+to the service's backing cluster.
+
 
 ## <a id='features'></a>Key Features
 
-**Note**: This feature list will appear under **FEATURES** in the tile's listing on 
-[Pivotal Network](http://network.pivotal.io). 
-Make sure you list the key features of the tile (the integration). 
-We cannot accept a list of the key features of your product that we are integrating.
+Kubernetes Service Manager for PCF includes the following key features:
 
-YOUR-PRODUCT-NAME includes the following key features:
-
-* Feature one
-* Feature two
-* Feature three
-
+* A broker tile that provisions dedicated service instances into a PKS cluster.
+* A CLI for managing broker dedicated-instance offerings
+  and installing a shared-instance into a cluster.
 
 
 ## <a id="snapshot"></a>Product Snapshot
 
-The following table provides version and version-support information about PRODUCT-NAME.
+The following table provides version and version-support information about the Kubernetes Service Manager for PCF.
 
 <table class="nice">
     <th>Element</th>
     <th>Details</th>
     <tr>
         <td>Tile version</td>
-        <td>vYOUR-VERSION-NUMBER</td>
+        <td><span style="color: deeppink">v0.4.0</span></td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>YOUR-RELEASE-DATE (Ex: July 1, 2019)</td>
+        <td>February 15, 2019</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>YOUR-SOFTWARE-COMPONENT-VERSION-NUMBER</td>
+        <td><span style="color: deeppink">v0.4.0</span></td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>YOUR-COMPATIBLE-OPS-MAN-VERSION (Ex. 2.2, 2.3, and 2.4)</td>
+        <td>2.2, 2.3, and 2.4</td>
     </tr>
     <tr>
         <td>Compatible Pivotal Application Service version(s)</td>
-        <td>YOUR-COMPATIBLE-PIVOTAL-APPLICATION-SERVICE-VERSION (Ex. 2.2, 2.3, and 2.4)</td>
+        <td>2.2, 2.3, and 2.4</td>
+    </tr>
+    <tr>
+        <td>Compatible Pivotal Container Service version(s)</td>
+        <td>1.2 and 1.3</td>
     </tr>
     <tr>
        <td>BOSH stemcell version</td>
-       <td>Xenial XXX or later</td>
+       <td>Xenial</td>
     </tr>
     <tr>
         <td>IaaS support</td>
-        <td>AWS?, Azure?, GCP?, OpenStack?, and vSphere?</td>
+        <td>AWS, Azure, GCP, OpenStack, and vSphere</td>
     </tr>
     <tr>
         <td>IPsec support?</td>
-        <td>[Yes or No]</td>
+        <td>No</td>
     </tr>
 </table>
 
 
 ## <a id="reqs"></a>Requirements
 
-**Provide any general or specific requirements, prerequisites, or dependencies here. 
-A general requirement might be something like, "An AppDynamics account." 
-A specific requirement might be something like, "Packaging Dependencies for Offline Buildpacks."**
+Kubernetes Service Manager for PCF has the following requirements:
 
-YOUR-PRODUCT-NAME has the following requirements:
-
-+ PREREQUISITE-1
-
-+ PREREQUISITE-2
+* A container registry like [Harbor](https://network.pivotal.io/products/harbor-container-registry)
+  is needed to manage images in disconnected environments (and advisable for any production deployments).
+* [Docker](https://www.docker.com/)
+* The [PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html)
 
 ## <a id="limitations"></a>Limitations
 
-**List any known limitations.**
+* Dedicated-instances created by the Kubernetes Service Manager for PCF provision
+  an IaaS load balancer for ingress into each instance.
 
 ## <a id="feedback"></a>Feedback
 
-If you have a feature request, questions, or information about a bug, please email
-[Pivotal Cloud Foundry Feedback](mailto:cf-feedback@pivotal.io) list or send an email to YOUR-SUPPORT-EMAIL.
+If you have a feature request, questions, or information about a bug, please send an email to
+the [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io) list.
 
 ## <a id='license'></a>License
 
-**List any license information here.**
+This product is distributed under the [Pivotal Pre-Release EULA](https://network.pivotal.io/legal_documents/pivotal_beta_eula) license.
