@@ -168,7 +168,8 @@ Advanced Debugging might require talking directly to the underlying Helm and Kub
 * [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Kubernetes Service Manager for PCF installs
 Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log into the Kubernetes
 cluster and include the namespace flag in order to talk the Kubernetes Service Manager for PCF's helm `--tiller-namespace=kibosh`.
-* <span style="color: deeppink; font-weight: bold">todo: mTLS credentials - need tile to test</a>
+
+<!-- TODO: mTLS credentials - need tile to test -->
 
 ####<a id='issue-name'></a> Name Length Issues
 Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
