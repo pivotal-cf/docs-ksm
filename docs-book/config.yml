@@ -21,6 +21,6 @@ sections:
 
 template_variables:                             # optional
 
-book_title: Partner Services Template
+book_title: Kubernetes Service Manager for PCF 
 book_repo: docs-book
 layout_repo: docs-layout
