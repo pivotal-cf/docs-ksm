@@ -1,7 +1,7 @@
 docs-bazaar
 ==========
 
-Docs for Kubernetes Service Manager for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF)
+Docs for Kubernetes Service Manager for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF)(Beta)
 
 ## Which branch to use?
 
