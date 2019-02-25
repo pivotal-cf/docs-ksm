@@ -11,48 +11,36 @@ The Kubernetes Service Manager for PCF tile is currently in beta and is intended
 Do not use this product in a Pivotal Cloud Foundry production environment.
 </p>
 
-Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables the platform operator
-to provide app developers with access to services running on
-[Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service)
-through the
-[Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
-for consumption by Pivotal Application Services (PAS) apps.
+This topic is an overview of Kubernetes Service Manager for PCF.
 
 ## <a id='overview'></a>Overview
 
-PKS service integrations can take a lot of forms.
-Kubernetes Service Manager for PCF tackles three large classes of services:
+Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables platform operators
+to provide app developers with access to services through the Marketplace. These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps. 
 
-* Installing a single Helm chart to a particular cluster (`shared-instance`).
-* Provisioning services as needed by individual teams
-  from the [Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
-  (`dedicated-instances`).
-* Installing a cluster add-on, such as an observability or security tool.
+For more information about the Marketplace, see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace). 
+For more information about PKS, see [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
-In the shared-instance and add-on cases, Kubernetes Service Manager for PCF helps
-by providing a consistent operator experience for installing a Helm chart
-into a particular cluster.
+Kubernetes Service Manager for PCF addresses three classes of services:
 
-In the dedicated-instances case, Kubernetes Service Manager for PCF lets the operator offer an Independent Software Vendor (ISV)
-or open source Helm chart to
-[Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
-developers on demand.
-Developers who use the `cf create-service` command will, in realtime, provision a chart
-to the service's backing cluster.
+* **Shared service instances:** Kubernetes Service Manager for PCF provides a  consistent operator experience for installing a Helm chart into a cluster.
+* **Dedicated service instances:**  Kubernetes Service Manager for PCF enables the operator to provision services for developers
+  from the Marketplace. Operators can offer an Independent Software Vendor (ISV)
+  or open source Helm chart to PAS developers on demand.
+  When developers run `cf create-service` a chart is provisioned to the service's backing cluster in realtime.
+* **Cluster add-ons:** Installing add-ons such as an observability or security tool. Kubernetes Service Manager for PCF provides a consistent operator experience for installing a Helm chart into a cluster.
 
-
-## <a id='features'></a>Key Features
+## <a id='features'></a> Key Features
 
 Kubernetes Service Manager for PCF includes the following key features:
 
-* A broker tile that provisions dedicated service instances into a PKS cluster.
-* A CLI for managing broker dedicated-instance offerings
-  and installing a shared-instance into a cluster.
-
+* A service broker tile that provisions dedicated service instances into a PKS cluster.
+* A CLI for managing broker dedicated service instances offerings
+  and installing a shared service instance into a cluster.
 
 ## <a id="snapshot"></a>Product Snapshot
 
-The following table provides version and version-support information about the Kubernetes Service Manager for PCF.
+The following table provides version and version-support information about Kubernetes Service Manager for PCF.
 
 <table class="nice">
     <th>Element</th>
@@ -90,30 +78,26 @@ The following table provides version and version-support information about the K
         <td>AWS, Azure, GCP, OpenStack, and vSphere</td>
     </tr>
     <tr>
-        <td>IPsec support?</td>
+        <td>IPsec support</td>
         <td>No</td>
     </tr>
 </table>
 
-
 ## <a id="reqs"></a>Requirements
 
-Kubernetes Service Manager for PCF has the following requirements:
+Kubernetes Service Manager for PCF requires the following:
 
-* A container registry like [Harbor](https://network.pivotal.io/products/harbor-container-registry)
-  is needed to manage images in disconnected environments (and advisable for any production deployments).
-* [Docker](https://www.docker.com/)
-* The [PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html)
+* **Container registry:** You need athis to manage images in disconnected environments. Pivotal recommends using a container registry in production deployments. You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Docker:** See [Docker](https://www.docker.com/).
+* **PKS CLI:** For information about installing the PKS CLI, see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
 
 ## <a id="limitations"></a>Limitations
 
-* Dedicated-instances created by the Kubernetes Service Manager for PCF provision
-  an IaaS load balancer for ingress into each instance.
+Dedicated services instances created by Kubernetes Service Manager for PCF provision an IaaS load balancer for ingress into each servivce instance.
 
 ## <a id="feedback"></a>Feedback
 
-If you have a feature request, questions, or information about a bug, please send an email to
-the [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io) list.
+If you have a feature request, questions, or information about an issue, send an email to [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io).
 
 ## <a id='license'></a>License
 
