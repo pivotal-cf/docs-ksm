@@ -5,12 +5,7 @@ owner: ISM
 
 <strong><%= modified_date %></strong>
 
-<p class="note warning">
-<strong>Warning: </strong>
-The Kubernetes Service Manager for PCF tile is currently in beta and is intended for evaluation and test purposes only.
-Do not use this product in a Pivotal Cloud Foundry production environment.
-</p>
-
+<%= partial ("beta-notice") %>
 This topic is an overview of Kubernetes Service Manager for PCF.
 
 ## <a id='overview'></a>Overview
@@ -35,7 +30,7 @@ Kubernetes Service Manager for PCF addresses three classes of services:
 Kubernetes Service Manager for PCF includes the following key features:
 
 * A service broker tile that provisions dedicated service instances into a PKS cluster.
-* A CLI for managing broker dedicated service instances offerings
+* A command line interface for managing broker dedicated service instances offerings
   and installing a shared service instance into a cluster.
 
 ## <a id="snapshot"></a>Product Snapshot
@@ -89,7 +84,7 @@ Kubernetes Service Manager for PCF requires the following:
 
 * **Container registry:** You need athis to manage images in disconnected environments. Pivotal recommends using a container registry in production deployments. You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
 * **Docker:** See [Docker](https://www.docker.com/).
-* **PKS CLI:** For information about installing the PKS CLI, see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
+* **PKS Command Line Interface (CLI):** For information about installing the PKS CLI, see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
 
 ## <a id="limitations"></a>Limitations
 
