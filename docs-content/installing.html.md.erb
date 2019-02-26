@@ -16,14 +16,14 @@ To install the Kubernetes Service Manager for PCF file on the Ops Manager Instal
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
-1. Under the **Import a Product** button, click **+** next to the version number of Kubernetes Service Manager for PCF.
+1. Under **Import a Product**, click **+** next to the version number of Kubernetes Service Manager for PCF.
 This adds the tile to your staging area.
 
 1. Click the newly-added **Kubernetes Service Manager for PCF** tile to open its configuration panes.
 
 ##<a id='az-networks'></a> Configure AZs and Networks
 
-Follow the steps below to choose an availability zone (AZ) to run the service broker and to select networks.
+Follow the steps below to select an availability zone (AZ) to run the service broker and to select networks.
 
  1. Click **Assign AZs and Networks**
 
@@ -72,15 +72,16 @@ For more information about the using kubeconfig files, see [Organizing Cluster A
 
 The `bazaar` CLI component of the Kubernetes Service Manager for PCF deploys Helm and Tiller into a PKS cluster. To configure Helm and Tiller
 
-1. **Tiller Security Certificate**: Click on generate RSA certificate.  Enter a domain; the system domain will work. The actual value of domain does not matter
-    since this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
+1. **Tiller Security Certificate**: Click on generate RSA certificate. Enter the system domain. The actual value of domain does not matter
+    because this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
 
-1. **Helm Client Certificate**: Click on generate RSA certificate. Enter a domain; the system domain will work. The actual value of domain does not matter
-    since this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
+1. **Helm Client Certificate**: Click on generate RSA certificate. Enter the system domain. The actual value of domain does not matter because this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
 
 1. Click **Save**.
 
 [WHERE ARE YOU DOING THIS? IN THE TILE?]
+
+For more information about using Helm with PKS, see [Using Helm with PKS](https://docs.pivotal.io/runtimes/pks/helm.html).
 
 
 ##<a id="container"></a> Configure Container Registry
@@ -108,4 +109,4 @@ Removes the pre-provisioned Kubernetes service from the Marketplace and
 
 ##<a id="resource"></a>Resource Config
 
-For HA deployment, deploy Kubernetes Service Manager for PCF with two or more instances.
+For an high availability deployment, deploy Kubernetes Service Manager for PCF with two or more instances.
