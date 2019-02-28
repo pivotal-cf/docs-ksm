@@ -11,7 +11,6 @@ This topic describes how to use Kubernetes Service Manager for PCF.
 
 ##<a id='using'></a> Using Kubernetes Service Manager for PCF
 
-Use Kubernetes Service Manager for PCF
 
 Kubernetes Service Manager for PCF uses both the `bazaar` CLI and a generic broker.
 
@@ -31,7 +30,7 @@ To install a helm chart for a shared instance or add-on, do the following:
     + `USERNAME` is the username you created in [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
     + `PASSWORD` is the password you created in  [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user). If you do not provide a password, the CLI prompts for the password interactively. Pivotal recommends running the login command without the `-p` flag for added security.
       
-      [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?]
+      <%# [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?] %>
 
 1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
 
@@ -44,17 +43,17 @@ To install a helm chart for a shared instance or add-on, do the following:
     + `INSTALLATION-NAME` is
     + `YAML-FILE` is
 
-    Keep in mind that some integrations might require additional setup, so be sure to read the documentation to validate compatibility and prerequisite>s.
+    Keep in mind that some integrations might require additional setup, so be sure to read the documentation to validate compatibility and prerequisites.
     Each service most likely needs some service specific configuration, which is specified by the values YAML file.
     
-    [WHERE DO THEY GET THESE VALUES. EXAMPLE YAML FILE. WHAT IS MEANT BY INSTALLATION NAME]
+    <%#[WHERE DO THEY GET THESE VALUES. EXAMPLE YAML FILE. WHAT IS MEANT BY INSTALLATION NAME] %>
     
      On a successful install run, Kubernetes Service Manager for PCF outputs information about the service
     (how to get credentials, etc).
     
-    [EXAMPLE OUTPUT]
+    <%# [EXAMPLE OUTPUT] %>
 
-    [WHAT DOCUMENTATION? WHEN DID WE DOWNLOAD THE INTERGRATION TO ./tmp? DO YOU MEAN THE PIVNET TILE?]
+    <%# [WHAT DOCUMENTATION? WHEN DID WE DOWNLOAD THE INTERGRATION TO ./tmp? DO YOU MEAN THE PIVNET TILE?] %>
 
 ## <a id='dedicated'></a> Use with Dedicated Service Instances
 Dedicated instances are provided through a broker installed through the Kubernetes Service Manager for PCF tile. When a Pivotal Application Service (PAS)
@@ -94,7 +93,7 @@ For additional examples, see
 
 ###<a id='plans'></a> Define Plans
 
-[ASSUME THE READER KNOW HOW TO MAKE A DIRECTOR AND ADD FILES, JUST TELL THEM WHAT TO MAKE IN THE BEGINING AND THEN DO THE INTALL STUFF. REDO THE FOLLOWING SECTION]
+<%# [ASSUME THE READER KNOW HOW TO MAKE A DIRECTOR AND ADD FILES, JUST TELL THEM WHAT TO MAKE IN THE BEGINING AND THEN DO THE INTALL STUFF. REDO THE FOLLOWING SECTION] %>
 
 
 1. To open your TGZ file at `./tmp`, run the following commands:
@@ -142,35 +141,50 @@ For additional examples, see
     ```
     helm package YOUR-PRODUCT
     ```
-    [WHAT IS YOUR PRODUCT EXACTLY?]
+    
+    Where `YOUR PRODUCT` is 
+    <%# <!-- [WHAT IS YOUR PRODUCT EXACTLY?] --> %>
     
 
 1. To add a dedicated instance service offering to Kubernetes Service Manager for PCF, run the following
 
     ```
-    bazaar -t BAZAAR-API -u USERNAME -p PASSWORD offer save ./tmp/(YOUR-PRODUCT.tgz
+    bazaar -t BAZAAR-API -u USERNAME -p PASSWORD offer save ./tmp/YOUR-PRODUCT.tgz
     ```
     Where:
     + `BAZAAR-API` is
     + `USERNAME` is
     + `PASSWORD` is
+    + `YOUR PRODUCT` is 
   
   
-    [IS BAZAAR-API DIFFERENT FROM PKS-API? SAME FOR USERNAME AND PASSWORD?]
+    <%# <!-- [IS BAZAAR-API DIFFERENT FROM PKS-API? SAME FOR USERNAME AND PASSWORD?] --> %>
 
 
-[THE FOLLOWING IS NOT IN THIS PROCEDURE BUT DOES TELL YOU MORE STUFF YOU CAN DO WITH BAZZAR]
+<%# <!-- [THE FOLLOWING IS NOT IN THIS PROCEDURE BUT DOES TELL YOU MORE STUFF YOU CAN DO WITH BAZZAR] --> %>
 To list existing service offerings, run
 
 ```
-bazaar -t (bazaar api) -u (username) -p (password) offer list ./tmp/(YOUR PRODUCT).tgz
+bazaar -t BAZAAR-API -u USERNAME -p PASSWORD offer list ./tmp/YOUR-PRODUCT.tgz
 ```
+Where: 
+
++ `BAZAAR-API` is
++ `USERNAME` is
++ `PASSWORD` is
++ `YOUR PRODUCT` is 
 
 To delete any service offerings, run
 
-```
-bazaar -t (bazaar api) -u (username) -p (password) offer delete ./tmp/(YOUR PRODUCT).tgz
-```
+  ```
+  bazaar -t BAZAAR-API -u USERNAME -p PASSWORD offer delete ./tmp/YOUR-PRODUCT.tgz
+  ```
+  Where:
+  
+  + `BAZAAR-API` is
+  + `USERNAME` is
+  + `PASSWORD` is
+  + `YOUR PRODUCT` is 
 
 ###<a id='images'></a> Manage Container Images
 
@@ -178,25 +192,34 @@ For air-gapped environments that cannot reach out to common registries such as
 [Docker Hub](https://hub.docker.com/) and
 [Quay](https://quay.io/), or for images that aren't public, the `bazaar` CLI's `download` command 
 gets the container images off of Pivotal Network. These images need to be loaded into a private registry. The `docker`
-CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The `bazaar` CLI does
-include a command to cover this use case. 
+CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The `bazaar` CLI includes a command to cover this use case. 
 
 1. To load an image into a private registry, run the following command:
 
     ```
     docker login -u USERNAME -p PASSWORD PRIVATE-REGISTRY-URL 
     ```
-
+    
+    Where:  
+    + `USERNAME` is
+    + `PASSWORD` is 
+    + `PRIVATE-REGISTRY-URL` is
+    
+    <%#DOES PRODUCT REGISTRY URL NEED A FLAG?%>
 1. To push your Docker image, run the following command:
 
     ```
     bazaar image push -r PRIVATE-REGISTRY-URL  -d IMAGES-DIRECTORY
     ```
+    
+    Where:
+    + `PRIVATE-REGISTRY-URL` is
+    + `IMAGES-DIRECTORY` is
 
 ###<a id='requirements'></a> Other Chart Requirements
 
-[SO DEFINING PLANS ARE REQUIREMENTS OR JUST WHAT DO WHEN YOU USE KSM?]
-[WHERE/WHEN DO YOU DO THE STUFF HERE? IS THIS A CONFIGURING THING THAT YOU DO AFTER INSTALLING? ]
+<%# <!-- [SO DEFINING PLANS ARE REQUIREMENTS OR JUST WHAT DO WHEN YOU USE KSM?]
+[WHERE/WHEN DO YOU DO THE STUFF HERE? IS THIS A CONFIGURING THING THAT YOU DO AFTER INSTALLING? SHOULD THIS BE A SEPARATE PAGE] --> %>
 
 In addition to defining plans, there are some other items things to keep in mind:
 
@@ -211,40 +234,3 @@ In addition to defining plans, there are some other items things to keep in mind
     - This means that *chart name cannot change* (the name is generally used in selectors)
 * Resizing disks has limitations. To support upgrade:
     - You can't resize a persistent volume claim (currently behind an [alpha feature gate](https://kubernetes.io/docs/reference/feature-gates/))
-
-
-[SHOULD THIS BE A SEPERATE PAGE?]
-##<a id='troubleshooting'></a> Troubleshooting
-[STEM SENTENCE]
-### <a id='issue-debugging'></a> Advanced Debugging
-Advanced Debugging might require talking directly to the underlying Helm and Kubernetes:
-
-* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Kubernetes Service Manager for PCF installs
-Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log in to the Kubernetes
-cluster and include the namespace flag to talk the Kubernetes Service Manager for PCF's helm `--tiller-namespace=kibosh`.
-
-<!-- TODO: mTLS credentials - need tile to test -->
-
-####<a id='issue-name'></a> Name Length Issues
-Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
-will fail immediately, with an error message including
-
-* `must be no more than 63 characters`
-
-The Helm chart needs to be enhanced with additional truncation and name protection. Visit
-[the Helm documentation](https://docs.helm.sh/chart_template_guide/#adding-a-simple-template-call)
-for some additional details on truncation and naming.
-
-####<a id='issue-cleanup'></a> Cleanup
-Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
-sometimes requires manual cleanup to remove services earlier in some failure modes.
-[Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
-will remove the service from Pivotal Cloud Foundry. This might, however, leave resources in the backing cluster.
-
-To fully clean up, delete the Helm release and the namespace, if either is still present.
-Both the cluster and the Helm resources are named after the service's GUID.
-
-```bash
-helm delete namespace kibosh-GUID
-kubectl delete namespace kibosh-GUID
-```

@@ -48,7 +48,8 @@ Follow the steps below to select an availability zone (AZ) to run the service br
        For more information, see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
 
  2. Click **Save**.
-
+ 
+<%#[SCREENSHOT] %>
 
 ## <a id="kubeconfig"></a> Configure Cluster Kubeconfig
 
@@ -59,16 +60,18 @@ To use the Pivotal Container Service  Command Line Interface (PKS CLI) to config
 1. Navigate to `$HOME/.kube/config` add edit the kubeconfig file by providing the following values:
   + **Cluster CA certificate**: This value begins with `-----BEGIN CERTIFICATE-----`    
   + **Kubernetes API endpoint**: Enter API endpoint,  For example https://<ip>:<port>        
-  + **Cluster token**: Enter token [WHAT EXACTLY IS THIS? UAAC? OAUTH?]
+  + **Cluster token**: Enter token 
+  
+  <%#[WHAT EXACTLY IS THIS? UAAC? OAUTH?]%>
 
 
 For more information about the using kubeconfig files, see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
-[THE ABOVE SECTION NEEDS SME INPUT. UNCLEAR WHAT THE STEPS ARE AND WHERE USERS GET THIS INFO]
+<%# [THE ABOVE SECTION NEEDS SME INPUT. UNCLEAR WHAT THE STEPS ARE AND WHERE USERS GET THIS INFO]  %>
 
 ##<a id="helm"></a> Configure Helm and Tiller
 
-[IS THIS STILL CALLED bazaar CLI?]
+<%# <!-- [IS THIS STILL CALLED bazaar CLI?] --> %>
 
 The `bazaar` CLI component of the Kubernetes Service Manager for PCF deploys Helm and Tiller into a PKS cluster. To configure Helm and Tiller
 
@@ -79,7 +82,7 @@ The `bazaar` CLI component of the Kubernetes Service Manager for PCF deploys Hel
 
 1. Click **Save**.
 
-[WHERE ARE YOU DOING THIS? IN THE TILE?]
+<%# <!-- [WHERE ARE YOU DOING THIS? IN THE TILE?] --> %>
 
 For more information about using Helm with PKS, see [Using Helm with PKS](https://docs.pivotal.io/runtimes/pks/helm.html).
 
@@ -94,10 +97,10 @@ When configured with a private registry, Kubernetes Service Manager for PCF chan
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to install Kubernetes Service Manager for PCF.
 
-[SCREENSHOTS]
+<%# <!-- [SCREENSHOTS] --> %>
 
 
-[BELOW NEED MORE INFO? SHOULD THESE BE HERE? ARE THEY CONFIGURED OR IS THIS JUST INFO?]
+<%# <!-- [BELOW NEED MORE INFO? SHOULD THESE BE HERE? ARE THEY CONFIGURED OR IS THIS JUST INFO?] --> %>
 
 ##<a id="errands"></a>Errands
 **De-Registrar**
@@ -105,7 +108,7 @@ When configured with a private registry, Kubernetes Service Manager for PCF chan
 Removes the pre-provisioned Kubernetes service from the Marketplace and
 **deletes all associated service instances and bindings**.
 
-[ARE THERE MORE ERRANDS?]
+<%# [ARE THERE MORE ERRANDS?] %>
 
 ##<a id="resource"></a>Resource Config
 
