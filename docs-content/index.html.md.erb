@@ -16,14 +16,11 @@ to provide app developers with access to services through the Marketplace. These
 For more information about the Marketplace, see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace). 
 For more information about PKS, see [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
-Kubernetes Service Manager for PCF addresses three classes of services:
+Kubernetes Service Manager for PCF enables operators to do the following:
 
-* **Shared service instances:** Kubernetes Service Manager for PCF provides a  consistent operator experience for installing a Helm chart into a cluster.
-* **Dedicated service instances:**  Kubernetes Service Manager for PCF enables the operator to provision services for developers
-  from the Marketplace. Operators can offer an Independent Software Vendor (ISV)
-  or open source Helm chart to PAS developers on demand.
-  When developers run `cf create-service` a chart is provisioned to the service's backing cluster in realtime.
-* **Cluster add-ons:** Installing add-ons such as an observability or security tool. Kubernetes Service Manager for PCF provides a consistent operator experience for installing a Helm chart into a cluster.
+* Install a Helm chart for a shared service instance or add-on into a PKS cluster. 
+* Provision a dedicated service instance for developers in the Marketplace.  
+* Offer on demand an Independent Software Vendor (ISV) or open source Helm chart to PAS developers.
 
 ## <a id='features'></a> Key Features
 
@@ -82,9 +79,10 @@ The following table provides version and version-support information about Kuber
 
 Kubernetes Service Manager for PCF requires the following:
 
-* **Container registry:** You need athis to manage images in disconnected environments. Pivotal recommends using a container registry in production deployments. You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
-* **Docker:** See [Docker](https://www.docker.com/).
+* **Container registry:** You need this to manage images in air-gapped environments. Pivotal recommends using a container registry in production deployments. You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Docker (CLI):** See [Docker](https://www.docker.com/).
 * **PKS Command Line Interface (CLI):** For information about installing the PKS CLI, see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
+* **Helm CLI:** See [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.
 
 ## <a id="limitations"></a>Limitations
 
