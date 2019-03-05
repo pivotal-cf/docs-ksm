@@ -59,9 +59,9 @@ To install a helm chart for a shared instance or add-on, do the following:
     + `HELM-CERT-PATH` is the path to TLS client certificate file for authenticating to Tiller
     + `HELM-KEY` is the path to TLS client key file for authenticating to Tiller
     + `TILLER-CA-CERT` is the path to TLS CA certificate used to verify the Helm client and Tiller server certificates (ops Manager CA Certificate)
-  
+    +<p class="note info"><strong>Note:</strong> You can instead use the following environmental variables to set up the paths to the tls configuration: `TILLER_TLS_CA_CERT_FILE`, `HELM_CERT_FILE`, `HELM_TLS_KEY_FILE` </p>
     After your Helm chart is installed, Kubernetes Service Manager for PCF outputs
-    information about the new service. The output depends on the Helm chart you are installing. 
+    information about the new service. The output depends on the Helm chart you are installing.
 
 ## <a id='dedicated'></a> Use with Dedicated Service Instances
 
