@@ -54,7 +54,7 @@ Follow the steps below to select an availability zone (AZ) to run the service br
  2. Click **Save**.
  
 
-## <a id="kubeconfig"></a> Configure Cluster Credentials
+### <a id="kubeconfig"></a> Configure Cluster Credentials
 
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure default settings for your kubeconfig, do the following:
 
@@ -95,7 +95,7 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
   
 For more information about using kubeconfig files, see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
-##<a id="container"></a> Configure Container Registry
+### <a id="container"></a> Configure Container Registry
 
 When you configure a private registry, Kubernetes Service Manager for PCF changes the helm chart to point to images in the private registry. Pivotal recommends using a private registry in production. You obtain these values from your container registry, such as Harbor. 
 
@@ -106,12 +106,12 @@ To configure a private registry. do the following:
 1. Enter the **Registry Username**.
 1. Enter the **Registry Password**.
 
-##<a id="errands"></a>Errands
+### <a id="errands"></a>Errands
 
 There are no post-deploy errands for Kubernetes Service Manager for PCF. 
 The the pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from the Marketplace and deletes all associated service instances and bindings. This errand is disabled by default.
 
-##<a id="resource"></a>(Optional) Configure Resource Config
+### <a id="resource"></a>(Optional) Configure Resource Config
 
 For an high availability deployment, you can deploy Kubernetes Service Manager for PCF with two or more instances. 
 
@@ -120,7 +120,7 @@ To deploy with more instances, do the following:
 1. Click **Resource Config**.
 1. Increase the amount of instances you deploy in the **Instances** field for the **bazaar** job. 
 
-##<a id="apply-changes"></a> Apply All Changes
+### <a id="apply-changes"></a> Apply All Changes
   
   To deploy Kubernetes Service Manager for PCF and apply your configurations, do the following
 
