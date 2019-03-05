@@ -59,8 +59,9 @@ To provision a dedicated service instance offering for developers in the Marketp
 
 1. Configure your helm chart to be compatible with Kubernetes Service Manager for PCF. See [Configure your Helm Chart](#config-helm) below.
 2. Define plans if you want to offer a customized plan and override the default values. See [(Optional) Define Plans](#plans) below.
-1. Add the service offering to Kubernetes Service Manager. See [Add Service Offering](#add) below.
 1. Load container images int a private registry if your environment is air gapped. See [(Optional) Load Container Images](#images) below.
+1. Add the service offering to Kubernetes Service Manager. See [Add Service Offering](#add) below.
+
 
 ###<a id="prereq"></a>Prerequisite
 
@@ -149,6 +150,50 @@ If you want to override the default settings in `values.yml` to offer custom pla
 [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 
+###<a id='images'></a> (Optional) Load Container Images
+
+You need to load container images into a private registry if either of the following apply: 
+
++ Your environment is air gapped and cannot connect to common registries such as
+[Docker Hub](https://hub.docker.com/) and
+[Quay](https://quay.io/) 
++ Your images are not public
+
+In these cases the `bazzar download` command can retrieve your container images from Pivotal Network. You must load your images before a developer runs `cf create-service`.
+
+To load your container image into a private registry, do the following:
+
+
+1. To log in to your private registry, run the following command:
+
+    ```
+    docker login -u USERNAME -p PASSWORD PRIVATE-REGISTRY-URL 
+    ```
+    
+    Where:  
+    + `USERNAME` is your Docker username.
+    + `PASSWORD` is is your Docker password.
+    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
+    
+1. To load your image into your private registry, run the following command:
+
+    ```
+    docker load IMAGES-DIRECTORY
+    ```
+    
+    Where `IMAGES-DIRECTORY` is directory for your image.
+    
+1. To push your Docker image, run the following command:
+
+    ```
+    bazaar image push -r PRIVATE-REGISTRY-URL  -d IMAGES-DIRECTORY
+    ```
+    
+    Where:
+    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
+    + `IMAGES-DIRECTORY` is directory for your image. 
+
+
 ### <a id="add"></a> Add a Service Offering
 
 After you configure your Helm chart you must package it and add the offering to Kubernetes Service Manager for PCF to let developers use it. To add your offering to Kubernetes Service Manager for PCF, do the following:
@@ -202,49 +247,6 @@ After you configure your Helm chart you must package it and add the offering to 
     ```
     cf marketplace
     ```
-
-###<a id='images'></a> (Optional) Load Container Images
-
-You need to load container images into a private registry if either of the following apply: 
-
-+ Your environment is air gapped and cannot connect to common registries such as
-[Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/) 
-+ Your images are not public
-
-In these cases the `bazzar download` command can retrieve your container images from Pivotal Network.
-
-To load your container image into a private registry, do the following:
-
-
-1. To log in to your private registry, run the following command:
-
-    ```
-    docker login -u USERNAME -p PASSWORD PRIVATE-REGISTRY-URL 
-    ```
-    
-    Where:  
-    + `USERNAME` is your Docker username.
-    + `PASSWORD` is is your Docker password.
-    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
-    
-1. To load your image into your private registry, run the following command:
-
-    ```
-    docker load IMAGES-DIRECTORY
-    ```
-    
-    Where `IMAGES-DIRECTORY` is directory for your image.
-    
-1. To push your Docker image, run the following command:
-
-    ```
-    bazaar image push -r PRIVATE-REGISTRY-URL  -d IMAGES-DIRECTORY
-    ```
-    
-    Where:
-    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
-    + `IMAGES-DIRECTORY` is directory for your image. 
 
 
 ### <a id="add"></a> Delete a Service Offering
