@@ -36,11 +36,13 @@ Follow the steps below to select an availability zone (AZ) to run the service br
      <tr><th>Field</th><th>Instructions</th></tr>
      <tr>
         <td><strong>Place singleton jobs in</strong></td>
-        <td>Select the AZ that you want the singleton VMs to run in. This selection does not affect the Kubernetes Service Manager for PCF.</td>
+        <td>Select the AZ that you want the singleton VMs to run in.
+            This selection does not affect the Kubernetes Service Manager for PCF.</td>
      </tr>
      <tr>
         <td><strong>Balance other jobs in</strong></td>
-        <td>Select additional AZs. This selection controls the regions in which Kubernetes Service Manager for PCF is deployed.</td>
+        <td>Select additional AZs.
+            This selection controls the regions in which Kubernetes Service Manager for PCF is deployed.</td>
      </tr>
      <tr>
         <td><strong>Network</strong></td>
@@ -48,8 +50,9 @@ Follow the steps below to select an availability zone (AZ) to run the service br
      </tr>
    </table>
 
-    <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address after they are assigned your deployment fails.
-       For more information, see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
+    <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
+       after they are assigned your deployment fails. For more information,
+       see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
 
  2. Click **Save**.
  
@@ -58,7 +61,8 @@ Follow the steps below to select an availability zone (AZ) to run the service br
 
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure default settings for your kubeconfig, do the following:
 
-1. To retrieve your cluster credentials with the PKS CLI, do the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
+1. To retrieve your cluster credentials with the PKS CLI,
+   do the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
   + `certificate-authority`. This value is the CA certificate for the PKS cluster.
@@ -69,7 +73,7 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
 
 1. Configure the fields as follows:
 
-<table class="nice">
+    <table class="nice">
   <tr>
   <th>Field</th>
   <th>Instructions</th>
@@ -88,16 +92,20 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
   </tr>
   <tr>
     <td><strong>Token</strong></td>
-    <td>Enter the value of <code>toke</code>` in your kubeconfig. </td>
+    <td>Enter the value of <code>toke</code> in your kubeconfig. </td>
   </tr>
   </table>
     
   
-For more information about using kubeconfig files, see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
+For more information about using kubeconfig files,
+see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
 ### <a id="container"></a> Configure Container Registry
 
-When you configure a private registry, Kubernetes Service Manager for PCF changes the helm chart to point to images in the private registry. Pivotal recommends using a private registry in production. You obtain these values from your container registry, such as Harbor. 
+When you configure a private registry,
+Kubernetes Service Manager for PCF changes the helm chart to point to images in the private registry.
+Pivotal recommends that you use a private registry in production.
+You obtain these values from your container registry, such as Harbor. 
 
 To configure a private registry. do the following:
 
@@ -109,11 +117,14 @@ To configure a private registry. do the following:
 ### <a id="errands"></a>Errands
 
 There are no post-deploy errands for Kubernetes Service Manager for PCF. 
-The the pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from the Marketplace and deletes all associated service instances and bindings. This errand is disabled by default.
+The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from the Marketplace
+and deletes all associated service instances and bindings.
+This errand is disabled by default.
 
 ### <a id="resource"></a>(Optional) Configure Resource Config
 
-For an high availability deployment, you can deploy Kubernetes Service Manager for PCF with two or more instances. 
+For an high-availability deployment,
+you can deploy Kubernetes Service Manager for PCF with two or more instances. 
 
 To deploy with more instances, do the following:
 
@@ -122,10 +133,12 @@ To deploy with more instances, do the following:
 
 ### <a id="apply-changes"></a> Apply All Changes
   
-  To deploy Kubernetes Service Manager for PCF and apply your configurations, do the following
+  To deploy Kubernetes Service Manager for PCF and apply your configurations, do the following:
 
-1. In the Ops Manager Dashboard, do the following to complete the installation:
+1. Navigate to the Ops Manager Installation Dashboard. 
 
-  1. If you are using Ops Manager v2.3 or later, click Review Pending Changes. For more information about this Ops Manager page, see Reviewing Pending Product Changes.
+1. If you are using Ops Manager v2.3 or later, click Review Pending Changes.
+   For more information about this Ops Manager page,
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
-  1. Click Apply Changes.
+1. Click **Apply Changes**.
