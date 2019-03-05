@@ -35,16 +35,30 @@ To install a helm chart for a shared instance or add-on, do the following:
       
       <%# [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?] %>
 
+1. To get the Helm Client Credentials:
+
+    1. Navigate to the Ops Manager Installation Dashboard and click on the Kubernetes Service Manager Tile.
+
+    1. Under the Credentials tab, click on Helm Client Certificate -> Link to Credentials.
+
+    1. This credential will include both the certificate and key for the Helm client. Save each value to a file. You will need the paths of these files for the `bazaar chart install` command.
+
+    1. You'll also need the ops Manager CA Certificate, which can be downloaded from `https://OPS-MAN-FQDN/download_root_ca_cert`
+
+
 1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
 
     ```
-    bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME -f values.yml
+    bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME -f values.yml --tls-cert HELM-CERT-PATH --tls-key HELM-KEY --tls-ca-cert TILLER-CA-CERT
     ```
     
     Where:
     + `CHART-DIRECTORY` is the file directory for your Helm chart.
     + `PKS-CLUSTER` is the cluster you want to install your Helm chart onto.
     + `SERVICE-NAME` is the name of the service you want to create.
+    + `HELM-CERT-PATH` is the path to TLS client certificate file for authenticating to Tiller
+    + `HELM-KEY` is the path to TLS client key file for authenticating to Tiller
+    + `TILLER-CA-CERT` is the path to TLS CA certificate used to verify the Helm client and Tiller server certificates (ops Manager CA Certificate)
   
     After your Helm chart is installed, Kubernetes Service Manager for PCF outputs
     information about the new service. The output depends on the Helm chart you are installing. 
