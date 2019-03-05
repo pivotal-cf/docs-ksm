@@ -3,196 +3,262 @@ title: Using Kubernetes Service Manager for PCF
 owner: ISM
 ---
 
-<%= partial ("beta-notice") %>
-
 <strong><%= modified_date %></strong>
 
-This topic describes how to use Kubernetes Service Manager for PCF.
+<%= partial ("beta-notice") %>
+
+This topic describes how to use Kubernetes Service Manager for PCF to install helm charts for shared service instances or add-ons and provision dedicated service instances.
 
 ##<a id='using'></a> Using Kubernetes Service Manager for PCF
 
 Kubernetes Service Manager for PCF uses both the `bazaar` CLI and a generic broker.
+You can use Kubernetes Service Manager for PCF to do the following:
 
-###<a id='shared'></a> Shared Instances and Add-ons
-Shared instances and add-ons are installed directly into a PKS cluster.
++ Install a helm chart for a shared service instance or add-on. See [Use with Shared Instances and Add-ons](#shared-add-on) below.
++ Provision a dedicated service instance for developers in the Marketplace. See [Use with Dedicated Service Instances](#dedicated) below.
 
-To install a helm chart for a shared instance service on a PKS cluster, run
+###<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
+Shared service instances and add-ons are installed directly onto a PKS cluster.
 
-```bash
-bazaar chart install --help
-```
+To install a helm chart for a shared instance or add-on, do the following:
 
-Keep in mind that some integrations may require additional setup, so be sure to read the documentation
-to validate compatibility and prerequisites.
+1. To log in to the PKS cluster, run the following command:
 
-Before running `bazaar`'s install, download and install the
-[PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html). You also need to log into the
-PKS cluster where you want to install services. See the
-[PKS documentation](https://docs.pivotal.io/runtimes/pks/index.html) for additional information.
+    ``` 
+    pks login -a PKS-API -u USERNAME -p PASSWORD
+    ```
 
-```bash
-pks login -a (pks uaa host) -u (username) -p (password)
-```
+    Where:
+    + `PKS-API` is the domain name for the PKS API that you entered in **Ops Manager > Pivotal Container Service > PKS API > API Hostname (FQDN)**. For example: `api.pks.example.com`.
+    + `USERNAME` is the username you created in [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
+    + `PASSWORD` is the password you created in  [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user). If you do not provide a password, the CLI prompts for the password interactively. Pivotal recommends running the login command without the `-p` flag for added security.
+      
+      <%# [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?] %>
 
-Now the integration that was previously downloaded into `./tmp` can be installed with
+1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
 
-```bash
-bazaar chart install -d ./tmp -c (cluster name) -n (name of installation) -f (values yaml file)
-```
+    ```
+    bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME -f values.yml
+    ```
+    
+    Where:
+    + `CHART-DIRECTORY` is the file directory for your Helm chart.
+    + `PKS-CLUSTER` is the cluster you want to install your Helm chart onto.
+    + `SERVICE-NAME` is the name of the service you want to create.
+  
+    After your Helm chart is installed, Kubernetes Service Manager for PCF outputs
+    information about the new service. The output depends on the Helm chart you are installing. 
 
-Each service will likely need some service specific configuration, which is specified by the
-values yaml file. On a successful install run, Kubernetes Service Manager for PCF will output information about the service
-(how to get credentials, etc).
+## <a id='dedicated'></a> Use with Dedicated Service Instances
 
-
-###<a id='dedicated'></a> Dedicated Instances
-Dedicated instances are provided through a broker installed via the Kubernetes Service Manager for PCF tile. When a
-[Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
-developer uses `cf create-service`, the broker creates a dedicated instance of
+Dedicated instances are provided through a broker installed through the Kubernetes Service Manager for PCF tile. When a Pivotal Application Service (PAS)
+developer runs `cf create-service` the broker creates a dedicated service instance of
 the service in the backing cluster.
 
-In the Cloud Foundry marketplace, each service has a set of plans that developers can provision. A plan is the template
-for the service instances. For example, different plans might represent a large or a small instance
-of a database.
+To provision a dedicated service instance offering for developers in the Marketplace, do the following:
 
-For Kubernetes-based services, each plan represents a set of values overriding the helm chart's default values.
-These values are described by an additional file, `plans.yaml` at the root level of the chart
+1. Configure your helm chart to be compatible with Kubernetes Service Manager for PCF. See [Configure your Helm Chart](#config-helm) below.
+2. Define plans if you want to offer a customized plan and override the default values. See [(Optional) Define Plans](#plans) below.
+1. Load container images int a private registry if your environment is air gapped. See [(Optional) Load Container Images](#images) below.
+1. Add the service offering to Kubernetes Service Manager. See [Add Service Offering](#add) below.
 
-```yaml
-- name: "small"
-  description: "default (small) plan for mysql"
-  file: "small.yaml"
-- name: "medium"
-  description: "medium sized plan for mysql"
-  file: "medium.yaml"
-```
 
-* `file` is a filename that exists in the `plans` subdirectory of the chart.
-   File names should consist of only lowercase letters, digits, `.`, or `-`.
-   The standard `values.yaml` file in the helm chart sets the defaults.
-   Each plan's yaml file is a set of values overriding the defaults present in `values.yaml`.
-   Copy any key/value pairs to override from `values.yaml` into a new plan file and change their value.
-* `description` describes the plan and is shown to developers in the marketplace.
-* `name` is the name of the plan, typed by developers when provisioning (choose a CLI-friendly value: lower case only, no special characters).
+###<a id="prereq"></a>Prerequisite
 
-For additional examples, see
-[https://github.com/cf-platform-eng/kibosh-sample/sample-charts](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts)
+Before you configure your Helm chart to be compatible with Kubernetes Service Manager for PCF, you must have a Helm chart that has been configured according to the service provider's documentation. Each service most likely needs some service configuration, that is configured in `values.yml`.
 
-####<a id='plans'></a> Define Plans
-To add plans to charts, get your previously downloaded product tgz file from `./tmp`
 
-```bash
-cd ./tmp
-tar -xvf your-product.tgz
-```
-Add plans.yaml, for example
+###<a id='config-helm'></a> Configure your Helm Chart
 
-```bash
-cat > plans.yaml
-- name: "small"
-  description: "default (small) plan for mysql"
-  file: "small.yaml"
-- name: "medium"
-  description: "medium sized plan for mysql"
-  file: "medium.yaml"
-```
+To configure your helm chart to be compatible with Kubernetes Service Manager for PCF, do the following:
 
-Define one or more plans with set of override values in `YOUR_PLAN.yaml`, for example
+1. Open the `values.yml` file at the root level of the chart.
 
-```bash
-mkdir plans
-cd plans
-cat > small.yaml
-resources:
-  requests:
-    memory: 128Mi
-    cpu: 100m
-```
+1. Edit your `values.yml` file as follows:
+    + Change the `type` value from `ClusterIP` to `LoadBalancer`.
+    + Edit the `storageClass` value to correspond to the PersistentVolumeClaim for your IaaS. For more information, see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
+    
+    For example: 
+    
+    ```
+    persistence:
+      enabled: true
+      storageClass: "standard"
+      ...
+    service:
+      type: LoadBalancer
+      port: 3306
+    ```
 
-Re-package your helm chart
+<p class="note warning"><strong>Warning:</strong> You cannot change the chart name or resize a PersistentVolumesClaim after you add the service offering to Kubernates Services Manager for PCF. </p>
 
-```bash
-helm package (YOUR PRODUCT)
-```
+For examples of Kubernetes compatible charts, see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHu
 
-To add a dedicated instance service offering to Kubernetes Service Manager for PCF, run
 
-```bash
-bazaar -t (bazaar api) -u (username) -p (password) offer save ./tmp/(YOUR PRODUCT).tgz
-```
+###<a id='plans'></a> (Optional) Define Plans
 
-To list existing service offerings, run
+In the Marketplace each service has a set of plans that developers can provision. A plan is the template for the service instances. For example, different plans might represent a large or a small instance of a database.
 
-```bash
-bazaar -t (bazaar api) -u (username) -p (password) offer list ./tmp/(YOUR PRODUCT).tgz
-```
+For Kubernetes based services, each plan represents a set of values overriding the helm chart's default values. These values are configured in `plans.yaml` at the root level of the chart.
 
-To delete any service offerings, run
+For examples of Kubernetes compatible charts, see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
-```bash
-bazaar -t (bazaar api) -u (username) -p (password) offer delete ./tmp/(YOUR PRODUCT).tgz
-```
+If you want to override the default settings in `values.yml` to offer custom plans, do the following:
 
-####<a id='images'></a> Manage Container Images
+1. Create a `plans` subdirectory at the root level of your chart
 
-For air-gapped environments that cannot reach out to common registries such as
+1. Create and edit `plans/PLAN-FILE.yml` with the values you want to override the default values for the plan. `PLAN-FILE.yml` must consist of only lowercase letters, digits, `.`, or `-`. 
+    <br><br>
+    Ensure that the properties you add to `PLAN-FILE.yml` match the properties in `values.yml` and that you only change the values. 
+    <br><br>
+    For example:
+    
+    ```
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+    ```
+
+1. Create a `plans.yml` file at the root level of your chart.
+
+1. Edit your `plans.yml` file to add your custom plan using the following template:
+
+    ```
+    - name: PLAN-NAME
+      description: PLAN-DESCRIPTION
+      file: PLAN-FILE
+    ```
+    
+    Where:
+    * `PLAN-NAME` is the name of the plan that developers see in the Marketplace. Ensure that the plan name is lowercase only and contains no special characters. 
+    * `PLAN-DESCRIPTION` is the description that developers see in the Marketplace.
+    * `PLAN-FILE` is the name of the plan in the `plans` subdirectory .
+    
+    For example: 
+
+    ```
+    - name: "small"
+      description: "default (small) plan for mysql"
+      file: "small.yaml"
+    - name: "medium"
+      description: "medium sized plan for mysql"
+      file: "medium.yaml"
+    ```
+
+      For examples of Kubernetes compatible charts, see
+[kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
+
+
+###<a id='images'></a> (Optional) Load Container Images
+
+You need to load container images into a private registry if either of the following apply: 
+
++ Your environment is air gapped and cannot connect to common registries such as
 [Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/), or for images that aren't public, the `bazaar` CLI's `download` command will also
-get the container images off of Pivotal Network. These images need to be loaded into a private registry. The `docker`
-CLI [can add images](https://docs.docker.com/engine/reference/commandline/load/). The `bazaar` CLI does
-include a command to cover this use case. To load an image into a private registry, run
+[Quay](https://quay.io/) 
++ Your images are not public
 
-```bash
-docker login -u (username) -p (password) (private registry url)
-bazaar image push -r (private registry url ) -d (directory with private images)
-```
+In these cases the `bazzar download` command can retrieve your container images from Pivotal Network. You must load your images before a developer runs `cf create-service`.
 
-####<a id='requirements'></a> Other Chart Requirements
-In addition to defining plans, there are some other items things to keep in mind:
-
-* When defining a [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), only a subset of options will work for the `type` value:
-    - `LoadBalancer` is a current requirement.
-    - `NodePort` is also an option and Kibosh will add externalIPs and nodePort to bind json, but `NodePort` does carry
-  significant risks and probably should **not** be used in production: is not robust to cluster scaling events, upgrades or other IP changes.
-* In many cases, the `storageClass` for persistent volume claims needs to be customized to what's available for
-  the IaaS on which PKS is running. The [PKS documentation](https://docs.pivotal.io/runtimes/pks/volumes.html)
-  has additional details.
-* Selectors are [immutable](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector)
-    - This means that *chart name cannot change* (the name is generally used in selectors)
-* Resizing disks has limitations. To support upgrade:
-    - You can't resize a persistent volume claim (currently behind an [alpha feature gate](https://kubernetes.io/docs/reference/feature-gates/))
+To load your container image into a private registry, do the following:
 
 
-##<a id='troubleshooting'></a> Troubleshooting
-### <a id='issue-debugging'></a> Advanced Debugging
-Advanced Debugging might require talking directly to the underlying Helm and Kubernetes:
+1. To log in to your private registry, run the following command:
 
-* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Kubernetes Service Manager for PCF installs
-Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log into the Kubernetes
-cluster and include the namespace flag in order to talk the Kubernetes Service Manager for PCF's helm `--tiller-namespace=kibosh`.
+    ```
+    docker login -u USERNAME -p PASSWORD PRIVATE-REGISTRY-URL 
+    ```
+    
+    Where:  
+    + `USERNAME` is your Docker username.
+    + `PASSWORD` is is your Docker password.
+    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
+    
+1. To load your image into your private registry, run the following command:
 
-<!-- TODO: mTLS credentials - need tile to test -->
+    ```
+    docker load IMAGES-DIRECTORY
+    ```
+    
+    Where `IMAGES-DIRECTORY` is directory for your image.
+    
+1. To push your Docker image, run the following command:
 
-####<a id='issue-name'></a> Name Length Issues
-Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
-will fail immediately, with an error message including
+    ```
+    bazaar image push -r PRIVATE-REGISTRY-URL  -d IMAGES-DIRECTORY
+    ```
+    
+    Where:
+    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
+    + `IMAGES-DIRECTORY` is directory for your image. 
 
-* `must be no more than 63 characters`
 
-The Helm chart will need to be enhanced with additional truncation and name protection. Visit
-[the Helm docs](https://docs.helm.sh/chart_template_guide/#adding-a-simple-template-call)
-for some additional details on truncation and naming.
+### <a id="add"></a> Add a Service Offering
 
-####<a id='issue-cleanup'></a> Cleanup
-Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
-sometimes requires manual cleanup to remove services earlier in some failure modes.
-[Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
-will remove the service from Pivotal Cloud Foundry. This might, however, leave resources in the backing cluster.
+After you configure your Helm chart you must package it and add the offering to Kubernetes Service Manager for PCF to let developers use it. To add your offering to Kubernetes Service Manager for PCF, do the following:
 
-To fully clean up, delete the Helm release and the namespace, if either is still present.
-Both the cluster and the Helm resources are named after the service's GUID.
+1. To package your helm chart, run the following command:
 
-```bash
-helm delete namespace kibosh-GUID
-kubectl delete namespace kibosh-GUID
-```
+    ```
+    helm package YOUR-CHART
+    ```
+    
+    Where `YOUR-CHART` is the name of your chart.
+        
+1. Navigate to the **Ops Manager Installation Dashboard** > **Kubernetes Service Manager for PCF** > **Credentials**.
+
+1. Retrieve your **Bazaar API Credentials** by clicking **Link to Credentials**.
+
+1. Record the values for `identity` and `password`.
+
+1. To add a dedicated instance service offering to Kubernetes Service Manager for PCF, run the following command:
+
+    ```
+    bazaar -t http://bazzar-api.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /YOUR-CHART.tgz
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in step 3.
+    + `PASSWORD` is the value of `password` you recorded in step 3.
+    + `YOUR-CHART` is path to the packaged chart you created in step 1.
+  
+  
+1. To ensure your offering has been saved to Kubernates Manager for PCF, run the following command:
+
+    ```
+    bazaar -t  http://bazzar-api.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list /YOUR-CHART.tgz
+    ```
+    Where: 
+    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in step 3.
+    + `PASSWORD` is the value of `password` you recorded in step 3.
+    + `YOUR-CHART` is path to the packaged chart you created in step 1.
+    
+1. To enable access to the service for all orgs, run the following command:
+
+    ```
+    cf enable-service-access PLAN-NAME 
+    ```
+    Where `PLAN-NAME` is the name of the service plan you created.
+    
+1. To view your newly created service plan in the Marketplace, run the following command:
+
+    ```
+    cf marketplace
+    ```
+
+
+### <a id="add"></a> Delete a Service Offering
+
+To delete a service offerings, run the following command:
+
+  ```
+  bazaar -t  http://bazzar-api.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete /YOUR-CHART.tgz
+  ```
+  Where: 
+  
+  + `SYSTEM-DOMAIN` is your PCF system domain URL.
+  + `USERNAME` is the value of `identity` you recorded in step 3 of [Add a Service Offering](#add) above.
+  + `PASSWORD` is the value of `password` you recorded in step 3 of [Add a Service Offering](#add) above.
+  + `YOUR-CHART` is path to the packaged chart you created in step 1 of [Add a Service Offering](#add) above.
