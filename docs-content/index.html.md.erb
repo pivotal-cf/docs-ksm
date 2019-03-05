@@ -12,15 +12,15 @@ This topic is an overview of Kubernetes Service Manager for PCF.
 
 Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables platform operators
 to provide app developers with access to services through the Marketplace.
-These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps. 
+These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps.
 
-For more information about the Marketplace, see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace). 
+For more information about the Marketplace, see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace).
 For more information about PKS, see [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
 Kubernetes Service Manager for PCF enables operators to do the following:
 
-* Install a Helm chart for a shared service instance or add-on into a PKS cluster. 
-* Provision a dedicated service instance for developers in the Marketplace.  
+* Install a Helm chart for a shared service instance or add-on into a PKS cluster.
+* Provision a dedicated service instance for developers in the Marketplace.
 * Offer on demand an Independent Software Vendor (ISV) or open source Helm chart to PAS developers.
 
 ## <a id='features'></a> Key Features
@@ -91,7 +91,8 @@ Kubernetes Service Manager for PCF requires the following:
 ## <a id="limitations"></a>Limitations
 
 Dedicated service instances created by Kubernetes Service Manager for PCF provision
-an IaaS load balancer for ingress into each service instance.
+an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP
+or NodePort for ingress. 
 
 ## <a id="feedback"></a>Feedback
 
