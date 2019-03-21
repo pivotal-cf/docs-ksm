@@ -86,18 +86,16 @@ To provision a dedicated service instance offering for developers in the Marketp
    See [Configure your Helm Chart](#config-helm) below.
 2. Define plans if you want to offer a customized plan and override the default values.
    See [(Optional) Define Plans](#plans) below.
-1. Load container images int a private registry if your environment is air gapped.
+1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images) below.
 1. Add the service offering to Kubernetes Service Manager.
    See [Add Service Offering](#add) below.
-
 
 ###<a id="prereq"></a>Prerequisite
 
 Before you configure your Helm chart to be compatible with Kubernetes Service Manager for PCF,
 you must have a Helm chart that has been configured according to the service provider's documentation.
 Each service most likely needs some service configuration, that is configured in `values.yml`.
-
 
 ###<a id='config-helm'></a> Configure your Helm Chart
 
@@ -109,7 +107,7 @@ To configure your helm chart to be compatible with Kubernetes Service Manager fo
     + Change the `type` value from `ClusterIP` to `LoadBalancer`.
     + Edit the `storageClass` value to correspond to the PersistentVolumeClaim for your IaaS.
       For more information, see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
-    
+
     For example: 
     
     ```
