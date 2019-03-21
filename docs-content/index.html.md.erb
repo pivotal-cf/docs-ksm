@@ -11,9 +11,11 @@ This topic is an overview of Kubernetes Service Manager for PCF.
 ## <a id='overview'></a>Overview
 
 Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables platform operators
-to provide app developers with access to services through the Marketplace. These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps. 
+to provide app developers with access to services through the Marketplace. 
+These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps. 
 
-For more information about the Marketplace, see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace). 
+For more information about the Marketplace, 
+see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace). 
 For more information about PKS, see [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
 Kubernetes Service Manager for PCF enables operators to do the following:
@@ -39,11 +41,11 @@ The following table provides version and version-support information about Kuber
     <th>Details</th>
     <tr>
         <td>Tile version</td>
-        <td>v0.4.0</td>
+        <td>0.5.0</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>March 11, 2019</td>
+        <td>MMM XX, 2019</td>
     </tr>
     <tr>
         <td>Software component version</td>
@@ -79,18 +81,24 @@ The following table provides version and version-support information about Kuber
 
 Kubernetes Service Manager for PCF requires the following:
 
-* **Container registry:** You need this to manage images in air-gapped environments. Pivotal recommends using a container registry in production deployments. You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Container registry:** You need this to manage images in air-gapped environments.
+  Pivotal recommends using a container registry in production deployments.
+  You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
 * **Docker (CLI):** See [Docker](https://www.docker.com/).
-* **PKS Command Line Interface (CLI):** For information about installing the PKS CLI, see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
+* **PKS Command Line Interface (CLI):** For information about installing the PKS CLI,
+  see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
 * **Helm CLI:** See [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.
 
 ## <a id="limitations"></a>Limitations
 
-Dedicated services instances created by Kubernetes Service Manager for PCF provision an IaaS load balancer for ingress into each servivce instance.
+Dedicated service instances created by Kubernetes Service Manager for PCF provision
+an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP
+or NodePort for ingress. 
 
 ## <a id="feedback"></a>Feedback
 
-If you have a feature request, questions, or information about an issue, send an email to [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io).
+If you have a feature request, questions, or information about an issue,
+send an email to [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io).
 
 ## <a id='license'></a>License
 
