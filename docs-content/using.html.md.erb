@@ -233,7 +233,7 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
     ```
     cf enable-service-access SERVICE-NAME
     ```
-    Where `SERVICE-NAME` is the Helm chart name of the service offered .
+    Where `SERVICE-NAME` is the Helm chart name of the service observed in step 6 of [Add a Service Offering](#add) above.
 
 1. To view the newly created service plan in the Marketplace, run the following command:
 
@@ -276,7 +276,7 @@ which will get delivered to a PAS app when you run `cf bind-service`:
     cf service-key SERVICE_NAME SERVICE_KEY_NAME
     ```
 
-### <a id="add"></a> Delete a Service Offering
+### <a id="delete"></a> Delete a Service Offering
 
 1. To view the current service offerings available in Kubernetes Service Manager for PCF, run the following command:
 
