@@ -11,23 +11,23 @@ This topic describes how to use Kubernetes Service Manager for PCF.
 
 ##<a id='using'></a> Overview
 
-Kubernetes Service Manager for PCF uses the `bazaar` CLI and a generic broker.
+Kubernetes Service Manager for PCF uses the `bazaar` CLI and a generic broker deployed by the tile.
 You can use Kubernetes Service Manager for PCF to do the following:
 
++ Offer on demand provisioning of a dedicated service instance for developers in the Marketplace. See [Use with Dedicated Service Instances](#dedicated) below.
 + Install a helm chart for a shared service instance or add-on. See [Use with Shared Instances and Add-ons](#shared-add-on) below.
-+ Provision a dedicated service instance for developers in the Marketplace. See [Use with Dedicated Service Instances](#dedicated) below.
 
 ## <a id='dedicated'></a> Use with Dedicated Service Instances
 
-Dedicated instances are provided through a service broker installed through the Kubernetes Service Manager for PCF tile.
+Dedicated instances are provided through a service broker installed by the Kubernetes Service Manager for PCF tile.
 When a Pivotal Application Service (PAS) developer runs `cf create-service`
 the broker creates a dedicated service instance of the service in the backing cluster.
 
-To provision a dedicated service instance offering for developers in the Marketplace, do the following:
+To provision a dedicated service instance offering based on a Helm Chart for developers in the Marketplace, do the following:
 
-1. Configure your helm chart to be compatible with Kubernetes Service Manager for PCF.
+1. Configure the helm chart to be compatible with Kubernetes Service Manager for PCF.
    See [Configure your Helm Chart](#config-helm) below.
-2. Define plans if you want to offer a customized plan and override the default values.
+2. Define plans if you want to offer customized plans and override the default values.
    See [(Optional) Define Plans](#plans) below.
 1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images) below.
@@ -37,18 +37,18 @@ To provision a dedicated service instance offering for developers in the Marketp
 ###<a id="prereq"></a>Prerequisite
 
 Before you configure your Helm chart to be compatible with Kubernetes Service Manager for PCF,
-you must have a Helm chart that has been configured according to the service provider's documentation.
-Each service most likely needs some service configuration, that is configured in `values.yaml`.
+you must have a Helm chart that has been properly configured according to the Helm chart provider's documentation.
+Each Helm chart most likely needs some service configuration, that is configured in `values.yaml` in the chart directory structure.
 
 ###<a id='config-helm'></a> Configure your Helm Chart
 
 To configure your helm chart to be compatible with Kubernetes Service Manager for PCF, do the following:
 
-1. Open the `values.yaml` file at the root level of the chart.
+1. Open the `values.yaml` file at the root level of the chart directory structure.
 
 1. Edit your `values.yaml` file as follows:
-    + Change the `type` value from `ClusterIP` to `LoadBalancer`.
-    + Edit the `storageClass` value to correspond to the PersistentVolumeClaim for your IaaS.
+    + Change the `Service:` `Type:` value from `ClusterIP` to `LoadBalancer`.
+    + Edit the `storageClass:` value to correspond to the storageClass name for your configured PKS Cluster (default name in PKS is **standard**).
       For more information, see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
 
     For example:
@@ -82,14 +82,14 @@ These values are configured in `plans.yaml` at the root level of the chart.
 For examples of Kubernetes compatible charts,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
-If you want to override the default settings in `values.yaml` to offer custom plans, do the following:
+If you want to override the default settings in `values.yaml` and offer custom plans, do the following:
 
 1. Create a `plans` subdirectory at the root level of your chart
 
 1. Create and edit `plans/PLAN-FILE.yaml` with the values you want to override the default values for the plan.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
     <br><br>
-    Ensure that the properties you add to `PLAN-FILE.yaml` match the properties in `values.yaml`
+    Ensure that the properties added to `PLAN-FILE.yaml` match the properties in `values.yaml`
     and that you only change the values.
     <br><br>
     For example:
@@ -104,7 +104,7 @@ If you want to override the default settings in `values.yaml` to offer custom pl
 
 1. Create a `plans.yaml` file at the root level of your chart.
 
-1. Edit your `plans.yaml` file to add your custom plan using the following template:
+1. Edit your `plans.yaml` file to add your custom plan information using the following template:
 
     ```
     - name: PLAN-NAME
@@ -140,10 +140,9 @@ You need to load container images into a private registry if either of the follo
 + Your environment is air gapped and cannot connect to common registries such as
 [Docker Hub](https://hub.docker.com/) and
 [Quay](https://quay.io/)
-+ Your images are not public
++ The images referenced in the Helm chart are not public
 
-In these cases the `bazaar download` command can retrieve your container images from Pivotal Network.
-You must load your images before a developer runs `cf create-service`.
+You must load the images before a developer runs `cf create-service`.
 
 To load your container image into a private registry, do the following:
 
@@ -178,19 +177,19 @@ To load your container image into a private registry, do the following:
     + `IMAGES-DIRECTORY` is directory for your image.
 
 
-### <a id="add"></a> Add a Service Offering
+### <a id="add"></a> Add a Service Offering to Kubernetes Service Manager for PCF
 
-After you configure your Helm chart you must package it and
+After you configure your Helm chart for Kubernetes Service Manager you must package it and
 add the offering to Kubernetes Service Manager for PCF to let developers use it.
 To add your offering to Kubernetes Service Manager for PCF, do the following:
 
-1. To package your helm chart, run the following command:
+1. To package your Helm chart, run the following command from the root level of the Helm chart directory structure:
 
     ```
-    helm package YOUR-CHART
+    helm package .
     ```
 
-    Where `YOUR-CHART` is the name of your chart.
+    Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
 
 1. Navigate to the **Ops Manager Installation Dashboard** > **Kubernetes Service Manager for PCF** > **Credentials**.
 
@@ -198,16 +197,16 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
 
 1. Record the values for `identity` and `password`.
 
-1. To add a dedicated instance service offering to Kubernetes Service Manager for PCF, run the following command:
+1. To add the Helm chart as a dedicated instance service offering to Kubernetes Service Manager for PCF, run the following command:
 
     ```
-    bazaar -t http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /YOUR-CHART.tgz
+    bazaar -t http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH/TO/YOUR-CHART.tgz
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
     + `USERNAME` is the value of `identity` you recorded in step 3.
     + `PASSWORD` is the value of `password` you recorded in step 3.
-    + `YOUR-CHART` is path to the packaged chart you created in step 1.
+    + `/PATH/TO/YOUR-CHART.tgz` is the path to the packaged chart created in step 1.
 
 
 1. To ensure your offering has been saved to Kubernetes Manager for PCF, run the following command:
@@ -219,6 +218,15 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
     + `USERNAME` is the value of `identity` you recorded in step 3.
     + `PASSWORD` is the value of `password` you recorded in step 3.
+
+### <a id="enable"></a> Enable Service Offering Access in the Marketplace
+
+1. Login to the PAS deployment with your PAS administrator credentials:
+
+    ```
+    cf login -a API_URL -u USERNAME -p PASSWORD 
+    ```
+    For more information see [Getting Started with the cf CLI](https://docs.pivotal.io/pivotalcf/2-4/cf-cli/getting-started.html#login)
 
 1. To enable access to the service for all orgs, run the following command:
 
