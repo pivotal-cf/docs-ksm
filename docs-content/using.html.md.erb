@@ -221,26 +221,60 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
 
 ### <a id="enable"></a> Enable Service Offering Access in the Marketplace
 
-1. Login to the PAS deployment with your PAS administrator credentials:
+1. Login to the PAS deployment with your PAS credentials:
 
     ```
-    cf login -a API_URL -u USERNAME -p PASSWORD 
+    cf login -a API_URL -u USERNAME -p PASSWORD
     ```
     For more information see [Getting Started with the cf CLI](https://docs.pivotal.io/pivotalcf/2-4/cf-cli/getting-started.html#login)
 
 1. To enable access to the service for all orgs, run the following command:
 
     ```
-    cf enable-service-access PLAN-NAME
+    cf enable-service-access SERVICE-NAME
     ```
-    Where `PLAN-NAME` is the name of the service plan you created.
+    Where `SERVICE-NAME` is the Helm chart name of the service offered .
 
-1. To view your newly created service plan in the Marketplace, run the following command:
+1. To view the newly created service plan in the Marketplace, run the following command:
 
     ```
     cf marketplace
     ```
 
+    ### <a id="create"></a> Create a Dedicated Service Instance through the Marketplace
+
+1. To view the newly created service plan in the Marketplace, run the following command:
+
+    ```
+    cf marketplace
+    ```
+
+1. To create a new instance of the service running on the configured PKS Cluster, run the following command:
+
+    ```
+    cf create-service SERVICE PLAN SERVICE_NAME
+    ```
+
+1. To watch the progress of the service instance creation, run the following command:
+
+    ```
+    cf service SERVICE_NAME
+    ```
+
+1. Once the service instance is created, you can create a service key to view the service instance credentials
+which will get delivered to a PAS app when you run `cf bind-service`:
+
+    ```
+    cf create-service-key SERVICE_NAME SERVICE_KEY_NAME
+    ```
+
+    For more information about service keys see: [Managing Service Keys](https://docs.cloudfoundry.org/devguide/services/service-keys.html)
+
+1. To view the service instance credentials in the service key, run the following command:
+
+    ```
+    cf service-key SERVICE_NAME SERVICE_KEY_NAME
+    ```
 
 ### <a id="add"></a> Delete a Service Offering
 
@@ -255,7 +289,7 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
     + `PASSWORD` is the value of `password` you recorded in step 3 of [Add a Service Offering](#add) above.
 
 
-1. To delete a service offerings, run the following command:
+1. To delete a service offering, run the following command:
 
     ```
     bazaar -t  http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
@@ -266,13 +300,13 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
     + `PASSWORD` is the value of `password` you recorded in step 3 of [Add a Service Offering](#add) above.
     + `YOUR-CHART` is name of a service offering you observed in step 1.
 
-    <p class="note"><strong>Note:</strong> You cannot delete the single last service offering in Kubernetes Service Manager for PCF.</p>
+    <p class="note"><strong>Note:</strong> You cannot delete the single last service offering in Kubernetes Service Manager for PCF</p>
 
 
     ##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
     Shared service instances and add-ons are installed directly onto a PKS cluster.
 
-    To install a helm chart for a shared instance or add-on, do the following:
+    To install a helm chart directly into your PKS cluster for a shared service instance or cluster add-on, do the following:
 
     1. To log in to the PKS cluster, run the following command:
 
@@ -298,26 +332,34 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
         1. Click **Link to Credentials** next to Helm Client Certificate.
 
         1.  Record the `cert_pem` and `private_kep_pem` credential in local files.
-            You need the paths to these files for the `bazaar chart install` command and to configure TLS.
+            You need the paths to these files for the `bazaar chart install` command and to configure TLS communication with tiller.
 
         1. To retrieve the Ops Manager CA certificate, download the certificate from `https://OPS-MAN-FQDN/download_root_ca_cert`.
 
           <p class="note"><strong>Note:</strong> You can also use the following environment variables to set up the file paths for TLS configuration:
              <code>HELM\_CERT\_FILE</code>, <code>HELM\_TLS\_KEY\_FILE</code>, and <code>TILLER\_TLS\_CA\_CERT\_FILE</code>.</p>
 
+    1. To package your Helm chart, run the following command from the root level of the Helm chart directory structure:
+
+              ```
+              helm package .
+              ```
+
+              Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
 
     1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
 
         ```
         bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
-        -f values.yaml --tls-cert HELM-CERT-FILE \
+        -f VALUES-FILE --tls-cert HELM-CERT-FILE \
         --tls-key HELM-TLS-KEY-FILE --tls-ca-cert TILLER-TLS-CA-CERT-FILE
         ```
 
         Where:
         + `CHART-DIRECTORY` is the file directory for your Helm chart.
-        + `PKS-CLUSTER` is the cluster you want to install your Helm chart onto.
+        + `PKS-CLUSTER` is the cluster configured when you installed the Kubernetes Service Manager tile.
         + `SERVICE-NAME` is the name of the service you want to create.
+        + `VALUES-FILE` (Optional) is the `values.yaml` to override default Helm chart values.
         + `HELM-CERT-FILE` is the path to the TLS client certificate file with the `cert_pem` credential you obtained in step 2c.
         + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential you obtained in step 2c.
         + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA certificate you obtained in 2d.
