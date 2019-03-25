@@ -11,26 +11,29 @@ This topic is an overview of Kubernetes Service Manager for PCF.
 ## <a id='overview'></a>Overview
 
 Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables platform operators
-to provide app developers with access to services through the Marketplace. 
-These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps. 
+to provide application developers with access to services through the Marketplace.
+These services run on Pivotal Container Service (PKS) for consumption by Pivotal Application Services (PAS) apps.
 
-For more information about the Marketplace, 
-see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace). 
+For more information about the Marketplace,
+see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace).
 For more information about PKS, see [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
-Kubernetes Service Manager for PCF enables operators to do the following:
+Kubernetes Service Manager for PCF enables platform operators to do the following:
 
-* Install a Helm chart for a shared service instance or add-on into a PKS cluster. 
-* Provision a dedicated service instance for developers in the Marketplace.  
-* Offer on demand an Independent Software Vendor (ISV) or open source Helm chart to PAS developers.
+* Install an Independent Software Vendor (ISV) or open source Helm chart into a PKS cluster.
+* Offer an Independent Software Vendor (ISV) or open source Helm chart as on demand service to PAS developers.
+
+Kubernetes Service Manager for PCF enables application developers to do the following:
+
+* Provision dedicated service instances onto a PKS cluster through the Marketplace.
+* Consume services running on Pivotal Container Service (PKS) in applications running on Pivotal Application Service (PAS).
 
 ## <a id='features'></a> Key Features
 
 Kubernetes Service Manager for PCF includes the following key features:
 
-* A service broker tile that provisions dedicated service instances into a PKS cluster.
-* A command line interface for managing broker dedicated service instances offerings
-  and installing a shared service instance into a cluster.
+* A service broker that provisions dedicated service instances into a PKS cluster and binds service instances to Pivotal Application Service (PAS) applications.
+* A command line interface for managing service offerings and installing a shared service instance into a cluster.
 
 ## <a id="snapshot"></a>Product Snapshot
 
@@ -41,7 +44,7 @@ The following table provides version and version-support information about Kuber
     <th>Details</th>
     <tr>
         <td>Tile version</td>
-        <td>0.5.0</td>
+        <td>0.4.34</td>
     </tr>
     <tr>
         <td>Release date</td>
@@ -81,19 +84,22 @@ The following table provides version and version-support information about Kuber
 
 Kubernetes Service Manager for PCF requires the following:
 
-* **Container registry:** You need this to manage images in air-gapped environments.
-  Pivotal recommends using a container registry in production deployments.
-  You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
-* **Docker (CLI):** See [Docker](https://www.docker.com/).
 * **PKS Command Line Interface (CLI):** For information about installing the PKS CLI,
   see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
+* **Bazaar Command Line Interface (CLI):** For information about installing the Bazaar CLI, see [Installing the Bazaar CLI](https://docs.pivotal.io/ksm/installing-cli.html) .
 * **Helm CLI:** See [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.
+* **PAS Deployment:** A running PAS deployment.
+* **PKS Kubernetes Cluster:** A running PKS Kubernetes cluster.
+* **Private Container Registry (optional):** You need this to manage container images in air-gapped environments.
+  Pivotal recommends using a private container registry in production deployments.
+  You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Docker (CLI):** See [Docker](https://www.docker.com/).
 
 ## <a id="limitations"></a>Limitations
 
 Dedicated service instances created by Kubernetes Service Manager for PCF provision
 an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP
-or NodePort for ingress. 
+or NodePort for ingress.
 
 ## <a id="feedback"></a>Feedback
 

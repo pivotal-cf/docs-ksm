@@ -10,11 +10,11 @@ This topic describes how to install and configure Kubernetes Service Manager for
 
 ##<a id='install'></a> Install Kubernetes Service Manager for PCF
 
-To install the Kubernetes Service Manager for PCF file on the Ops Manager Installation Dashboard, do the following:
+To install the Kubernetes Service Manager for PCF tile on the Ops Manager Installation Dashboard, do the following:
 
-1. Download the product file from [Pivotal Network](https://network.pivotal.io/).
+1. Login and download the **Kubernetes Service Manager for PCF** product file from [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
 1. Under **Import a Product**, click **+** next to the version number of Kubernetes Service Manager for PCF.
 This adds the tile to your staging area.
@@ -46,7 +46,7 @@ Follow the steps below to select an availability zone (AZ) to run the service br
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the network used for the Pivotal Application Service (PAS) component VMs.</td>
+        <td>Select the same network that is used for the Pivotal Application Service (PAS) component VMs. (To see which network is used, navigate to **PCF Ops Manager** > **Pivotal Application Service (PAS)** > **Assign AZs and Networks**.) </td>
      </tr>
    </table>
     <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
@@ -54,20 +54,21 @@ Follow the steps below to select an availability zone (AZ) to run the service br
        see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
 
  2. Click **Save**.
- 
+
 
 ### <a id="kubeconfig"></a> Configure Cluster Credentials
 
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure default settings for your kubeconfig, do the following:
-1. To retrieve your cluster credentials with the PKS CLI,
-   do the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
+
+1. Retrieve your cluster credentials with the PKS CLI,
+   folowing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
-  + `certificate-authority`. This value is the CA certificate for the PKS cluster.
-  + `server`. This values includes both the Kubernetes API endpoint and endpoint port.
+  + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
+  + `server`. This values includes both the Kubernetes API endpoint and endpoint port in the format `<endpoint>:<port>`.
   + `token`. This value is found in the `context:user` section.
 
-1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**. 
+1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
 
@@ -78,14 +79,14 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
   </tr>
   <tr>
     <td><strong>A base64 encoded PEM Cluster CA certificate</strong></td>
-    <td>Enter the value of <code>certificate-authority</code> in your kubeconfig.</td>
+    <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig.</td>
   </tr>
   <tr>
-    <td><strong>K8S API endpoint</strong></td>
+    <td><strong>K8s API endpoint</strong></td>
     <td>Enter the endpoint value of <code>server</code> in your kubeconfig. </td>
   </tr>
   <tr>
-    <td><strong>k8s API endpoint port</strong></td>
+    <td><strong>K8s API endpoint port</strong></td>
     <td>Enter the port value of <code>server</code> in your kubeconfig.</td>
   </tr>
   <tr>
@@ -93,16 +94,16 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
     <td>Enter the value of <code>token</code> in your kubeconfig. </td>
   </tr>
   </table>
-    
+
 For more information about using kubeconfig files,
 see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
 ### <a id="container"></a> Configure Container Registry
 
-When you configure a private registry, 
-Kubernetes Service Manager for PCF changes the helm chart to point to images in the private registry. 
-Pivotal recommends using a private registry in production. 
-You obtain these values from your container registry, such as Harbor. 
+When you configure a private registry,
+Kubernetes Service Manager for PCF changes the helm chart to point to images in the private registry.
+Pivotal recommends using a private registry in production.
+You obtain these values from your container registry, such as Harbor.
 
 To configure a private registry, do the following:
 
@@ -117,25 +118,18 @@ The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes servic
 and deletes all associated service instances and bindings.
 This errand is disabled by default.
 
-### <a id="resource"></a>(Optional) Configure Resource Config
+### <a id="resource"></a>Resource Config
 
-For an high-availability deployment,
-you can deploy Kubernetes Service Manager for PCF with two or more instances. 
-
-To deploy with more instances, do the following:
-
-1. Click **Resource Config**.
-1. Increase the amount of instances you deploy in the **Instances** field for the **bazaar** job. 
+In the beta phase, Kubernetes Service Manager should be deployed with only the default single instance.
 
 ### <a id="apply-changes"></a> Apply All Changes
 
 To deploy Kubernetes Service Manager for PCF and apply your configurations, do the following:
 
-1. Navigate to the Ops Manager Installation Dashboard. 
+1. Navigate to the Ops Manager Installation Dashboard.
 
 1. If you are using Ops Manager v2.3 or later, click Review Pending Changes.
    For more information about this Ops Manager page,
    see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.
-
