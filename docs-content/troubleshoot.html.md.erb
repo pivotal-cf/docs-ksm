@@ -10,7 +10,7 @@ owner: ISM
 This topic provides operators with basic instructions for troubleshooting Kubernetes Services Mananger for Pivotal Cloud Foundry (PCF).
 
 ## <a id='issue-debugging'></a> Advanced Debugging
-Advanced Debugging might require talking directly to the underlying Helm and Kubernetes:
+Advanced Debugging might require using the `helm` and `kubectl` CLIs.
 
 * [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of helm. Kubernetes Service Manager for PCF installs
 Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log in to the Kubernetes

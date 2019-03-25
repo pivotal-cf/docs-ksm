@@ -64,7 +64,7 @@ To configure your helm chart to be compatible with Kubernetes Service Manager fo
     ```
 
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
-   resize a PersistentVolumesClaim after you add the service offering to Kubernetes Services Manager for PCF. </p>
+   resize a PersistentVolumeClaim after you add the service offering to Kubernetes Services Manager for PCF. </p>
 
 For examples of Kubernetes compatible charts,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
@@ -73,20 +73,20 @@ see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master
 ###<a id='plans'></a> (Optional) Define Plans
 
 In the Marketplace each service has a set of plans that developers can provision.
-A plan is the template for the service instances.
+A plan is the template for the service instances created via that plan.
 For example, different plans might represent a large or a small instance of a database.
 
-For Kubernetes based services, each plan represents a set of values overriding the helm chart's default values.
+For Kubernetes services, each KSM plan represents a set of values overriding the helm chart's default values.
 These values are configured in `plans.yaml` at the root level of the chart.
 
-For examples of Kubernetes compatible charts,
+For example charts that have been modified for KSM,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 If you want to override the default settings in `values.yaml` and offer custom plans, do the following:
 
 1. Create a `plans` subdirectory at the root level of your chart
 
-1. Create and edit `plans/PLAN-FILE.yaml` with the values you want to override the default values for the plan.
+1. Create and edit `plans/PLAN-FILE.yaml` with the Helm values that should override defaults for this plan.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
     <br><br>
     Ensure that the properties added to `PLAN-FILE.yaml` match the properties in `values.yaml`
@@ -116,7 +116,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
     * `PLAN-NAME` is the name of the plan that developers see in the Marketplace.
        Ensure that the plan name is lowercase only and contains no special characters.
     * `PLAN-DESCRIPTION` is the description that developers see in the Marketplace.
-    * `PLAN-FILE` is the name of the plan in the `plans` subdirectory .
+    * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory. You do not need to include the `plans/` directory in the path.
 
     For example:
 
@@ -129,7 +129,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
       file: "medium.yaml"
     ```
 
-      For examples of Kubernetes compatible charts, see
+      For example charts that have been modified for KSM, see
 [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 
@@ -147,7 +147,7 @@ You must load the images before a developer runs `cf create-service`.
 To load your container image into a private registry, do the following:
 
 
-1. To log in to your private registry, run the following command:
+1. To login to your private registry, run the following command if it is a docker registry:
 
     ```
     docker login -u USERNAME -p PASSWORD PRIVATE-REGISTRY-URL
@@ -158,13 +158,15 @@ To load your container image into a private registry, do the following:
     + `PASSWORD` is is your Docker password.
     + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
 
-1. To load your image into your private registry, run the following command:
+    <p class="note"><strong>Note: </strong>See your registry provider for authentication instructions if not a docker registry.</p>
+
+1. To load your images to your local docker daemon before pushing to your private registry, run the following command for each image:
 
     ```
-    docker load IMAGES-DIRECTORY
+    docker load -i IMAGE-FILE.tgz
     ```
 
-    Where `IMAGES-DIRECTORY` is directory for your image.
+    Where `IMAGE-FILE.tgz` is tar archive file of your image.
 
 1. To push your Docker image, run the following command:
 
@@ -303,66 +305,67 @@ which will get delivered to a PAS app when you run `cf bind-service`:
     <p class="note"><strong>Note:</strong> You cannot delete the single last service offering in Kubernetes Service Manager for PCF</p>
 
 
-    ##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
-    Shared service instances and add-ons are installed directly onto a PKS cluster.
+##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
+Shared service instances and add-ons are installed directly onto a PKS cluster. These services are not automatically available to a PAS developer through the Marketplace.
 
-    To install a helm chart directly into your PKS cluster for a shared service instance or cluster add-on, do the following:
+To install a helm chart directly into your PKS cluster for a shared service instance or cluster add-on, do the following:
 
-    1. To log in to the PKS cluster, run the following command:
+1. To log in to the PKS cluster, run the following command:
 
-        ```
-        pks login -a PKS-API -u USERNAME -p PASSWORD
-        ```
+    ```
+    pks login -a PKS-API -u USERNAME -p PASSWORD
+    ```
 
-        Where:
-        + `PKS-API` is the domain name for the PKS API entered in **Ops Manager >
-           Pivotal Container Service > PKS API > API Hostname (FQDN)**.
-           For example: `api.pks.example.com`.
-        + `USERNAME` is the username you created in [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
-        + `PASSWORD` is the password you created in  [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
-           If you do not provide a password, the CLI prompts for the password interactively.
-           Pivotal recommends that you run the login command without the `-p` flag for added security.
+    Where:
+    + `PKS-API` is the domain name for the PKS API entered in **Ops Manager >
+       Pivotal Container Service > PKS API > API Hostname (FQDN)**.
+       For example: `api.pks.example.com`.
+    + `USERNAME` is the username you created in [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
+    + `PASSWORD` is the password you created in  [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
+       If you do not provide a password, the CLI prompts for the password interactively.
+       Pivotal recommends that you run the login command without the `-p` flag for added security.
+    + You may include `-k` if using self-signed certificates.
 
-          <%# [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?] %>
+      <%# [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?] %>
 
-    1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
+1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
 
-        1. Navigate to the **Ops Manager Installation Dashboard > Kubernetes Service Manager > Credentials**.
+    1. Navigate to the **Ops Manager Installation Dashboard > Kubernetes Service Manager > Credentials**.
 
-        1. Click **Link to Credentials** next to Helm Client Certificate.
+    1. Click **Link to Credentials** next to Helm Client Certificate.
 
-        1.  Record the `cert_pem` and `private_kep_pem` credential in local files.
-            You need the paths to these files for the `bazaar chart install` command and to configure TLS communication with tiller.
+    1.  Record the `cert_pem` and `private_kep_pem` credential in local files.
+        You need the paths to these files for the `bazaar chart install` command and to configure TLS communication with tiller.
 
-        1. To retrieve the Ops Manager CA certificate, download the certificate from `https://OPS-MAN-FQDN/download_root_ca_cert`.
+    1. To retrieve the Ops Manager CA certificate, download the certificate from `https://OPS-MAN-FQDN/download_root_ca_cert`.
 
-          <p class="note"><strong>Note:</strong> You can also use the following environment variables to set up the file paths for TLS configuration:
-             <code>HELM\_CERT\_FILE</code>, <code>HELM\_TLS\_KEY\_FILE</code>, and <code>TILLER\_TLS\_CA\_CERT\_FILE</code>.</p>
+      <p class="note"><strong>Note:</strong> You can also use the following environment variables to set up the file paths for TLS configuration:
+         <code>HELM\_CERT\_FILE</code>, <code>HELM\_TLS\_KEY\_FILE</code>, and <code>TILLER\_TLS\_CA\_CERT\_FILE</code>.</p>
 
-    1. To package your Helm chart, run the following command from the root level of the Helm chart directory structure:
+1. To package your Helm chart, run the following command from the root level of the Helm chart directory structure:
 
-              ```
-              helm package .
-              ```
+      ```
+      helm package .
+      ```
 
-              Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
+      Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
 
-    1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
+1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
 
-        ```
-        bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
-        -f VALUES-FILE --tls-cert HELM-CERT-FILE \
-        --tls-key HELM-TLS-KEY-FILE --tls-ca-cert TILLER-TLS-CA-CERT-FILE
-        ```
+    ```
+    bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
+    -f VALUES-FILE --tls-cert HELM-CERT-FILE \
+    --tls-key HELM-TLS-KEY-FILE --tls-ca-cert TILLER-TLS-CA-CERT-FILE
+    ```
 
-        Where:
-        + `CHART-DIRECTORY` is the file directory for your Helm chart.
-        + `PKS-CLUSTER` is the cluster configured when you installed the Kubernetes Service Manager tile.
-        + `SERVICE-NAME` is the name of the service you want to create.
-        + `VALUES-FILE` (Optional) is the `values.yaml` to override default Helm chart values.
-        + `HELM-CERT-FILE` is the path to the TLS client certificate file with the `cert_pem` credential you obtained in step 2c.
-        + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential you obtained in step 2c.
-        + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA certificate you obtained in 2d.
+    Where:
+    + `CHART-DIRECTORY` is the file directory for your Helm chart.
+    + `PKS-CLUSTER` is the cluster configured when you installed the Kubernetes Service Manager tile.
+    + `SERVICE-NAME` is the name of the service you want to create.
+    + `VALUES-FILE` (Optional) is the `values.yaml` to override default Helm chart values.
+    + `HELM-CERT-FILE` is the path to the TLS client certificate file with the `cert_pem` credential you obtained in step 2c.
+    + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential you obtained in step 2c.
+    + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA certificate you obtained in 2d.
 
-        After your Helm chart is installed, Kubernetes Service Manager for PCF outputs
-        information about the new service. The output depends on the Helm chart you are installing.
+    After your Helm chart is installed, Kubernetes Service Manager for PCF outputs
+    information about the new service. The output depends on the Helm chart you are installing.

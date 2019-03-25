@@ -12,7 +12,7 @@ This topic describes how to install and configure Kubernetes Service Manager for
 
 To install the Kubernetes Service Manager for PCF tile on the Ops Manager Installation Dashboard, do the following:
 
-1. Download the **Kubernetes Service Manager for PCF** product file from [Pivotal Network](https://network.pivotal.io/).
+1. Login and download the **Kubernetes Service Manager for PCF** product file from [Pivotal Network](https://network.pivotal.io/).
 
 1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
@@ -46,7 +46,7 @@ Follow the steps below to select an availability zone (AZ) to run the service br
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the network used for the Pivotal Application Service (PAS) component VMs.</td>
+        <td>Select the same network that is used for the Pivotal Application Service (PAS) component VMs. (To see which network is used, navigate to **PCF Ops Manager** > **Pivotal Application Service (PAS)** > **Assign AZs and Networks**.) </td>
      </tr>
    </table>
     <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
@@ -82,11 +82,11 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
     <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig.</td>
   </tr>
   <tr>
-    <td><strong>K8S API endpoint</strong></td>
+    <td><strong>K8s API endpoint</strong></td>
     <td>Enter the endpoint value of <code>server</code> in your kubeconfig. </td>
   </tr>
   <tr>
-    <td><strong>k8s API endpoint port</strong></td>
+    <td><strong>K8s API endpoint port</strong></td>
     <td>Enter the port value of <code>server</code> in your kubeconfig.</td>
   </tr>
   <tr>
@@ -118,15 +118,9 @@ The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes servic
 and deletes all associated service instances and bindings.
 This errand is disabled by default.
 
-### <a id="resource"></a>(Optional) Configure Resource Config
+### <a id="resource"></a>Resource Config
 
-For an high-availability deployment,
-you can deploy Kubernetes Service Manager for PCF with two or more instances.
-
-To deploy with more instances, do the following:
-
-1. Click **Resource Config**.
-1. Increase the amount of instances you deploy in the **Instances** field for the **bazaar** job.
+In the beta phase, Kubernetes Service Manager should be deployed with only the default single instance.
 
 ### <a id="apply-changes"></a> Apply All Changes
 
