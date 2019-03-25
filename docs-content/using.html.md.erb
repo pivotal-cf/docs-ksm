@@ -7,12 +7,12 @@ owner: ISM
 
 <%= partial ("beta-notice") %>
 
-This topic describes how to use Kubernetes Service Manager for PCF.
+This topic describes how to use Kubernetes Service Manager (KSM) for PCF.
 
 ##<a id='using'></a> Overview
 
-Kubernetes Service Manager for PCF uses the `bazaar` CLI and a generic broker deployed by the tile.
-You can use Kubernetes Service Manager for PCF to do the following:
+KSM for PCF uses the `bazaar` CLI and a generic broker deployed by the tile.
+You can use KSM for PCF to do the following:
 
 + Offer on demand provisioning of a dedicated service instance for developers in the Marketplace. See [Use with Dedicated Service Instances](#dedicated) below.
 + Install a helm chart for a shared service instance or add-on. See [Use with Shared Instances and Add-ons](#shared-add-on) below.
@@ -25,7 +25,7 @@ the broker creates a dedicated service instance of the service in the backing cl
 
 To provision a dedicated service instance offering based on a Helm Chart for developers in the Marketplace, do the following:
 
-1. Configure the helm chart to be compatible with Kubernetes Service Manager for PCF.
+1. Configure the helm chart to be compatible with KSM for PCF.
    See [Configure your Helm Chart](#config-helm) below.
 2. Define plans if you want to offer customized plans and override the default values.
    See [(Optional) Define Plans](#plans) below.
@@ -36,13 +36,13 @@ To provision a dedicated service instance offering based on a Helm Chart for dev
 
 ###<a id="prereq"></a>Prerequisite
 
-Before you configure your Helm chart to be compatible with Kubernetes Service Manager for PCF,
+Before you configure your Helm chart to be compatible with KSM for PCF,
 you must have a Helm chart that has been properly configured according to the Helm chart provider's documentation.
 Each Helm chart most likely needs some service configuration, that is configured in `values.yaml` in the chart directory structure.
 
 ###<a id='config-helm'></a> Configure your Helm Chart
 
-To configure your helm chart to be compatible with Kubernetes Service Manager for PCF, do the following:
+To configure your helm chart to be compatible with KSM for PCF, do the following:
 
 1. Open the `values.yaml` file at the root level of the chart directory structure.
 
@@ -64,7 +64,7 @@ To configure your helm chart to be compatible with Kubernetes Service Manager fo
     ```
 
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
-   resize a PersistentVolumeClaim after you add the service offering to Kubernetes Services Manager for PCF. </p>
+   resize a PersistentVolumeClaim after you add the service offering to KSM for PCF. </p>
 
 For examples of Kubernetes compatible charts,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
@@ -181,9 +181,9 @@ To load your container image into a private registry, do the following:
 
 ### <a id="add"></a> Add a Service Offering to Kubernetes Service Manager for PCF
 
-After you configure your Helm chart for Kubernetes Service Manager you must package it and
-add the offering to Kubernetes Service Manager for PCF to let developers use it.
-To add your offering to Kubernetes Service Manager for PCF, do the following:
+After you configure your Helm chart for KSM for PCF you must package it and
+add the offering to KSM for PCF to let developers use it.
+To add your offering to KSM for PCF, do the following:
 
 1. To package your Helm chart, run the following command from the root level of the Helm chart directory structure:
 
@@ -199,7 +199,7 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
 
 1. Record the values for `identity` and `password`.
 
-1. To add the Helm chart as a dedicated instance service offering to Kubernetes Service Manager for PCF, run the following command:
+1. To add the Helm chart as a dedicated instance service offering to KSM for PCF, run the following command:
 
     ```
     bazaar -t http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH/TO/YOUR-CHART.tgz
@@ -211,7 +211,7 @@ To add your offering to Kubernetes Service Manager for PCF, do the following:
     + `/PATH/TO/YOUR-CHART.tgz` is the path to the packaged chart created in step 1.
 
 
-1. To ensure your offering has been saved to Kubernetes Manager for PCF, run the following command:
+1. To ensure your offering has been saved to KSM for PCF, run the following command:
 
     ```
     bazaar -t  http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
@@ -280,7 +280,7 @@ which will get delivered to a PAS app when you run `cf bind-service`:
 
 ### <a id="delete"></a> Delete a Service Offering
 
-1. To view the current service offerings available in Kubernetes Service Manager for PCF, run the following command:
+1. To view the current service offerings available in KSM for PCF, run the following command:
 
     ```
     bazaar -t  http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
@@ -302,7 +302,7 @@ which will get delivered to a PAS app when you run `cf bind-service`:
     + `PASSWORD` is the value of `password` you recorded in step 3 of [Add a Service Offering](#add) above.
     + `YOUR-CHART` is name of a service offering you observed in step 1.
 
-    <p class="note"><strong>Note:</strong> You cannot delete the single last service offering in Kubernetes Service Manager for PCF</p>
+    <p class="note"><strong>Note:</strong> You cannot delete the single last service offering in KSM for PCF</p>
 
 
 ##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
@@ -325,8 +325,6 @@ To install a helm chart directly into your PKS cluster for a shared service inst
        If you do not provide a password, the CLI prompts for the password interactively.
        Pivotal recommends that you run the login command without the `-p` flag for added security.
     + You may include `-k` if using self-signed certificates.
-
-      <%# [DOES THIS MEAN THAT PKS SHOULD BE EXPLICITLY STATED AS A REQUIREMENT?] %>
 
 1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
 
@@ -367,5 +365,5 @@ To install a helm chart directly into your PKS cluster for a shared service inst
     + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential you obtained in step 2c.
     + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA certificate you obtained in 2d.
 
-    After your Helm chart is installed, Kubernetes Service Manager for PCF outputs
+    After your Helm chart is installed, KSM for PCF outputs
     information about the new service. The output depends on the Helm chart you are installing.
