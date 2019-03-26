@@ -160,23 +160,17 @@ To load your container image into a private registry, do the following:
 
     <p class="note"><strong>Note: </strong>See your registry provider for authentication instructions if not a docker registry.</p>
 
-1. To load your images to your local docker daemon before pushing to your private registry, run the following command for each image:
+1. To push your Docker image(s) to your private registry, run the following command:
 
     ```
-    docker load -i IMAGE-FILE.tgz
-    ```
-
-    Where `IMAGE-FILE.tgz` is tar archive file of your image.
-
-1. To push your Docker image, run the following command:
-
-    ```
-    bazaar image push -r PRIVATE-REGISTRY-URL  -d IMAGES-DIRECTORY
+    bazaar image push -r PRIVATE-REGISTRY-URL/REPOSITORY -d IMAGES-DIRECTORY
     ```
 
     Where:
-    + `PRIVATE-REGISTRY-URL` is the private registry URL for the container registry you are using.
-    + `IMAGES-DIRECTORY` is directory for your image.
+    + `PRIVATE-REGISTRY-URL/REPOSITORY` is the private registry URL for the container registry you are using, for example `harbor.example.com/myproject`.
+    + `IMAGES-DIRECTORY` is the directory containing your image files as tar archive (`.tgz`) files.
+
+    This command chains together the steps of `docker load`, `docker tag`, and `docker push` for your images and private registry.
 
 
 ### <a id="add"></a> Add a Service Offering to Kubernetes Service Manager for PCF
