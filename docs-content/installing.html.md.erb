@@ -124,7 +124,7 @@ see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/doc
 ### <a id="container"></a> Configure Container Registry
 
 When you configure a private registry,
-KSM for PCF changes the helm chart to point to images in the private registry.
+KSM for PCF changes the Helm chart to point to images in the private registry.
 Pivotal recommends using a private registry in production.
 You obtain these values from your container registry, such as Harbor.
 
@@ -137,7 +137,7 @@ To configure a private registry, do the following:
 
 ### <a id="errands"></a>Errands
 
-The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from the Marketplace
+The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from `cf marketplace`
 and deletes all associated service instances and bindings.
 This errand is disabled by default.
 
