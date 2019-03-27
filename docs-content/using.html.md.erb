@@ -340,7 +340,7 @@ To install a helm chart for a shared service instance or cluster add-on, do the 
        If you do not provide a password, the CLI prompts for the password interactively.
        Pivotal recommends that you run the login command without the `-p` flag for added security.
   
-    <p class="note">If using self-signed certificates, you can include the <code>-k</code> flag</p> 
+    <p class="note"><strong>Note:</strong> If you are using self-signed certificates, you can include the <code>-k</code> flag</p> 
 
 1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
 
@@ -388,7 +388,7 @@ To install a helm chart for a shared service instance or cluster add-on, do the 
     + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA 
     certificate you obtained in 2d.
     
-    <p class="note"><strong>Note:</strong>If you want to override default Helm chart values with custom
+    <p class="note"><strong>Note:</strong> If you want to override default Helm chart values with custom
       values, run the above command with <code>-f values.yaml</code>. You configure custom values in 
       <code>values.yaml</code>. For examples of modified <code>values.yaml</code> files, 
       see <a href="https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts">kibosh-sample</a>
