@@ -26,3 +26,15 @@ $ bundle install
 $ bundle exec bookbinder watch
 $ open http://127.0.0.1:XXXX/ksm/<branch>
 ```
+
+
+## Style Guide
+
+This is a word list for terminology and word usage specific to the KSM for PCF docs.
+
+| Word | Explanation |
+|------|-------------|
+| KSM |Acronym for Kubernetes Service Manager|
+| Bazaar CLI | CLI component for Kubernates Service Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Kubernetes Service Manager CLIs or [OPERATIING-SYSTEM] for Bazaar, use Bazaar CLI.|
+|cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
+
