@@ -14,9 +14,9 @@ This topic describes how to use Kubernetes Service Manager (KSM) for PCF.
 KSM for PCF uses the `bazaar` CLI and a generic broker deployed by the tile.
 You can use KSM for PCF to do the following:
 
-+ Offer on demand provisioning of a dedicated service instance for developers in the Marketplace. 
++ Offer on demand provisioning of a dedicated service instance for developers through `cf marketplace`. 
 See [Use with Dedicated Service Instances](#dedicated) below.
-+ Install a helm chart for a shared service instance or add-on. 
++ Install a Helm chart for a shared service instance or add-on. 
 See [Use with Shared Instances and Add-ons](#shared-add-on) below.
 
 
@@ -30,9 +30,9 @@ Each Helm chart most likely needs some service configuration.
 
 ###<a id='config-helm'></a> Configure your Helm Chart
 
-To configure your helm chart to be compatible with KSM for PCF, do the following:
+To configure your Helm chart to be compatible with KSM for PCF, do the following:
 
-1. Open the `values.yaml` file at the root level of the chart.
+1. Open the `values.yaml` file at the root level of your chart.
 
 1. Edit your `values.yaml` file as follows:
     + Change the `service:` `type:` value from `ClusterIP` to `LoadBalancer`.
@@ -71,8 +71,7 @@ information about the `cf create-service` command,
 see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create) 
 in the Cloud Foundry documentation.
 
-To provision a dedicated service instance offering based on a Helm Chart for app developers in the 
-Marketplace, do the following:
+To provision a dedicated service instance offering based on a Helm Chart for app developers, do the following:
 
 2. Define plans if you want to offer customized plans and override the default values.
    See [(Optional) Define Plans](#plans) below.
@@ -81,17 +80,17 @@ Marketplace, do the following:
 1. Add the service offering to KSM for PCF.
    See [Add a Service Offering Kubernetes Service Manager for PCF](#add) below.   
 1. Enable service offering access. 
-   See [Enable Service Offering Access in the Marketplace](#enable) below.
+   See [Enable Service Offering Access](#enable) below.
 
 ###<a id='plans'></a> (Optional) Define Plans
 
-In the Marketplace each service has a set of plans that developers can provision.
+In `cf marketplace`, each service has a set of plans that developers can provision.
 A plan is a template for service instances.
 For example, different plans might represent a large or a small instance of a database.
 
-For Kubernetes services, each KSM plan represents a set of values overriding the helm chart's default 
+For Kubernetes services, each KSM plan represents a set of values overriding the Helm chart's default 
 values.
-These values are configured in `plans.yaml` at the root level of the chart.
+These values are configured in `plans.yaml` at the root level of your chart.
 
 For example charts that have been configured for KSM,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
@@ -126,9 +125,9 @@ If you want to override the default settings in `values.yml` to offer custom pla
     ```
     
     Where:
-    * `PLAN-NAME` is the name of the plan that developers see in the Marketplace.
-       Ensure that the plan name is lowercase only and contains no special characters. 
-    * `PLAN-DESCRIPTION` is the description that developers see in the Marketplace.
+    * `PLAN-NAME` is the name of the plan that developers when they run `cf marketplace`.
+       Ensure that the plan name is lowercase only and contains no special characters.
+    * `PLAN-DESCRIPTION` is the description that developers when they run `cf marketplace`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
 
     For example:
@@ -200,7 +199,7 @@ To load your container images into a private registry, do the following:
     are using, for example `harbor.example.com/myproject`.
     + `IMAGES-DIRECTORY` is the directory containing your TAR archive file of your images.
 
-    `bazaar image push` runs the the `docker load`, `docker tag`, and `docker push` 
+    `bazaar image push` runs the `docker load`, `docker tag`, and `docker push` 
     commands sequentially for your images and private registry.
 
 
@@ -211,7 +210,7 @@ add the offering to KSM for PCF to let developers use it.
 To add your offering to KSM for PCF, do the following:
 
 1. To package your Helm chart, run the following command from the root level of 
-the Helm chart directory:
+your Helm chart directory:
 
     ```
     helm package YOUR-CHART
@@ -249,7 +248,7 @@ command:
     + `USERNAME` is the value of `identity` you recorded in step 3.
     + `PASSWORD` is the value of `password` you recorded in step 3.
 
-### <a id="enable"></a> Enable Service Offering Access in the Marketplace
+### <a id="enable"></a> Enable Service Offering Access 
 
 After you add your service offering, you must enable access to the service offering.
 To enable access to your service offering, do the following:
@@ -277,7 +276,7 @@ To enable access to your service offering, do the following:
     [Add a Service Offering to Kubernetes Service Manager for PCF](#add) above.
     
 
-1. To view the newly created service plan in the Marketplace, run the following command:
+1. To view the newly created service plan, run the following command:
 
     ```
     cf marketplace
@@ -319,9 +318,9 @@ If you want to delete a service offering, do the following:
 
 ##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
 Shared service instances and add-ons are installed directly onto a PKS cluster. 
-These services are not automatically available to a PAS developer through the Marketplace.
+These services are not automatically available to a PAS developer through `cf marketplace`.
 
-To install a helm chart for a shared service instance or cluster add-on, do the following:
+To install a Helm chart for a shared service instance or cluster add-on, do the following:
 
 1. To log in to the PKS cluster, run the following command:
 
@@ -360,7 +359,7 @@ To install a helm chart for a shared service instance or cluster add-on, do the 
          <code>HELM\_CERT\_FILE</code>, <code>HELM\_TLS\_KEY\_FILE</code>, 
          and <code>TILLER\_TLS\_CA\_CERT\_FILE</code>.</p>
 
-1. To package your Helm chart, run the following command from the root level of the Helm chart directory:
+1. To package your Helm chart, run the following command from the root level of your Helm chart directory:
 
       ```
       helm package .
@@ -369,7 +368,7 @@ To install a helm chart for a shared service instance or cluster add-on, do the 
       Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm 
       chart directory.
 
-1. To install a helm chart for a shared instance service on a PKS cluster, run the following command:
+1. To install a Helm chart for a shared instance service on a PKS cluster, run the following command:
 
     ```
     bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
