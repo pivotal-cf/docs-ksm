@@ -171,27 +171,11 @@ To load your container images into a private registry, do the following:
         + `PASSWORD` is is your Docker password.
         + `PRIVATE-REGISTRY-URL` is your Docker private registry URL.        
     + If you are not using a Docker registry, see your registry provider for authentication instructions.
-
-1. To load your images to your local Docker daemon, run the following command for each image: 
-
-    ```
-    docker load -i IMAGE-FILE.tgz
-    ```
-    
-    Where `IMAGE-FILE` is the TAR archive file of your images
-
-1. To push your image to your private registry, run the following command:
-
-    ```
-    docker load IMAGES-DIRECTORY
-    ```
-    
-    Where `IMAGES-DIRECTORY` is directory for your image.
     
 1. To push your Docker image, run the following command:
 
     ```
-    bazaar image push -r PRIVATE-REGISTRY-URL  -d IMAGES-DIRECTORY
+    bazaar image push -r PRIVATE-REGISTRY-URL/REPOSITORY  -d IMAGES-DIRECTORY
     ```
     
     Where:
