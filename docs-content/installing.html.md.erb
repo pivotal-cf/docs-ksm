@@ -12,8 +12,8 @@ This topic describes how to install and configure Kubernetes Service Manager (KS
 
 To install the Bazaar CLI, do the following:
 
-1. Log in and navigate to **Kubernetes Service Manager for PCF (KSM)** in 
-[Pivotal Network](https://network.pivotal.io/). 
+1. Log in and navigate to **Kubernetes Service Manager for PCF (KSM)** in
+[Pivotal Network](https://network.pivotal.io/).
 
 1. Click **Kubernetes Service Manager CLIs** and download the CLI for your operating system.
 
@@ -24,7 +24,7 @@ to make the Bazaar binary act as an executable file, run the following command :
 
     <pre class="terminal">chmod +x bazaar</pre>
 
-1. Move the binary file into your `PATH`. 
+1. Move the binary file into your `PATH`.
 If you are using MacOS or Linux, to move the binary file into your `PATH`, run the following command:
 
     <pre class="terminal">mv bazaar /usr/local/bin/bazaar</pre>
@@ -35,7 +35,7 @@ To add KSM for PCF to Ops Manager, do the following:
 
 1. Log in and download the Kubernetes Service Manager for PCF file from [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
 1. Under **Import a Product**, click **+** next to the version number of KSM for PCF.
 This adds the tile to your staging area.
@@ -67,9 +67,9 @@ Follow the steps below to select an availability zone (AZ) to run the service br
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the same network you use for the Pivotal Application Service (PAS) component VMs. 
-          To view the network PAS component VMs use, navigate to <strong>PCF Ops Manager</strong> > 
-          <strong>Pivotal Application Service (PAS)</strong> > <strong>Assign AZs and Networks</strong>. 
+        <td>Select the same network you use for the Pivotal Application Service (PAS) component VMs.
+          To view the network PAS component VMs use, navigate to <strong>PCF Ops Manager</strong> >
+          <strong>Pivotal Application Service (PAS)</strong> > <strong>Assign AZs and Networks</strong>.
         </td>
      </tr>
    </table>
@@ -78,7 +78,7 @@ Follow the steps below to select an availability zone (AZ) to run the service br
        see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
 
  2. Click **Save**.
- 
+
 
 ### <a id="kubeconfig"></a> Configure Cluster Credentials
 
@@ -92,7 +92,7 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
   + `token`. This value is found in the `context:user` section.
 
-1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**. 
+1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -102,7 +102,7 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
   </tr>
   <tr>
     <td><strong>A base64 encoded PEM Cluster CA certificate</strong></td>
-    <td>Enter the value of <code>certificate-authority</code> in your kubeconfig.</td>
+    <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig.</td>
   </tr>
   <tr>
     <td><strong>K8s API endpoint</strong></td>
@@ -117,7 +117,7 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
     <td>Enter the value of <code>token</code> in your kubeconfig. </td>
   </tr>
   </table>
-    
+
 For more information about using kubeconfig files,
 see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
@@ -145,7 +145,7 @@ This errand is disabled by default.
 
 To deploy KSM for PCF and apply your configurations, do the following:
 
-1. Navigate to the Ops Manager Installation Dashboard. 
+1. Navigate to the Ops Manager Installation Dashboard.
 
 1. If you are using Ops Manager v2.3 or later, click Review Pending Changes.
    For more information about this Ops Manager page,
