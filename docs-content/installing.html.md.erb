@@ -124,16 +124,17 @@ see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/doc
 ### <a id="container"></a> Configure Container Registry
 
 When you configure a private registry,
-KSM for PCF changes the Helm chart to point to images in the private registry.
+KSM for PCF will install in an offline environment, and can modify your Helm charts to point to images in the private registry.
 Pivotal recommends using a private registry in production.
-You obtain these values from your container registry, such as Harbor.
+You will obtain the following values from your container registry, such as Harbor.
 
 To configure a private registry, do the following:
 
 1. Click **Container Registry Configuration**.
-1. Enter the **Registry Server URL**.
-1. Enter the **Registry Username**.
-1. Enter the **Registry Password**.
+1. Enter the **Registry Server URL**. This is the URL including your container registry hostname and project. For example, `gcr.io/myproject`.
+This is the location from which KSM will push and pull images.
+1. Enter the **Registry Username**. This is the username which KSM will use to push and pull images to the registry.
+1. Enter the **Registry Password**. This is the password which KSM will use to push and pull images to the registry.
 
 ### <a id="errands"></a>Errands
 
