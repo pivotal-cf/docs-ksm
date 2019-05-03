@@ -36,7 +36,7 @@ To configure your Helm chart to be compatible with KSM for PCF, do the following
 
 1. Edit your `values.yaml` file as follows:
     + Change the `service:` `type:` value from `ClusterIP` to `LoadBalancer`.
-    + Edit the `storageClass:` value to correspond to the storageClass name for your configured PKS 
+    + Edit the `storageClass:` value to correspond to the storageClass name for your configured Pivotal Container Service (PKS) 
     cluster. The default name for PKS is `standard`.
       For more information, 
       see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
@@ -319,9 +319,9 @@ To install a Helm chart for a shared service instance or cluster add-on, do the 
        Pivotal Container Service > PKS API > API Hostname (FQDN)**.
        For example: `api.pks.example.com`.
     + `USERNAME` is the username you created in 
-    [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
+    [Grant Enterprise PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
     + `PASSWORD` is the password you created in  
-    [Grant PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
+    [Grant Enterprise PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
        If you do not provide a password, the CLI prompts for the password interactively.
        Pivotal recommends that you run the login command without the `-p` flag for added security.
   
