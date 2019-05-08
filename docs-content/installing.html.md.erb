@@ -121,21 +121,67 @@ To use the Pivotal Container Service Command Line Interface (PKS CLI) to configu
 For more information about using kubeconfig files,
 see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
-### <a id="storage"></a> Storage Configuration
-KSM requires S3 compatible storage to store the offered charts (and its cache). The platform operator is responsible for backing up this bucket.
+### <a id="storage"></a> Configure Storage 
+KSM requires S3 compatible buckets to store the offered charts and chart cache. The operator is responsible for backing up this bucket.
 
-1. **Endpoint**: The s3 endpoint. This should not start with `http://`. For example:
-    * storage.googleapis.com
-    * s3-us-west-2.amazonaws.com
-1. **Region**: The region. This defaults to `us-east-1`. Some IaaS providers buckets don't require the region, for example, GCP's `Multi-Regional` will ignore this value.
-1. **Bucket Name**: The bucket name
-1. **Storage Prefix**: The folder. Objects are stored at the root of the bucket if this is left blank.
-1. **Access Key ID**: The access key.
-1. **Secret Access Key**: The secret.
+If you are using a Google Cloud Platform (GCP) bucket, you can expose an S3 compatible endpoint by following the procedures in [Cloud Storage interoperability](https://cloud.google.com/storage/docs/interoperability) in the 
+Google Cloud Storage documentation.
 
-* For GCP, [Cloud Storage interoperability](https://cloud.google.com/storage/docs/interoperability) is the way by which to expose
-an S3 compatible endpoint.
-* VMWare installations can use a tool like the [Minio tile](https://pivotal.io/platform/services-marketplace/data-management/minio).
+ VMWare installations can use a tool like the [Minio tile](https://pivotal.io/platform/services-marketplace/data-management/minio).
+
+<!-- What do you mean by VMWare installation? Enterprise PKS? (and not Essential?) -->
+<!-- Do they have to create a policy and access key in the IaaS first? -->
+<!-- Are these fields the same for all IaaS-->
+
+To configure storage, do the following:
+
+1. Click **UI TAB**
+
+1. Configure the fields as follows:
+
+    <table class="nice">
+    <tr>
+    <th>Field</th>
+    <th>Instructions</th>
+    </tr>
+    <tr>
+      <td><strong>Endpoint</strong></td>
+      <td>Enter the s3 compatible endpoint URL for uploading backups. The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
+        <ul>
+          <li><code>storage.googleapis.com</code></li>
+          <li><code>s3-us-west-2.amazonaws.com</code></li>
+        </ul>  
+        </td>
+      </tr>
+      
+      <tr>
+        <td><strong>Region</strong></td>
+        <td> Enter the region where your bucket is located. The region defaults to <code>us-east-1</code>. Some IaaS providers do not require regions for their buckets. For example, Google Cloud Platform Multi-Regional Storage ignores this value.
+        </td>
+      </tr>
+      
+      <tr>
+        <td><strong>Bucket Name</strong></td>
+        <td>Enter the name of your bucket.</td>
+      </tr>
+      
+      <tr>
+        <td><strong>Storage Prefix</strong></td>
+        <td> Enter the path in the bucket to store backups. If this is left blank, 
+           objects are stored at the root of the bucket.</td>
+      </tr>
+      
+      <tr>
+        <td><strong>Access Key ID</strong></td>
+        <td>Enter the S3 Access Key ID.</td>
+      </tr>
+      
+      <tr>
+        <td><strong>Secret Access Key</strong></td>
+        <td>Enter the Secret Access Key.</td>
+      </tr>
+      
+    </table>
 
 ### <a id="container"></a> Configure Container Registry
 
