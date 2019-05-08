@@ -59,6 +59,21 @@ To get more information visit the [PKS CLI docs](https://docs.pivotal.io/runtime
 1. **Kubernetes API endpoint**: Enter API endpoint,  For example https://<ip>:<port>
 1. **Cluster JWT token**: Enter token
 
+### Storage Configuration
+KSM requires S3 compatible storage to store the offered charts (and its cache). The platform operator is responsible for backing up this bucket.
+
+1. **Endpoint**: The s3 endpoint. This should not start with `http://`. For example:
+    * storage.googleapis.com
+    * s3-us-west-2.amazonaws.com
+1. **Region**: The region. This defaults to `us-east-1`. Some IaaS providers buckets don't require the region, for example, GCP's `Multi-Regional` will ignore this value.
+1. **Bucket Name**: The bucket name
+1. **Storage Prefix**: The folder. Objects are stored at the root of the bucket if this is left blank.
+1. **Access Key ID**: The access key.
+1. **Secret Access Key**: The secret.
+
+* For GCP, [Cloud Storage interoperability](https://cloud.google.com/storage/docs/interoperability) is the way by which to expose
+an S3 compatible endpoint.
+* VMWare installations can use a tool like the [Minio tile](https://pivotal.io/platform/services-marketplace/data-management/minio).
 
 ### Helm Configuration
 The `bazaar` CLI component of the Kubernetes Service Manager for PCF deploys Helm and Tiller into a PKS cluster.
