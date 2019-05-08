@@ -1,0 +1,44 @@
+---
+title: Troubleshooting Kubernetes Service Manager for PCF
+owner: ISM
+---
+
+<%= partial ("beta-notice") %>
+
+<strong><%= modified_date %></strong>
+
+This topic provides operators with basic instructions for troubleshooting Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
+
+## <a id='issue-debugging'></a> Advanced Debugging
+Advanced debugging might require using the `helm` and `kubectl` CLIs.
+
+* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of Helm. Kubernetes Service Manager for PCF installs
+Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log in to the Kubernetes
+cluster and include the namespace flag to talk the Kubernetes Service Manager for PCF's Helm `--tiller-namespace=kibosh`.
+
+<%# <!-- TODO: mTLS credentials - need tile to test --> %>
+
+##<a id='issue-name'></a> Name Length Issues
+Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
+will fail immediately, with an error message including
+
+* `must be no more than 63 characters`
+
+The Helm chart needs to be enhanced with additional truncation and name protection. Visit
+[the Helm documentation](https://docs.helm.sh/chart_template_guide/#adding-a-simple-template-call)
+for some additional details on truncation and naming.
+
+##<a id='issue-cleanup'></a> Cleanup
+Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
+sometimes requires manual cleanup to remove services earlier in some failure modes.
+[Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
+will remove the service from Pivotal Cloud Foundry. This might, however, leave resources in the backing cluster.
+
+To fully clean up, delete the Helm release and the namespace, if either is still present.
+Both the cluster and the Helm resources are named after the service's GUID.
+
+```bash
+kubectl get namespaces
+helm delete namespace kibosh-GUID
+kubectl delete namespace kibosh-GUID
+```

@@ -5,70 +5,57 @@ owner: ISM
 
 <strong><%= modified_date %></strong>
 
-<p class="note warning">
-<strong>WARNING! </strong>
-The Kubernetes Service Manager for PCF tile is currently in Beta and is intended for evaluation and test purposes only.
-Do not use this product in a PCF production environment.
-</p>
-
-Kubernetes Service Manager for Pivotal Cloud Foundry (PCF) enables the platform operator
-to provide application development teams with access to services running on
-[Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service)
-through the
-[Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
-for consumption by PAS applications.
-
+<%= partial ("beta-notice") %>
+This topic is an overview of Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
 
 ## <a id='overview'></a>Overview
 
-PKS service integrations can take a lot of forms.
-Kubernetes Service Manager for PCF tackles three large classes of services:
+KSM for PCF enables operators
+to provide app developers with access to services through the Marketplace.
+These services run on Enterprise Pivotal Container Service (Enterprise PKS) for consumption by
+Pivotal Application Services (PAS) apps.
 
-* Installing a single Helm chart to a particular cluster (`shared-instance`).
-* Provisioning services as needed by individual teams
-  from the [Cloud Foundry Marketplaces](https://docs.pivotal.io/pivotalcf/devguide/services/index.html)
-  (`dedicated-instances`).
-* Installing a cluster add-on, such as an observability or security tool.
+For more information about the Marketplace,
+see [Pivotal Services Marketplace](https://pivotal.io/platform/services-marketplace).
+For more information about Enterprise PKS,
+see [Enterprise Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
-In the shared-instance and add-on cases, Kubernetes Service Manager for PCF helps
-by providing a consistent operator experience for installing a Helm chart
-into a particular cluster.
+KSM for PCF enables operators to do the following:
 
-In the dedicated-instances case, Kubernetes Service Manager for PCF lets the operator offer an ISV
-or open source Helm chart to
-[Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
-developers on demand.
-Developers who use the `cf create-service` command will, in realtime, provision a chart
-to the service's backing cluster.
+* Install an Independent Software Vendor (ISV) or open source Helm chart into a PKS cluster.
+* Offer an ISV or open source Helm chart as an on-demand service to PAS developers.
 
+KSM for PCF enables app developers to do the following:
 
-## <a id='features'></a>Key Features
+* Provision dedicated service instances onto a PKS cluster through the Marketplace.
+* Consume services running on Enterprise PKS in apps running on PAS.
 
-Kubernetes Service Manager for PCF includes the following key features:
+## <a id='features'></a> Key Features
 
-* A broker tile that provisions dedicated service instances into a PKS cluster.
-* A CLI for managing broker dedicated-instance offerings
-  and installing a shared-instance into a cluster.
+KSM for PCF includes the following key features:
 
+* A service broker that provisions dedicated service instances into a PKS cluster and binds service instances to PAS apps.
+* A command line interface (CLI) for managing service offerings and installing a shared service instance
+into a PKS cluster.
 
 ## <a id="snapshot"></a>Product Snapshot
 
-The following table provides version and version-support information about the Kubernetes Service Manager for PCF.
+The following table provides version and version-support information about KSM for PCF.
 
 <table class="nice">
     <th>Element</th>
     <th>Details</th>
     <tr>
         <td>Tile version</td>
-        <td><span style="color: deeppink">v0.4.0</span></td>
+        <td>0.4.34</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>February 15, 2019</td>
+        <td>MMM XX, 2019</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td><span style="color: deeppink">v0.4.0</span></td>
+        <td>0.4.0</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
@@ -84,37 +71,43 @@ The following table provides version and version-support information about the K
     </tr>
     <tr>
        <td>BOSH stemcell version</td>
-       <td>Xenial</td>
+       <td>Ubuntu Xenial</td>
     </tr>
     <tr>
         <td>IaaS support</td>
         <td>AWS, Azure, GCP, OpenStack, and vSphere</td>
     </tr>
     <tr>
-        <td>IPsec support?</td>
+        <td>IPsec support</td>
         <td>No</td>
     </tr>
 </table>
 
-
 ## <a id="reqs"></a>Requirements
 
-Kubernetes Service Manager for PCF has the following requirements:
+KSM for PCF requires the following:
 
-* A container registry like [Harbor](https://network.pivotal.io/products/harbor-container-registry)
-  is needed to manage images in disconnected environments (and advisable for any production deployments).
-* [Docker](https://www.docker.com/)
-* The [PKS CLI](https://docs.pivotal.io/runtimes/pks/cli/index.html)
+* **PKS CLI:** For information about installing the PKS CLI,
+  see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
+* **Bazaar CLI:** For information about installing the Bazaar CLI, see [Install the Bazaar CLI](./installing.html#bazaar) .
+* **Helm CLI:** For information about installing the Helm CLI, see [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.
+* **PAS Deployment:** A running PAS deployment.
+* **PKS Cluster:** A running PKS cluster.
+* **Private Container Registry (optional):** You need this to manage container images in air-gapped environments.
+  Pivotal recommends using a private container registry in production deployments.
+  You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Docker (CLI):** See [Docker](https://www.docker.com/).
 
 ## <a id="limitations"></a>Limitations
 
-* Dedicated-instances created by the Kubernetes Service Manager for PCF provision
-  an IaaS load balancer for ingress into each instance.
+Dedicated service instances created by KSM for PCF provision
+an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP
+or NodePort for ingress.
 
 ## <a id="feedback"></a>Feedback
 
-If you have a feature request, questions, or information about a bug, please send an email to
-the [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io) list.
+If you have a feature request, questions, or information about an issue,
+send an email to [Kubernetes Service Manager for PCF Feedback](mailto:bazaar-feedback@pivotal.io).
 
 ## <a id='license'></a>License
 

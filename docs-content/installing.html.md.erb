@@ -3,105 +3,153 @@ title: Installing and Configuring Kubernetes Service Manager for PCF
 owner: ISM
 ---
 <strong><%= modified_date %></strong>
-This topic describes how to install and configure Kubernetes Service Manager for PCF
 
-##<a id='install'></a> Install and Configure Kubernetes Service Manager for PCF
+<%= partial ("beta-notice") %>
 
-To install the Kubernetes Service Manager for PCF file on the Ops Manager Installation Dashboard, do the following:
+This topic describes how to install and configure Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
 
-1. Download the product file from Pivotal Network.
+##<a id='bazaar'></a>  Install the Bazaar CLI
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+To install the Bazaar CLI, do the following:
 
-1. Under the **Import a Product** button, click **+** next to the version number of Kubernetes Service Manager for PCF.
+1. Log in and navigate to **Kubernetes Service Manager for PCF (KSM)** in 
+[Pivotal Network](https://network.pivotal.io/). 
+
+1. Click **Kubernetes Service Manager CLIs** and download the CLI for your operating system.
+
+1. Rename the downloaded binary file to `bazaar`.
+
+1. If you are using MacOS or Linux, 
+to make the Bazaar binary act as an executable file, run the following command :
+
+    <pre class="terminal">chmod +x bazaar</pre>
+
+1. Move the binary file into your `PATH`. 
+If you are using MacOS or Linux, to move the binary file into your `PATH`, run the following command:
+
+    <pre class="terminal">mv bazaar /usr/local/bin/bazaar</pre>
+
+##<a id='install'></a> Download and Install the Tile
+
+To add KSM for PCF to Ops Manager, do the following:
+
+1. Log in and download the Kubernetes Service Manager for PCF file from [Pivotal Network](https://network.pivotal.io/).
+
+1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
+
+1. Under **Import a Product**, click **+** next to the version number of KSM for PCF.
 This adds the tile to your staging area.
 
-1. Click the newly added **Kubernetes Service Manager for PCF** tile.
+1. Click the newly-added **Kubernetes Service Manager for PCF** tile to open its configuration panes.
 
-## Required Settings
+## <a id="configure"></a>Configure the Tile
+Follow the steps below to configure KSM for PCF service.
 
-### Assign AZs and Networks
 
- 1. Configure the fields on the **Assign AZs and Networks** as follows:
+###<a id='az-networks'></a> Configure AZs and Networks
+
+Follow the steps below to select an availability zone (AZ) to run the service broker and to select networks.
+
+ 1. Click **Assign AZs and Networks**
+
+ 1. Configure the fields as follows:
    <table>
      <tr><th>Field</th><th>Instructions</th></tr>
      <tr>
         <td><strong>Place singleton jobs in</strong></td>
-        <td>Select the region that you want for singleton VMs. This selection does not affect the Kubernetes Service Manager for PCF.</td>
+        <td>Select the AZ that you want the singleton VMs to run in.
+            This selection does not affect KSM for PCF.</td>
      </tr>
      <tr>
         <td><strong>Balance other jobs in</strong></td>
-        <td>Select additional region. This selection controls the regions in which Kubernetes Service Manager for PCF is deployed.</td>
+        <td>Select additional AZs.
+            This selection controls the regions in which KSM for PCF is deployed.</td>
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the network used for the Pivotal Application Service (PAS) or Elastic Runtime components.</td>
+        <td>Select the same network you use for the Pivotal Application Service (PAS) component VMs. 
+          To view the network PAS component VMs use, navigate to <strong>PCF Ops Manager</strong> > 
+          <strong>Pivotal Application Service (PAS)</strong> > <strong>Assign AZs and Networks</strong>. 
+        </td>
      </tr>
    </table>
-
-    <p class="note warning"><strong>WARNING</strong>: Changing the Network after you have configured them, or changing their IP configurations,
-       results in a failed deployment.
-       For more information, see <a href="./changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
+    <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
+       after they are assigned your deployment fails. For more information,
+       see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
 
  2. Click **Save**.
 
 
-### Kubernetes Service Manager for PCF Default Kubernetes Config
-Run  `pks get-credentials` to get values for following fields.
-To get more information visit the [PKS CLI docs](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html)
+### <a id="kubeconfig"></a> Configure Cluster Credentials
 
-1. **PEM encoded Cluster CA certificate**: Enter CA cert, This value begins with
+To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure default settings for your kubeconfig, do the following:
 
-    ```-----BEGIN CERTIFICATE-----```
+1. To retrieve your cluster credentials with the PKS CLI,
+   do the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
 
-    For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/)
+1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
+  + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
+  + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
+  + `token`. This value is found in the `context:user` section.
 
-1. **Kubernetes API endpoint**: Enter API endpoint,  For example https://<ip>:<port>
-1. **Cluster JWT token**: Enter token
+1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**.
 
-### Storage Configuration
-KSM requires S3 compatible storage to store the offered charts (and its cache). The platform operator is responsible for backing up this bucket.
+1. Configure the fields as follows:
+   <table class="nice">
+  <tr>
+  <th>Field</th>
+  <th>Instructions</th>
+  </tr>
+  <tr>
+    <td><strong>A base64 encoded PEM Cluster CA certificate</strong></td>
+    <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig.</td>
+  </tr>
+  <tr>
+    <td><strong>K8s API endpoint</strong></td>
+    <td>Enter the endpoint value of <code>server</code> in your kubeconfig. </td>
+  </tr>
+  <tr>
+    <td><strong>K8s API endpoint port</strong></td>
+    <td>Enter the port value of <code>server</code> in your kubeconfig.</td>
+  </tr>
+  <tr>
+    <td><strong>Token</strong></td>
+    <td>Enter the value of <code>token</code> in your kubeconfig. </td>
+  </tr>
+  </table>
 
-1. **Endpoint**: The s3 endpoint. This should not start with `http://`. For example:
-    * storage.googleapis.com
-    * s3-us-west-2.amazonaws.com
-1. **Region**: The region. This defaults to `us-east-1`. Some IaaS providers buckets don't require the region, for example, GCP's `Multi-Regional` will ignore this value.
-1. **Bucket Name**: The bucket name
-1. **Storage Prefix**: The folder. Objects are stored at the root of the bucket if this is left blank.
-1. **Access Key ID**: The access key.
-1. **Secret Access Key**: The secret.
+For more information about using kubeconfig files,
+see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
 
-* For GCP, [Cloud Storage interoperability](https://cloud.google.com/storage/docs/interoperability) is the way by which to expose
-an S3 compatible endpoint.
-* VMWare installations can use a tool like the [Minio tile](https://pivotal.io/platform/services-marketplace/data-management/minio).
+### <a id="container"></a> Configure Container Registry
 
-### Helm Configuration
-The `bazaar` CLI component of the Kubernetes Service Manager for PCF deploys Helm and Tiller into a PKS cluster.
+When you configure a private registry,
+KSM for PCF will install in an offline environment, and can modify your Helm charts to point to images in the private registry.
+Pivotal recommends using a private registry in production.
+You will obtain the following values from your container registry, such as Harbor.
 
-1. **Tiller Security Certificate**: Click on generate RSA certificate.  Enter a domain; the system domain will work. The actual value of domain does not matter
-    since this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
+To configure a private registry, do the following:
 
-1. **Helm Client Certificate**: Click on generate RSA certificate. Enter a domain; the system domain will work. The actual value of domain does not matter
-    since this is used for mutual TLS. This certificate used to authenticate Kubernetes Service Manager for PCF's internal components.
+1. Click **Container Registry Configuration**.
+1. Enter the **Registry Server URL**. This is the URL including your container registry hostname and project. For example, `gcr.io/myproject`.
+This is the location from which KSM will push and pull images.
+1. Enter the **Registry Username**. This is the username which KSM will use to push and pull images to the registry.
+1. Enter the **Registry Password**. This is the password which KSM will use to push and pull images to the registry.
 
-1. Click **Save**.
+### <a id="errands"></a>Errands
 
-### Container Registry Configuration
+The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from `cf marketplace`
+and deletes all associated service instances and bindings.
+This errand is disabled by default.
 
-When configured with a private registry, the product will transform the helm chart to point to images in private registry. It is advisable to use a private registry in production.
+### <a id="apply-changes"></a> Apply All Changes
 
-1. Enter the **Registry Server URL**
-1. Enter the **Registry Username**
-1. Enter the **Registry Password**
+To deploy KSM for PCF and apply your configurations, do the following:
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to install Kubernetes Service Manager for PCF.
+1. Navigate to the Ops Manager Installation Dashboard.
 
-### Errands
-**De-Registrar**
+1. If you are using Ops Manager v2.3 or later, click Review Pending Changes.
+   For more information about this Ops Manager page,
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
-Removes the pre-provisioned Kubernetes service from the Marketplace and
-**deletes all associated service instances and bindings**.
-
-### Resource Config
-
-For HA deployment, deploy Kubernetes Service Manager for PCF with two or more instances.
+1. Click **Apply Changes**.
