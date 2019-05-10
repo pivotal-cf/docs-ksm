@@ -81,15 +81,11 @@ do the following:
 1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images), below.
 1. Create environment variables for app consumption.
-   See [(Optional) Create Environment Variables](#env), below.
+   See [(Optional) Create Environment Variables for App Consumption](#env), below.
 1. Add the service offering to KSM for PCF.
    See [Add a Service Offering Kubernetes Service Manager for PCF](#add), below.
 1. Enable service offering access.
    See [Enable Service Offering Access](#enable), below.
-
-
-
-
 
 ###<a id='plans'></a> (Optional) Define Plans
 
@@ -196,7 +192,7 @@ To load your container images into a private registry, do the following:
     commands sequentially for your images and private registry.
 
 
-###<a id='env'></a> (Optional) Create Environment Variables
+###<a id='env'></a> (Optional) Create Environment Variables for App Consumption
 
 Apps running in PCF gain access to bound service instances through an environment
 variable credentials hash called `VCAP_SERVICES`. Libraries, like Spring Cloud
@@ -251,9 +247,16 @@ To create and test a `bind.yaml` file, do the following:
     your chart is deployed.
 
     For example:
-    <pre class="terminal">$
-
-      </pre>
+    <pre class="terminal">$ template-tester kube-system bind.yaml    
+      {
+       "hostname": "192.168.1.1",
+       "jdbcUrl": "jdbc:mysql<span>:</span>//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
+       "name": "kibosh-46588108-0ba5-47c0-ba97-bd76e33af0d1-grafana",
+       "password": "ab1cdeFgH3IJKLMN",
+       "port": 3306,
+       "uri": "mysql://root<span>:</span>ab1cdeFgH3IJKLMN@192.168.1.1:3306/my&#95;db?reconnect=true",
+       "username": "root"
+      }</pre>
 
 ### <a id="add"></a> Add a Service Offering to Kubernetes Service Manager for PCF
 
