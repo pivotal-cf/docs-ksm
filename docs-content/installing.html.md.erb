@@ -128,64 +128,37 @@ see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/doc
 
 ### <a id="storage"></a> Configure Storage
 
-KSM for PCF requires S3 compatible buckets to store offered charts and the chart cache.
-The operator is responsible for backing up this bucket with their IaaS provider.
+KSM for PCF requires S3 compatible buckets to store offered charts and the chart cache. 
+The operator is responsible for backing up this bucket with their IaaS provider. 
 
-If you are using Google Cloud Storage, you must generate a developer key. This developer
+If you are using a cloud storage provider that does not natively support S3 buckets, 
+you must configure your cloud storage to be compatible with S3 to use KSM for PCF. 
+See [Prerequisites](#storage-preq), below. 
+
+
+#### <a name="storage-preq"></a> Prerequisites
+
+To configure storage for KSM for PCF, you must do the following:
+
++ **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
+on your cloud storage provider. Pivotal recommends that this account be solely for KSM for PCF.
+You must apply a minimal policy that lets the user account upload backups to your S3 store. 
+The policy must give KSM for PCF permissions to list and upload buckets. 
+For instructions on how to create a policy and access key, see your provider's documentation.
+
++ **(Optional) If you are using a cloud storage provider that does not natively support S3 buckets, 
+you must configure your cloud storage to be S3 compatible:** If you are using Azure Blob Storage or Google Cloud 
+Storage (GCD), you can use the Minio for PCF title to do this.
+For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
+documentation.
+
++ **(Optional) If you are using Google Cloud Storage and are not using the Minio tile, you must generate a developer key:** This developer
 key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys)
 in the Google Cloud Storage documentation.
 
-If your PCF deployment is on vSphere, you can use the Minio for PCF title for storage.
-For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
-documentation.
-
-KSM for PCF accesses your S3 store through a user account.
-Pivotal recommends that this account be solely for KSM for PCF.
-You must apply a minimal policy that lets the user account upload backups to your S3 store.
-
 To configure storage, do the following:
-
-1. Create a policy for your KSM for PCF user account.
-
-    <br>Policy creation varies depending on the S3 provider.
-        Follow the relevant procedure to give KSM for PCF the following permissions:<br><br>
-      * List and upload to buckets
-      * (Optional) Create buckets in order to use buckets that do not already exist
-
-    For example, in AWS, to create a new custom policy,
-    go to **IAM** > **Policies** > **Create Policy** > **Create Your Own Policy**
-    and paste in the following permissions:
-
-      ```json
-        {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Sid": "ServiceBackupPolicy",
-              "Effect": "Allow",
-              "Action": [
-                "s3:ListBucket",
-                "s3:ListBucketMultipartUploads",
-                "s3:ListMultipartUploadParts",
-                "s3:CreateBucket",
-                "s3:PutObject"
-              ],
-              "Resource": [
-                "arn:aws:s3:::MY\_BUCKET\_NAME/*",
-                "arn:aws:s3:::MY\_BUCKET\_NAME"
-              ]
-            }
-          ]
-        }
-      ```
-
-1. (Recommended) Create a new user for KSM for PCF and record its
-    Access Key ID and Secret Access Key, the user credentials.
-
-1. Attach the policy you created to the AWS user account that KSM for
-  PCF uses to access S3 (**IAM** > **Policies** > **Policy Actions** > **Attach**).
 
 1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Storage Configuration**.
 
@@ -198,7 +171,7 @@ To configure storage, do the following:
     </tr>
     <tr>
       <td><strong>Endpoint</strong></td>
-      <td>Enter the s3 compatible endpoint URL for uploading backups. The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
+      <td>Enter the S3 compatible endpoint URL for uploading backups. The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
         <ul>
           <li><code>storage.googleapis.com</code></li>
           <li><code>s3-us-west-2.amazonaws.com</code></li>
