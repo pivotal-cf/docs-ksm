@@ -128,7 +128,7 @@ see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/doc
 
 ### <a id="storage"></a> Configure Storage
 
-KSM for PCF requires S3 compatible buckets to store offered charts and the chart cache. 
+KSM for PCF requires S3-compatible buckets to store offered charts and the chart cache. 
 The operator is responsible for backing up this bucket with their IaaS provider. 
 
 If you are using a cloud storage provider that does not natively support S3 buckets, 
@@ -171,7 +171,7 @@ To configure storage, do the following:
     </tr>
     <tr>
       <td><strong>Endpoint</strong></td>
-      <td>Enter the S3 compatible endpoint URL for uploading backups. The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
+      <td>Enter the S3-compatible endpoint URL for uploading backups. The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
         <ul>
           <li><code>storage.googleapis.com</code></li>
           <li><code>s3-us-west-2.amazonaws.com</code></li>
