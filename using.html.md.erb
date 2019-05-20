@@ -162,34 +162,17 @@ You need to load container images into a private registry if either of the follo
 
 You must load the images before a developer runs `cf create-service`.
 
-To load your container images into a private registry, do the following:
+To load your container images follow instructions for your specific registry.
+For example, you might use commands such as these: 
 
-1. To log in to your private registry, do one of the following:
-    + If you are using a Docker registry, run the following command:
+  ```
+  docker login [OPTIONS] [SERVER]
+  docker load [OPTIONS]
+  docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+  docker push [OPTIONS] NAME[:TAG]
+  ```
 
-        ```
-        docker login -u USERNAME -p PASSWORD PRIVATE-REGISTRY-URL
-        ```
-
-        Where:
-        + `USERNAME` is your Docker username.
-        + `PASSWORD` is is your Docker password.
-        + `PRIVATE-REGISTRY-URL` is your Docker private registry URL.
-    + If you are not using a Docker registry, see your registry provider for authentication instructions.
-
-1. To push your image to your private registry, run the following command:
-
-    ```
-    bazaar image push -r PRIVATE-REGISTRY-URL/REPOSITORY -d IMAGES-DIRECTORY
-    ```
-
-    Where:
-    + `PRIVATE-REGISTRY-URL/REPOSITORY` is the private registry URL for the container registry you
-    are using, for example `harbor.example.com/myproject`.
-    + `IMAGES-DIRECTORY` is the directory containing your TAR archive file of your images.
-
-    `bazaar image push` runs the `docker load`, `docker tag`, and `docker push`
-    commands sequentially for your images and private registry.
+[Docker CLI Reference](https://docs.docker.com/engine/reference/commandline/docker/). 
 
 
 ###<a id='env'></a> (Optional) Create Environment Variables for App Consumption
