@@ -163,16 +163,7 @@ You need to load container images into a private registry if either of the follo
 You must load the images before a developer runs `cf create-service`.
 
 To load your container images follow instructions for your specific registry.
-For example, you might use commands such as these: 
-
-  ```
-  docker login [OPTIONS] [SERVER]
-  docker load [OPTIONS]
-  docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
-  docker push [OPTIONS] NAME[:TAG]
-  ```
-
-[Docker CLI Reference](https://docs.docker.com/engine/reference/commandline/docker/). 
+Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client)
 
 
 ###<a id='env'></a> (Optional) Create Environment Variables for App Consumption
