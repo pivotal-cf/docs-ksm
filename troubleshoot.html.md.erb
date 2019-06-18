@@ -7,20 +7,23 @@ owner: ISM
 
 <strong><%= modified_date %></strong>
 
-This topic provides operators with basic instructions for troubleshooting Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
+This topic provides operators with basic instructions for troubleshooting
+Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
 
 ## <a id='issue-debugging'></a> Advanced Debugging
 Advanced debugging might require using the `helm` and `kubectl` CLIs.
 
-* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of Helm. Kubernetes Service Manager for PCF installs
-Tiller into a specific namespace, `kibosh`. To manually run Helm commands, log in to the Kubernetes
-cluster and include the namespace flag to talk the Kubernetes Service Manager for PCF's Helm `--tiller-namespace=kibosh`.
+* [Tiller](https://docs.helm.sh/glossary/#tiller) is the service side component of Helm.
+Kubernetes Service Manager for PCF installs Tiller into a specific namespace, `kibosh`.
+To manually run Helm commands, log in to the Kubernetes
+cluster and include the namespace flag to talk the
+Kubernetes Service Manager for PCF's Helm `--tiller-namespace=kibosh`.
 
 <%# <!-- TODO: mTLS credentials - need tile to test --> %>
 
 ##<a id='issue-name'></a> Name Length Issues
-Often, early versions of some charts don't sufficiently sufficiently truncate names. Creating an instance
-will fail immediately, with an error message including
+Often, early versions of some charts don't sufficiently sufficiently truncate names.
+Creating an instance will fail immediately, with an error message including
 
 * `must be no more than 63 characters`
 
