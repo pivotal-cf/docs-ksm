@@ -11,7 +11,7 @@ This topic describes how to use Kubernetes Service Manager (KSM) for PCF.
 
 ##<a id='using'></a> Overview
 
-KSM for PCF uses the `bazaar` CLI and a generic broker deployed by the tile.
+KSM for PCF uses the `ksm` CLI and a generic broker deployed by the tile.
 You can use KSM for PCF to do the following:
 
 + Offer on demand provisioning of a dedicated service instance for developers through `cf marketplace`.
@@ -250,7 +250,7 @@ your Helm chart directory:
 
 1. Navigate to the **Ops Manager Installation Dashboard** > **Kubernetes Service Manager for PCF** > **Credentials**.
 
-1. Retrieve your **Bazaar API Credentials** by clicking **Link to Credentials**.
+1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
 
 1. Record the values for `identity` and `password`.
 
@@ -258,7 +258,7 @@ your Helm chart directory:
 command:
 
     ```
-    bazaar -t http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
+    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
@@ -270,7 +270,7 @@ command:
 1. To ensure your offering has been saved to KSM for PCF, run the following command:
 
     ```
-    bazaar -t  http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
+    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
@@ -318,7 +318,7 @@ If you want to delete a service offering, do the following:
 1. To view the current service offerings available in KSM for PCF, run the following command:
 
     ```
-    bazaar -t  http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
+    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
@@ -331,7 +331,7 @@ If you want to delete a service offering, do the following:
 1. To delete a service offering, run the following command:
 
     ```
-    bazaar -t  http://bazaar.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
+    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
@@ -377,7 +377,7 @@ To install a Helm chart for a shared service instance or cluster add-on, do the 
     1. Click **Link to Credentials** next to Helm Client Certificate.
 
     1.  Record the `cert_pem` and `private_kep_pem` credential in local files.
-        You need the paths to these files for the `bazaar chart install` command
+        You need the paths to these files for the `ksm chart install` command
         and to configure TLS communication with Tiller.
 
     1. To retrieve the Ops Manager CA certificate,
@@ -400,7 +400,7 @@ To install a Helm chart for a shared service instance or cluster add-on, do the 
 1. To install a Helm chart for a shared instance service on a PKS cluster, run the following command:
 
     ```
-    bazaar chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
+    ksm chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
      --tls-cert HELM-CERT-FILE \
     --tls-key HELM-TLS-KEY-FILE --tls-ca-cert TILLER-TLS-CA-CERT-FILE
     ```

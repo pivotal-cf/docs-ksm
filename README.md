@@ -1,10 +1,10 @@
-docs-bazaar
+docs-ksm
 ==========
 
 Docs for Kubernetes Service Manager for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF)(Beta)
 
 ## Where is the book repository?
-https://github.com/pivotal-cf/docs-book-bazaar
+https://github.com/pivotal-cf/docs-book-ksm
 
 ## Which branch to use?
 
@@ -18,10 +18,10 @@ https://github.com/pivotal-cf/docs-book-bazaar
 ## Steps for local development
 ```
 $ git clone git@github.com:pivotal-cf/docs-layout-repo
-$ git clone git@github.com:pivotal-cf/docs-bazaar
-$ cd docs-bazaar && git checkout <branch> && cd -
-$ git clone git@github.com:pivotal-cf/docs-book-bazaar
-$ cd docs-book-bazaar
+$ git clone git@github.com:pivotal-cf/docs-ksm
+$ cd docs-ksm && git checkout <branch> && cd -
+$ git clone git@github.com:pivotal-cf/docs-book-ksm
+$ cd docs-book-ksm
 $ bundle install
 $ bundle exec bookbinder watch
 $ open http://127.0.0.1:XXXX/ksm/<branch>
@@ -35,6 +35,6 @@ This is a word list for terminology and word usage specific to the KSM for PCF d
 | Word | Explanation |
 |------|-------------|
 | KSM |Acronym for Kubernetes Service Manager|
-| Bazaar CLI | CLI component for Kubernates Service Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Kubernetes Service Manager CLIs or [OPERATIING-SYSTEM] for Bazaar, use Bazaar CLI.|
+| KSM CLI | CLI component for Kubernates Service Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Kubernetes Service Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
 
