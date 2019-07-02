@@ -38,3 +38,6 @@ This is a word list for terminology and word usage specific to the KSM for PCF d
 | KSM CLI | CLI component for Kubernates Service Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Kubernetes Service Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
 
+## Historical Note
+
+Previously, this repository was named docs-bazaar and the book repository was named docs-book-bazaar.
