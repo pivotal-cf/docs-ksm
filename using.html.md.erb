@@ -15,10 +15,6 @@ KSM for PCF uses the `ksm` CLI and a generic broker deployed by the tile.
 You can use KSM for PCF to do the following:
 
 + Offer on demand provisioning of a dedicated service instance for developers through `cf marketplace`.
-See [Use with Dedicated Service Instances](#dedicated) below.
-+ Install a Helm chart for a shared service instance or add-on.
-See [Use with Shared Instances and Add-ons](#shared-add-on) below.
-
 
 ###<a id="prereq"></a>Prerequisite
 
@@ -344,83 +340,3 @@ If you want to delete a service offering, do the following:
     <p class="note"><strong>Note:</strong> If you only have one service offering in KSM for PCF, you
       cannot delete it.</p>
 
-
-##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
-Shared service instances and add-ons are installed directly onto a PKS cluster.
-These services are not automatically available to a PAS developer through `cf marketplace`.
-
-To install a Helm chart for a shared service instance or cluster add-on, do the following:
-
-1. To log in to the PKS cluster, run the following command:
-
-    ```
-    pks login -a PKS-API -u USERNAME -p PASSWORD
-    ```
-
-    Where:
-    + `PKS-API` is the domain name for the PKS API entered in **Ops Manager >
-       Pivotal Container Service > PKS API > API Hostname (FQDN)**.
-       For example: `api.pks.example.com`.
-    + `USERNAME` is the username you created in
-    [Grant Enterprise PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
-    + `PASSWORD` is the password you created in
-    [Grant Enterprise PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
-       If you do not provide a password, the CLI prompts for the password interactively.
-       Pivotal recommends that you run the login command without the `-p` flag for added security.
-
-    <p class="note"><strong>Note:</strong> If you are using self-signed certificates, you can include the <code>-k</code> flag</p>
-
-1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
-
-    1. Navigate to the **Ops Manager Installation Dashboard > Kubernetes Service Manager > Credentials**.
-
-    1. Click **Link to Credentials** next to Helm Client Certificate.
-
-    1.  Record the `cert_pem` and `private_kep_pem` credential in local files.
-        You need the paths to these files for the `ksm chart install` command
-        and to configure TLS communication with Tiller.
-
-    1. To retrieve the Ops Manager CA certificate,
-    download the certificate from `https://OPS-MAN-FQDN/download_root_ca_cert`.
-
-      <p class="note"><strong>Note:</strong> You can also use the following environment variables to
-        set up the file paths for TLS configuration:
-         <code>HELM\_CERT\_FILE</code>, <code>HELM\_TLS\_KEY\_FILE</code>,
-         and <code>TILLER\_TLS\_CA\_CERT\_FILE</code>.</p>
-
-1. To package your Helm chart, run the following command from the root level of your Helm chart directory:
-
-      ```
-      helm package .
-      ```
-
-      Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm
-      chart directory.
-
-1. To install a Helm chart for a shared instance service on a PKS cluster, run the following command:
-
-    ```
-    ksm chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
-     --tls-cert HELM-CERT-FILE \
-    --tls-key HELM-TLS-KEY-FILE --tls-ca-cert TILLER-TLS-CA-CERT-FILE
-    ```
-
-    Where:
-    + `CHART-DIRECTORY` is the file directory for your Helm chart.
-    + `PKS-CLUSTER` is the cluster you configured when you installed the Kubernetes Service Manager tile.
-    + `SERVICE-NAME` is the name of the service you want to create.
-    + `HELM-CERT-FILE` is the path to the TLS client certificate file with the `cert_pem` credential
-    you obtained in step 2c.
-    + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential
-    you obtained in step 2c.
-    + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA
-    certificate you obtained in 2d.
-
-    <p class="note"><strong>Note:</strong> If you want to override default Helm chart values with custom
-      values, run the above command with <code>-f values.yaml</code>. You configure custom values in
-      <code>values.yaml</code>. For examples of modified <code>values.yaml</code> files,
-      see <a href="https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts">kibosh-sample</a>
-      in GitHub.</p>
-
-    After your Helm chart is installed, KSM for PCF outputs
-    information about the new service. The output depends on the Helm chart you are installing.

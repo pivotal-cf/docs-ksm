@@ -141,13 +141,13 @@ See [Prerequisites](#storage-preq), below.
 To configure storage for KSM for PCF, you must do the following:
 
 + **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
-on your cloud storage provider. Pivotal recommends that this account be solely for KSM for PCF.
-You must apply a minimal policy that lets the user account upload backups to your S3 store. 
+on your cloud storage provider. Pivotal recommends that this account be solely by KSM for PCF.
+You should apply a minimal policy that lets the user account upload backups to your S3 store. 
 The policy must give KSM for PCF permissions to list and upload buckets. 
 For instructions on how to create a policy and access key, see your provider's documentation.
 
 + **If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to be S3 compatible:** If you are using Azure Blob Storage or Google Cloud 
+you must configure your cloud storage to an S3 compatible alternative:** If you are using Azure Blob Storage or Google Cloud 
 Storage (GCS), you can use the Minio for PCF title to do this.
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
@@ -178,7 +178,6 @@ To configure storage, do the following:
         </ul>
         </td>
       </tr>
-
       <tr>
         <td><strong>Region</strong></td>
         <td> Enter the region where your bucket is located.
@@ -187,28 +186,22 @@ To configure storage, do the following:
           For example, Google Cloud Platform Multi-Regional Storage ignores this value.
         </td>
       </tr>
-
       <tr>
         <td><strong>Bucket Name</strong></td>
         <td>Enter the name of your bucket.</td>
       </tr>
-
-      <tr>
-        <td><strong>Storage Prefix</strong></td>
-        <td> Enter the path in the bucket to store backups. If this is left blank,
-           objects are stored at the root of the bucket.</td>
-      </tr>
-
       <tr>
         <td><strong>Access Key ID</strong></td>
         <td>Enter the S3 Access Key ID.</td>
       </tr>
-
       <tr>
         <td><strong>Secret Access Key</strong></td>
         <td>Enter the Secret Access Key.</td>
       </tr>
-
+      <tr>
+        <td><strong>Skip SSL Validation</strong></td>
+        <td>Use this to skip validation in environments with things like self-signed certificates for the storage provider. Do not toggle on in production.</td>
+      </tr>
     </table>
 
 ### <a id="container"></a> Configure Container Registry
@@ -230,7 +223,7 @@ This is the location from which KSM will push and pull images.
 ### <a id="errands"></a>Errands
 
 The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from `cf marketplace`
-and deletes all associated service instances and bindings.
+and **deletes all associated service instances and bindings**.
 This errand is disabled by default.
 
 ### <a id="apply-changes"></a> Apply All Changes
