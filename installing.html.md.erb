@@ -97,7 +97,38 @@ default settings for your kubeconfig, do the following:
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
   + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
-  + `token`. This value is found in the `context:user` section.
+
+1. Create a [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-vs-service-accounts)
+with the `cluster-admin` role for KSM to use in the cluster.
+With KSM's cluster targeted, run the following shell commands to create a service account and get its token.
+
+```bash
+cat <<EOF | kubectl apply -f -
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ksm-admin
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: ksm-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: ksm-admin
+    namespace: kube-system
+EOF
+
+secret_name=$(kubectl get serviceaccount ksm-admin --namespace=kube-system -o jsonpath='{.secrets[0].name}')
+secret_val=$(kubectl --namespace=kube-system get secret $secret_name -o jsonpath='{.data.token}')
+echo ${secret_val} | base64 --decode
+```
 
 1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**.
 
@@ -121,7 +152,7 @@ default settings for your kubeconfig, do the following:
   </tr>
   <tr>
     <td><strong>Token</strong></td>
-    <td>Enter the value of <code>token</code> in your kubeconfig. </td>
+    <td>Enter the value of <code>token</code> from for `ksm-admin` service account.</td>
   </tr>
   </table>
 
