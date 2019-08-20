@@ -74,6 +74,8 @@ do the following:
 
 2. Define plans if you want to offer customized plans and override the default values.
    See [(Optional) Define Plans](#plans), below.
+1. Configure templating for the `values.yaml` file. See [(Optional) Value Templating](#values-templating), below.
+1. Deploy multiple charts or use cluster-scoped Operators. See [(Optional) Multiple Charts](#multiple-charts), below.
 1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images), below.
 1. Create environment variables for app consumption.
@@ -147,7 +149,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
 [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 
-###<a id='plans'></a> (Optional) Value Templating
+###<a id='values-templating'></a> (Optional) Value Templating
 Helm uses the `values.yaml` as the concrete set of substitutions needed to create a release.
 KSM is treating the values themselves as a template for multiple releases.
 Due to this slight conceptual mismatch, there are some scenarios where the values file itself
@@ -169,6 +171,39 @@ ingress:
   - name: "{{ .Release.Name }}.example.com"
 ...
 ```
+
+The plan specific values files also will go through the template engine.
+
+###<a id='multiple-charts'></a> (Optional) Multiple Charts
+KSM understands just a single Helm chart uploaded via the command line. It's also possible, though, for a marketplace
+offering to consist of multiple charts. A couple scenarios where this makes sense are:
+* A cluster-scoped operator/controller where the individual charts are customer resources
+* A namespace scoped operator chart plus a chart that represents the custom resource
+* A service made up of multiple charts, for example, a data service and a monitoring service
+
+To have an offering consist of multiple charts, include a yaml descriptor with the upload. For example:
+
+```yaml
+marketplace-name: my-dataservice
+charts:
+  - chart: my-operator
+    offered: false
+    scope: cluster
+  - chart: my-custom-resource
+    offered: true
+    scope: namespace
+```
+
+The `marketplace-name` is what will show up in `cf marketplace`.
+
+The `charts` are an ordered list of charts. Each chart has a scope. The `scope` has two valid options:
+* `cluster` - choosing this will deploy the chart just once on a cluster. Subsequent service instances created on
+the same Kubernetes cluster won't cause a cluster scoped chart to be deployed additional times.
+This scope is useful for operators and controllers that manage multiple instances from a single deployment.
+* `namespace` - choosing this results in the chart being deployed for every service creation.
+
+Each chart also has an `offered` key. Only a single chart can have be `offered` set to `true`, and that chart must have `scope` of `namespace`. The
+offered chart conceptually represents the service the user would like to bind to, though more resources can be exposed back on a bind.
 
 ###<a id='images'></a> (Optional) Load Container Images
 
