@@ -147,6 +147,29 @@ If you want to override the default settings in `values.yaml` and offer custom p
 [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 
+###<a id='plans'></a> (Optional) Value Templating
+Helm uses the `values.yaml` as the concrete set of substitutions needed to create a release.
+KSM is treating the values themselves as a template for multiple releases.
+Due to this slight conceptual mismatch, there are some scenarios where the values file itself
+needs to go through the templating engine.
+Some examples where this might make sense are:
+* Ingress Controller (hosts)
+* A unique name (in addition to the release name) in the chart
+
+To solve this (and to not require the `cf marketplace` to always supply such values), we're running
+the _values_ themselves through the templating engine first. For example,
+in a chart with ingress hosts, one could use the release name as the unique subdomain discriminator in the ingress
+definition:
+
+```yaml
+...
+ingress:
+  enabled: true
+  hosts:
+  - name: "{{ .Release.Name }}.example.com"
+...
+```
+
 ###<a id='images'></a> (Optional) Load Container Images
 
 You need to load container images into a private registry if either of the following apply:
