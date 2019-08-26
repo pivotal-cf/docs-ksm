@@ -98,9 +98,9 @@ default settings for your kubeconfig, do the following:
   + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
-1. Create a [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-vs-service-accounts)
+1. Create a dedicated [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-vs-service-accounts)
 with the `cluster-admin` role for KSM to use in the cluster.
-With KSM's cluster targeted, run the following shell commands to create a service account and get its token.
+With KSM's cluster targeted, run the following shell commands to create a service account and record the token.
 
 ```bash
 cat <<EOF | kubectl apply -f -
@@ -152,7 +152,7 @@ echo ${secret_val} | base64 --decode
   </tr>
   <tr>
     <td><strong>Token</strong></td>
-    <td>Enter the value of <code>token</code> from for `ksm-admin` service account.</td>
+    <td>Enter the value of <code>token</code> from the `ksm-admin` service account just created.</td>
   </tr>
   </table>
 
