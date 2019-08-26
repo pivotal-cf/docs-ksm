@@ -175,14 +175,14 @@ See [Prerequisites](#storage-preq), below.
 To configure storage for KSM for PCF, you must do the following:
 
 + **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
-on your cloud storage provider. Pivotal recommends that this account be solely by KSM for PCF.
+on your cloud storage provider. Pivotal recommends that this account only be used by KSM for PCF.
 You should apply a minimal policy that lets the user account upload backups to your S3 store. 
 The policy must give KSM for PCF permissions to list and upload buckets. 
 For instructions on how to create a policy and access key, see your provider's documentation.
 
 + **If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to an S3 compatible alternative:** If you are using Azure Blob Storage or Google Cloud 
-Storage (GCS), you can use the Minio for PCF tile to do this.
+you must configure your cloud storage to an S3 compatible alternative:**
+You may use the Minio for PCF tile to add the S3 interface to Azure Blob Storage or Google Cloud Storage (GCS).
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
 
