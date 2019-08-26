@@ -12,8 +12,6 @@ This topic describes how to install and configure Kubernetes Service Manager
 ##<a id='ksm'></a>  Install the KSM CLI
 
 To install the KSM CLI, do the following:
-1. Choose a foundation in which [Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
-has been installed. KSM registers itself with the PAS marketplace and therefore needs an environment with it installed.
 
 1. Log in and navigate to **Kubernetes Service Manager for PCF (KSM)** in
 [Pivotal Network](https://network.pivotal.io/).
@@ -39,7 +37,10 @@ To add KSM for PCF to Ops Manager, do the following:
 1. Log in and download the Kubernetes Service Manager for PCF file from
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product**
+1. Choose a foundation in which [Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
+has been installed. KSM registers itself with the PAS marketplace and therefore needs an environment with it installed.
+
+1. Navigate to the Ops Manager Installation Dashboard for that foundation and click **Import a Product**
 to upload the product file.
 
 1. Under **Import a Product**, click **+** next to the version number of KSM for PCF.
@@ -181,7 +182,7 @@ For instructions on how to create a policy and access key, see your provider's d
 
 + **If you are using a cloud storage provider that does not natively support S3 buckets, 
 you must configure your cloud storage to an S3 compatible alternative:** If you are using Azure Blob Storage or Google Cloud 
-Storage (GCS), you can use the Minio for PCF title to do this.
+Storage (GCS), you can use the Minio for PCF tile to do this.
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
 
