@@ -1,16 +1,16 @@
 ---
-title: Kubernetes Service Manager for PCF (Beta)
+title: Container Service Manager for Pivotal Platform (Beta)
 owner: Platform Engineering (KSM Team)
 ---
 
 <strong><%= modified_date %></strong>
 
 <%= partial ("beta-notice") %>
-This topic is an overview of Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
+This topic is an overview of Container Service Manager (KSM) for Pivotal Platform.
 
 ## <a id='overview'></a>Overview
 
-KSM for PCF enables operators
+KSM for Pivotal Platform enables operators
 to provide application developers with access to services through the `cf marketplace`.
 These services run on Enterprise Pivotal Container Service (Enterprise PKS) for consumption by
 Pivotal Application Services (PAS) apps.
@@ -20,25 +20,26 @@ see [Pivotal Cloud Foundry Developer Guide](https://docs.pivotal.io/pivotalcf/2-
 For more information about Enterprise PKS,
 see [Enterprise Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
-KSM for PCF enables operators to do the following:
+KSM for Pivotal Platform enables platform operators to do the following:
 
 * Offer an ISV or open source Helm chart as an on-demand service to PAS developers.
 
-KSM for PCF enables app developers to do the following:
+KSM for Pivotal Platform enables application developers to do the following:
 
 * Provision dedicated service instances onto a PKS cluster through the `cf marketplace`.
 * Consume services running on Enterprise PKS in apps running on PAS.
 
 ## <a id='features'></a> Key Features
 
-KSM for PCF includes the following key features:
+KSM for Pivotal Platform includes the following key features:
 
 * A service broker that provisions dedicated service instances into a PKS cluster and binds service instances to PAS apps.
 * A command line interface (CLI) for managing said service offerings.
+* Easily create and manage a catalog of services offered through KSM to the `cf marketplace`.
 
 ## <a id="snapshot"></a>Product Snapshot
 
-The following table provides version and version-support information about KSM for PCF.
+The following table provides version and version-support information about KSM for Pivotal Platform.
 
 <table class="nice">
     <th>Element</th>
@@ -98,13 +99,13 @@ KSM for PCF requires the following:
 
 ## <a id="limitations"></a>Limitations
 
-Dedicated service instances created by KSM for PCF provision
+Dedicated service instances created by KSM for Pivotal Platform provision
 an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP for ingress.
 
 ## <a id="feedback"></a>Feedback
 
 If you have a feature request, questions, or information about an issue,
-send an email to [Kubernetes Service Manager for PCF Feedback](mailto:ksm-feedback@pivotal.io).
+send an email to [Container Service Manager for Pivotal Platform Feedback](mailto:ksm-feedback@pivotal.io).
 
 ## <a id='license'></a>License
 
