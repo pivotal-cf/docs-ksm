@@ -6,40 +6,39 @@ owner: Platform Engineering (KSM Team)
 <strong><%= modified_date %></strong>
 
 <%= partial ("beta-notice") %>
-This topic is an overview of Container Service Manager (KSM) for Pivotal Platform.
+This topic is an overview of  <%= vars.product_full %>.
 
 ## <a id='overview'></a>Overview
 
-KSM for Pivotal Platform enables operators
+ <%= vars.product_short %> enables operators
 to provide application developers with access to services through the `cf marketplace`.
-These services run on Enterprise Pivotal Container Service (Enterprise PKS) for consumption by
-Pivotal Application Services (PAS) apps.
+These services run on Enterprise Pivotal Container Service (Enterprise PKS) for consumption by Pivotal Application Services (PAS) apps.
 
 For more information about the `cf marketplace`,
 see [Pivotal Cloud Foundry Developer Guide](https://docs.pivotal.io/pivotalcf/2-5/devguide/index.html).
 For more information about Enterprise PKS,
 see [Enterprise Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
-KSM for Pivotal Platform enables platform operators to do the following:
+<%= vars.product_short %> enables platform operators to do the following:
 
 * Offer an ISV or open source Helm chart as an on-demand service to PAS developers.
 
-KSM for Pivotal Platform enables application developers to do the following:
+<%= vars.product_short %> enables app developers to do the following:
 
 * Provision dedicated service instances onto a PKS cluster through the `cf marketplace`.
 * Consume services running on Enterprise PKS in apps running on PAS.
 
 ## <a id='features'></a> Key Features
 
-KSM for Pivotal Platform includes the following key features:
+<%= vars.product_short %> includes the following key features:
 
 * A service broker that provisions dedicated service instances into a PKS cluster and binds service instances to PAS apps.
-* A command line interface (CLI) for managing said service offerings.
-* Easily create and manage a catalog of services offered through KSM to the `cf marketplace`.
+* A command line interface (CLI) for managing service offerings.
+* The ability to easily create and manage a catalog of services to the `cf marketplace`.
 
 ## <a id="snapshot"></a>Product Snapshot
 
-The following table provides version and version-support information about KSM for Pivotal Platform.
+The following table provides version and version-support information about <%= vars.product_short %>:
 
 <table class="nice">
     <th>Element</th>
@@ -84,12 +83,12 @@ The following table provides version and version-support information about KSM f
 
 ## <a id="reqs"></a>Requirements
 
-KSM for PCF requires the following:
+<%= vars.product_short %> requires the following:
 
 * **PKS CLI:** For information about installing the PKS CLI,
   see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
 * **KSM CLI:** For information about installing the KSM CLI, see [Install the KSM CLI](./installing.html#ksm) .
-* **PAS Deployment:** A running PAS deployment, on the same foundation in which KSM is being installed.
+* **PAS Deployment:** A running PAS deployment that is installed on the same foundation as <%= vars.product_short %>.
 * **PKS Cluster:** A running PKS cluster.
 * **Private Container Registry (optional):** You need this to manage container images in air-gapped environments.
   Pivotal recommends using a private container registry in production deployments.
@@ -99,13 +98,13 @@ KSM for PCF requires the following:
 
 ## <a id="limitations"></a>Limitations
 
-Dedicated service instances created by KSM for Pivotal Platform provision
+Dedicated service instances created by <%= vars.product_short %> provision
 an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP for ingress.
 
 ## <a id="feedback"></a>Feedback
 
 If you have a feature request, questions, or information about an issue,
-send an email to [Container Service Manager for Pivotal Platform Feedback](mailto:ksm-feedback@pivotal.io).
+send an email to [<%= vars.product_full %> Feedback](mailto:ksm-feedback@pivotal.io).
 
 ## <a id='license'></a>License
 
