@@ -14,13 +14,10 @@ This topic describes how to use Kubernetes Service Manager (KSM) for PCF.
 KSM for PCF uses the `ksm` CLI and a generic broker deployed by the tile.
 You can use KSM for PCF to do the following:
 
-+ Offer on demand provisioning of a dedicated service instance for developers through `cf marketplace`.
-See [Use with Dedicated Service Instances](#dedicated) below.
-+ Install a Helm chart for a shared service instance or add-on.
-See [Use with Shared Instances and Add-ons](#shared-add-on) below.
++ Offer on-demand provisioning of a dedicated service instance for developers through `cf marketplace`.
++ Curate a dynamic catalog of services with customizable plans, deployable onto multiple clusters.
 
-
-###<a id="prereq"></a>Prerequisite
+###<a id="prereq"></a>Prerequisites
 
 Before you use KSM for PCF, you must do the following:
 
@@ -28,6 +25,12 @@ Before you use KSM for PCF, you must do the following:
 Each Helm chart most likely needs some service configuration.
 1. Configure your Helm chart to be compatible with KSM for PCF.
 See [Configure your Helm Chart](#config-helm)
+1. Configure Additional Customization (as-needed) See [Configure Additional Customization](#config-additional)
+1. Add the service offering to KSM for PCF.
+   See [Add a Service Offering Kubernetes Service Manager for PCF](#add), below.
+1. Enable service offering access.
+   See [Enable Service Offering Access](#enable), below.
+
 
 ###<a id='config-helm'></a> Configure your Helm Chart
 
@@ -62,7 +65,7 @@ For examples of Kubernetes compatible charts,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 
-## <a id='dedicated'></a> Use with Dedicated Service Instances
+### <a id='config-additional'></a> Configure Additional Customization for use with Dedicated Service Instances
 
 Dedicated instances are provided through a service broker installed by the Kubernetes Service Manager
 for PCF tile.
@@ -78,14 +81,13 @@ do the following:
 
 2. Define plans if you want to offer customized plans and override the default values.
    See [(Optional) Define Plans](#plans), below.
+1. Configure templating for the `values.yaml` file. See [(Optional) Value Templating](#values-templating), below.
+1. Deploy multiple charts or use cluster-scoped Kubernetes Operators. See [(Optional) Multiple Charts](#multiple-charts), below.
 1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images), below.
 1. Create environment variables for app consumption.
    See [(Optional) Create Environment Variables for App Consumption](#env), below.
-1. Add the service offering to KSM for PCF.
-   See [Add a Service Offering Kubernetes Service Manager for PCF](#add), below.
-1. Enable service offering access.
-   See [Enable Service Offering Access](#enable), below.
+
 
 ###<a id='plans'></a> (Optional) Define Plans
 
@@ -147,9 +149,66 @@ If you want to override the default settings in `values.yaml` and offer custom p
       file: "medium.yaml"
     ```
 
-      For example charts that have been configured for KSM, see
+      For example charts that have been configured for KSM for Pivotal Platform, see
 [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
+
+###<a id='values-templating'></a> (Optional) Value Templating
+Helm uses the `values.yaml` as the concrete set of substitutions needed to create a release.
+KSM is treating the values themselves as a template for multiple releases.
+Due to this slight conceptual mismatch, there are some scenarios where the values file itself
+needs to go through the templating engine.
+
+Some scenarios in charts where this might make sense are:
+* When the chart uses Ingress Controller (hosts)
+* When there is a unique name (in addition to the release name) required in the chart
+
+KSM for Pivotal Platform runs the _values_ themselves through the templating engine. 
+For example, in a chart with ingress hosts, one could use the release name as the unique 
+subdomain discriminator in the ingress definition:
+
+```yaml
+...
+ingress:
+  enabled: true
+  hosts:
+  - name: "{{ .Release.Name }}.example.com"
+...
+```
+
+The plan-specific values files also will go through the templating engine.
+
+###<a id='multiple-charts'></a> (Optional) Multiple Charts
+KSM understands just a single Helm chart uploaded via the command line. It's also possible, though, for a marketplace
+offering to consist of multiple charts. A couple scenarios where this makes sense are:
+* A cluster-scoped operator/controller where the individual charts are custom resources
+* A namespace scoped operator chart with another chart that represents the custom resource
+* A service made up of multiple charts (e.g. a data service and a monitoring service)
+
+To have an offering consist of multiple charts, include a yaml descriptor, as shown in the example below, with the 
+upload (`ksm offer save`).
+
+```yaml
+marketplace-name: my-dataservice
+charts:
+  - chart: my-operator
+    offered: false
+    scope: cluster
+  - chart: my-custom-resource
+    offered: true
+    scope: namespace
+```
+
+The `marketplace-name` is what will show up in `cf marketplace`.
+
+The `charts` are an ordered list of charts. Each chart has a scope. The `scope` has two valid options:
+* `cluster` - choosing this will deploy the chart just once on a cluster. Subsequent service instances created on
+the same Kubernetes cluster won't cause a cluster scoped chart to be deployed additional times.
+This scope is useful for operators and controllers that manage multiple instances from a single deployment.
+* `namespace` - choosing this results in the chart being deployed for every service creation.
+
+Each chart also has an `offered` key. Only a single chart can have be `offered` set to `true`, and that chart must have `scope` of `namespace`. The
+offered chart conceptually represents the service the user would like to bind to, though more resources can be exposed via bind.
 
 ###<a id='images'></a> (Optional) Load Container Images
 
@@ -168,7 +227,7 @@ Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_g
 
 ###<a id='env'></a> (Optional) Create Environment Variables for App Consumption
 
-Apps running in PCF gain access to bound service instances through an environment
+Apps running in PAS gain access to bound service instances through an environment
 variable credentials hash called `VCAP_SERVICES`. Libraries, like Spring Cloud
 Cloud Foundry Connector,
 automatically support services if their credentials in `VCAP_SERVICES` are formatted
@@ -205,8 +264,8 @@ To create and test a `bind.yaml` file, do the following:
         username: "root"
       }
     ```
-    <p class="note"><strong>Note:</strong> The values of <code>$.services</code> and <code>$.secrets</code>
-      are returned by Kubernetes.</p>
+    <p class="note"><strong>Note:</strong> The values of <code>$.services</code> and <code>$.secrets</code> 
+        come from the namespace in which the chart is deployed</p>
 
 1. Download the `template-tester` binary from
 [kibosh](https://github.com/cf-platform-eng/kibosh/releases/latest) in GitHub.
@@ -313,21 +372,6 @@ To enable access to your service offering, do the following:
 
 ### <a id="delete"></a> Delete a Service Offering
 
-If you want to delete a service offering, do the following:
-
-1. To view the current service offerings available in KSM for PCF, run the following command:
-
-    ```
-    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step 3 of
-    [Add a Service Offering to Kubernetes Service Manager for PCF](#add) above.
-    + `PASSWORD` is the value of `password` you recorded in step 3 of
-    [Add a Service Offering to Kubernetes Service Manager for PCF](#add) above.
-
-
 1. To delete a service offering, run the following command:
 
     ```
@@ -344,83 +388,3 @@ If you want to delete a service offering, do the following:
     <p class="note"><strong>Note:</strong> If you only have one service offering in KSM for PCF, you
       cannot delete it.</p>
 
-
-##<a id='shared-add-on'></a> Use with Shared Instances and Add-ons
-Shared service instances and add-ons are installed directly onto a PKS cluster.
-These services are not automatically available to a PAS developer through `cf marketplace`.
-
-To install a Helm chart for a shared service instance or cluster add-on, do the following:
-
-1. To log in to the PKS cluster, run the following command:
-
-    ```
-    pks login -a PKS-API -u USERNAME -p PASSWORD
-    ```
-
-    Where:
-    + `PKS-API` is the domain name for the PKS API entered in **Ops Manager >
-       Pivotal Container Service > PKS API > API Hostname (FQDN)**.
-       For example: `api.pks.example.com`.
-    + `USERNAME` is the username you created in
-    [Grant Enterprise PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
-    + `PASSWORD` is the password you created in
-    [Grant Enterprise PKS Access to a User](https://docs.pivotal.io/runtimes/pks/manage-users.html#uaa-user).
-       If you do not provide a password, the CLI prompts for the password interactively.
-       Pivotal recommends that you run the login command without the `-p` flag for added security.
-
-    <p class="note"><strong>Note:</strong> If you are using self-signed certificates, you can include the <code>-k</code> flag</p>
-
-1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
-
-    1. Navigate to the **Ops Manager Installation Dashboard > Kubernetes Service Manager > Credentials**.
-
-    1. Click **Link to Credentials** next to Helm Client Certificate.
-
-    1.  Record the `cert_pem` and `private_kep_pem` credential in local files.
-        You need the paths to these files for the `ksm chart install` command
-        and to configure TLS communication with Tiller.
-
-    1. To retrieve the Ops Manager CA certificate,
-    download the certificate from `https://OPS-MAN-FQDN/download_root_ca_cert`.
-
-      <p class="note"><strong>Note:</strong> You can also use the following environment variables to
-        set up the file paths for TLS configuration:
-         <code>HELM\_CERT\_FILE</code>, <code>HELM\_TLS\_KEY\_FILE</code>,
-         and <code>TILLER\_TLS\_CA\_CERT\_FILE</code>.</p>
-
-1. To package your Helm chart, run the following command from the root level of your Helm chart directory:
-
-      ```
-      helm package .
-      ```
-
-      Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm
-      chart directory.
-
-1. To install a Helm chart for a shared instance service on a PKS cluster, run the following command:
-
-    ```
-    ksm chart install -d CHART-DIRECTORY -c PKS-CLUSTER -n SERVICE-NAME \
-     --tls-cert HELM-CERT-FILE \
-    --tls-key HELM-TLS-KEY-FILE --tls-ca-cert TILLER-TLS-CA-CERT-FILE
-    ```
-
-    Where:
-    + `CHART-DIRECTORY` is the file directory for your Helm chart.
-    + `PKS-CLUSTER` is the cluster you configured when you installed the Kubernetes Service Manager tile.
-    + `SERVICE-NAME` is the name of the service you want to create.
-    + `HELM-CERT-FILE` is the path to the TLS client certificate file with the `cert_pem` credential
-    you obtained in step 2c.
-    + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential
-    you obtained in step 2c.
-    + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA
-    certificate you obtained in 2d.
-
-    <p class="note"><strong>Note:</strong> If you want to override default Helm chart values with custom
-      values, run the above command with <code>-f values.yaml</code>. You configure custom values in
-      <code>values.yaml</code>. For examples of modified <code>values.yaml</code> files,
-      see <a href="https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts">kibosh-sample</a>
-      in GitHub.</p>
-
-    After your Helm chart is installed, KSM for PCF outputs
-    information about the new service. The output depends on the Helm chart you are installing.

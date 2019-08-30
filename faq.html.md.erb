@@ -1,0 +1,26 @@
+---
+title: Kubernetes Service Manager for PCF (Beta)
+owner: Platform Engineering (KSM Team)
+---
+
+<strong><%= modified_date %></strong>
+
+<%= partial ("beta-notice") %>
+This topic is a list of Frequently Asked Questions about Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
+
+## <a id='display'></a>How will a service display in the CF marketplace?
+
+When using a single helm chart, with neither `ksm.yaml` nor `plans.yaml` included:
+* Service name: The service name is `name` from the chart's `Chart.yaml`.
+* Service description: is the value of the field `description` from the chart's `Chart.yaml` file.
+* Plans: One plan will be offered, named `default`, which simply uses the helm chart's default values.
+
+When a `ksm.yaml` file is included when uploading the chart:
+* Service name: The service name is `marketplace-name` from the `ksm.yaml`.
+* Service description: No effect.
+* Plans: No effect.
+
+When a `plans.yaml` file is included:
+* Service name: No effect.
+* Service description: is the value of the field `description` from `plans.yaml` for each plan included.
+* Plans: Each plan listed in `plans.yaml` will be offered with the service. The `name` fields from `plans.yaml` will be used for plan names.

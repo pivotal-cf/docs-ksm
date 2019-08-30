@@ -37,7 +37,10 @@ To add KSM for PCF to Ops Manager, do the following:
 1. Log in and download the Kubernetes Service Manager for PCF file from
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product**
+1. Choose a foundation in which [Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
+has been installed. KSM registers itself with the PAS marketplace and therefore needs an environment with it installed.
+
+1. Navigate to the Ops Manager Installation Dashboard for that foundation and click **Import a Product**
 to upload the product file.
 
 1. Under **Import a Product**, click **+** next to the version number of KSM for PCF.
@@ -95,7 +98,38 @@ default settings for your kubeconfig, do the following:
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
   + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
-  + `token`. This value is found in the `context:user` section.
+
+1. Create a dedicated [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-vs-service-accounts)
+with the `cluster-admin` role for KSM to use in the cluster.
+With KSM's cluster targeted, run the following shell commands to create a service account and record the token.
+
+```bash
+cat <<EOF | kubectl apply -f -
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ksm-admin
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: ksm-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: ksm-admin
+    namespace: kube-system
+EOF
+
+secret_name=$(kubectl get serviceaccount ksm-admin --namespace=kube-system -o jsonpath='{.secrets[0].name}')
+secret_val=$(kubectl --namespace=kube-system get secret $secret_name -o jsonpath='{.data.token}')
+echo ${secret_val} | base64 --decode
+```
 
 1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**.
 
@@ -119,7 +153,7 @@ default settings for your kubeconfig, do the following:
   </tr>
   <tr>
     <td><strong>Token</strong></td>
-    <td>Enter the value of <code>token</code> in your kubeconfig. </td>
+    <td>Enter the value of <code>token</code> from the `ksm-admin` service account just created.</td>
   </tr>
   </table>
 
@@ -141,14 +175,14 @@ See [Prerequisites](#storage-preq), below.
 To configure storage for KSM for PCF, you must do the following:
 
 + **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
-on your cloud storage provider. Pivotal recommends that this account be solely for KSM for PCF.
-You must apply a minimal policy that lets the user account upload backups to your S3 store. 
+on your cloud storage provider. Pivotal recommends that this account only be used by KSM for PCF.
+You should apply a minimal policy that lets the user account upload backups to your S3 store. 
 The policy must give KSM for PCF permissions to list and upload buckets. 
 For instructions on how to create a policy and access key, see your provider's documentation.
 
 + **If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to be S3 compatible:** If you are using Azure Blob Storage or Google Cloud 
-Storage (GCS), you can use the Minio for PCF title to do this.
+you must configure your cloud storage to an S3 compatible alternative:**
+You may use the Minio for PCF tile to add the S3 interface to Azure Blob Storage or Google Cloud Storage (GCS).
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
 
@@ -178,7 +212,6 @@ To configure storage, do the following:
         </ul>
         </td>
       </tr>
-
       <tr>
         <td><strong>Region</strong></td>
         <td> Enter the region where your bucket is located.
@@ -187,28 +220,22 @@ To configure storage, do the following:
           For example, Google Cloud Platform Multi-Regional Storage ignores this value.
         </td>
       </tr>
-
       <tr>
         <td><strong>Bucket Name</strong></td>
         <td>Enter the name of your bucket.</td>
       </tr>
-
-      <tr>
-        <td><strong>Storage Prefix</strong></td>
-        <td> Enter the path in the bucket to store backups. If this is left blank,
-           objects are stored at the root of the bucket.</td>
-      </tr>
-
       <tr>
         <td><strong>Access Key ID</strong></td>
         <td>Enter the S3 Access Key ID.</td>
       </tr>
-
       <tr>
         <td><strong>Secret Access Key</strong></td>
         <td>Enter the Secret Access Key.</td>
       </tr>
-
+      <tr>
+        <td><strong>Skip SSL Validation</strong></td>
+        <td>Use this to skip validation in environments with things like self-signed certificates for the storage provider. Do not toggle on in production.</td>
+      </tr>
     </table>
 
 ### <a id="container"></a> Configure Container Registry
@@ -227,10 +254,12 @@ This is the location from which KSM will push and pull images.
 1. Enter the **Registry Username**. This is the username which KSM will use to push and pull images to the registry.
 1. Enter the **Registry Password**. This is the password which KSM will use to push and pull images to the registry.
 
+Any private registry will work, but for Docker Hub specifically, the proper url to use is `docker.io/<repository>`
+
 ### <a id="errands"></a>Errands
 
 The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from `cf marketplace`
-and deletes all associated service instances and bindings.
+and **deletes all associated service instances and bindings**.
 This errand is disabled by default.
 
 ### <a id="apply-changes"></a> Apply All Changes
