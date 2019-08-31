@@ -6,14 +6,13 @@ owner: Platform Engineering (KSM Team)
 
 <%= partial ("beta-notice") %>
 
-This topic describes how to install and configure Kubernetes Service Manager
-(KSM) for Pivotal Cloud Foundry (PCF).
+This topic describes how to install and configure <%= vars.product_full %>.
 
 ##<a id='ksm'></a>  Install the KSM CLI
 
 To install the KSM CLI, do the following:
 
-1. Log in and navigate to **Kubernetes Service Manager for PCF (KSM)** in
+1. Log in and navigate to **<%= vars.product_tile %>** in
 [Pivotal Network](https://network.pivotal.io/).
 
 1. Click **Kubernetes Service Manager CLIs** and download the CLI for your operating system.
@@ -32,24 +31,21 @@ If you are using MacOS or Linux, to move the binary file into your `PATH`, run t
 
 ##<a id='install'></a> Download and Install the Tile
 
-To add KSM for PCF to Ops Manager, do the following:
+To add <%= vars.product_short %> to Ops Manager, do the following:
 
 1. Log in and download the Kubernetes Service Manager for PCF file from
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Choose a foundation in which [Pivotal Application Service (PAS)](https://pivotal.io/platform/pivotal-application-service)
-has been installed. KSM registers itself with the PAS marketplace and therefore needs an environment with it installed.
+1. Navigate to the **Ops Manager Installation Dashboard** where you have installed <%= vars.pas_full %>. <%= vars.product_short %> registers itself with the <%= vars.pas_short %> marketplace and therefore must be installed in an environment with <%= vars.pas_short %>.
 
-1. Navigate to the Ops Manager Installation Dashboard for that foundation and click **Import a Product**
-to upload the product file.
+1. Click **Import a Product** to upload the product file.
 
-1. Under **Import a Product**, click **+** next to the version number of KSM for PCF.
-This adds the tile to your staging area.
+1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>. This adds the tile to your staging area.
 
-1. Click the newly-added **Kubernetes Service Manager for PCF** tile to open its configuration panes.
+1. Click the newly-added **<%= vars.product_tile %>** tile to open its configuration panes.
 
 ## <a id="configure"></a>Configure the Tile
-Follow the steps below to configure KSM for PCF service.
+Follow the steps below to configure <%= vars.product_short %> service.
 
 
 ###<a id='az-networks'></a> Configure AZs and Networks
@@ -65,16 +61,16 @@ service broker and to select networks.
      <tr>
         <td><strong>Place singleton jobs in</strong></td>
         <td>Select the AZ that you want the singleton VMs to run in.
-            This selection does not affect KSM for PCF.</td>
+            This selection does not affect <%= vars.product_short %>.</td>
      </tr>
      <tr>
         <td><strong>Balance other jobs in</strong></td>
         <td>Select additional AZs.
-            This selection controls the regions in which KSM for PCF is deployed.</td>
+            This selection controls the regions in which <%= vars.product_short %> is deployed.</td>
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the same network you use for the Pivotal Application Service (PAS) component VMs.
+        <td>Select the same network you use for the PAS component VMs.
           To view the network PAS component VMs use, navigate to <strong>PCF Ops Manager</strong> >
           <strong>Pivotal Application Service (PAS)</strong> > <strong>Assign AZs and Networks</strong>.
         </td>
@@ -92,46 +88,59 @@ service broker and to select networks.
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
 default settings for your kubeconfig, do the following:
 
-1. To retrieve your cluster credentials with the PKS CLI,
-   do the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
+1. Retrieve your cluster credentials with the PKS CLI by 
+   doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/runtimes/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
   + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
-1. Create a dedicated [service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-vs-service-accounts)
-with the `cluster-admin` role for KSM to use in the cluster.
-With KSM's cluster targeted, run the following shell commands to create a service account and record the token.
-
-```bash
-cat <<EOF | kubectl apply -f -
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: ksm-admin
-  namespace: kube-system
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: ksm-cluster-admin
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: ksm-admin
-    namespace: kube-system
-EOF
-
-secret_name=$(kubectl get serviceaccount ksm-admin --namespace=kube-system -o jsonpath='{.secrets[0].name}')
-secret_val=$(kubectl --namespace=kube-system get secret $secret_name -o jsonpath='{.data.token}')
-echo ${secret_val} | base64 --decode
-```
-
-1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Kubernetes Configuration**.
+1. Create a dedicated service account for <%= vars.product_short %> with the `cluster-admin` role by running the following: 
+    1. Create a YAML file for the <%= vars.product_short %> service account and `ClusterRoleBinding` using the following:
+        
+        ```yml
+        ---
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          name: ksm-admin
+          namespace: kube-system
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1beta1
+        kind: ClusterRoleBinding
+        metadata:
+          name: ksm-cluster-admin
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: cluster-admin
+        subjects:
+          - kind: ServiceAccount
+            name: ksm-admin
+            namespace: kube-system
+        ```        
+        For information about service accounts, see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin) in the Kubernetes documentation. <br>
+        
+        For information about `ClusterRoleBinding`, see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding) in the Kubernetes documentation.  <br><br>    
+    1. Create the service account and `ClusterRoleBinding` defined in your YAML file 
+    by running the following command:
+        
+        ```
+        kubectl apply -f - SERVICE-ACCOUNT.yml
+        ```
+        Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step. 
+          
+1. Print your service account token by running the following commands:
+    
+    <pre class="terminal">$ secret&#95;name=$(kubectl get serviceaccount ksm-admin \ 
+      --namespace=kube-system -o jsonpath='{.secrets[0].name}')  <br>
+    $ secret&#95;val=$(kubectl --namespace=kube-system get secret $secret&#95;name \
+      -o jsonpath='{.data.token}') <br>
+    $ echo ${secret&#95;val} | base64 --decode</pre>
+      
+    <br>
+    Record the output. 
+1. Navigate to **PCF Ops Manager** > **<%= vars.product_tile %>** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -141,32 +150,32 @@ echo ${secret_val} | base64 --decode
   </tr>
   <tr>
     <td><strong>A base64 encoded PEM Cluster CA certificate</strong></td>
-    <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig.</td>
+    <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig that you recorded.</td>
   </tr>
   <tr>
     <td><strong>K8s API endpoint</strong></td>
-    <td>Enter the endpoint value of <code>server</code> in your kubeconfig. </td>
+    <td>Enter the endpoint value of <code>server</code> in your kubeconfig that you recorded. </td>
   </tr>
   <tr>
     <td><strong>K8s API endpoint port</strong></td>
-    <td>Enter the port value of <code>server</code> in your kubeconfig.</td>
+    <td>Enter the port value of <code>server</code> in your kubeconfig that you recorded.</td>
   </tr>
   <tr>
     <td><strong>Token</strong></td>
-    <td>Enter the value of <code>token</code> from the `ksm-admin` service account just created.</td>
+    <td>Enter the value of <code>token</code> for service account token that you recorded.</td>
   </tr>
   </table>
 
 For more information about using kubeconfig files,
-see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/).
+see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) in the Kubernetes documentation.
 
 ### <a id="storage"></a> Configure Storage
 
-KSM for PCF requires S3-compatible buckets to store offered charts and the chart cache. 
+<%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache. 
 The operator is responsible for backing up this bucket with their IaaS provider. 
 
 If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to be compatible with S3 to use KSM for PCF. 
+you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>. 
 See [Prerequisites](#storage-preq), below. 
 
 
@@ -175,14 +184,14 @@ See [Prerequisites](#storage-preq), below.
 To configure storage for KSM for PCF, you must do the following:
 
 + **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
-on your cloud storage provider. Pivotal recommends that this account only be used by KSM for PCF.
+on your cloud storage provider. Pivotal recommends that this account only be used by <%= vars.product_short %>.
 You should apply a minimal policy that lets the user account upload backups to your S3 store. 
-The policy must give KSM for PCF permissions to list and upload buckets. 
+The policy must give <%= vars.product_short %> permissions to list and upload buckets. 
 For instructions on how to create a policy and access key, see your provider's documentation.
 
 + **If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to an S3 compatible alternative:**
-You may use the Minio for PCF tile to add the S3 interface to Azure Blob Storage or Google Cloud Storage (GCS).
+you must configure your cloud storage to use an S3 compatible alternative:**
+For example, you can use the Minio for PCF tile to add the S3 interface to Azure Blob Storage or Google Cloud Storage (GCS).
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
 
@@ -194,7 +203,7 @@ in the Google Cloud Storage documentation.
 
 To configure storage, do the following:
 
-1. Navigate to **PCF Ops Manager** > **Kubernetes Service Manager for PCF** > **Storage Configuration**.
+1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Storage Configuration**.
 
 1. Configure the fields as follows:
 
@@ -234,27 +243,26 @@ To configure storage, do the following:
       </tr>
       <tr>
         <td><strong>Skip SSL Validation</strong></td>
-        <td>Use this to skip validation in environments with things like self-signed certificates for the storage provider. Do not toggle on in production.</td>
+        <td>Select this checkbox if your environment uses a self-signed certificate for the storage provider. Do not select this checkbox if you are using a production environment. </td>
       </tr>
     </table>
 
 ### <a id="container"></a> Configure Container Registry
 
 When you configure a private registry,
-KSM for PCF will install in an offline environment, and can modify your Helm
-charts to point to images in the private registry.
+<%= vars.product_short %> is installed in an offline environment. <%= vars.product_short %> can then modify your Helm charts to point to images in the private registry.
+
 Pivotal recommends using a private registry in production.
-You will obtain the following values from your container registry, such as Harbor.
+
+You obtain the values needed to configure the private registry from your container registry.
 
 To configure a private registry, do the following:
 
 1. Click **Container Registry Configuration**.
-1. Enter the **Registry Server URL**. This is the URL including your container registry hostname and project. For example, `gcr.io/myproject`.
-This is the location from which KSM will push and pull images.
-1. Enter the **Registry Username**. This is the username which KSM will use to push and pull images to the registry.
-1. Enter the **Registry Password**. This is the password which KSM will use to push and pull images to the registry.
-
-Any private registry will work, but for Docker Hub specifically, the proper url to use is `docker.io/<repository>`
+1. Enter the **Registry Server URL**. This is the URL including your container registry hostname and project. For example, `gcr.io/myproject`. For Docker Hub, use `docker.io/<repository>` for the registry server URL.
+This is the location from which <%= vars.product_short %>  pushes and pulls images.
+1. Enter the **Registry Username**. This is the username that <%= vars.product_short %>  uses to push and pull images to the registry.
+1. Enter the **Registry Password**. This is the password that <%= vars.product_short %> uses to push and pull images to the registry.
 
 ### <a id="errands"></a>Errands
 
@@ -264,7 +272,7 @@ This errand is disabled by default.
 
 ### <a id="apply-changes"></a> Apply All Changes
 
-To deploy KSM for PCF and apply your configurations, do the following:
+To deploy <%= vars.product_short %> and apply your configurations, do the following:
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
