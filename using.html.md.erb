@@ -19,12 +19,12 @@ You can use <%= vars.product_short %> to do the following:
 
 ##<a id="prereq"></a>Prerequisites
 
-Before you use <%= vars.product_short %>, you must do the following:
+Before you use <%= vars.product_short %>, you must:
 
 1. Configure your Helm chart according to the Helm chart provider's documentation.
 Each Helm chart most likely needs some service configuration.
 1. Configure your Helm chart to be compatible with <%= vars.product_short %> .
-See [Configure your Helm Chart](#config-helm)
+See [Configure your Helm Chart](#config-helm).
 1. Optionally, customize your service offering with additional configurations. See [(Optional) Configure a Service Offering](#config-additional) below.
 1. Add the service offering to <%= vars.product_short %>.
    See [Add a Service Offering <%= vars.product_short %>](#add) below.
@@ -34,7 +34,7 @@ See [Configure your Helm Chart](#config-helm)
 
 ##<a id='config-helm'></a> Configure your Helm Chart
 
-To configure your Helm chart to be compatible with <%= vars.product_short %>, do the following:
+To configure your Helm chart to be compatible with <%= vars.product_short %>:
 
 1. Open the `values.yaml` file at the root level of your chart.
 
@@ -61,9 +61,13 @@ To configure your Helm chart to be compatible with <%= vars.product_short %>, do
 If you upload your Helm chart to <%= vars.product_short %> without adding 
 a `ksm.yaml` or `plans.yaml` file, your service offering is configured as follows: 
 
-* **Service Name:** The service name is the value of `name` in `Chart.yaml`. The service name is listed under `service` when <% vars.pas_full %> app developers run `cf marketplace`.
-* **Service Description:** The service description is the value of `description` in `Chart.yaml`. The service name is listed under `description` when <% vars.pas_short %> app developers run `cf marketplace`.
-* **Service Plan:** The service plan name is `default`. The service plan name is listed under `name` when <% vars.pas_short %> app developers run `cf marketplace`. One plan is offered and the plan uses the default values for the Helm chart.
+* **Service Name:** The service name is the value of `name` in `Chart.yaml`.
+  The service name is listed under `service` when <% vars.pas_full %> app developers run `cf marketplace`.
+* **Service Description:** The service description is the value of `description` in `Chart.yaml`.
+  The service name is listed under `description` when <% vars.pas_short %> app developers run `cf marketplace`.
+* **Service Plan:** The service plan name is `default`.
+  The service plan name is listed under `name` when <% vars.pas_short %> app developers run `cf marketplace`.
+  One plan is offered, and the plan uses the default values for the Helm chart.
 
 
 For information about configuring `ksm.yaml` and `plans.yaml`, see [(Optional) Configure a Service Offering](#config-additional) below.
@@ -85,13 +89,14 @@ information about the `cf create-service` command,
 see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create)
 in the Cloud Foundry documentation.
 
-To provision a customized edicated service instance offering based on a Helm Chart for app developers,
-do the following:
+To provision a customized dedicated service instance offering based on a Helm Chart for app developers:
 
 2. If you want to offer customized plans and override default values, define plans for your service offering.
    See [(Optional) Define Plans](#plans) below.
-1. Configure templating for the `values.yaml` file. See [(Optional) Template Values](#values-templating) below.
-1. Deploy multiple charts or use cluster-scoped Kubernetes Operators. See [(Optional) Offer Multiple Charts](#multiple-charts) below.
+1. Configure templating for the `values.yaml` file.
+   See [(Optional) Template Values](#values-templating) below.
+1. Deploy multiple charts or use cluster-scoped Kubernetes Operators.
+   See [(Optional) Offer Multiple Charts](#multiple-charts) below.
 1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images) below.
 1. Create environment variables for app consumption.
@@ -173,17 +178,17 @@ If you want to override the default settings in `values.yaml` and offer custom p
 For instance what is meant by "the values themselves"? The values in `values.yaml`?
 Also: what is the `templating engine`?%>
 
-Helm uses `values.yaml` as a the concrete set of substitutions needed to create a release.
+Helm uses `values.yaml` as the concrete set of substitutions needed to create a release.
 <%= vars.product_short %> uses the values themselves as a template for multiple releases.
 This difference can create situations where `values.yaml` needs to go through the templating engine.
 
 `values.yaml` might need to go through the templating engine in the following situations: 
 
 * When the chart uses Ingress Controller (hosts)
-* When there is a unique name, in addition to the release name, required in the chart
+* When there is a unique name, in addition to the release name, required in the chart,
 
 <%= vars.product_short %> runs the _values_ themselves through the templating engine. 
-For example, in a chart with ingress hosts, you could use the release name as the unique 
+For example, in a chart with ingress hosts, you can use the release name as the unique 
 subdomain discriminator in the ingress definition:
 
 ```yaml
@@ -203,7 +208,7 @@ The plan-specific values files also go through the templating engine.
 You might want to offer multiple Helm charts when you have the following: 
 
 * A cluster-scoped operator or controller where the individual charts are custom resources
-* A namespace scoped operator chart with another chart that represents the custom resource
+* A namespace-scoped operator chart with another chart that represents the custom resource
 * A service that uses multiple charts. For example, a service that uses a data service chart and a monitoring service chart.
 
 1. To offer a service with multiple Helm charts, create a `ksm.yaml` file with a YAML descriptor using the following
