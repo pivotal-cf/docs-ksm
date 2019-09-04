@@ -15,7 +15,7 @@ To install the KSM CLI, do the following:
 1. Log in and navigate to **<%= vars.product_tile %>** in
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Click **Container Services Manager CLIs** and download the CLI for your operating system.
+1. Click **<%= vars.cli_tile %>** and download the CLI for your operating system.
 
 1. Rename the downloaded binary file to `ksm`.
 
@@ -33,14 +33,18 @@ If you are using MacOS or Linux, to move the binary file into your `PATH`, run t
 
 To add <%= vars.product_short %> to Ops Manager, do the following:
 
-1. Log in and download the Container Services Manager for PCF file from
+1. Log in and download the <%= vars.product_tile %> tile from
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to the **Ops Manager Installation Dashboard** where you have installed <%= vars.pas_full %>. <%= vars.product_short %> registers itself with the <%= vars.pas_short %> marketplace and therefore must be installed in an environment with <%= vars.pas_short %>.
+1. Navigate to the **Ops Manager Installation Dashboard** where
+you have installed <%= vars.pas_full %>.
+<%= vars.product_short %> registers itself with the <%= vars.pas_short %>
+marketplace and therefore must be installed in an environment with <%= vars.pas_short %>.
 
 1. Click **Import a Product** to upload the product file.
 
-1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>. This adds the tile to your staging area.
+1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>.
+This adds the tile to your staging area.
 
 1. Click the newly-added **<%= vars.product_tile %>** tile to open its configuration panes.
 
@@ -70,9 +74,9 @@ service broker and to select networks.
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the same network you use for the PAS component VMs.
+        <td>Select the same network you use for the <%= vars.pas_short %> component VMs.
           To view the network PAS component VMs use, navigate to <strong>PCF Ops Manager</strong> >
-          <strong>Pivotal Application Service (PAS)</strong> > <strong>Assign AZs and Networks</strong>.
+          <strong><%= vars.product_full %></strong> > <strong>Assign AZs and Networks</strong>.
         </td>
      </tr>
    </table>
@@ -88,16 +92,18 @@ service broker and to select networks.
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
 default settings for your kubeconfig, do the following:
 
-1. Retrieve your cluster credentials with the PKS CLI by 
+1. Retrieve your cluster credentials with the PKS CLI by
    doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
   + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
-1. Create a dedicated service account for <%= vars.product_short %> with the `cluster-admin` role by running the following: 
-    1. Create a YAML file for the <%= vars.product_short %> service account and `ClusterRoleBinding` using the following:
-        
+1. Create a dedicated service account for <%= vars.product_short %>
+with the `cluster-admin` role by running the following:
+    1. Create a YAML file for the <%= vars.product_short %> service account
+    and `ClusterRoleBinding` using the following:
+
         ```yml
         ---
         apiVersion: v1
@@ -118,28 +124,31 @@ default settings for your kubeconfig, do the following:
           - kind: ServiceAccount
             name: ksm-admin
             namespace: kube-system
-        ```        
-        For information about service accounts, see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin) in the Kubernetes documentation. <br>
-        
-        For information about `ClusterRoleBinding`, see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding) in the Kubernetes documentation.  <br><br>    
-    1. Create the service account and `ClusterRoleBinding` defined in your YAML file 
+        ```
+        For information about service accounts,
+        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin) in the Kubernetes documentation. <br>
+
+        For information about `ClusterRoleBinding`,
+        see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
+        in the Kubernetes documentation.  <br><br>
+    1. Create the service account and `ClusterRoleBinding` defined in your YAML file
     by running the following command:
-        
+
         ```
         kubectl apply -f - SERVICE-ACCOUNT.yml
         ```
-        Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step. 
-          
+        Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step.
+
 1. Print your service account token by running the following commands:
-    
-    <pre class="terminal">$ secret&#95;name=$(kubectl get serviceaccount ksm-admin \ 
+
+    <pre class="terminal">$ secret&#95;name=$(kubectl get serviceaccount ksm-admin \
       --namespace=kube-system -o jsonpath='{.secrets[0].name}')  <br>
     $ secret&#95;val=$(kubectl --namespace=kube-system get secret $secret&#95;name \
       -o jsonpath='{.data.token}') <br>
     $ echo ${secret&#95;val} | base64 --decode</pre>
-      
+
     <br>
-    Record the output. 
+    Record the output.
 1. Navigate to **PCF Ops Manager** > **<%= vars.product_tile %>** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
@@ -150,7 +159,8 @@ default settings for your kubeconfig, do the following:
   </tr>
   <tr>
     <td><strong>A base64 encoded PEM Cluster CA certificate</strong></td>
-    <td>Enter the value of <code>certificate-authority-data</code> in your kubeconfig that you recorded.</td>
+    <td>Enter the value of <code>certificate-authority-data</code>
+      in your kubeconfig that you recorded.</td>
   </tr>
   <tr>
     <td><strong>K8s API endpoint</strong></td>
@@ -167,36 +177,39 @@ default settings for your kubeconfig, do the following:
   </table>
 
 For more information about using kubeconfig files,
-see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) in the Kubernetes documentation.
+see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/)
+in the Kubernetes documentation.
 
 ### <a id="storage"></a> Configure Storage
 
-<%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache. 
-The operator is responsible for backing up this bucket with their IaaS provider. 
+<%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
+The operator is responsible for backing up this bucket with their IaaS provider.
 
-If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>. 
-See [Prerequisites](#storage-preq), below. 
+If you are using a cloud storage provider that does not natively support S3 buckets,
+you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
+See [Prerequisites](#storage-preq), below.
 
 
 #### <a name="storage-preq"></a> Prerequisites
 
 To configure storage for KSM for PCF, you must do the following:
 
-+ **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
-on your cloud storage provider. Pivotal recommends that this account only be used by <%= vars.product_short %>.
-You should apply a minimal policy that lets the user account upload backups to your S3 store. 
-The policy must give <%= vars.product_short %> permissions to list and upload buckets. 
++ **Create a policy and an access key for your cloud storage provider:**
+Policy creation varies depending on your cloud storage provider. P
+ivotal recommends that this account only be used by <%= vars.product_short %>.
+You should apply a minimal policy that lets the user account upload backups to your S3 store.
+The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
 
-+ **If you are using a cloud storage provider that does not natively support S3 buckets, 
++ **If you are using a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to use an S3 compatible alternative:**
-For example, you can use the Minio for PCF tile to add the S3 interface to Azure Blob Storage or Google Cloud Storage (GCS).
+For example, you can use the Minio for PCF tile to add the S3 interface to Azure Blob Storage
+or Google Cloud Storage (GCS).
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
 
-+ **If you are using GCS and are not using the Minio tile, you must generate a developer key:** This developer
-key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
++ **If you are using GCS and are not using the Minio tile, you must generate a developer key:**
+This developer key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys)
 in the Google Cloud Storage documentation.
@@ -214,7 +227,8 @@ To configure storage, do the following:
     </tr>
     <tr>
       <td><strong>Endpoint</strong></td>
-      <td>Enter the S3-compatible endpoint URL for uploading backups. The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
+      <td>Enter the S3-compatible endpoint URL for uploading backups.
+        The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
         <ul>
           <li><code>storage.googleapis.com</code></li>
           <li><code>s3-us-west-2.amazonaws.com</code></li>
@@ -243,14 +257,17 @@ To configure storage, do the following:
       </tr>
       <tr>
         <td><strong>Skip SSL Validation</strong></td>
-        <td>Select this checkbox if your environment uses a self-signed certificate for the storage provider. Do not select this checkbox if you are using a production environment. </td>
+        <td>Select this checkbox if your environment uses a self-signed certificate
+          for the storage provider.
+          Do not select this checkbox if you are using a production environment. </td>
       </tr>
     </table>
 
 ### <a id="container"></a> Configure Container Registry
 
 When you configure a private registry,
-<%= vars.product_short %> is installed in an offline environment. <%= vars.product_short %> can then modify your Helm charts to point to images in the private registry.
+<%= vars.product_short %> is installed in an offline environment.
+<%= vars.product_short %> can then modify your Helm charts to point to images in the private registry.
 
 Pivotal recommends using a private registry in production.
 
@@ -259,10 +276,15 @@ You obtain the values needed to configure the private registry from your contain
 To configure a private registry, do the following:
 
 1. Click **Container Registry Configuration**.
-1. Enter the **Registry Server URL**. This is the URL including your container registry hostname and project. For example, `gcr.io/myproject`. For Docker Hub, use `docker.io/<repository>` for the registry server URL.
+1. Enter the **Registry Server URL**.
+This is the URL including your container registry hostname and project.
+For example, `gcr.io/myproject`.
+For Docker Hub, use `docker.io/<repository>` for the registry server URL.
 This is the location from which <%= vars.product_short %>  pushes and pulls images.
-1. Enter the **Registry Username**. This is the username that <%= vars.product_short %>  uses to push and pull images to the registry.
-1. Enter the **Registry Password**. This is the password that <%= vars.product_short %> uses to push and pull images to the registry.
+1. Enter the **Registry Username**.
+This is the username that <%= vars.product_short %>  uses to push and pull images to the registry.
+1. Enter the **Registry Password**.
+This is the password that <%= vars.product_short %> uses to push and pull images to the registry.
 
 ### <a id="errands"></a>Errands
 
