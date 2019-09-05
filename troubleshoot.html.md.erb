@@ -20,10 +20,19 @@ and will handle upgrades of the Tiller version during a Tile upgrade.
 * To manually run `helm` commands:
 
 1. Target the Kubernetes cluster with `kubectl`.
-<%# <!-- TODO: mTLS credentials - need tile to test --> %>
-1. Download the mTLS credentials from Ops Manager to talk to the `<%= vars.product_short %>'s Helm`
-1. Include the namespace flag to talk the `<%= vars.product_short %>'s Helm`
-<%= vars.product_short %>'s Helm `--tiller-namespace=kibosh`.
+1. Download the mTLS credentials from Ops Manager to talk to the `<%= vars.product_short %>'s Helm`:
+    + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** Tile >
+    **Credentials** > **Tiller Certificate**
+    + Create a private key file with the contents of the RSA Private Key.
+    + Create a certificate file with the contents of the Certificate.
+1. Run `helm` commands with mTLS configuration, for example:
+
+    ```
+    helm ls --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT.pem --tls-key PATH-TO-KEY.pem
+    ```
+    Where:
+    + `PATH-TO-CERT.pem` is the path to the certificate file retrieved above.
+    + `PATH-TO-KEY.pem` is the path to the private key file retrieved above.
 
 ##<a id='issue-cleanup'></a> Cleanup
 <%= vars.platform %> gives an asynchronously provisioned service seven days to become healthy. It
