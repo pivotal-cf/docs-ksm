@@ -57,8 +57,8 @@ your Helm chart directory:
 
 1. Record the values for `identity` and `password`.
 
-1. To add the Helm chart as a dedicated instance service offering to <%= vars.product_short %>, run the following
-command:
+1. To add the Helm chart as a dedicated instance service offering to <%= vars.product_short %>,
+run the following command:
 
     ```
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
@@ -124,10 +124,10 @@ To enable access to your service offering, do the following:
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
     + `USERNAME` is the value of `identity` you recorded in step 3 of
-    [Add a Service Offering to Container Services Manager for PCF](#add) above.
+    [Add a Service Offering to  <%= vars.product_short %>](#add) above.
     + `PASSWORD` is the value of `password` you recorded in step 3 of [
-    Add a Service Offering to Container Services Manager for PCF](#add) above.
+    Add a Service Offering to   <%= vars.product_short %>](#add) above.
     + `YOUR-CHART` is the name of the service offering you want to delete that you viewed in step 1.
 
-    <p class="note"><strong>Note:</strong> If you only have one service offering in <%= vars.product_short %>, you
-      cannot delete it.</p>
+    <p class="note"><strong>Note:</strong> If you only have one service offering in
+      <%= vars.product_short %>, you cannot delete it.</p>

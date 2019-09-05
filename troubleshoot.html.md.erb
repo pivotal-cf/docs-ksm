@@ -26,10 +26,11 @@ and will handle upgrades of the Tiller version during a Tile upgrade.
 <%= vars.product_short %>'s Helm `--tiller-namespace=kibosh`.
 
 ##<a id='issue-cleanup'></a> Cleanup
-Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
+<%= vars.platform %> gives an asynchronously provisioned service seven days to become healthy. It
 sometimes requires manual cleanup to remove services earlier in some failure modes.
 [Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
-will remove the service from Pivotal Cloud Foundry. This might, however, leave resources in the backing cluster.
+removes the service from <%= vars.platform %>. 
+This might, however, leave resources in the backing cluster.
 
 To fully clean up, delete the Helm release and the namespace, if either is still present.
 Both the cluster and the Helm resources are named after the service's GUID.
