@@ -14,12 +14,16 @@ This topic provides operators with basic instructions for troubleshooting
 Advanced debugging might require using the `helm` and `kubectl` CLIs.
 
 * [Tiller](https://docs.helm.sh/glossary/#tiller) is the server side component of Helm.
-<%= vars.product_short %> installs Tiller into a specific namespace, `kibosh`.
-To manually run Helm commands, log in to the Kubernetes
-cluster and include the namespace flag to talk the
-<%= vars.product_short %>'s Helm `--tiller-namespace=kibosh`.
+<%= vars.product_short %> installs Tiller with mTLS into a specific namespace, `kibosh`,
+and will handle upgrades of the Tiller version during a Tile upgrade.
 
+* To manually run `helm` commands:
+
+1. Target the Kubernetes cluster with `kubectl`.
 <%# <!-- TODO: mTLS credentials - need tile to test --> %>
+1. Download the mTLS credentials from Ops Manager to talk to the `<%= vars.product_short %>'s Helm`
+1. Include the namespace flag to talk the `<%= vars.product_short %>'s Helm`
+<%= vars.product_short %>'s Helm `--tiller-namespace=kibosh`.
 
 ##<a id='issue-cleanup'></a> Cleanup
 Pivotal Cloud Foundry gives an asynchronously provisioned service seven days to become healthy. It
