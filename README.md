@@ -1,7 +1,7 @@
 docs-ksm
 ==========
 
-Docs for Kubernetes Service Manager for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF)(Beta)
+Docs for [Container Services Manager for Pivotal Cloud Foundry](https://network.pivotal.io/products/container-services-manager/) (PCF)(Beta)
 
 ## Where is the book repository?
 https://github.com/pivotal-cf/docs-book-ksm
@@ -34,8 +34,8 @@ This is a word list for terminology and word usage specific to the KSM for PCF d
 
 | Word | Explanation |
 |------|-------------|
-| KSM |Acronym for Kubernetes Service Manager|
-| KSM CLI | CLI component for Kubernates Service Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Kubernetes Service Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
+| KSM |Acronym for Container Services Manager|
+| KSM CLI | CLI component for Container Services Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Container Services Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
 
 ## Historical Note

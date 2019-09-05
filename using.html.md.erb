@@ -19,13 +19,14 @@ You can use <%= vars.product_short %> to do the following:
 
 ##<a id="prereq"></a>Prerequisites
 
-Before you use <%= vars.product_short %>, you must do the following:
+Before you use <%= vars.product_short %>, you must:
 
 1. Configure your Helm chart according to the Helm chart provider's documentation.
 Each Helm chart most likely needs some service configuration.
 1. Configure your Helm chart to be compatible with <%= vars.product_short %> .
-See [Configure your Helm Chart](#config-helm)
-1. Optionally, customize your service offering with additional configurations. See [(Optional) Configure a Service Offering](#config-additional) below.
+See [Configure your Helm Chart](#config-helm).
+1. Optionally, customize your service offering with additional configurations.
+See [(Optional) Configure a Service Offering](#config-additional) below.
 1. Add the service offering to <%= vars.product_short %>.
    See [Add a Service Offering <%= vars.product_short %>](#add) below.
 1. Enable service offering access.
@@ -34,7 +35,7 @@ See [Configure your Helm Chart](#config-helm)
 
 ##<a id='config-helm'></a> Configure your Helm Chart
 
-To configure your Helm chart to be compatible with <%= vars.product_short %>, do the following:
+To configure your Helm chart to be compatible with <%= vars.product_short %>:
 
 1. Open the `values.yaml` file at the root level of your chart.
 
@@ -44,7 +45,7 @@ To configure your Helm chart to be compatible with <%= vars.product_short %>, do
     your configured Enterprise Pivotal Container Service (PKS)
     cluster. The default name for PKS is `standard`.
       For more information,
-      see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
+      see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/pks/volumes.html).
 
     For example:
 
@@ -58,15 +59,20 @@ To configure your Helm chart to be compatible with <%= vars.product_short %>, do
       port: 3306
     ```
 
-If you upload your Helm chart to <%= vars.product_short %> without adding 
-a `ksm.yaml` or `plans.yaml` file, your service offering is configured as follows: 
+If you upload your Helm chart to <%= vars.product_short %> without adding
+a `ksm.yaml` or `plans.yaml` file, your service offering is configured as follows:
 
-* **Service Name:** The service name is the value of `name` in `Chart.yaml`. The service name is listed under `service` when <% vars.pas_full %> app developers run `cf marketplace`.
-* **Service Description:** The service description is the value of `description` in `Chart.yaml`. The service name is listed under `description` when <% vars.pas_short %> app developers run `cf marketplace`.
-* **Service Plan:** The service plan name is `default`. The service plan name is listed under `name` when <% vars.pas_short %> app developers run `cf marketplace`. One plan is offered and the plan uses the default values for the Helm chart.
+* **Service Name:** The service name is the value of `name` in `Chart.yaml`.
+  The service name is listed under `service` when <% vars.pas_full %> app developers run `cf marketplace`.
+* **Service Description:** The service description is the value of `description` in `Chart.yaml`.
+  The service name is listed under `description` when <% vars.pas_short %> app developers run `cf marketplace`.
+* **Service Plan:** The service plan name is `default`.
+  The service plan name is listed under `name` when <% vars.pas_short %> app developers run `cf marketplace`.
+  One plan is offered, and the plan uses the default values for the Helm chart.
 
 
-For information about configuring `ksm.yaml` and `plans.yaml`, see [(Optional) Configure a Service Offering](#config-additional) below.
+For information about configuring `ksm.yaml` and `plans.yaml`,
+see [(Optional) Configure a Service Offering](#config-additional) below.
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
    resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>. </p>
 
@@ -78,20 +84,21 @@ see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master
 
 Dedicated instances are provided through a service broker installed by the <%= vars.product_short %> tile.
 When a <% vars.pas_short %> developer runs `cf create-service`
-the broker creates a dedicated service instance of the service in the backing cluster. 
+the broker creates a dedicated service instance of the service in the backing cluster.
 
 For more
 information about the `cf create-service` command,
 see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create)
 in the Cloud Foundry documentation.
 
-To provision a customized edicated service instance offering based on a Helm Chart for app developers,
-do the following:
+To provision a customized dedicated service instance offering based on a Helm Chart for app developers:
 
 2. If you want to offer customized plans and override default values, define plans for your service offering.
    See [(Optional) Define Plans](#plans) below.
-1. Configure templating for the `values.yaml` file. See [(Optional) Template Values](#values-templating) below.
-1. Deploy multiple charts or use cluster-scoped Kubernetes Operators. See [(Optional) Offer Multiple Charts](#multiple-charts) below.
+1. Configure templating for the `values.yaml` file.
+   See [(Optional) Template Values](#values-templating) below.
+1. Deploy multiple charts or use cluster-scoped Kubernetes Operators.
+   See [(Optional) Offer Multiple Charts](#multiple-charts) below.
 1. Load container images into a private registry if your environment is air gapped.
    See [(Optional) Load Container Images](#images) below.
 1. Create environment variables for app consumption.
@@ -104,7 +111,8 @@ In `cf marketplace`, each service has a set of plans that developers can provisi
 A plan is a template for service instances.
 For example, different plans might represent a large or a small instance of a database.
 
-For Kubernetes services, each <%= vars.product_short %> plan represents a set of values overriding the Helm chart's default
+For Kubernetes services, each <%= vars.product_short %>
+plan represents a set of values overriding the Helm chart's default
 values.
 These values are configured in `plans.yaml` at the root level of your chart.
 
@@ -142,7 +150,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
     ```
 
     Where:
-    * `PLAN-NAME` is the name of the plan that developers see when they run `cf marketplace`. 
+    * `PLAN-NAME` is the name of the plan that developers see when they run `cf marketplace`.
         The plan name is listed under `plans`.
        Ensure that the plan name is lowercase only and contains no special characters.
     * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run `cf marketplace`.
@@ -159,8 +167,8 @@ If you want to override the default settings in `values.yaml` and offer custom p
       description: "medium sized plan for mysql"
       file: "medium.yaml"
     ```
-    
-    When you upload a service offering to <%= vars.product_short %> with a `plans.yaml` file, each plan 
+
+    When you upload a service offering to <%= vars.product_short %> with a `plans.yaml` file, each plan
     listed in the YAML file is offered with the service. <br><br>
 
       For example charts that have been configured for <%= vars.product_short %>, see
@@ -169,21 +177,21 @@ If you want to override the default settings in `values.yaml` and offer custom p
 
 ###<a id='values-templating'></a> (Optional) Template Values
 
-<%# The below distinction is not very clear to me. 
+<%# The below distinction is not very clear to me.
 For instance what is meant by "the values themselves"? The values in `values.yaml`?
 Also: what is the `templating engine`?%>
 
-Helm uses `values.yaml` as a the concrete set of substitutions needed to create a release.
+Helm uses `values.yaml` as the concrete set of substitutions needed to create a release.
 <%= vars.product_short %> uses the values themselves as a template for multiple releases.
 This difference can create situations where `values.yaml` needs to go through the templating engine.
 
-`values.yaml` might need to go through the templating engine in the following situations: 
+`values.yaml` might need to go through the templating engine in the following situations:
 
 * When the chart uses Ingress Controller (hosts)
-* When there is a unique name, in addition to the release name, required in the chart
+* When there is a unique name, in addition to the release name, required in the chart,
 
-<%= vars.product_short %> runs the _values_ themselves through the templating engine. 
-For example, in a chart with ingress hosts, you could use the release name as the unique 
+<%= vars.product_short %> runs the _values_ themselves through the templating engine.
+For example, in a chart with ingress hosts, you can use the release name as the unique
 subdomain discriminator in the ingress definition:
 
 ```yaml
@@ -200,14 +208,15 @@ The plan-specific values files also go through the templating engine.
 ###<a id='multiple-charts'></a> (Optional) Offer Multiple Charts
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
-You might want to offer multiple Helm charts when you have the following: 
+You might want to offer multiple Helm charts when you have the following:
 
 * A cluster-scoped operator or controller where the individual charts are custom resources
-* A namespace scoped operator chart with another chart that represents the custom resource
-* A service that uses multiple charts. For example, a service that uses a data service chart and a monitoring service chart.
+* A namespace-scoped operator chart with another chart that represents the custom resource
+* A service that uses multiple charts.
+For example, a service that uses a data service chart and a monitoring service chart.
 
-1. To offer a service with multiple Helm charts, create a `ksm.yaml` file with a YAML descriptor using the following
-as template:
+1. To offer a service with multiple Helm charts,
+create a `ksm.yaml` file with a YAML descriptor using the following as a template:
 
     ```yaml
     marketplace-name: my-dataservice
@@ -220,7 +229,7 @@ as template:
         scope: namespace
     ```
 
-The `charts` dictionary is an ordered list of charts. 
+The `charts` dictionary is an ordered list of charts.
 
 Consult the following table to configure a `chart` in the `charts` dictionary:
 
@@ -230,33 +239,40 @@ Consult the following table to configure a `chart` in the `charts` dictionary:
     <th width=20% >Values</th>
     <th>Description</th>
   </tr>
-  
+
   <tr>
     <td><code>scope</code></td>
     <td><code>cluster</code></td>
-    <td>If you use this value, the chart is only deployed once on a cluster. Subsequent service instances 
-    created on the same Kubernetes cluster do not cause a cluster scoped chart to be deployed additional times.
-    This scope is useful for operators and controllers that manage multiple instances from a single deployment.</td>
+    <td>If you use this value, the chart is only deployed once on a cluster.
+      Subsequent service instances created on the same Kubernetes cluster
+      do not cause a cluster scoped chart to be deployed additional times.
+    This scope is useful for operators and controllers that manage multiple instances
+    from a single deployment.</td>
   </tr>
-  
+
   <tr>
     <td></td>
     <td><code>namespace</code></td>
     <td>If you use this value, the chart is deployed on the cluster every time the service is created.</td<
   </tr>
-    
+
   <tr>
     <td><code>offered</code></td>
     <td><code>true</code> | <code>false</code></td>
-    <td>Only a single chart can have be <code>offered</code> set to <code>true</code>. The chart that is set to <code>true</code> must also have <code>scope</code> set to <code>namespace</code>. The
-    offered chart conceptually represents the service the user would like to bind to. However, you can expose more resources with <code>cf bind-service</code>.</td>
-    
+    <td>Only a single chart can have be <code>offered</code> set to <code>true</code>.
+      The chart that is set to <code>true</code> must also have
+      <code>scope</code> set to <code>namespace</code>.
+      The offered chart conceptually represents the service the user would like to bind to.
+      However, you can expose more resources with <code>cf bind-service</code>.</td>
+
   </tr>
-  
+
 </table>
 
 <br><br>
-When you upload a service offering to <%= vars.product_short %> with a `ksm.yaml` file, the service name is the value of `marketplace-name`. The service name is listed under `service` when <% vars.pas_full %> app developers run `cf marketplace`.
+When you upload a service offering to <%= vars.product_short %> with a `ksm.yaml` file,
+the service name is the value of `marketplace-name`.
+The service name is listed under `service` when <% vars.pas_full %> app developers run `cf marketplace`.
 
 ###<a id='images'></a> (Optional) Load Container Images
 
@@ -312,7 +328,7 @@ To create and test a `bind.yaml` file, do the following:
         username: "root"
       }
     ```
-    <p class="note"><strong>Note:</strong> The values of <code>$.services</code> and <code>$.secrets</code> 
+    <p class="note"><strong>Note:</strong> The values of <code>$.services</code> and <code>$.secrets</code>
         come from the namespace in which the chart is deployed.</p>
 
 1. Download the `template-tester` binary from
@@ -328,7 +344,7 @@ To create and test a `bind.yaml` file, do the following:
     your chart is deployed.
 
     For example:
-    <pre class="terminal">$ template-tester default bind.yaml    
+    <pre class="terminal">$ template-tester default bind.yaml
       {
        "hostname": "192.168.1.1",
        "jdbcUrl": "jdbc:mysql<span>:</span>//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
@@ -361,8 +377,8 @@ your Helm chart directory:
 
 1. Record the values for `identity` and `password`.
 
-1. To add the Helm chart as a dedicated instance service offering to <%= vars.product_short %>, run the following
-command:
+1. To add the Helm chart as a dedicated instance service offering to <%= vars.product_short %>,
+run the following command:
 
     ```
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
@@ -428,10 +444,10 @@ To enable access to your service offering, do the following:
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
     + `USERNAME` is the value of `identity` you recorded in step 3 of
-    [Add a Service Offering to Container Services Manager for PCF](#add) above.
+    [Add a Service Offering to  <%= vars.product_short %>](#add) above.
     + `PASSWORD` is the value of `password` you recorded in step 3 of [
-    Add a Service Offering to Container Services Manager for PCF](#add) above.
+    Add a Service Offering to   <%= vars.product_short %>](#add) above.
     + `YOUR-CHART` is the name of the service offering you want to delete that you viewed in step 1.
 
-    <p class="note"><strong>Note:</strong> If you only have one service offering in <%= vars.product_short %>, you
-      cannot delete it.</p>
+    <p class="note"><strong>Note:</strong> If you only have one service offering in
+      <%= vars.product_short %>, you cannot delete it.</p>

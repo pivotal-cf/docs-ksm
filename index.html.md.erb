@@ -12,7 +12,8 @@ This topic is an overview of  <%= vars.product_full %>.
 
  <%= vars.product_short %> enables operators
 to provide application developers with access to services through the `cf marketplace`.
-These services run on Enterprise Pivotal Container Service (Enterprise PKS) for consumption by Pivotal Application Services (PAS) apps.
+These services run on Enterprise Pivotal Container Service (Enterprise PKS)
+for consumption by <%= vars.pas_full %> apps.
 
 For more information about the `cf marketplace`,
 see [Pivotal Cloud Foundry Developer Guide](https://docs.pivotal.io/pivotalcf/2-5/devguide/index.html).
@@ -21,18 +22,19 @@ see [Enterprise Pivotal Container Service (PKS)](https://pivotal.io/platform/piv
 
 <%= vars.product_short %> enables platform operators to do the following:
 
-* Offer an ISV or open source Helm chart as an on-demand service to PAS developers.
+* Offer an ISV or open source Helm chart as an on-demand service to <%= vars.pas_short %> developers.
 
 <%= vars.product_short %> enables app developers to do the following:
 
 * Provision dedicated service instances onto a PKS cluster through the `cf marketplace`.
-* Consume services running on Enterprise PKS in apps running on PAS.
+* Consume services running on Enterprise PKS in apps running on <%= vars.pas_short %>.
 
 ## <a id='features'></a> Key Features
 
 <%= vars.product_short %> includes the following key features:
 
-* A service broker that provisions dedicated service instances into a PKS cluster and binds service instances to PAS apps.
+* A service broker that provisions dedicated service instances into a
+PKS cluster and binds service instances to PAS apps.
 * A command line interface (CLI) for managing service offerings.
 * The ability to easily create and manage a catalog of services to the `cf marketplace`.
 
@@ -60,11 +62,11 @@ The following table provides version and version-support information about <%= v
         <td>2.2, 2.3, 2.4, 2.5, and 2.6</td>
     </tr>
     <tr>
-        <td>Compatible Pivotal Application Service version(s)</td>
+        <td>Compatible <%= vars.pas_short %> version(s)</td>
         <td>2.2, 2.3, 2.4, 2.5, and 2.6</td>
     </tr>
     <tr>
-        <td>Compatible Enterprise Pivotal Container Service version(s)</td>
+        <td>Compatible Enterprise PKS version(s)</td>
         <td>1.2, 1.3, and 1.4</td>
     </tr>
     <tr>
@@ -86,20 +88,26 @@ The following table provides version and version-support information about <%= v
 <%= vars.product_short %> requires the following:
 
 * **PKS CLI:** For information about installing the PKS CLI,
-  see [Installing the PKS CLI](https://docs.pivotal.io/runtimes/pks/installing-pks-cli.html).
-* **KSM CLI:** For information about installing the KSM CLI, see [Install the KSM CLI](./installing.html#ksm) .
-* **PAS Deployment:** A running PAS deployment that is installed on the same foundation as <%= vars.product_short %>.
+  see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
+* **KSM CLI:** For information about installing the KSM CLI, see
+[Install the KSM CLI](./installing.html#ksm) .
+* **PAS Deployment:** A running PAS deployment that is installed on the
+same foundation as <%= vars.product_short %>.
 * **PKS Cluster:** A running PKS cluster.
-* **Private Container Registry (optional):** You need this to manage container images in air-gapped environments.
+* **Private Container Registry (optional):** You need this to manage container images
+in air-gapped environments.
   Pivotal recommends using a private container registry in production deployments.
-  You can use a container registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
-* **Helm CLI (optional):** For information about installing the Helm CLI, see [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.
+  You can use a container registry such as
+  [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Helm CLI (optional):** For information about installing the Helm CLI,
+see [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.
 * **Docker CLI (optional):** See [Docker](https://www.docker.com/).
 
 ## <a id="limitations"></a>Limitations
 
 Dedicated service instances created by <%= vars.product_short %> provision
-an IaaS load balancer for ingress into each service instance. You cannot use ClusterIP for ingress.
+an IaaS load balancer for ingress into each service instance.
+You cannot use ClusterIP for ingress.
 
 ## <a id="feedback"></a>Feedback
 
