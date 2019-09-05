@@ -19,25 +19,31 @@ You can use <%= vars.product_short %> to do the following:
 
 ##<a id="prereq"></a>Prerequisites
 
- <%# <!-- TODO: point to prepare-offer section--> %>
+1. Prepare the service offering as described in the section
+**Preparing an Offer for Use With Container Services Manager for PCF**.
 
-###<a id='images'></a> (Optional) Load Container Images
+## <a id="credentials"></a> Retrieve Credentials for <%= vars.product_short %>
 
-You need to load container images into a private registry if either of the following apply:
+1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_tile %>** > **Credentials**.
 
-+ Your environment is air gapped and cannot connect to common registries such as
-[Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/)
-+ The images referenced in the Helm chart are not public
+1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
 
-You must load the images before a developer runs `cf create-service`.
+1. Record the values for `identity` and `password`.
 
-To load your container images follow instructions for your specific registry.
-Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client)
+1. To validate the credentials for <%= vars.product_short %>,
+run the following command:
+
+    ```
+    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in step 3.
+    + `PASSWORD` is the value of `password` you recorded in step 3.
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
-After you configure your Helm chart for <%= vars.product_short %> you must package it and
+After you configure your Helm charts for <%= vars.product_short %> you must package them and
 add the offering to <%= vars.product_short %> to let developers use it.
 To add your offering to <%= vars.product_short %>, do the following:
 
@@ -51,13 +57,7 @@ your Helm chart directory:
     Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your
     Helm chart directory.
 
-1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_tile %>** > **Credentials**.
-
-1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
-
-1. Record the values for `identity` and `password`.
-
-1. To add the Helm chart as a dedicated instance service offering to <%= vars.product_short %>,
+1. To add a single Helm chart as a dedicated instance service offering to <%= vars.product_short %>,
 run the following command:
 
     ```
@@ -65,10 +65,23 @@ run the following command:
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step 3.
-    + `PASSWORD` is the value of `password` you recorded in step 3.
-    + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart created in step 1.
+    + `USERNAME` is the value of `identity` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
+    + `PASSWORD` is the value of `password` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
+    + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart created above.
 
+1. To add multiple Helm charts as a dedicated instance service offering to <%= vars.product_short %>,
+run the following command:
+
+    ```
+    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.TGZ /PATH-TO-YOUR-CHART_2.tgz
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
+    + `PASSWORD` is the value of `password` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
+    + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file of your service offering.
+    + `PATH-TO-YOUR-CHART_1.tgz` is the path to the packaged chart named in your `ksm.yaml`.
+    + `PATH-TO-YOUR-CHART_1.tgz` is the path to the packaged chart named in your `ksm.yaml`.
 
 1. To ensure your offering has been saved to <%= vars.product_short %>, run the following command:
 
