@@ -20,7 +20,7 @@ and will handle upgrades of the Tiller version during a Tile upgrade.
 * To manually run `helm` commands:
 
 1. Target the Kubernetes cluster with `kubectl`.
-1. Download the mTLS credentials from Ops Manager to talk to the `<%= vars.product_short %>'s Helm`:
+1. Download the mTLS credentials from Ops Manager to talk to <%= vars.product_short %>'s Helm:
     + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** Tile >
     **Credentials** > **Tiller Certificate**
     + Create a private key file with the contents of the RSA Private Key.
