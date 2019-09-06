@@ -1,5 +1,5 @@
 ---
-title: Preparing an Offer for Use With Container Services Manager for PCF
+title: Preparing an Offer for Use With Container Services Manager (KSM) for Pivotal Platform
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -302,17 +302,3 @@ ingress:
 ```
 
 The plan-specific values files also go through the templating engine.
-
-###<a id='images'></a> (Optional) Load Container Images
-
-You need to load container images into a private registry if either of the following apply:
-
-+ Your environment is air gapped and cannot connect to common registries such as
-[Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/)
-+ The images referenced in the Helm chart are not public
-
-You must load the images before a developer runs `cf create-service`.
-
-To load your container images follow instructions for your specific registry.
-Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client)
