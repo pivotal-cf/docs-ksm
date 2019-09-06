@@ -51,6 +51,15 @@ the Helm chart needed for the service.
  For more information about Open Service Broker,
  see [Open Service Broker](https://www.openservicebrokerapi.org/).
 
+ Dedicated instances are provided through a service broker installed by the <%= vars.product_short %> tile.
+ When a <% vars.pas_short %> developer runs `cf create-service`
+ the broker creates a dedicated service instance of the service in the backing cluster.
+
+ For more
+ information about the `cf create-service` command,
+ see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create)
+ in the Cloud Foundry documentation.
+
 ##<a id='osbapi'></a> Detailed life-cycle
 ###<a id='provision'></a> Provision
 When a service instance is provisioned, <%= vars.product_short %>
