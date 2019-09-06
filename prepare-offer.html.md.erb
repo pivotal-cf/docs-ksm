@@ -53,7 +53,9 @@ To configure your Helm chart to be compatible with <%= vars.product_short %>, do
     ```
 
 1. Edit your `values.yaml` file to enable service access. <%= vars.product_short %> supports using `Service:``Type:` LoadBalancer to access services directly,
-or to use with Ingress or [ExternalDNS](https://github.com/kubernetes-incubator/external-dns).
+or to use with [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+or [ExternalDNS](https://github.com/kubernetes-incubator/external-dns).
+Note: The Ingress controller or ExternalDNS controller would need to be installed and configured manually.
     + **If your service will be accessed directly via a LoadBalancer:**
     Edit the `Service:` `type:` value to `LoadBalancer`.
 
