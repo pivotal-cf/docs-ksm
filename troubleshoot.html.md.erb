@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting Container Services Manager for PCF
+title: Troubleshooting 
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -7,42 +7,49 @@ owner: Platform Engineering (KSM Team)
 
 <strong><%= modified_date %></strong>
 
-This topic provides operators with basic instructions for troubleshooting
+This topic provides platform operators with basic instructions for troubleshooting
 <%= vars.product_full %>.
 
-## <a id='issue-debugging'></a> Advanced Debugging
-Advanced debugging might require using the `helm` and `kubectl` CLIs.
+## <a id='overview'></a> Overview
 
-* [Tiller](https://docs.helm.sh/glossary/#tiller) is the server side component of Helm.
-<%= vars.product_short %> installs Tiller with mTLS into a specific namespace, `kibosh`,
-and will handle upgrades of the Tiller version during a Tile upgrade.
+Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
-* To manually run `helm` commands:
+Tiller is the server side component of Helm.
+<%= vars.product_short %> installs Tiller with mTLS into the  `kibosh` namespace and upgrades Tiller during tile upgrades. If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials. 
 
-1. Target the Kubernetes cluster with `kubectl`.
-1. Download the mTLS credentials from Ops Manager to talk to the `<%= vars.product_short %>'s Helm`:
-    + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** Tile >
-    **Credentials** > **Tiller Certificate**
-    + Create a private key file with the contents of the RSA Private Key.
-    + Create a certificate file with the contents of the Certificate.
-1. Run `helm` commands with mTLS configuration, for example:
+For information about Tiller, see [Tiller](https://docs.helm.sh/glossary/#tiller) in the Helm documentation.
+
+## <a id='helm'></a> Run Helm Commands
+
+To manually run `helm` commands:
+
+1. Target your Kubernetes cluster by following the procedure in [Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
+    
+1. Retrieve your mTLS credentials by doing the following:
+    + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** >
+    **Credentials** > **Tiller Certificate**.
+    + Create a `.pem` private key file with the value of `private_key_pem`.
+    + Create a `.pem` certificate file with the value of the `cert_pem`.
+
+1. You can run `helm` commands with mTLS using the credentials you recorded in the previous step. For example:
 
     ```
-    helm ls --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT.pem --tls-key PATH-TO-KEY.pem
+    helm list --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
     ```
     Where:
-    + `PATH-TO-CERT.pem` is the path to the certificate file retrieved above.
-    + `PATH-TO-KEY.pem` is the path to the private key file retrieved above.
+    + `PATH-TO-CERT` is the path to the certificate file you created in the above step.
+    + `PATH-TO-KEY` is the path to the private key file you created in the above step.
+    
+    For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
+    in the Helm documentation.
 
-##<a id='issue-cleanup'></a> Cleanup
-<%= vars.platform %> gives an asynchronously provisioned service seven days to become healthy. It
-sometimes requires manual cleanup to remove services earlier in some failure modes.
-[Purging a service instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
-removes the service from <%= vars.platform %>. 
-This might, however, leave resources in the backing cluster.
+##<a id='issue-cleanup'></a> Clean up a Service Instance
+<%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy. In some failure modes, you might have to manually clean up services earlier. 
+You can use the cf CLI to purge a service instance from <%= vars.platform %>. However, this might leave resources in the backing cluster.
 
-To fully clean up, delete the Helm release and the namespace, if either is still present.
-Both the cluster and the Helm resources are named after the service's GUID.
+For information about purging a service instance, see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance) in the Cloud Foundry documentation.
+ 
+To fully clean up a service instance, you must delete any remaining Helm releases or namespaces. The cluster and the Helm resources are named after the service GUID.
 
 ```bash
 kubectl get namespaces

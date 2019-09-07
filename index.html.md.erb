@@ -35,8 +35,8 @@ see [Enterprise Pivotal Container Service (PKS)](https://pivotal.io/platform/piv
 
 * A service broker that provisions dedicated service instances into a
 PKS cluster and binds service instances to PAS apps.
-* A command line interface (CLI) for managing service offerings.
-* The ability to easily create and manage a catalog of services to the `cf marketplace`.
+* A CLI for managing service offerings.
+* The ability to create and manage a catalog of services to the `cf marketplace`.
 
 ## <a id="snapshot"></a>Product Snapshot
 
@@ -91,8 +91,8 @@ The following table provides version and version-support information about <%= v
   see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
 * **KSM CLI:** For information about installing the KSM CLI, see
 [Install the KSM CLI](./installing.html#ksm) .
-* **PAS Deployment:** A running PAS deployment with CredHub enabled that is installed on the
-same foundation as <%= vars.product_short %>.
+* **<%= vars.pas_short %> Deployment:** A running <%= vars.pas_short %> deployment with CredHub enabled that is installed on the
+same foundation as <%= vars.product_short %>. For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 * **PKS Cluster:** A running PKS cluster.
 * **Private Container Registry (optional):** You need this to manage container images
 in air-gapped environments.

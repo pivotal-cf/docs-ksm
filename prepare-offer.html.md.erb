@@ -1,5 +1,5 @@
 ---
-title: Preparing an Offer for Use With Container Services Manager for PCF
+title: Preparing a Service Offering 
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -11,27 +11,26 @@ This topic describes how to prepare an offered service for <%= vars.product_full
 
 ##<a id='using'></a> Overview
 
-<%= vars.product_short %> allows Platform Operators to offer Helm charts as on-demand services to developers on PAS.
-An offering is made up of the following components:
+<%= vars.product_short %> enables platform operators to offer Helm charts as on-demand services to developers on 
+<%= vars.pas_short %>. Before you add a service offering to `cf marketplace`, you must configure your Helm charts to be compatible with <%=  vars.product_short %>. You can also  customize your Helm charts to enable additional features. 
 
-+ One or more Helm charts
-+ (Optional) Plans configuration to offer customized plans and override default values
-+ (Optional) A `ksm.yaml` file describing the offering (required to deploy multiple charts or use Kubernetes Operators)
-+ (Optional) Binding template for environment variables for app binding and consumption of the service
+A service offering can have the following components:
 
-##<a id="prereq"></a> Prerequisites
++ **One or more Helm charts:** See [Configure Your Helm Charts](#config-helm) below.
++ **A `plans.yml` file and plan configurations:** You use these files to offer customized plans and override default values. See [(Optional) Define Plans Configuration](#plans) below.
++ **A `ksm.yaml` file that describes the service offering:** See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below. The file is required if you deploy multiple charts or are use Operator patterns. For information about Operators in Kubernetes, see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator) in the Kubernetes documentation. 
++ **A binding template for environment variables:** This template is used for app binding and service consumption. See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env) below.
 
-1. **Install External Dependencies:** If your Helm charts have any external dependencies, they must be installed before offering the service.
-    + For example: if your Helm chart requires an Ingress Controller to enable service access via Ingress,
-    the Ingress Controller must be installed onto the cluster manually.
-1. **Load Container Images:** If your environment is air gapped and cannot connect to common registries such as
-    [Docker Hub](https://hub.docker.com/)and[Quay](https://quay.io/) or if the images referenced in the Helm chart are not public,
-    you must load the images into a registry in your environment. To load your container images follow instructions for your specific registry.
-    For example, Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client).
+Before you deploy your service offering, you must also: 
 
-##<a id='config-helm'></a> Configure your Helm Charts
++ **Install External Dependencies:** If your Helm charts have any external dependencies, they must be installed before you offer your service. For example, if your Helm chart requires an Ingress Controller to enable service through ingress,
+    the Ingress Controller must be manually installed onto the cluster.
++ **Load Container Images:** You might have to load your container images into a private registry. See [(Optional) Load Container Images](#images) below.
 
-To configure your Helm chart to be compatible with <%= vars.product_short %>, do the following:
+
+##<a id='config-helm'></a> Configure Your Helm Charts
+
+To configure your Helm chart to be compatible with <%= vars.product_short %>:
 
 1. Open the `values.yaml` file at the root level of your chart.
 
@@ -89,15 +88,14 @@ These values are configured in `plans.yaml` at the root level of your chart.
 For example charts that have been configured for KSM,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
-If you want to override the default settings in `values.yaml` and offer custom plans, do the following:
+If you want to override the default settings in `values.yaml` and offer custom plans:
 
 1. Create a `plans` subdirectory at the root level of your chart
 
 1. Create and edit `plans/PLAN-FILE.yaml` with the Helm values that you want to override.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
     <br><br>
-    Ensure that the properties you add to `PLAN-FILE.yaml` match the properties in `values.yaml`
-    and that you only change the values.
+    Ensure that the properties you add to `PLAN-FILE.yaml` match the properties in `values.yaml` and that you only change the values.
     <br><br>
     For example:
 
@@ -120,7 +118,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
     ```
 
     Where:
-    * `PLAN-NAME` is the name of the plan that developers see when they run `cf marketplace`. 
+    * `PLAN-NAME` is the name of the plan that developers see when they run `cf marketplace` 
         The plan name is listed under `plans`.
        Ensure that the plan name is lowercase only and contains no special characters.
     * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run `cf marketplace`.
@@ -227,7 +225,7 @@ service credentials are delivered to `VCAP_SERVICES` for app consumption.
 
 For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org).
 
-To create and test a `bind.yaml` file, do the following:
+To create and test a `bind.yaml` file:
 
 1. Add a `bind.yaml` file to the root directory of your chart.
     For example, the following `bind.yaml` enables the broker to return
@@ -246,7 +244,8 @@ To create and test a `bind.yaml` file, do the following:
       }
     ```
     <p class="note"><strong>Note:</strong> The values of <code>$.services</code> and <code>$.secrets</code>
-        come from the namespace in which the chart is deployed.</p>
+        come from the namespace in which the chart is deployed.
+      </p>
 
 1. Download the `template-tester` binary from
 [kibosh](https://github.com/cf-platform-eng/kibosh/releases/latest) in GitHub.
@@ -264,16 +263,16 @@ To create and test a `bind.yaml` file, do the following:
     <pre class="terminal">$ template-tester default bind.yaml
       {
        "hostname": "192.168.1.1",
-       "jdbcUrl": "jdbc:mysql<span>:</span>//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
-       "name": "kibosh-46588108-0ba5-47c0-ba97-bd76e33af0d1-grafana",
+       "jdbcUrl": "jdbc&#58;mysql&#58;//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
+       "name": "kibosh-46588108-0 ba5-4 7c0-ba97-bd76e33af0d1-grafana",
        "password": "ab1cdeFgH3IJKLMN",
        "port": 3306,
-       "uri": "mysql://root<span>:</span>ab1cdeFgH3IJKLMN@192.168.1.1:3306/my&#95;db?reconnect=true",
+       "uri": "mysql&#58;//root&#58;ab1cdeFgH3IJKLMN@192&#46;168&#46;1&#46;1&#58;3306/my&#95;db?reconnect=true",
        "username": "root"
       }</pre>
 
 
-##<a id='values-templating'></a> (Optional) Template Values
+###<a id='values-templating'></a> (Optional) Template Values
 
 <%# The below distinction is not very clear to me. 
 For instance what is meant by "the values themselves"? The values in `values.yaml`?
@@ -303,16 +302,15 @@ ingress:
 
 The plan-specific values files also go through the templating engine.
 
-###<a id='images'></a> (Optional) Load Container Images
+##<a id='images'></a> (Optional) Load Container Images
 
-You need to load container images into a private registry if either of the following apply:
+You must load container images into a private registry if either of the following applies:
 
-+ Your environment is air gapped and cannot connect to common registries such as
++ Your environment is air-gapped and cannot connect to common registries such as
 [Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/)
-+ The images referenced in the Helm chart are not public
+[Quay](https://quay.io/).
++ The images referenced in the Helm chart are not public.
 
 You must load the images before a developer runs `cf create-service`.
-
 To load your container images follow instructions for your specific registry.
-Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client)
+Harbor [instructions](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
