@@ -43,21 +43,42 @@ To configure your Helm chart to be compatible with <%= vars.product_short %>:
 
     For example:
 
-    ```
+    ```yaml
+    ...
     persistence:
       enabled: true
       storageClass: "standard"
       ...
-    service:
-      type: LoadBalancer
-      port: 3306
     ```
 
-1. Edit your `values.yaml` file to enable service access:
-    + **If your service will be accessed directly via a LoadBalancer:**
-    Edit the `Service:` `type:` value to `LoadBalancer`.
-    + **If your service will be accessed via Ingress or ExternalDNS:**
-    Edit the value of the hostnames to include a templated value for uniqueness. For more information,
+1. Edit your `values.yaml` file to enable service access. 
+<%= vars.product_short %> supports using a load balancer, [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+or [ExternalDNS](https://github.com/kubernetes-incubator/external-dns) to access services.
+    + **If want your service to be accessed directly using a load balancer,** set  
+    `services.type:` to `LoadBalancer`. For example:
+
+    ```yaml
+   ...
+   service:
+      type: LoadBalancer
+      port: 3306
+   ...
+   ```
+    + **If want your service to accessed using Ingress or ExternalDNS:**
+    Edit the value of the `hosts.name` to include a templated value for uniqueness. 
+    For example:
+
+     ```yaml
+    ...
+    ingress:
+      enabled: true
+      hosts:
+      - name: "{{ .Release.Name }}.example.com"
+    ...
+    ```
+    <p class="note"><strong>Note:</strong> The Ingress controller or ExternalDNS controller need to be installed and configured manually.
+    </p>
+    For more information,
     see [(Optional) Template Values](#values-templating) below.
 
  <%# <!-- TODO: does this belong here or in using section--> %>
