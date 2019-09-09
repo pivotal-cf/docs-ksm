@@ -10,12 +10,11 @@ This topic describes <%= vars.product_full %> components, architecture, and tech
 
 ##<a id='overview'></a> Overview
 
-<%= vars.platform %> is a collection of components running on a BOSH deployed
-VM that communicates with both Kubernetes clusters and <%= vars.product_name %>.
-
+<%= vars.product_short %> is a collection of components running on a BOSH deployed
+VM that communicates with both Kubernetes clusters and PCF.
 
 The following diagram describes how <%= vars.product_short %> communicates with
-<%= vars.platform %> and a Kubernetes cluster:
+PCF and a Kubernetes cluster:
 
 <a href="images/reference_architecture.jpg" target="_blank">
     <img src="images/reference_architecture.jpg" alt="<%= vars.product_short %> reference architecture">
@@ -23,48 +22,153 @@ The following diagram describes how <%= vars.product_short %> communicates with
 
 <%# The above diagram should probably be simplified or split up. It is hard to follow and read since the text is small. We also should write more text below that explains or describes the diagram in more detail for clarity/accessibility reasons. %>
 
-<%= vars.product_short %> has the the following components:
+<%= vars.product_short %> consists of the following components:
 
-+ [KSM Daemon](#ksm-d)
-+ [KSM Broker](#ksm-broker)
-+ [SOME OTHER COMPONENT?]()
+* [KSM Daemon](#ksm-d)
+* [KSM Broker](#ksm-broker)
+
+And uses external resources:
+
+* [S3 Compatible Storage](#state)
+* [Kubernetes Clusters](#clusters)
 
 ##<a id='ksm-d'></a> KSM Daemon
 
-The KSM daemon (ksm-d) is the API that the KSM CLI communicates with.
+The <% vars.pas_short %> daemon (ksm-d) provides the API that the KSM CLI communicates with.
 When an operator saves a Helm chart,
-the ksm-d component validates the chart and stores it in ChartMuseum.
-If you provide a descriptor in your `ksm.yaml` file, the component stores the
-the description as well.
+the ksm-d component validates the chart and stores it in
+[ChartMuseum](https://github.com/helm/chartmuseum).
+If you provide a descriptor in your `ksm.yaml` file, this component stores
+that yaml file as well.
 
 For more information about Helm charts and the `ksm.yaml` file,
-see [Using <%= vars.product_short %>](./using.html).
+see [Preparing an Offer](./prepare-offer.html).
 
 ##<a id='ksm-broker'></a> KSM Broker
 
-The KSM broker is an Open Service Broker that is installed by the <%= vars.product_short %> tile. Dedicated instances are provided through the KSM broker.
+The KSM broker is an Open Service Broker.
+When a <%= vars.platform %> developer runs `cf create-service`,
+the Cloud Controller sends that request to the broker. The broker then deploys
+the Helm chart needed for the service.
 
-When a <%= vars.platform %> developer runs `cf create-service`, the following happens:
-    
-1. The Cloud Controller sends the request to the broker. 
-1. The broker deploys the Helm chart needed for the service.
-1. The broker creates a dedicated service instance of the service in the backing cluster.
+For more information about Open Service Brokers,
+see [Open Service Broker](https://www.openservicebrokerapi.org/).
 
- For more information about Open Service Broker,
- see [Open Service Broker](https://www.openservicebrokerapi.org/).
+Dedicated instances are provided through a service broker installed by the <%= vars.product_short %> tile.
+When a <% vars.pas_short %> developer runs `cf create-service`
+the broker creates a dedicated service instance of the service in the backing cluster.
 
- For more
- information about the `cf create-service` command,
- see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create)
- in the Cloud Foundry documentation.
+For more
+information about the `cf create-service` command,
+see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create)
+in the Cloud Foundry documentation.
 
-##<a id='osbapi'></a> Detailed life-cycle
-###<a id='provision'></a> Provision
+
+## <a id='state'></a> S3 State
+
+Both ChartMuseum and the <% vars.pas_short %> daemon store state in
+[the configured S3 bucket](./installing.html#storage-preq).
+
+The daemon also uses this bucket to persist its cache.
+
+## <a id='clusters'></a> Kubernetes Clusters
+
+<%= vars.product_short %> is backed by at least one
+[default cluster](./installing.html#kubeconfig).
+Individual offering plans can override this cluster as well.
+<%# todo: link to configuring plan specific credentials %>
+This configuration scheme allows a large, default cluster to be used for more ephemeral
+service instances, like those used in dev, and clusters with more workload specialized configurations to be
+dedicated to specific service plans.
+
+<%= vars.product_short %> creates multiple namespaces.
+
+* On installation, <%= vars.product_short %> creates a `kibosh` into which it installs Helm's
+[Tiller](https://helm.sh/docs/install/), secured via mTLS where
+the CA certificate is the
+[Ops Manager Root CA](https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/managing-certificates.html)
+* Each instance is deployed into its own namespace, named `kibosh-xxxx`,
+where `xxxx` is the `instance_id` generated by <%= vars.pas_short %>
+* Each chart having scope `cluster` will be provisioned once per cluster in a namespace named `ksm-<chart-name>`.
+
+<%= vars.product_short %> doesn't inerntally track these identifiers, and uses
+the predictable namespace names to reach resources in backing clusters.
+
+#<a id='osbapi'></a> Detailed life-cycle
+##<a id='provision'></a> Provision
 When a service instance is provisioned, <%= vars.product_short %>
-creates a namespace in the cluster. This namespace is named `kibosh-xxxx`, where `xxxx` is the
-`instance_id` generated by <%= vars.product_name %>.
+loops through the list of charts (as described in [Preparing an Offer](./prepare-offer.html)),
+first checking the scope. Each chart is then serially deployed into the backing Kubernetes cluster,
+and subsequent charts will wait for the previous chart to be fully installed.
 
-###<a id='provision'></a> Bind
-###<a id='provision'></a> Update
+#####<a id='provision_cluster_scope'></a> Cluster Scope
+
+When the chart's scope is `cluster`, <%= vars.product_short %> will check for a namespace
+named `ksm-<chart-name>`. If the namespace is present, the `cluster` scoped chart won't be added.
+
+When the namespace isn't present, <%= vars.product_short %> will
+
+* Create the namespace named `ksm-<chart-name>` for the cluster scoped chart
+* Deploy the chart into the namespace
+* Wait for the deployment to succeed
+
+If <%= vars.product_short %> is configured with a private registry, it will
+
+* Transform the chart's image reference  to pull to from that registry (assuming the image/registry key names used match expectations)
+* Add a secret containing the registry credentials to the namespace, so the image can be pulled
+
+#####<a id='provision_namespace_scope'></a> Namespace Scope
+
+When the chart's scope is `namespace`, the broker will
+
+* Creates a new namespace in the cluster. This namespace is named `kibosh-xxxx`, where `xxxx` is the
+`instance_id` generated by <%= vars.pas_short %>
+* Deploy the chart into the namespace
+* Wait for the deployment to succeed
+
+If <%= vars.product_short %> is configured with a private registry, it will
+
+* Transform the chart's image reference  to pull to from that registry (assuming the image/registry key names used match expectations)
+* Add a secret containing the registry credentials to the namespace, so the image can be pulled
+
+###<a id='bind'></a> Bind
+
+On bind, <%= vars.product_short %> looks at the `services` and `secrets` created
+in the  namespace created on provision.
+
+If the chart includes a [bind template](./prepare-offer.html#env), these
+`services` and `secrets` are fed into that template, processed, and the template
+results are used as the credentials.
+
+If the chart does not include a bind template, the `services` and `secrets` are
+used directly as credentials (serialized as JSON).
+
+<%= vars.product_short %> takes the credentials and then stores them
+in the Pivotal Application Service CredHub.
+<%# Not to docs folks: to be technically accurate, this needs to be PAS credhub - can't be platform or something generic %>
+The bound application is given permission to read the newly created CredHub variable.
+
+###<a id='update'></a> Update
+
+When a developer invokes update via <%= vars.pas_short %>, Helm's
+[upgrade lifecycle](https://github.com/helm/helm/blob/master/docs/helm/helm_upgrade.md)
+is triggered for the chart.
+
+* The update will **not** consume a newer version of the chart if one has been offered
+* Existing values will be used, so the developer does not need to re-send all the configuration parameters
+
+The use case for update is to add or modify configuration parameters sent via the `-c`
+flag on service provision or update.
+
 ###<a id='provision'></a> Unbind
+
+On unbind, <%= vars.product_short %> will delete the CredHub variables
+[created during bind](#bind).
+
 ###<a id='provision'></a> Deprovision
+
+On deprovision, <%= vars.product_short %> will
+
+* Delete each chart of scope `namespace` created during provision
+* Take no action on charts of scope `cluster`
+* Delete the namespace in the backing cluster generated during provision
