@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting 
+title: Troubleshooting
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -15,7 +15,9 @@ This topic provides platform operators with basic instructions for troubleshooti
 Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
 Tiller is the server side component of Helm.
-<%= vars.product_short %> installs Tiller with mTLS into the  `kibosh` namespace and upgrades Tiller during tile upgrades. If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials. 
+<%= vars.product_short %> installs Tiller with mTLS into the  `kibosh` namespace
+and upgrades Tiller during tile upgrades.
+If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials.
 
 For information about Tiller, see [Tiller](https://docs.helm.sh/glossary/#tiller) in the Helm documentation.
 
@@ -23,15 +25,17 @@ For information about Tiller, see [Tiller](https://docs.helm.sh/glossary/#tiller
 
 To manually run `helm` commands:
 
-1. Target your Kubernetes cluster by following the procedure in [Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
-    
+1. Target your Kubernetes cluster by following the procedure in
+[Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
+
 1. Retrieve your mTLS credentials by doing the following:
     + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** >
     **Credentials** > **Tiller Certificate**.
     + Create a `.pem` private key file with the value of `private_key_pem`.
     + Create a `.pem` certificate file with the value of the `cert_pem`.
 
-1. You can run `helm` commands with mTLS using the credentials you recorded in the previous step. For example:
+1. You can run `helm` commands with mTLS using the credentials you recorded in the previous step.
+For example:
 
     ```
     helm list --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
@@ -39,17 +43,22 @@ To manually run `helm` commands:
     Where:
     + `PATH-TO-CERT` is the path to the certificate file you created in the above step.
     + `PATH-TO-KEY` is the path to the private key file you created in the above step.
-    
+
     For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
     in the Helm documentation.
 
 ##<a id='issue-cleanup'></a> Clean up a Service Instance
-<%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy. In some failure modes, you might have to manually clean up services earlier. 
-You can use the cf CLI to purge a service instance from <%= vars.platform %>. However, this might leave resources in the backing cluster.
+<%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy.
+In some failure modes, you might have to manually clean up services earlier.
+You can use the cf CLI to purge a service instance from <%= vars.platform %>.
+However, this might leave resources in the backing cluster.
 
-For information about purging a service instance, see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance) in the Cloud Foundry documentation.
- 
-To fully clean up a service instance, you must delete any remaining Helm releases or namespaces. The cluster and the Helm resources are named after the service GUID.
+For information about purging a service instance,
+see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
+in the Cloud Foundry documentation.
+
+To fully clean up a service instance, you must delete any remaining Helm releases or namespaces.
+The cluster and the Helm resources are named after the service GUID.
 
 ```bash
 kubectl get namespaces

@@ -1,5 +1,5 @@
 ---
-title: Installing and Configuring KSM for Pivotal Platform
+title: Installing and Configuring KSM
 owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
@@ -12,10 +12,10 @@ This topic describes how to install and configure <%= vars.product_full %>.
 
 To install the KSM CLI:
 
-1. Log in and navigate to **<%= vars.product_tile %>** in
+1. Log in and navigate to **<%= vars.product_full %>** in
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Click **<%= vars.cli_tile %>** and download the CLI for your operating system.
+1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
 
 1. Rename the downloaded binary file to `ksm`.
 
@@ -32,7 +32,7 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running the 
 
 To add <%= vars.product_short %> to Ops Manager:
 
-1. Log in and download the <%= vars.product_tile %> tile from
+1. Log in and download the <%= vars.product_full %> tile from
 [Pivotal Network](https://network.pivotal.io/).
 
 1. Navigate to the **Ops Manager Installation Dashboard** where
@@ -45,7 +45,7 @@ marketplace and therefore must be installed in an environment with <%= vars.pas_
 1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>.
 This adds the tile to your staging area.
 
-1. Click the newly-added **<%= vars.product_tile %>** tile to open its configuration panes.
+1. Click the newly-added **<%= vars.product_full %>** tile to open its configuration panes.
 
 ## <a id="configure"></a>Configure the Tile
 Follow the steps below to configure <%= vars.product_short %> service.
@@ -82,7 +82,7 @@ service broker and to select networks.
     <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
        after they are assigned your deployment fails. For more information,
        see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.
-     </p> 
+     </p>
 
  2. Click **Save**.
 
@@ -149,7 +149,7 @@ with the `cluster-admin` role by doing the following:
 
     <br>
     Record the output.
-1. Navigate to **PCF Ops Manager** > **<%= vars.product_tile %>** > **Kubernetes Configuration**.
+1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -192,7 +192,7 @@ See [Prerequisites](#storage-preq), below.
 
 #### <a name="storage-preq"></a> Prerequisites
 
-To configure storage for KSM for PCF:
+To configure storage for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider. P
