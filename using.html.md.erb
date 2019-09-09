@@ -1,5 +1,5 @@
 ---
-title: Using KSM for Pivotal Platform 
+title: Using KSM for Pivotal Platform
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -34,9 +34,9 @@ See [Preparing a Service Offering](./prepare-offer.html).
 
 ## <a id="credentials"></a> Retrieve Credentials for <%= vars.product_short %>
 
-To use the KSM CLI, you need to retrieve your KSM API credentials. 
+To use the KSM CLI, you need to retrieve your KSM API credentials.
 
-To retrieve your KSM API Credentials: 
+To retrieve your KSM API Credentials:
 
 1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_tile %>** > **Credentials**.
 
@@ -72,7 +72,7 @@ your Helm chart directory:
 
 1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %> by doing one of the following:
     + **If you are adding a single chart,** run the following command:
-        
+
         ```
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
         ```
@@ -80,19 +80,19 @@ your Helm chart directory:
         + `SYSTEM-DOMAIN` is your PCF system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.      
+        + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.
     + **If you are adding multiple charts,** run the following command:
-        
+
         ```
-        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \ 
+        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
         /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.TGZ /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
         + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart named in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart named in your `ksm.yaml` file.
-        
-        For more information about offering multiple charts, see [(Optional) Offer Multiple Charts in a Single Offering](multiple-charts).
+
+        For more information about offering multiple charts, see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts).
 
 1. Ensure your offering has been saved to <%= vars.product_short %> by running the following command:
 
