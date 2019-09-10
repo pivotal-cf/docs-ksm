@@ -10,7 +10,7 @@ This topic describes <%= vars.product_full %> components, architecture, and tech
 
 ##<a id='overview'></a> Overview
 
-<%= vars.product_short %> is a collection of components running on a BOSH deployed
+<%= vars.product_short %> is a collection of components running on a BOSH-deployed
 VM that communicates with both Kubernetes clusters and <%= vars.platform %>.
 
 The following diagram describes how <%= vars.product_short %> communicates with
@@ -34,18 +34,18 @@ The following diagram describes how <%= vars.product_short %> communicates with
 ###<a id='ksm-d'></a> KSM Daemon
 
 The <%= vars.product_short %> daemon (ksm-d) provides the API that the KSM CLI communicates with.
-When a platform operator saves a Helm chart,
+When a platform operator adds a service offering using the KSM CLI,
 ksm-d validates the chart and stores it in ChartMuseum. For information about ChartMuseum,
-see the [chartmuseum](https://github.com/helm/chartmuseum) repository on GitHub
+see the [chartmuseum](https://github.com/helm/chartmuseum) repository on GitHub.
 
-If you provide a `ksm.yaml` file, ksm-d stores
-the yaml file. For more information about the `ksm.yaml` file,
+If you provide a `ksm.yaml` file with the service offering, ksm-d stores
+the file. For more information about the `ksm.yaml` file,
 see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
 ###<a id='ksm-broker'></a> KSM Broker
 
 The KSM broker is an Open Service Broker that creates
-dedicated service instances in the backing cluster.
+dedicated service instances in the backing Kubernetes cluster.
 When a <% vars.pas_short %> developer runs `cf create-service`
 Cloud Controller sends that request to the broker. The broker then deploys
 the Helm chart needed for the service.
@@ -57,6 +57,8 @@ For more
 information about the `cf create-service` command,
 see [Creating Service Instances](https://docs.cloudfoundry.org/devguide/services/managing-services.html#create)
 in the Cloud Foundry documentation.
+
+[IS THIS THE KIBOSH BROKER?]
 
 ##<a id='resources'></a> <%= vars.product_short %> Resources
 
