@@ -1,5 +1,5 @@
 ---
-title: Using Container Services Manager for PCF
+title: Using KSM
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -11,18 +11,32 @@ This topic describes how to use <%= vars.product_full %>.
 
 ##<a id='using'></a> Overview
 
-<%= vars.product_short %> uses the `ksm` CLI and a generic broker deployed by the tile.
+<%= vars.product_short %> uses the KSM CLI and a generic broker deployed by the tile.
 You can use <%= vars.product_short %> to do the following:
 
 + Offer on-demand provisioning of a dedicated service instance for developers through `cf marketplace`.
 + Create a catalog of services with customizable plans that can be deployed on multiple clusters.
 
+To add a service offering:
+
+1. Retrieve the credentials needed to use the KSM CLI. <br>
+See [Retrieve Credentials for <%= vars.product_short %>](#credentials) below.
+1. Package your Helm chart and add the chart to <%= vars.product_short %>. <br>
+See [Add a Service Offering to <%= vars.product_short %>](#add) below.
+1. Enable access to the service offering for your developers to use. <br>
+See [Enable Service Offering Access](#enable) below.
+
 ##<a id="prereq"></a>Prerequisites
 
-1. Prepare the service offering as described in the section
-**[Preparing an Offer for Use With Container Services Manager for Pivotal Platform](./prepare-offer.html)**.
+Before you deploy your service offering, you must configure your service offering.
+See [Preparing a Service Offering](./prepare-offer.html).
+
 
 ## <a id="credentials"></a> Retrieve Credentials for <%= vars.product_short %>
+
+To use the KSM CLI, you need to retrieve your KSM API credentials.
+
+To retrieve your KSM API Credentials:
 
 1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_tile %>** > **Credentials**.
 
@@ -30,24 +44,23 @@ You can use <%= vars.product_short %> to do the following:
 
 1. Record the values for `identity` and `password`.
 
-1. To validate the credentials for <%= vars.product_short %>,
-run the following command:
+1. Validate the credentials for <%= vars.product_short %> by running the following command:
 
     ```
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step 3.
-    + `PASSWORD` is the value of `password` you recorded in step 3.
+    + `USERNAME` is the value of `identity` you recorded in the above step.
+    + `PASSWORD` is the value of `password` you recorded in the above step.
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
-After you configure your Helm charts for <%= vars.product_short %> you must package them and
-add the offering to <%= vars.product_short %> to let developers use it.
-To add your offering to <%= vars.product_short %>, do the following:
+You must package your Helm charts and add the offering to <%= vars.product_short %> to let developers use the service.
 
-1. To package your Helm chart, run the following command from the root level of
+To add your offering to <%= vars.product_short %>:
+
+1. Package your Helm chart by running the following command from the root level of
 your Helm chart directory:
 
     ```
@@ -57,48 +70,47 @@ your Helm chart directory:
     Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your
     Helm chart directory.
 
-1. To add a single Helm chart as a dedicated instance service offering to <%= vars.product_short %>,
-run the following command:
+1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %> by doing one of the following:
+    + **If you are adding a single chart,** run the following command:
 
-    ```
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
-    + `PASSWORD` is the value of `password` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
-    + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart created above.
+        ```
+        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
+        ```
+        Where:
+        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.
+    + **If you are adding multiple charts,** run the following command:
 
-1. To add multiple Helm charts as a dedicated instance service offering to <%= vars.product_short %>,
-run the following command:
+        ```
+        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
+        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.TGZ /PATH-TO-YOUR-CHART_2.tgz
+        ```
+        Where:
+        + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart named in your `ksm.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart named in your `ksm.yaml` file.
 
-    ```
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.TGZ /PATH-TO-YOUR-CHART_2.tgz
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
-    + `PASSWORD` is the value of `password` you recorded in step [Retrieve Credentials for <%= vars.product_short %>](#credentials).
-    + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file of your service offering.
-    + `PATH-TO-YOUR-CHART_1.tgz` is the path to the packaged chart named in your `ksm.yaml`.
-    + `PATH-TO-YOUR-CHART_1.tgz` is the path to the packaged chart named in your `ksm.yaml`.
+        For more information about offering multiple charts, see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts).
 
-1. To ensure your offering has been saved to <%= vars.product_short %>, run the following command:
+1. Ensure your offering has been saved to <%= vars.product_short %> by running the following command:
 
     ```
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step 3.
-    + `PASSWORD` is the value of `password` you recorded in step 3.
+    + `USERNAME` is the value of `identity` you rin [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
 
 ## <a id="enable"></a> Enable Service Offering Access
 
 After you add your service offering, you must enable access to the service offering.
-To enable access to your service offering, do the following:
 
-1. To log in to your PAS deployment, do the following:
+To enable access to your service offering:
+
+1. Log in to your PAS deployment by running the following command:
 
     ```
     cf login -a API-URL -u USERNAME -p PASSWORD
@@ -112,7 +124,7 @@ To enable access to your service offering, do the following:
     For more information,
     see [Getting Started with the cf CLI](https://docs.pivotal.io/pivotalcf/2-4/cf-cli/getting-started.html#login).
 
-1. To enable access to the service for all orgs, run the following command:
+1. Enable access to the service for all orgs by running the following command:
 
     ```
     cf enable-service-access SERVICE-NAME
@@ -121,7 +133,7 @@ To enable access to your service offering, do the following:
     [Add a Service Offering to <%= vars.product_short %>](#add) above.
 
 
-1. To view the newly created service plan, run the following command:
+1. View the newly created service plan by running the following command:
 
     ```
     cf marketplace
@@ -129,18 +141,17 @@ To enable access to your service offering, do the following:
 
 ## <a id="delete"></a> Delete a Service Offering
 
-1. To delete a service offering, run the following command:
+1. Delete a service offering by running the following command:
 
     ```
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in step 3 of
-    [Add a Service Offering to  <%= vars.product_short %>](#add) above.
-    + `PASSWORD` is the value of `password` you recorded in step 3 of [
-    Add a Service Offering to   <%= vars.product_short %>](#add) above.
-    + `YOUR-CHART` is the name of the service offering you want to delete that you viewed in step 1.
+    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `YOUR-CHART` is the name of the service offering you want to delete.
 
     <p class="note"><strong>Note:</strong> If you only have one service offering in
-      <%= vars.product_short %>, you cannot delete it.</p>
+      <%= vars.product_short %>, you cannot delete it.
+    </p>

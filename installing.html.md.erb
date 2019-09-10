@@ -1,5 +1,5 @@
 ---
-title: Installing and Configuring Container Services Manager for PCF
+title: Installing and Configuring KSM
 owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
@@ -10,30 +10,29 @@ This topic describes how to install and configure <%= vars.product_full %>.
 
 ##<a id='ksm'></a>  Install the KSM CLI
 
-To install the KSM CLI, do the following:
+To install the KSM CLI:
 
-1. Log in and navigate to **<%= vars.product_tile %>** in
+1. Log in and navigate to **<%= vars.product_full %>** in
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Click **<%= vars.cli_tile %>** and download the CLI for your operating system.
+1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
 
 1. Rename the downloaded binary file to `ksm`.
 
-1. If you are using MacOS or Linux,
-to make the KSM binary act as an executable file, run the following command :
+1. If you use MacOS or Linux, make the KSM binary act as an executable file by running the following command:
 
     <pre class="terminal">chmod +x ksm</pre>
 
 1. Move the binary file into your `PATH`.
-If you are using MacOS or Linux, to move the binary file into your `PATH`, run the following command:
+If you use MacOS or Linux, move the binary file into your `PATH` by running the following command:
 
     <pre class="terminal">mv ksm /usr/local/bin/ksm</pre>
 
 ##<a id='install'></a> Download and Install the Tile
 
-To add <%= vars.product_short %> to Ops Manager, do the following:
+To add <%= vars.product_short %> to Ops Manager:
 
-1. Log in and download the <%= vars.product_tile %> tile from
+1. Log in and download the <%= vars.product_full %> tile from
 [Pivotal Network](https://network.pivotal.io/).
 
 1. Navigate to the **Ops Manager Installation Dashboard** where
@@ -46,7 +45,7 @@ marketplace and therefore must be installed in an environment with <%= vars.pas_
 1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>.
 This adds the tile to your staging area.
 
-1. Click the newly-added **<%= vars.product_tile %>** tile to open its configuration panes.
+1. Click the newly-added **<%= vars.product_full %>** tile to open its configuration panes.
 
 ## <a id="configure"></a>Configure the Tile
 Follow the steps below to configure <%= vars.product_short %> service.
@@ -82,7 +81,8 @@ service broker and to select networks.
    </table>
     <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
        after they are assigned your deployment fails. For more information,
-       see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.</p>
+       see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.
+     </p>
 
  2. Click **Save**.
 
@@ -90,7 +90,7 @@ service broker and to select networks.
 ### <a id="kubeconfig"></a> Configure Cluster Credentials
 
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
-default settings for your kubeconfig, do the following:
+default settings for your kubeconfig:
 
 1. Retrieve your cluster credentials with the PKS CLI by
    doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
@@ -100,7 +100,7 @@ default settings for your kubeconfig, do the following:
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
 1. Create a dedicated service account for <%= vars.product_short %>
-with the `cluster-admin` role by running the following:
+with the `cluster-admin` role by doing the following:
     1. Create a YAML file for the <%= vars.product_short %> service account
     and `ClusterRoleBinding` using the following:
 
@@ -149,7 +149,7 @@ with the `cluster-admin` role by running the following:
 
     <br>
     Record the output.
-1. Navigate to **PCF Ops Manager** > **<%= vars.product_tile %>** > **Kubernetes Configuration**.
+1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -185,14 +185,14 @@ in the Kubernetes documentation.
 <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
 The operator is responsible for backing up this bucket with their IaaS provider.
 
-If you are using a cloud storage provider that does not natively support S3 buckets,
+If you use a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
 See [Prerequisites](#storage-preq), below.
 
 
 #### <a name="storage-preq"></a> Prerequisites
 
-To configure storage for KSM for PCF, you must do the following:
+To configure storage for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider. P
@@ -211,10 +211,9 @@ documentation.
 + **If you are using GCS and are not using the Minio tile, you must generate a developer key:**
 This developer key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
 For instructions on how to generate a developer key,
-see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys)
-in the Google Cloud Storage documentation.
+see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
 
-To configure storage, do the following:
+To configure storage:
 
 1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Storage Configuration**.
 
@@ -273,7 +272,7 @@ Pivotal recommends using a private registry in production.
 
 You obtain the values needed to configure the private registry from your container registry.
 
-To configure a private registry, do the following:
+To configure a private registry:
 
 1. Click **Container Registry Configuration**.
 1. Enter the **Registry Server URL**.
@@ -294,12 +293,12 @@ This errand is disabled by default.
 
 ### <a id="apply-changes"></a> Apply All Changes
 
-To deploy <%= vars.product_short %> and apply your configurations, do the following:
+To deploy <%= vars.product_short %> and apply your configurations:
 
 1. Navigate to the Ops Manager Installation Dashboard.
 
-1. If you are using Ops Manager v2.3 or later, click Review Pending Changes.
+1. If you are use Ops Manager v2.3 or later, click Review Pending Changes.
    For more information about this Ops Manager page,
-   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4 <%# Use &ndash; for a range, not a regular dash. %>/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.

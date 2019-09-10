@@ -1,5 +1,5 @@
 ---
-title: Release Notes for Container Services Manager for PCF
+title: Release Notes
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -14,8 +14,9 @@ These are release notes for <%= vars.product_full %>.
 **Release Date:** XXXX XX, 2019
 
 <p class="note"><strong>Note:</strong> This release is incompatible with previous
-  releases of <%= vars.product_short %>. This is because <%= vars.product_short %> v0.X.XX xxxxxxxxxxxxxxxx
-  To use <%= vars.product_short %> v0.X.XX, you must add your charts to the broker again.
+  releases of <%= vars.product_short %>. This is because <%= vars.product_short %> v0.X.XX xxxxxxxxxxxxxxxx.
+  It is recommended to delete the service instances and the Tile from previous releases of <%= vars.product_short %>
+  before installing <%= vars.product_short %> v0.X.XX. You must add your offerings again.
   To do this, do the procedures in
   <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %> </a>
    and <a href="./using.html#enable">Enable Service Offering Access</a>.
@@ -26,10 +27,16 @@ These are release notes for <%= vars.product_full %>.
 New features and changes in this release:
 
 * The KSM CLI replaces the Bazaar CLI.
-* Binding credentials are automatically stored in Credhub. This requires <%= vars.product_short %> to be installed on a PAS foundation with CredHub enabled.
-* Platform Operators may offer services made up of multiple Helm charts.
+* Binding credentials are automatically stored in Credhub.
+This requires <%= vars.product_short %> to be installed on a <%= vars.pas_short %> deployment
+with CredHub enabled. For instructions about enabling CredHub,
+see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
+* Platform operators can offer services that have multiple Helm charts.
+For more information, see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts).
 
 
 ### Known Issues
 
-There are no known issues in this release.
+Upgrading from previous versions of KSM Tile will leave orphaned service instances and service broker.
+It is recommended to delete the service instances and the Tile from previous releases of <%= vars.product_short %>
+before installing <%= vars.product_short %> v0.X.XX, instead of upgrading the Tile.
