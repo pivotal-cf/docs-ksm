@@ -35,7 +35,7 @@ The following diagram describes how <%= vars.product_short %> communicates with
 
 The <%= vars.product_short %> daemon (ksm-d) provides the API that the KSM CLI communicates with.
 When a platform operator adds a service offering using the KSM CLI,
-ksm-d validates the chart and stores it in ChartMuseum. For information about ChartMuseum,
+ksm-d validates the Helm chart and stores it in ChartMuseum. For information about ChartMuseum,
 see the [chartmuseum](https://github.com/helm/chartmuseum) repository on GitHub.
 
 If you provide a `ksm.yaml` file with the service offering, ksm-d stores
@@ -70,13 +70,12 @@ and has additional functionality." %>
 
 ### <a id='state'></a> S3 Compatible Bucket
 <%= vars.product_short %> uses an external S3 compatible bucket to store the state of
-ChartMuseum and the <%= vars.product_short %> daemon.
-The <%= vars.product_short %> daemon uses this bucket to persist its cache.
+ChartMuseum, the <%= vars.product_short %> daemon, and the <%= vars.product_short %> broker.
+The <%= vars.product_short %> daemon and <%= vars.product_short %> broker use
+this bucket to persist their caches.
 
 For instructions for configuring an external S3 compatible bucket
 for <%= vars.product_short %>, see [Configure Storage](./installing.html#storage).
-
-
 
 ### <a id='clusters'></a> Kubernetes Clusters
 
@@ -90,24 +89,12 @@ service instances used in development.
 You could also configure a cluster with more workload specialization for specific service plans.
 
 For instructions about configuring a default Kubernetes cluster,
-see [Configure Cluster Credentials](./installing.html#kubeconfig)
+see [Configure Cluster Credentials](./installing.html#kubeconfig).
 
-<%= vars.product_short %> creates the following namespaces in the cluster:
-
-* **`kibosh`:** During installation, <%= vars.product_short %> creates a `kibosh` namespace
+During installation, <%= vars.product_short %> creates a `kibosh` namespace in Kubernetes cluster
 and installs Tiller with mTLS into the namespace.
 For information about Tiller, see [Tiller](https://helm.sh/docs/glossary/#tiller)
 in the Helm documentation.
-
-* **Chart namespaces:** Charts with the `cluster` scope are provisioned once per
-cluster in a namespace named `ksm-CHART`, where `CHART` is the name of the chart.
-
-* **Service instance namespaces:** When a service instance is created,
-<%= vars.product_short %> deploys the instance into a namespace named
-`kibosh-ID`, where `ID` is the `instance_id` for the service instance.
-
-<%= vars.product_short %> does not internally track these identifiers and uses
-the predictable namespace names to reach resources in the Kubernetes cluster.
 
 ## <a id='life-cycle'></a> <%= vars.product_short %> Life Cycle
 
@@ -137,7 +124,7 @@ For instructions about offering multiple charts in a single offering, see
 [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts). <br><br>
 
 If <%= vars.product_short %> is configured with a private registry, when <%= vars.product_short %> deploys a chart,
-it does the following:
+it also does the following:
 
 1. Changes the image reference in the chart to pull from your configured registry.
 1. Adds a secret containing the registry credentials to the namespace.
@@ -148,29 +135,35 @@ see [(Optional) Load Container Images](./prepare-offer.html#images).
 
 ####<a id='cluster-namespace'></a> Cluster and Namespace Scopes
 
-When <%= vars.product_short %> checks the scope for a chart, <%= vars.product_short %>  creates a namespace
+When <%= vars.product_short %> checks the scope for a Helm chart, <%= vars.product_short %>  creates a namespace
 based on the following:
 
 + **If the chart has the `cluster` scope,** <%= vars.product_short %>
 creates a namespace named `ksm-CHART`, where `CHART` is the name of the chart.
 + **If a chart has the `namespace` scope,** <%= vars.product_short %> creates a namespace named `kibosh-ID`, where `ID` is the `instance_id` for the service instance.
 
-<p class="note"><strong>Note:</strong> If a chart has the <code>cluster</code> scope and the namespace for the chart is already present, <%= vars.product_short %> does not add the chart.</p>
+<p class="note"><strong>Note:</strong> If a chart has the <code>cluster</code> scope
+  and the namespace for the chart is already present, <%= vars.product_short %> does not add the chart.</p>
+
+<%= vars.product_short %> does not internally track the identifiers for namespaces.
+It uses the predictable namespace names to reach resources in the Kubernetes cluster.
 
 ###<a id='bind'></a> Bind
 
-When a <%= vars.pas_short %>  developer runs `cf bind-service`, <%= vars.product_short %> retrieves the `services` and `secrets` credentials in the namespace for the service offering.
+When a <%= vars.pas_short %> developer runs `cf bind-service`,
+<%= vars.product_short %> retrieves the `services` and `secrets` credentials for the service offering.
+The retrieved credentials are serialized as JSON and stored in <%= vars.pas_short %> CredHub.
+The bound app is given permissions to read the newly created CredHub variable.
+<%# Not to docs folks: to be technically accurate, this needs to be PAS credhub - can't be platform or something generic %>
 
+<%= vars.product_short %> passes these credentials to CredHub as follows:
 
-If the chart for the service offering includes a bind template,
-`services` and `secrets` are processed by template and the resulting credentials are used
++ **If the Helm chart for the service offering includes a bind template,**
+`services` and `secrets` are processed by the template and the resulting credentials are used
 for the bind. For instructions about creating a bind template,
 see [(Optional) Create Binding Template for App Consumption](./prepare-offer.html#env).
 
-If the chart does not include a bind template, `services` and `secrets` are used directly as credentials.
-
-The retrieved credentials are serialized as JSON and are stored <%= vars.pas_short %> CredHub.<%# Not to docs folks: to be technically accurate, this needs to be PAS credhub - can't be platform or something generic %>
-The bound app is given permissions to read the newly created CredHub variable.
++ **If the chart does not include a bind template,** `services` and `secrets` are used directly as credentials.
 
 ###<a id='update'></a> Update
 
@@ -178,12 +171,9 @@ When a <%= vars.pas_short %>  developer runs `cf update-service`, <%= vars.produ
 the upgrade cycle for Helm. For information about the Helm upgrade cycle,
 see [helm upgrade](https://github.com/helm/helm/blob/master/docs/helm/helm_upgrade.md) on GitHub.
 
-* The update does not upgrade the chart to a newer version.
-* The update uses existing values.
-This means a developer does not need to re-send configuration parameters.
-
-You can use the `cf update-service` to add or modify configuration parameters using the `-c`
-flag.
+You can use the `cf update-service` command to add or modify configuration parameters using the `-c`
+flag. The update uses existing values, which means you do not need to re-send configuration parameters.
+The update also does not upgrade the Helm chart to a newer version.
 
 ###<a id='ubind'></a> Unbind
 
@@ -195,6 +185,6 @@ were created when the service was bound your app. See [Bind](#bind) above.
 When a <%= vars.pas_short %>  developer runs `cf delete-service`, <%= vars.product_short %> does the
 following:
 
-* Deletes each chart with the `namespace` scope.
+* Deletes each Helm chart with the `namespace` scope.
 * Deletes the namespace for each chart with the `namespace` scope.
 * Takes no action on charts with the `cluster` scope.
