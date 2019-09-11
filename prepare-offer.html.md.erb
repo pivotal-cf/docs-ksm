@@ -366,3 +366,5 @@ You must load container images into a private registry if either of the followin
 You must load the images before a developer runs `cf create-service`.
 To load your container images follow instructions for your specific registry.
 For example, if you are using Harbor, follow the instructions in [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
+
+Note: Our assumption is that helm chart uses "image" or "images" key to specify the value of repository, if helm chart uses some other keys <%= vars.product_short %> won't be able to do image tranformation to private registry.
