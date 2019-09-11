@@ -202,14 +202,7 @@ You should apply a minimal policy that lets the user account upload backups to y
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
 
-+ **If you are using a cloud storage provider that does not natively support S3 buckets,
-you must configure your cloud storage to use an S3 compatible alternative:**
-For example, you can use the Minio for PCF tile to add the S3 interface to Azure Blob Storage
-or Google Cloud Storage (GCS).
-For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
-documentation.
-
-+ **If you are using GCS and are not using the Minio tile, you must generate a developer key:**
++ **If you are using GCS, you must generate a developer key for to be compatible with S3:**
 This developer key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
