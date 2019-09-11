@@ -183,20 +183,21 @@ in the Kubernetes documentation.
 ### <a id="storage"></a> Configure Storage
 
 <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
-The operator is responsible for backing up this bucket with their IaaS provider.
+The operator is responsible for backing up this bucket following instructions from their IaaS provider.
 
 If you use a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
 See [Prerequisites](#storage-preq), below.
 
+<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %> may not be changed at a later time.</p>
 
 #### <a name="storage-preq"></a> Prerequisites
 
 To configure storage for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
-Policy creation varies depending on your cloud storage provider. P
-ivotal recommends that this account only be used by <%= vars.product_short %>.
+Policy creation varies depending on your cloud storage provider.
+Pivotal recommends that this account only be used by <%= vars.product_short %>.
 You should apply a minimal policy that lets the user account upload backups to your S3 store.
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
@@ -212,6 +213,8 @@ documentation.
 This developer key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
+
+<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %> may not be changed at a later time.</p>
 
 To configure storage:
 
