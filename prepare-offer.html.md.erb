@@ -67,9 +67,8 @@ To configure your Helm chart to be compatible with <%= vars.product_short %>:
     ```
 
 1. Edit your `values.yaml` file to enable service access.
-<%= vars.product_short %> supports using a load balancer,
-[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-or [ExternalDNS](https://github.com/kubernetes-incubator/external-dns) to access services.
+<%= vars.product_short %> supports using a load balancer, Ingress
+or ExternalDNS to access services.
     + **If want your service to be accessed directly using a load balancer,** set
     `services.type:` to `LoadBalancer`. For example:
 
@@ -93,7 +92,9 @@ or [ExternalDNS](https://github.com/kubernetes-incubator/external-dns) to access
     ...
     ```
     <p class="note"><strong>Note:</strong> The Ingress controller or ExternalDNS
-      controller need to be installed and configured manually.
+      controller need to be installed and configured manually. For information
+      about Ingress, see <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a> in the Kubernetes documentation. For information about
+      ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> on Github. 
     </p>
     For more information,
     see [(Optional) Template Values](#values-templating) below.
@@ -189,7 +190,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
 ##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
-You might want to offer multiple Helm charts when you have the following:
+You might want to offer multiple Helm charts in the following cases:
 
 * A cluster-scoped operator or controller where the individual charts are custom resources
 * A namespace scoped operator chart with another chart that represents the custom resource
@@ -244,7 +245,7 @@ Consult the following table to configure a `chart` in the `charts` dictionary:
     <td>Only a single chart can have be <code>offered</code> set to <code>true</code>.
       The chart that is set to <code>true</code> must also have
       <code>scope</code> set to <code>namespace</code>.
-      The offered chart conceptually represents the service the user would like to bind to.
+      The offered chart represents the service the user binds to.
       However, you can expose more resources with <code>cf bind-service</code>.</td>
 
   </tr>
@@ -316,7 +317,7 @@ To create and test a `bind.yaml` file:
       {
        "hostname": "192.168.1.1",
        "jdbcUrl": "jdbc&#58;mysql&#58;//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
-       "name": "kibosh-46588108-0 ba5-4 7c0-ba97-bd76e33af0d1-grafana",
+       "name": "kibosh-46588108-0  ba5-4  7c0-ba97-bd76e33af0d1-grafana",
        "password": "ab1cdeFgH3IJKLMN",
        "port": 3306,
        "uri": "mysql&#58;//root&#58;ab1cdeFgH3IJKLMN@192&#46;168&#46;1&#46;1&#58;3306/my&#95;db?reconnect=true",
@@ -365,4 +366,4 @@ You must load container images into a private registry if either of the followin
 
 You must load the images before a developer runs `cf create-service`.
 To load your container images follow instructions for your specific registry.
-For example, if you are using Harbor, follow the instructions in [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
+For example, if you are use Harbor, follow the instructions in [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.

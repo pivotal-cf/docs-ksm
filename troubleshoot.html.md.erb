@@ -28,11 +28,11 @@ To manually run `helm` commands:
 1. Target your Kubernetes cluster by following the procedure in
 [Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
 
-1. Retrieve your mTLS credentials by doing the following:
-    + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** >
+1. Retrieve your mTLS credentials:
+    1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** >
     **Credentials** > **Tiller Certificate**.
-    + Create a `.pem` private key file with the value of `private_key_pem`.
-    + Create a `.pem` certificate file with the value of the `cert_pem`.
+    1. Create a `.pem` private key file with the value of `private_key_pem`.
+    1. Create a `.pem` certificate file with the value of the `cert_pem`.
 
 1. You can run `helm` commands with mTLS using the credentials you recorded in the previous step.
 For example:
