@@ -39,7 +39,7 @@ ksm-d validates the Helm chart and stores it in ChartMuseum. For information abo
 see the [chartmuseum](https://github.com/helm/chartmuseum) repository on GitHub.
 
 If you provide a `ksm.yaml` file with the service offering, ksm-d stores
-the file in a configured S3 compatible bucket. For more information about the `ksm.yaml` file,
+the file in a configured S3-compatible bucket. For more information about the `ksm.yaml` file,
 see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
 ###<a id='ksm-broker'></a> KSM Broker
@@ -64,17 +64,17 @@ and has additional functionality." %>
 
 <%= vars.product_short %> uses the following external resources:
 
-* [S3 Compatible Bucket](#bucket)
+* [S3-Compatible Bucket](#bucket)
 * [Kubernetes Clusters](#clusters)
 
 
-### <a id='bucket'></a> S3 Compatible Bucket
-<%= vars.product_short %> uses an external S3 compatible bucket to store the state of
+### <a id='bucket'></a> S3-Compatible Bucket
+<%= vars.product_short %> uses an external S3-compatible bucket to store the state of
 ChartMuseum, the <%= vars.product_short %> daemon, and the <%= vars.product_short %> broker.
 The <%= vars.product_short %> daemon and <%= vars.product_short %> broker use
 this bucket to persist their caches.
 
-For instructions for configuring an external S3 compatible bucket
+For instructions for configuring an external S3-compatible bucket
 for <%= vars.product_short %>, see [Configure Storage](./installing.html#storage).
 
 ### <a id='clusters'></a> Kubernetes Clusters
