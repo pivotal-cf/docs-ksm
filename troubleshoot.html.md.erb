@@ -49,19 +49,36 @@ For example:
 
 ##<a id='issue-cleanup'></a> Clean up a Service Instance
 <%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy.
-In some failure modes, you might have to manually clean up services earlier.
+In some failure modes, you may have to manually clean up services earlier.
+
 You can use the cf CLI to purge a service instance from <%= vars.platform %>.
-However, this might leave resources in the backing cluster.
+However, this may leave resources in the Kubernetes cluster. To fully clean up a service instance, you must delete any remaining namespaces.
 
 For information about purging a service instance,
 see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
 in the Cloud Foundry documentation.
 
-To fully clean up a service instance, you must delete any remaining Helm releases or namespaces.
-The cluster and the Helm resources are named after the service GUID.
+<%# Do you need to use the Helm CLI for specific types of namespaces and the KSM one for others? Or 
+do you need to run both commands for every remaining namespace?%>
 
-```bash
-kubectl get namespaces
-helm delete namespace kibosh-GUID
-kubectl delete namespace kibosh-GUID
-```
+To delete namespaces in a Kubernetes cluster:
+
+1. Retrieve the name of the remaining namespaces by running the following command:
+
+    ```
+    kubectl get namespaces
+    ```
+1. Record the namespaces that are used by the service instances deployed by <%= vars.product_short %>.<br><br>
+    The namespaces are named `kibosh-GUID`, where `GUID` is the `service-instance-guid` for the service instance.
+    You can view the `service-instance-guid` for a service instance by running `cf service INSTANCE-NAME --guid`. 
+
+1. For each namespace, delete the namespace using the Helm CLI by running the following command:
+
+    ```
+    helm delete namespace NAMESPACE
+    ```
+1. For each namespace, delete the namespace using the KSM CLI by running the following command:
+
+    ```
+    kubectl delete namespace NAMESPACE
+    ```

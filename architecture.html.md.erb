@@ -138,7 +138,7 @@ based on the following:
 
 + **If the chart has the `cluster` scope,** <%= vars.product_short %>
 creates a namespace named `ksm-CHART`, where `CHART` is the name of the chart.
-+ **If a chart has the `namespace` scope,** <%= vars.product_short %> creates a namespace named `kibosh-ID`, where `ID` is the `instance_id` for the service instance.
++ **If a chart has the `namespace` scope,** <%= vars.product_short %> creates a namespace named `kibosh-GUID`, where `GUID` is the `service-instance-guid` for the service instance.
 
 <p class="note"><strong>Note:</strong> If a chart has the <code>cluster</code> scope
   and the namespace for the chart is already present, <%= vars.product_short %> does not add the chart.
