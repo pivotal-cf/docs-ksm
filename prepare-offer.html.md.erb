@@ -149,7 +149,7 @@ or ExternalDNS to access services.
       controller need to be installed and configured manually. For information
       about Ingress, see <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a> 
       in the Kubernetes documentation. For information about
-      ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> on Github. 
+      ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub. 
     </p>
 
  <%# <!-- TODO: does this belong here or in using section--> %>
@@ -172,7 +172,7 @@ see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master
 
 If you want to override the default settings in `values.yaml` and offer custom plans:
 
-1. Create a `plans` subdirectory at the root level of your chart
+1. Create a `plans` subdirectory at the root level of your chart.
 
 1. Create and edit `plans/PLAN-FILE.yaml` with the Helm values that you want to override.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
@@ -222,7 +222,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
 ##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
-You may want to offer multiple Helm charts in the following cases:
+You might want to offer multiple Helm charts in the following cases:
 
 * A cluster-scoped operator or controller where the individual charts are custom resources
 * A namespace-scoped operator chart with another chart that represents the custom resource
@@ -370,7 +370,7 @@ This difference can create situations where `values.yaml` needs to go through th
 
 For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org)
 
-`values.yaml` may need to go through the Jsonnet templating engine in the following situations:
+`values.yaml` might need to go through the Jsonnet templating engine in the following situations:
 
 * When a chart uses Ingress controller. For information
 about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) 
@@ -403,5 +403,5 @@ You must load container images into a private registry if either of the followin
 
 You must load the images before a developer runs `cf create-service`.
 To load your container images follow instructions for your specific registry.
-For example, if you are use Harbor, follow the instructions in 
+For example, if you use Harbor, follow the instructions in 
 [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.

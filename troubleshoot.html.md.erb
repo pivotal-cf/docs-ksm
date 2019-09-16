@@ -14,7 +14,7 @@ This topic provides platform operators with basic instructions for troubleshooti
 
 Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
-Tiller is the server side component of Helm.
+Tiller is the server-side component of Helm.
 <%= vars.product_short %> installs Tiller with mTLS into the  `kibosh` namespace
 and upgrades Tiller during tile upgrades.
 If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials.
@@ -47,12 +47,13 @@ For example:
     For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
     in the Helm documentation.
 
-##<a id='issue-cleanup'></a> Clean up a Service Instance
+##<a id='issue-cleanup'></a> Clean Up a Service Instance
 <%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy.
-In some failure modes, you may have to manually clean up services earlier.
+In some failure modes, you might have to manually clean up services earlier.
 
 You can use the cf CLI to purge a service instance from <%= vars.platform %>.
-However, this may leave resources in the Kubernetes cluster. To fully clean up a service instance, you must delete any remaining namespaces.
+However, this can leave resources in the Kubernetes cluster.
+To fully clean up a service instance, you must delete any remaining namespaces.
 
 For information about purging a service instance,
 see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
