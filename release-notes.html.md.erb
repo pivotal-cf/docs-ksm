@@ -16,8 +16,9 @@ These are release notes for <%= vars.product_full %>.
 **Release Date:** XXXX XX, 2019
 
 <p class="note"><strong>Note:</strong> This release is incompatible with previous
-  releases of <%= vars.product_short %>. This is because <%= vars.product_short %> v0.X.XX xxxxxxxxxxxxxxxx
-  To use <%= vars.product_short %> v0.X.XX, you must add your charts to the broker again.
+  releases of <%= vars.product_short %>. This is because <%= vars.product_short %> v0.X.XX xxxxxxxxxxxxxxxx.
+  It is recommended to delete the service instances and the Tile from previous releases of <%= vars.product_short %>
+  before installing <%= vars.product_short %> v0.X.XX. You must add your offerings again.
   To do this, do the procedures in
   <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %> </a>
    and <a href="./using.html#enable">Enable Service Offering Access</a>.
@@ -37,4 +38,6 @@ see [Securing Services Instance Credentials with Runtime CredHub](https://docs.p
 
 ### Known Issues
 
-There are no known issues in this release.
+Upgrading from previous versions of KSM Tile will leave orphaned service instances and service broker.
+It is recommended to delete the service instances and the Tile from previous releases of <%= vars.product_short %>
+before installing <%= vars.product_short %> v0.X.XX, instead of upgrading the Tile.
