@@ -5,7 +5,10 @@ owner: ISM
 
 <strong><%= modified_date %></strong>
 
-<%= partial ("beta-notice") %>
+<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
+
+<%= partial "'../../ksm/partials/services/beta-notice" %>
+
 This topic is an overview of Kubernetes Service Manager (KSM) for Pivotal Cloud Foundry (PCF).
 
 ## <a id='overview'></a>Overview
