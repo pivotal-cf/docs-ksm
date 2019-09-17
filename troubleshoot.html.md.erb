@@ -3,7 +3,9 @@ title: Troubleshooting
 owner: Platform Engineering (KSM Team)
 ---
 
-<%= partial ("beta-notice") %>
+<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
+
+<%= partial "../../ksm/partials/services/beta-notice" %>
 
 <strong><%= modified_date %></strong>
 
@@ -14,7 +16,7 @@ This topic provides platform operators with basic instructions for troubleshooti
 
 Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
-Tiller is the server side component of Helm.
+Tiller is the server-side component of Helm.
 <%= vars.product_short %> installs Tiller with mTLS into the  `kibosh` namespace
 and upgrades Tiller during tile upgrades.
 If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials.
@@ -28,11 +30,11 @@ To manually run `helm` commands:
 1. Target your Kubernetes cluster by following the procedure in
 [Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
 
-1. Retrieve your mTLS credentials by doing the following:
-    + Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** >
+1. Retrieve your mTLS credentials:
+    1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** >
     **Credentials** > **Tiller Certificate**.
-    + Create a `.pem` private key file with the value of `private_key_pem`.
-    + Create a `.pem` certificate file with the value of the `cert_pem`.
+    1. Create a `.pem` private key file with the value of `private_key_pem`.
+    1. Create a `.pem` certificate file with the value of the `cert_pem`.
 
 1. You can run `helm` commands with mTLS using the credentials you recorded in the previous step.
 For example:
@@ -47,24 +49,42 @@ For example:
     For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
     in the Helm documentation.
 
-##<a id='issue-cleanup'></a> Clean up a Service Instance
+##<a id='issue-cleanup'></a> Clean Up a Service Instance
 <%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy.
 In some failure modes, you might have to manually clean up services earlier.
+
 You can use the cf CLI to purge a service instance from <%= vars.platform %>.
-However, this might leave resources in the backing cluster.
+However, this can leave resources in the Kubernetes cluster.
+To fully clean up a service instance, you must delete any remaining namespaces.
 
 For information about purging a service instance,
 see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
 in the Cloud Foundry documentation.
 
-To fully clean up a service instance, you must delete any remaining Helm releases or namespaces.
-The cluster and the Helm resources are named after the service GUID.
+<%# Do you need to use the Helm CLI for specific types of namespaces and the KSM one for others? Or
+do you need to run both commands for every remaining namespace?%>
 
-```bash
-kubectl get namespaces
-helm delete namespace kibosh-GUID
-kubectl delete namespace kibosh-GUID
-```
+To delete Helm releases and namespaces in a Kubernetes cluster:
+
+1. Retrieve the name of the remaining namespaces by running the following command:
+
+    ```
+    kubectl get namespaces
+    ```
+1. Record the namespaces that are used by the service instances deployed by <%= vars.product_short %>.<br><br>
+    The namespaces are named `kibosh-GUID`, where `GUID` is the `service-instance-guid` for the service instance.
+    You can view the `service-instance-guid` for a service instance by running `cf service INSTANCE-NAME --guid`.
+
+1. For each namespace, delete the Helm release using the Helm CLI by running the following command:
+
+    ```
+    helm delete namespace NAMESPACE
+    ```
+1. For each namespace, delete the namespace using `kubectl` by running the following command:
+
+    ```
+    kubectl delete namespace NAMESPACE
+    ```
 
 ##Changing Tile Configuration
 

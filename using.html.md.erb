@@ -5,7 +5,9 @@ owner: Platform Engineering (KSM Team)
 
 <strong><%= modified_date %></strong>
 
-<%= partial ("beta-notice") %>
+<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
+
+<%= partial "../../ksm/partials/services/beta-notice" %>
 
 This topic describes how to use <%= vars.product_full %>.
 
@@ -28,7 +30,7 @@ See [Enable Service Offering Access](#enable) below.
 
 ##<a id="prereq"></a>Prerequisites
 
-Before you deploy your service offering, you must configure your service offering.
+Before you deploy a service offering, you must configure the service offering.
 See [Preparing a Service Offering](./prepare-offer.html).
 
 
@@ -38,7 +40,7 @@ To use the KSM CLI, you need to retrieve your KSM API credentials.
 
 To retrieve your KSM API Credentials:
 
-1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_tile %>** > **Credentials**.
+1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** > **Credentials**.
 
 1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
 
@@ -56,7 +58,8 @@ To retrieve your KSM API Credentials:
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
-You must package your Helm charts and add the offering to <%= vars.product_short %> to let developers use the service.
+You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers 
+to use the service.
 
 To add your offering to <%= vars.product_short %>:
 
@@ -70,7 +73,8 @@ your Helm chart directory:
     Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your
     Helm chart directory.
 
-1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %> by doing one of the following:
+1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %> 
+by doing one of the following:
     + **If you are adding a single chart,** run the following command:
 
         ```
@@ -85,14 +89,17 @@ your Helm chart directory:
 
         ```
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.TGZ /PATH-TO-YOUR-CHART_2.tgz
+        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
+        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
-        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart named in your `ksm.yaml` file.
-        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart named in your `ksm.yaml` file.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
-        For more information about offering multiple charts, see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts).
+        For more information about offering multiple charts, see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
 1. Ensure your offering has been saved to <%= vars.product_short %> by running the following command:
 
@@ -101,7 +108,7 @@ your Helm chart directory:
     ```
     Where:
     + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you rin [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
 
 ## <a id="enable"></a> Enable Service Offering Access
