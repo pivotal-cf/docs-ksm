@@ -12,7 +12,9 @@ owner: Platform Engineering (KSM Team)
 This topic provides platform operators with basic instructions for troubleshooting
 <%= vars.product_full %>.
 
-## <a id='overview'></a> Overview
+## <a id='techniques'></a> Troubleshooting Techniques 
+
+This section describes techniques for troubleshooting. 
 
 Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
@@ -23,7 +25,8 @@ If you run Helm commands, you must communicate with the cluster over mTLS using 
 
 For information about Tiller, see [Tiller](https://docs.helm.sh/glossary/#tiller) in the Helm documentation.
 
-## <a id='helm'></a> Run Helm Commands
+
+### <a id='helm'></a> Run Helm Commands
 
 To manually run `helm` commands:
 
@@ -49,7 +52,7 @@ For example:
     For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
     in the Helm documentation.
 
-##<a id='issue-cleanup'></a> Clean Up a Service Instance
+### <a id='issue-cleanup'></a> Clean Up a Service Instance
 <%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy.
 In some failure modes, you might have to manually clean up services earlier.
 
@@ -60,9 +63,6 @@ To fully clean up a service instance, you must delete any remaining namespaces.
 For information about purging a service instance,
 see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
 in the Cloud Foundry documentation.
-
-<%# Do you need to use the Helm CLI for specific types of namespaces and the KSM one for others? Or
-do you need to run both commands for every remaining namespace?%>
 
 To delete Helm releases and namespaces in a Kubernetes cluster:
 
@@ -86,10 +86,33 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     kubectl delete namespace NAMESPACE
     ```
 
-##Changing Tile Configuration
+##<a id='common-errors'></a> Common Issues
 
-If s3 buckets or private registry information is changed when there are existing offers in <%= vars.product_short %>,
-then the offering data is lost.
-In such cases you will have to delete the offers and save it again in <%= vars.product_short %>.
-For offerings with multiple versions provisioned, the old versions should also be re-offered.
+This section describes how to resolve common issues with <%= vars.product_short %>.
 
+<table>
+  <tr>
+    <th colspan="2" style="text-align: center;">Service Offering Data Lost</th>
+  </tr>
+  
+  <tr>
+    <th width="20%">Symptom</th>
+    <td>How do I know my service offering data is lost? </td>
+  </tr>
+  
+  <tr>
+    <th width="15%">Explanation</th>
+    <td>If S3 buckets or private registry information is changed when there are existing service offerings 
+    in <%= vars.product_short %>,
+    then the offering data is lost.
+</td>
+  </tr>
+  
+  <tr>
+    <th width="15%">Solution</th>
+    <td>In such cases you must delete the service offerings and save them again in <%= vars.product_short %>.
+    For offerings with multiple versions provisioned, the old versions should also be re-offered.
+</td>
+  </tr>
+  
+</table>

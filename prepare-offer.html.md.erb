@@ -404,30 +404,32 @@ You must load container images into a private registry if either of the followin
 + The images referenced in the Helm chart are not public.
 
 You must load the images before a developer runs `cf create-service`.
-To load your container images follow instructions for your specific registry.
+
+
+To load your container images:
+
+1. Confirm that your `Chart.yaml` file uses either a `image` or `images` key to specify the value of repository. If the Helm chart uses another key, then <%= vars.product_short %> does not transform the image to the private registry.
+     For example:
+  * If you are using a single chart:
+
+      ```yaml
+      ---
+      image: "my-image"
+      imageTag: "5.7.14"
+      ```
+  * If you are using multiple charts:
+
+      ```yaml
+      ---
+      images:
+        component1:
+          image: "my-first-image"
+          imageTag: "5.7.14"
+        component2:
+          image: "my-second-image"
+          imageTag: "1.2.3"
+      ```
+
+1. Load your container images by following the instructions for your specific registry.
 For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
-
-Note: Our assumption is that helm chart uses "image" or "images" key to specify the value of repository, if helm chart uses some other keys <%= vars.product_short %> won't be able to do image transformation to private registry.
-Below is an example of the supported structures
-
-* A single-image chart's values:
-
-    ```yaml
-    ---
-    image: "my-image"
-    imageTag: "5.7.14"
-    ```
-
-* A multi-image chart's values:
-
-    ```yaml
-    ---
-    images:
-      component1:
-        image: "my-first-image"
-        imageTag: "5.7.14"
-      component2:
-        image: "my-second-image"
-        imageTag: "1.2.3"
-    ```
