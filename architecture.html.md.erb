@@ -123,20 +123,20 @@ has multiple charts, <%= vars.product_short %> loops through the list of charts 
 For instructions about offering multiple charts in a single offering, see
 [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts). <br><br>
 
-If <%= vars.product_short %> is configured with a private registry, when <%= vars.product_short %> deploys a chart,
-it also does the following:<%# To introduce steps we now just write "To do x:" %>
+If <%= vars.product_short %> is configured with a private container registry,
+when <%= vars.product_short %> deploys a chart, it also does the following:<%# To introduce steps we now just write "To do x:" %>
 
-1. Changes the image reference in the chart to pull from your configured registry.
-1. Adds a secret containing the registry credentials to the namespace.
+1. Changes the image reference in the chart to pull from your configured private container registry.
+1. Adds a secret containing the private container registry credentials to the namespace.
 This secret enables <%= vars.product_short %> to pull the image.
 
-For instructions about configuring a private registry,
+For instructions about configuring a private container registry,
 see [(Optional) Load Container Images](./prepare-offer.html#images).
 
 ####<a id='cluster-namespace'></a> Cluster and Namespace Scopes
 
-When <%= vars.product_short %> checks the scope for a Helm chart, <%= vars.product_short %>  creates a namespace
-based on the following:
+When <%= vars.product_short %> checks the scope for a Helm chart,
+<%= vars.product_short %>  creates a namespace based on the following:
 
 + **If the chart has the `cluster` scope,** <%= vars.product_short %>
 creates a namespace named `ksm-CHART`, where `CHART` is the name of the chart.

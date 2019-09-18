@@ -185,14 +185,14 @@ in the Kubernetes documentation.
 ### <a id="storage"></a> Configure Storage
 
 <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
-The operator is responsible for backing up this bucket. 
+The operator is responsible for backing up this bucket.
 Follow the instructions from your IaaS provider.
 
 If you use a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
 See [Prerequisites](#storage-preq), below.
 
-<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %> 
+<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %>
   cannot be changed later.
 </p>
 
@@ -212,7 +212,7 @@ This developer key is used to configure **Access Key ID** and **Secret Access Ke
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
 
-<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %> 
+<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %>
   cannot be changed later.
 </p>
 
@@ -265,25 +265,27 @@ To configure storage:
       </tr>
     </table>
 
-### <a id="container"></a> Configure Container Registry
+### <a id="container"></a> Configure Private Container Registry
 
-To use <%= vars.product_short %> in an air-gapped environment, configure a private registry.
-<%= vars.product_short %> can then modify your Helm charts to point to images in the private registry.
+To use <%= vars.product_short %> in an air-gapped environment, configure a private
+container registry.
+<%= vars.product_short %> can then modify your Helm charts to point to images in the private
+container registry.
 
-Pivotal recommends using a private registry in production.
+Pivotal recommends using a private container registry in production.
 
 You obtain the values needed to configure the private registry from your container registry.
 
-To configure a private registry:
+To configure a private container registry:
 
 1. Click **Container Registry Configuration**.
 1. Enter the **Registry Server URL**.
-This is the URL including your container registry hostname and project.
+This is the URL including your private container registry hostname and project.
 For example, `gcr.io/myproject`.
 For Docker Hub, use `docker.io/<repository>` for the registry server URL.
-This is the location from which <%= vars.product_short %>  pushes and pulls images.
+This is the registry location that <%= vars.product_short %> pushes and pulls images.
 1. Enter the **Registry Username**.
-This is the username that <%= vars.product_short %>  uses to push and pull images to the registry.
+This is the username that <%= vars.product_short %> uses to push and pull images to the registry.
 1. Enter the **Registry Password**.
 This is the password that <%= vars.product_short %> uses to push and pull images to the registry.
 

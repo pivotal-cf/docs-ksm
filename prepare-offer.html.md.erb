@@ -85,7 +85,8 @@ For example, if your Helm chart requires an Ingress controller to enable service
     the Ingress controller must be manually installed onto the cluster. For information
     about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
     in the Kubernetes documentation.
-+ **Load Container Images:** You might have to load your container images into a private registry.
++ **Load Container Images:** You might have to load your container images into a private
+container egistry.
 See [(Optional) Load Container Images](#images) below.
 
 
@@ -396,11 +397,12 @@ The plan-specific values files also go through the templating engine.
 
 ##<a id='images'></a> (Optional) Load Container Images
 
-You must load container images into a private registry if either of the following applies:
+You must load container images into a private container registry if either of the following applies:
 
-+ Your environment is air-gapped and cannot connect to common registries such as
-[Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/).
++ Your environment is air-gapped and cannot connect to public container registries such as
+Docker Hub, Harbor, or Quay.
+For more information,
+see [Docker Hub](https://hub.docker.com/), [Harbor](https://goharbor.io/), and [Quay](https://quay.io/).
 + The images referenced in the Helm chart are not public.
 
 You must load the images before a developer runs `cf create-service`.
@@ -408,16 +410,18 @@ You must load the images before a developer runs `cf create-service`.
 
 To load your container images:
 
-1. Confirm that your `Chart.yaml` file uses either a `image` or `images` key to specify the value of repository. If the Helm chart uses another key, then <%= vars.product_short %> does not transform the image to the private registry.
+1. Confirm that your `Chart.yaml` file uses either a `image` or `images` key to specify the value of repository.
+If the Helm chart uses another key, then <%= vars.product_short %> does not change
+the image reference to pull from the private container registry.
      For example:
-  * If you are using a single chart:
+  * If you are using a chart with a single image:
 
       ```yaml
       ---
       image: "my-image"
       imageTag: "5.7.14"
       ```
-  * If you are using multiple charts:
+  * If you are using a chart with multiple images:
 
       ```yaml
       ---
@@ -430,6 +434,6 @@ To load your container images:
           imageTag: "1.2.3"
       ```
 
-1. Load your container images by following the instructions for your specific registry.
+1. Load your container images by following the instructions for your specific container registry.
 For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
