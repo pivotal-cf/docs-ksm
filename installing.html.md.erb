@@ -102,9 +102,9 @@ default settings for your kubeconfig:
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
 1. Create a dedicated service account for <%= vars.product_short %>
-with the `cluster-admin` role by doing the following:
+with the `cluster-admin` role:
     1. Create a YAML file for the <%= vars.product_short %> service account
-    and `ClusterRoleBinding` using the following:
+    and `ClusterRoleBinding` using the following YAML:
 
         ```yml
         ---
@@ -261,7 +261,7 @@ To configure storage in <%= vars.product_short %>:
         <td><strong>Skip SSL Validation</strong></td>
         <td>Select this checkbox if your environment uses a self-signed certificate
           for the storage provider.
-          Do not select this checkbox if you are using a production environment. </td>
+          Do not select this checkbox if you use a production environment. </td>
       </tr>
     </table>
 
@@ -312,6 +312,6 @@ To deploy <%= vars.product_short %> and apply your configurations:
 
 1. If you are use Ops Manager v2.3 or later, click Review Pending Changes.
    For more information about this Ops Manager page,
-   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4 <%# Use &ndash; for a range, not a regular dash. %>/customizing/review-pending-changes.html).
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.

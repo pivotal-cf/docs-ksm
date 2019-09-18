@@ -24,7 +24,10 @@ The following diagram describes how <%= vars.product_short %> communicates with
 
 <a href="images/reference_architecture.jpg" target="_blank"> View a larger version of this diagram.</a>
 
-<%# The above diagram should probably be simplified or split up. It is hard to follow and read since the text is small. We also should write more text below that explains or describes the diagram in more detail for clarity/accessibility reasons. %>
+<%# The above diagram should probably be simplified or split up.
+It is hard to follow and read since the text is small.
+We also should write more text below that explains or describes the diagram
+in more detail for clarity/accessibility reasons. %>
 
 ##<a id='components'></a> <%= vars.product_short %> Components
 
@@ -124,7 +127,7 @@ For instructions about offering multiple charts in a single offering, see
 [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts). <br><br>
 
 If <%= vars.product_short %> is configured with a private container registry,
-when <%= vars.product_short %> deploys a chart, it also does the following:<%# To introduce steps we now just write "To do x:" %>
+when <%= vars.product_short %> deploys a chart, it also does the following:
 
 1. Changes the image reference in the chart to pull from your configured private container registry.
 1. Adds a secret containing the private container registry credentials to the namespace.
@@ -155,7 +158,7 @@ When a <%= vars.pas_short %> developer runs `cf bind-service`,
 <%= vars.product_short %> retrieves the `services` and `secrets` credentials for the service offering.
 The retrieved credentials are serialized as JSON and stored in <%= vars.pas_short %> CredHub.
 The bound app is given permissions to read the newly created CredHub variable.
-<%# Not to docs folks: to be technically accurate, this needs to be PAS credhub be platform or something generic %>
+<%# Not to docs folks: to be technically accurate, this needs to be PAS Credhub be platform or something generic %>
 
 <%= vars.product_short %> passes these credentials to CredHub as follows:
 

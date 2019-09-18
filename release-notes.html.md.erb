@@ -11,20 +11,15 @@ owner: Platform Engineering (KSM Team)
 
 These are release notes for <%= vars.product_full %>.
 
-##<a id="v0.X.XX"></a> v0.X.XX
+##<a id="v0.X.XX"></a> v0.5.XX
 
 **Release Date:** XXXX XX, 2019
 
-<p class="note"><strong>Note:</strong> This release is incompatible with previous
+<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with previous
   releases of <%= vars.product_short %>.
-  Before you install <%= vars.product_short %> v0.X, you must delete the service instances
-  from the previous release of <%= vars.product_short %> and uninstall the tile from Ops Manager.
-  After you install <%= vars.product_short %> v0.X, you must add your service offerings again.
-  For more information,
-  see <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#delete">Delete a Service Instance</a>,
-  <a href="./installing.html">Installing and Configuring  <%= vars.product_short %></a>,
-  <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %></a>,
-   and <a href="./using.html#enable">Enable Service Offering Access</a>.
+  Before you install <%= vars.product_short %> v0.5, you must uninstall the tile from Ops Manager.
+  After you install <%= vars.product_short %> v0.5, you must re-add your service offerings.
+  For more information, see <a href="./upgrading.html">Upgrading KSM</a>.
   </p>
 
 ### Features
@@ -32,18 +27,9 @@ These are release notes for <%= vars.product_full %>.
 New features and changes in this release:
 
 * Platform operators can offer services that have multiple Helm charts.
-For more information, see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts).
+For more information, see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 * The KSM CLI replaces the Bazaar CLI.
 * Binding credentials are automatically stored in runtime CredHub.
 This requires <%= vars.product_short %> to be installed on a <%= vars.pas_short %> deployment
 with CredHub enabled. For instructions about enabling CredHub,
 see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
-
-### Known Issue
-
-This release has the following issue:
-
-+ Upgrading from previous versions of <%= vars.product_short %> leaves
-service instances and the service broker orphaned.
-Before you install <%= vars.product_short %> v0.X, you must delete the service instances
-from the previous release of <%= vars.product_short %> and uninstall the tile from Ops Manager.
