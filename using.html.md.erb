@@ -146,6 +146,68 @@ To enable access to your service offering:
     cf marketplace
     ```
 
+
+## <a id="update-offering"></a> Update a Service Offering
+
+When you update a service offering in  <%= vars.product_short %>, new instances of the service created will be of the updated version.
+Existing instances will not be updated, and you will need to manually upgrade them. See [Update a Service Instance](#update-instance) below.
+
+To update a single chart service offering in  <%= vars.product_short %>:
+
+1. After making changes to the Chart, update the Chart version in the Chart's `Chart.yaml` file.
+
+1. Package an updated version of the Helm chart by running the following command from the root level of your Helm chart directory:
+
+   ```
+   helm package .
+   ```
+
+   Verify that you now have a file named CHART-NAME-#.#.#.tgz in the root level of your Helm chart directory.
+
+1. Update the service offering by running the following command:
+
+    ```
+    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save CHART-NAME-#.#.#.tgz --update-manifest
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `YOUR-CHART` is the name of the service offering you want to delete.
+
+To update a multi chart service offering in  <%= vars.product_short %>:
+
+1. Make any needed changes to the `ksm.yaml` for the service offering. For more information about multiple charts and `ksm.yaml`, see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
+
+1. For any chart with changes, update the Chart version in the Chart's `Chart.yaml`
+
+1. For any updated Charts, package an updated version of the Helm chart by running the following command from the root level of your Helm chart directory:
+
+   ```
+   helm package .
+   ```
+
+   Verify that you now have a file named CHART-NAME-#.#.#.tgz in the root level of your Helm chart directory.
+
+1. Update the service offering by running the following command:
+
+    ```
+    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
+    /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update-manifest
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
+    + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+    + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+
+
+## <a id="update-instance"></a> Update a Service Instance
+
+
+
 ## <a id="delete"></a> Delete a Service Offering
 
 1. Delete a service offering by running the following command:
