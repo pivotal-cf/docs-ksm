@@ -394,16 +394,22 @@ ingress:
 
 The plan-specific values files also go through the templating engine.
 
-##<a id='images'></a> (Optional) Load Container Images
+##<a id='images'></a> (Optional) Load Container Images into a Private Container Registry
 
-You must load container images into a private registry if either of the following applies:
+If either of the following applies:
 
 + Your environment is air-gapped and cannot connect to common registries such as
 [Docker Hub](https://hub.docker.com/) and
 [Quay](https://quay.io/).
 + The images referenced in the Helm chart are not public.
 
-You must load the images before a developer runs `cf create-service`.
+Before you can use KSM to offer a chart, you must
++ [Configure a private container registry] (http://docs-pcf-staging.cfapps.io/ksm/0-n/installing.html#container)
++ Load the product's container images into that private registry
++ Ensure the helm chart points to the updated image path for the private registry
+
+If the images are not loaded, a user cannot run `cf create-service` on the marketplace offering successfully.
+
 To load your container images follow instructions for your specific registry.
 For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
