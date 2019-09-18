@@ -192,13 +192,10 @@ If you use a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
 See [Prerequisites](#storage-preq), below.
 
-<p class="note warning"><strong>Warning:</strong> The storage configuration set for <%= vars.product_short %>
-  cannot be changed later. If the storage configuration is changed when there are existing service offerings
-  in <%= vars.product_short %>, then the service offering data is lost.
-  In such cases, you must delete the service offerings and add them again in <%= vars.product_short %>.
-  For offerings with multiple versions provisioned, the old versions should also be re-offered.
-  See <a href="./using.html#delete">Delete a Service Offering</a>
-  and <a href="./using.html#add">Add a Service Offering to KSM</a>.
+<p class="note warning"><strong>Warning:</strong> If you change the storage configurations,
+  the service offering data is lost and you must readd the service offering to <%= vars.product_short %>.
+  For offerings with multiple versions provisioned, the old versions should also be readded.
+  See <a href="./using.html#add">Add a Service Offering to KSM</a>.
 </p>
 
 #### <a name="storage-preq"></a> Prerequisites
@@ -280,14 +277,12 @@ Pivotal recommends using a private container registry in production.
 You obtain the values needed to configure the private registry from your container registry.
 
 
-<p class="note warning"><strong>Warning:</strong> The private container registry configuration set for <%= vars.product_short %>
-  cannot be changed later. If the private container registry configuration configuration
-  is changed when there are existing service offerings
-  in <%= vars.product_short %>, then the service offering data is lost.
-  In such cases, you must delete the service offerings and add them again in <%= vars.product_short %>.
-  For offerings with multiple versions provisioned, the old versions should also be offered again.
-  See <a href="./using.html#delete">Delete a Service Offering</a>
-  and <a href="./using.html#add">Add a Service Offering to KSM</a>.
+<p class="note warning"><strong>Warning:</strong> If you change the private container registry
+  configurations, you must load all container images to the new private container registry.
+  You must also clear the <%= vars.product_short %> cache by adding a new service offering or updating an existing service offering.<br>
+  See <a href="./prepare-offer.html#images">(Optional) Load Container Images</a>
+  and <a href="./using.html#add">
+  Add a Service Offering to KSM</a>.
 </p>
 
 To configure a private container registry:
