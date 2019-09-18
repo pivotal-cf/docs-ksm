@@ -17,11 +17,12 @@ These are release notes for <%= vars.product_full %>.
 
 <p class="note"><strong>Note:</strong> This release is incompatible with previous
   releases of <%= vars.product_short %>.
-  Before you install <%= vars.product_short %> v0.X, you must delete the service instances 
-  from the previous release of <%= vars.product_short %> and uninstall the tile from Ops Manager. 
+  Before you install <%= vars.product_short %> v0.X, you must delete the service instances
+  from the previous release of <%= vars.product_short %> and uninstall the tile from Ops Manager.
   After you install <%= vars.product_short %> v0.X, you must add your service offerings again.
-  For more information, 
-  see <a href="./installing.html">Installing and Configuring  <%= vars.product_short %></a>,
+  For more information,
+  see <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#delete">Delete a Service Instance</a>,
+  <a href="./installing.html">Installing and Configuring  <%= vars.product_short %></a>,
   <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %></a>,
    and <a href="./using.html#enable">Enable Service Offering Access</a>.
   </p>
@@ -42,6 +43,7 @@ see [Securing Services Instance Credentials with Runtime CredHub](https://docs.p
 
 This release has the following issue:
 
-+ Upgrading from previous versions of <%= vars.product_short %> leaves service instances and the service broker orphaned.
-Before you install <%= vars.product_short %> v0.X, you must delete the service instances 
-from the previous release of <%= vars.product_short %> and uninstall the tile from Ops Manager. 
++ Upgrading from previous versions of <%= vars.product_short %> leaves
+service instances and the service broker orphaned.
+Before you install <%= vars.product_short %> v0.X, you must delete the service instances
+from the previous release of <%= vars.product_short %> and uninstall the tile from Ops Manager.

@@ -192,13 +192,18 @@ If you use a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
 See [Prerequisites](#storage-preq), below.
 
-<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %>
-  cannot be changed later.
+<p class="note warning"><strong>Warning:</strong> The storage configuration set for <%= vars.product_short %>
+  cannot be changed later. If the storage configuration is changed when there are existing service offerings
+  in <%= vars.product_short %>, then the service offering data is lost.
+  In such cases, you must delete the service offerings and add them again in <%= vars.product_short %>.
+  For offerings with multiple versions provisioned, the old versions should also be re-offered.
+  See <a href="./using.html#delete">Delete a Service Offering</a>
+  and <a href="./using.html#add">Add a Service Offering to KSM</a>.
 </p>
 
 #### <a name="storage-preq"></a> Prerequisites
 
-To configure storage for <%= vars.product_short %>:
+To configure your cloud storage provider for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider.
@@ -212,11 +217,9 @@ This developer key is used to configure **Access Key ID** and **Secret Access Ke
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
 
-<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %>
-  cannot be changed later.
-</p>
+#### <a name="storage-ksm"></a> Configure Storage in <%= vars.product_short %>
 
-To configure storage:
+To configure storage in <%= vars.product_short %>:
 
 1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Storage Configuration**.
 
@@ -275,6 +278,17 @@ container registry.
 Pivotal recommends using a private container registry in production.
 
 You obtain the values needed to configure the private registry from your container registry.
+
+
+<p class="note warning"><strong>Warning:</strong> The private container registry configuration set for <%= vars.product_short %>
+  cannot be changed later. If the private container registry configuration configuration
+  is changed when there are existing service offerings
+  in <%= vars.product_short %>, then the service offering data is lost.
+  In such cases, you must delete the service offerings and add them again in <%= vars.product_short %>.
+  For offerings with multiple versions provisioned, the old versions should also be offered again.
+  See <a href="./using.html#delete">Delete a Service Offering</a>
+  and <a href="./using.html#add">Add a Service Offering to KSM</a>.
+</p>
 
 To configure a private container registry:
 

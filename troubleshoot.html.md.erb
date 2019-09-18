@@ -85,34 +85,3 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     ```
     kubectl delete namespace NAMESPACE
     ```
-
-##<a id='common-errors'></a> Common Issues
-
-This section describes how to resolve common issues with <%= vars.product_short %>.
-
-<table>
-  <tr>
-    <th colspan="2" style="text-align: center;">Service Offering Data Lost</th>
-  </tr>
-
-  <tr>
-    <th width="20%">Symptom</th>
-    <td>How do I know my service offering data is lost? </td>
-  </tr>
-
-  <tr>
-    <th width="15%">Explanation</th>
-    <td>If your S3 buckets or private container registry information is changed when there are existing service offerings 
-    in <%= vars.product_short %>,
-    then the offering data is lost.
-</td>
-  </tr>
-
-  <tr>
-    <th width="15%">Solution</th>
-    <td>In such cases you must delete the service offerings and save them again in <%= vars.product_short %>.
-    For offerings with multiple versions provisioned, the old versions should also be re-offered.
-</td>
-  </tr>
-
-</table>
