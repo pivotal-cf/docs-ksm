@@ -234,8 +234,9 @@ These will be needed in the following steps.
     + `INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
 
     Note down the value in the `NAME` column. This is the release name of the service instance. This value will be used in the next step.
+    For multi-chart offerings, there may be multiple releases list. Choose the release or releases of charts that have been updated.
 
-1. Run the following command to upgrade your service instance:
+1. Run the following command to upgrade your service instance. Run this command for each release retrieved in the previous step:
 
     ```
     helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
@@ -246,6 +247,7 @@ These will be needed in the following steps.
    + `PATH-TO-CERT` is the path to the certificate file you created in the [Run Helm Commands](./troubleshooting.html#helm) step.
    + `PATH-TO-KEY` is the path to the private key file you created in the [Run Helm Commands](./troubleshooting.html#helm) step.
 
+    Note: only changes to values in the chart `Values.yaml` will be applied to the upgraded release. Any changes to values in `plans.yaml` will be ignored.
 ## <a id="delete"></a> Delete a Service Offering
 
 1. Delete a service offering by running the following command:
