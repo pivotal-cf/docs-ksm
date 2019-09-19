@@ -37,6 +37,7 @@ This is a word list for terminology and word usage specific to the KSM for PCF d
 | KSM |Acronym for Container Services Manager|
 | KSM CLI | CLI component for Container Services Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Container Services Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
+|private container registry| Container registries can be public or private. Pivotal recommend using **private** conatiner registries. |
 
 ## Historical Note
 
