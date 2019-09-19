@@ -267,15 +267,13 @@ To configure storage in <%= vars.product_short %>:
 
 ### <a id="container"></a> Configure Private Container Registry
 
-To use <%= vars.product_short %> in an air-gapped environment, configure a private
-container registry.
+Pivotal recommends using a private container registry in production.
 <%= vars.product_short %> can then modify your Helm charts to point to images in the private
 container registry.
+If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
+container registry.
 
-Pivotal recommends using a private container registry in production.
-
-You obtain the values needed to configure the private registry from your container registry.
-
+You obtain the values needed to configure the private container registry from your container registry.
 
 <p class="note warning"><strong>Warning:</strong> If you change the private container registry
   configurations, you must load all container images to the new private container registry.

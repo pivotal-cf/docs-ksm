@@ -433,9 +433,9 @@ To load your container images:
           imageTag: "1.2.3"
       ```
 
-    If the Helm chart uses another key instead of an `image` or `images` key,
+    If the Helm chart uses a key other than an `image` or `images` key,
     then <%= vars.product_short %> does not change
-    the image reference to pull from the private container registry.
+    the image reference used to pull from the private container registry.
 
 1. Load your container images by following the instructions for your specific container registry.
 For example, if you use Harbor, follow the instructions in
