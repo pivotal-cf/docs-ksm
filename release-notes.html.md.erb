@@ -43,6 +43,7 @@ It is recommended to delete the service instances and the Tile from previous rel
 before installing <%= vars.product_short %> v0.X.XX, instead of upgrading the Tile.
 
 If your chart uses a custom resource, there is a small window of time in which the broker will report that the service was
-provisioned successfully. However, in this small window, the custom objects have not yet been created. This is due to Kubernetes not having a
-generic way to detect resource readiness. Kubernetes primitives have known patterns for detecting readiness, while
-readiness for a custom resource is defined by its author.
+provisioned successfully. However, in this small window, the custom objects have not yet been created. This is due to 
+Kubernetes not having a generic way to detect resource readiness. Kubernetes primitives have known patterns for detecting 
+readiness, while readiness for a custom resource is defined by its author. In the unlikely event that this happens, waiting
+additional time before binding will mitigate any issues with missings details in bind response.
