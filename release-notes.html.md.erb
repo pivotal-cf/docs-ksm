@@ -11,14 +11,14 @@ owner: Platform Engineering (KSM Team)
 
 These are release notes for <%= vars.product_full %>.
 
-##<a id="0-X-XX"></a> v0.5.XX
+##<a id="0-X-XX"></a> v0.6.XX
 
-**Release Date:** XXXX XX, 2019
+**Release Date:** XXXX XX, XXXX
 
-<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.4
+<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.5
   beta release of <%= vars.product_short %>.
-  Before you install <%= vars.product_short %> v0.5, you must uninstall
-  <%= vars.product_short %> v0.4 from Ops Manager. After you install <%= vars.product_short %> v0.5,
+  Before you install <%= vars.product_short %> v0.6, you must uninstall
+  <%= vars.product_short %> v0.5 from Ops Manager. After you install <%= vars.product_short %> v0.6,
   you must re-add your service offerings.
   For more information, see <a href="./upgrading.html">Upgrading KSM</a>.
   </p>
@@ -27,13 +27,6 @@ These are release notes for <%= vars.product_full %>.
 
 New features and changes in this release:
 
-* Platform operators can offer services that have multiple Helm charts.
-For more information, see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
-* The KSM CLI replaces the Bazaar CLI.
-* Binding credentials are automatically stored in runtime CredHub.
-This requires <%= vars.product_short %> to be installed on a <%= vars.pas_short %> deployment
-with CredHub enabled. For instructions about enabling CredHub,
-see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 
 ### Known Issue
 
