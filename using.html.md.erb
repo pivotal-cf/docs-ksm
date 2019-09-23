@@ -150,14 +150,18 @@ To enable access to your service offering:
 
 When you update a service offering in <%= vars.product_short %>, any newly-created service instances
 use the updated version of the service offering.
-Existing instances are not be updated. To update existing service instances, you must manually upgrade them. 
+Existing instances are not updated. To update existing service instances, you must manually upgrade them.
 See [Update a Service Instance](#update-instance) below.
 
 To update a single chart service offering in  <%= vars.product_short %>:
 
 1. Update your chart by doing one of the following:
-      + **If you updating a single chart,** after edit your Helm chart, update the chart version in the `Chart.yaml` file.
-      + **If you are adding multiple charts,** after you edit Helm charts and `ksm.yaml`, update the chart versions in the `Chart.yaml` files. For more information about multiple charts and `ksm.yaml`, see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
+      + **If you are updating a single chart,** after you edit your Helm chart,
+        update the chart version in the `Chart.yaml` file.
+      + **If you are adding multiple charts,** after you edit the Helm charts and `ksm.yaml`,
+        update the chart versions in the `Chart.yaml` files.
+        For more information about multiple charts and `ksm.yaml`,
+        see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
 1. Package an updated version of your Helm chart by running the following command from the root level of your Helm chart directory:
 
