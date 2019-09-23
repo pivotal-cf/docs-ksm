@@ -93,7 +93,7 @@ See [(Optional) Load Container Images](#images) below.
 ##<a id='config-helm'></a> Configure Your Helm Charts
 
 To upload a Helm chart to <%= vars.product_short %>, you must configure the chart to be compatible with <%= vars.product_short %>. For examples of <%= vars.product_short %>-compatible charts,
-see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
+see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
 If you do not include a `plans.yaml` or `ksm.yaml`file with your service offering, one plan is offered.
 This plan uses the default values for the Helm chart.
@@ -395,9 +395,14 @@ ingress:
 
 The plan-specific values files also go through the templating engine.
 
-##<a id='images'></a> (Optional) Load Container Images
+##<a id='images'></a> Load Container Images into a Private Container Registry
 
-You must load container images into a private container registry if either of the following applies:
+Pivotal recommends using a private container registry in production.
+<%= vars.product_short %> can then modify your Helm charts to point to images in the private
+container registry.
+
+If you either of the following applies, you must configure a private
+container registry:
 
 + Your environment is air-gapped and cannot connect to public container registries such as
 Docker Hub or Quay.
@@ -405,10 +410,16 @@ For information about commonly used public container registries,
 see [Docker Hub](https://hub.docker.com/), [Harbor](https://goharbor.io/), and [Quay](https://quay.io/).
 + The images referenced in the Helm chart are not public.
 
-You must load the images before a developer runs `cf create-service`.
 
+If you do not load your container images in to a private container registry, a developer cannot create a service instance
+offered on <%= vars.product_short %>.
 
 To load your container images:
+
+1. Load your container images by following the instructions for your specific container registry.
+For example, if you use Harbor, follow the instructions in
+[Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
+
 
 1. Confirm that your `Chart.yaml` file uses either an `image` or `images` key to specify the value of repository.
 
@@ -436,7 +447,8 @@ To load your container images:
     If the Helm chart uses a key other than an `image` or `images` key,
     then <%= vars.product_short %> does not change
     the image reference used to pull from the private container registry.
-
-1. Load your container images by following the instructions for your specific container registry.
-For example, if you use Harbor, follow the instructions in
-[Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
+    
+1. Confirm that your `Chart.yaml` file points to the updated image path for the private container registry.
+    
+1. Configure your private container registry in the <%= vars.product_short %> tile and apply changes. 
+See [Configure Private Container Registry](./installing.html#container).

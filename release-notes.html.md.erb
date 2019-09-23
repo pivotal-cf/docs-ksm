@@ -35,7 +35,14 @@ This requires <%= vars.product_short %> to be installed on a <%= vars.pas_short 
 with CredHub enabled. For instructions about enabling CredHub,
 see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 
-### Known Issues
+### Known Issue
 
-[//]: # (If there are any known issues, use this stem sentence to introduce them: "This release has the following issue:")
-There are no known issues for this release.
+This release has the following issue:
+
++ If you chart uses custom resources, <%= vars.product_short %> might incorrectly report a service instance
+was created successfully before the custom resources are created.
+This because Kubernetes does not have a generic method to detect resource readiness. 
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author.
+In the unlikely event that this happens, you should wait until the custom resources are created before binding
+a service instances to an app. 
+This mitigates any issues with missing details in the bind response.
