@@ -53,10 +53,10 @@ For example:
     in the Helm documentation.
 
 ### <a id='issue-cleanup'></a> Clean Up a Service Instance
-<%= vars.platform %> gives an asynchronously provisioned service instance seven days to become healthy.
+<%= vars.platform_name %> gives an asynchronously provisioned service instance seven days to become healthy.
 In some failure modes, you might have to manually clean up services earlier.
 
-You can use the cf CLI to purge a service instance from <%= vars.platform %>.
+You can use the cf CLI to purge a service instance from <%= vars.platform_name %>.
 However, this can leave resources in the Kubernetes cluster.
 To fully clean up a service instance, you must delete any remaining namespaces.
 

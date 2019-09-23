@@ -13,10 +13,10 @@ This topic describes <%= vars.product_full %> components, architecture, and tech
 ##<a id='overview'></a> Overview
 
 <%= vars.product_short %> is a collection of components running on a BOSH-deployed
-VM that communicates with both Kubernetes clusters and <%= vars.platform %>.
+VM that communicates with both Kubernetes clusters and <%= vars.platform_name %>.
 
 The following diagram describes how <%= vars.product_short %> communicates with
-<%= vars.platform %> and a Kubernetes cluster:
+<%= vars.platform_name %> and a Kubernetes cluster:
 
 <a href="images/reference_architecture.jpg" target="_blank">
     <img src="images/reference_architecture.jpg" alt="<%= vars.product_short %> reference architecture">
@@ -103,7 +103,7 @@ in the Helm documentation.
 
 ## <a id='life-cycle'></a> <%= vars.product_short %> Life Cycle
 
-This section outlines what happens when a <%= vars.pas_short %> developer uses the
+This section outlines what happens when a <%= vars.pas_full %> developer uses the
 Cloud Foundry Command Line Interface (cf CLI) to create, bind,
 update, unbind, and delete service instances with <%= vars.product_short %>.
 
@@ -113,7 +113,7 @@ in the Cloud Foundry documentation.
 
 ###<a id='create'></a> Create
 
-When a <%= vars.pas_short %>  developer runs `cf create-service`, <%= vars.product_short %>
+When a <%= vars.pas_full %>  developer runs `cf create-service`, <%= vars.product_short %>
 deploys Helm charts into the Kubernetes cluster.
 
 If your service offering
@@ -154,9 +154,9 @@ It uses the predictable namespace names to find resources in the Kubernetes clus
 
 ###<a id='bind'></a> Bind
 
-When a <%= vars.pas_short %> developer runs `cf bind-service`,
+When a <%= vars.pas_full %> developer runs `cf bind-service`,
 <%= vars.product_short %> retrieves the `services` and `secrets` credentials for the service offering.
-The retrieved credentials are serialized as JSON and stored in <%= vars.pas_short %> CredHub.
+The retrieved credentials are serialized as JSON and stored in <%= vars.pas_full %> CredHub.
 The bound app is given permissions to read the newly created CredHub variable.
 <%# Not to docs folks: to be technically accurate, this needs to be PAS Credhub be platform or something generic %>
 
@@ -173,7 +173,7 @@ For information about CredHub, see [CredHub](https://docs.pivotal.io/pivotalcf/2
 
 ###<a id='update'></a> Update
 
-When a <%= vars.pas_short %>  developer runs `cf update-service`, <%= vars.product_short %> triggers
+When a <%= vars.pas_full %>  developer runs `cf update-service`, <%= vars.product_short %> triggers
 the upgrade cycle for Helm. For information about the Helm upgrade cycle,
 see [helm upgrade](https://github.com/helm/helm/blob/master/docs/helm/helm_upgrade.md) on GitHub.
 
@@ -183,12 +183,12 @@ The update also does not upgrade the Helm chart to a newer version.
 
 ###<a id='unbind'></a> Unbind
 
-When a <%= vars.pas_short %>  developer runs `cf unbind-service`, deletes the CredHub variables that
+When a <%= vars.pas_full %>  developer runs `cf unbind-service`, deletes the CredHub variables that
 were created when the service was bound your app. See [Bind](#bind) above.
 
 ###<a id='delete'></a> Delete
 
-When a <%= vars.pas_short %>  developer runs `cf delete-service`, <%= vars.product_short %> does the
+When a <%= vars.pas_full %>  developer runs `cf delete-service`, <%= vars.product_short %> does the
 following:
 
 * Deletes each Helm chart with the `namespace` scope.
