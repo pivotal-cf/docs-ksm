@@ -222,8 +222,8 @@ To update service instances:
     helm ls --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY --namespace=kibosh-INSTANCE-GUID
     ```
     Where:
-    + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshooting.html#helm).
-    + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshooting.html#helm).
+    + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
+    + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
     + `INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
 
     Record the value in the `NAME` column. This is the release name of the service instance
@@ -238,8 +238,8 @@ To update service instances:
     Where:
    + `RELEASE-NAME` is the name of the release you retrieved in the previous step.
    + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in [Update a Service Offering](#update-offering).
-   + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshooting.html#helm).
-   + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshooting.html#helm).
+   + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
+   + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
    
    <p class="note"><strong>Note:</strong> The above command only applies changes to values in <code>values.yaml</code> to service instances. Any changes to values in <code>plans.yaml</code> are ignored.</p>
     
