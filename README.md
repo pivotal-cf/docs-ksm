@@ -13,6 +13,7 @@ https://github.com/pivotal-cf/docs-book-ksm
 | Branch name | Use for… |
 |-------------| ------|
 | master      | upcoming releases http://docs-pcf-staging.cfapps.io/ksm/0-n/ 
+| 0.5     | v0.5.x http://docs-pcf-staging.cfapps.io/ksm/0-5/ 
 | 0.4       | v0.4.x  http://docs-pcf-staging.cfapps.io/ksm/0-4/ |
 
 ## Steps for local development
@@ -37,8 +38,7 @@ This is a word list for terminology and word usage specific to the KSM for PCF d
 | KSM |Acronym for Container Services Manager|
 | KSM CLI | CLI component for Container Services Manager for PCF. Unless you are referring to what it is called on Pivotal Network, Container Services Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
-|private container registry| Container registries can be public or private. Pivotal recommends using **private** conatiner registries. |
-|public container registry| If you mean "public container registry" or "private container registry" say so, at least on first use in the paragraph. Don't assume that the reader/learner knows which you mean. Don't shorten to "public registry" or "private registry". |
+|private container registry or public container registry| Container registries can be public or private. Pivotal recommends using **private** container registries. If you mean "public container registry" or "private container registry" say so, at least on first use in the paragraph. Don't assume that the reader/learner knows which you mean. Don't shorten to "public registry" or "private registry". |
 
 
 ## Historical Note
