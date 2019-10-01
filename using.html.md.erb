@@ -40,7 +40,7 @@ To use the KSM CLI, you need to retrieve your KSM API credentials.
 
 To retrieve your KSM API Credentials:
 
-1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** > **Credentials**.
+1. Navigate to the **Pivotal Ops Manager Installation Dashboard** > **<%= vars.product_full %>** > **Credentials**.
 
 1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
 
@@ -52,7 +52,7 @@ To retrieve your KSM API Credentials:
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in the above step.
     + `PASSWORD` is the value of `password` you recorded in the above step.
 
@@ -81,7 +81,7 @@ by doing one of the following:
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.
@@ -92,7 +92,7 @@ by doing one of the following:
         /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
@@ -107,7 +107,7 @@ by doing one of the following:
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
 
@@ -170,7 +170,7 @@ To update a single chart service offering in  <%= vars.product_short %>:
      ```
 
      Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
-     
+
      <p class="note"><strong>Note:</strong> If you are updating multiple charts, run the above command for each updated chart.
      </p>
 
@@ -181,18 +181,18 @@ To update a single chart service offering in  <%= vars.product_short %>:
         ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save CHART-NAME-#.#.#.tgz --update-manifest
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `YOUR-CHART` is the name of the service offering you want to delete.
     + **If you are adding a multiple charts,** run the following command:
-  
+
         ```
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
         /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update-manifest
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
@@ -205,7 +205,7 @@ To update service instances:
 
 1. Update and package a new version of your Helm chart by doing the steps in [Update a Service Offering](#update-offering).
 
-1. Retrieve and record your mTLS credentials by doing the steps in [Run Helm Commands](./troubleshoot.html#helm). 
+1. Retrieve and record your mTLS credentials by doing the steps in [Run Helm Commands](./troubleshoot.html#helm).
 
 1. Retrieve the GUID for the service instance that you are updating by running the following command:
 
@@ -213,12 +213,12 @@ To update service instances:
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD instance list SERVICE-OFFERING
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `SERVICE-OFFERING` is the name of the service offering that you want to see service instances of.
-    
-    Record the value in `INSTANCE GUID` column for the instance you are updating. 
+
+    Record the value in `INSTANCE GUID` column for the instance you are updating.
 
 1. Retrieve the Helm release name for a service instance by running the following command:
 
@@ -233,7 +233,7 @@ To update service instances:
     Record the value in the `NAME` column. This is the release name of the service instance
     <p class="note"><strong>Note:</strong> If your service offering has multiple charts, the above command might list multiple releases. Record the release names for charts that have been updated.
     </p>
-  
+
 1. For each Helm release, update your service instances by running the following command:
 
     ```
@@ -244,9 +244,9 @@ To update service instances:
    + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in [Update a Service Offering](#update-offering).
    + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
    + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
-   
+
    <p class="note"><strong>Note:</strong> The above command only applies changes to values in <code>values.yaml</code> to service instances. Any changes to values in <code>plans.yaml</code> are ignored.</p>
-    
+
 ## <a id="delete"></a> Delete a Service Offering
 
 1. Delete a service offering by running the following command:
@@ -255,7 +255,7 @@ To update service instances:
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `YOUR-CHART` is the name of the service offering you want to delete.
