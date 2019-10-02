@@ -32,15 +32,15 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running the 
 
 ##<a id='install'></a> Download and Install the Tile
 
-To add <%= vars.product_short %> to Ops Manager:
+To add <%= vars.product_short %> to Pivotal Ops Manager:
 
 1. Log in and download the <%= vars.product_full %> tile from
 [Pivotal Network](https://network.pivotal.io/).
 
 1. Navigate to the **Ops Manager Installation Dashboard** where
 you have installed <%= vars.pas_full %>.
-<%= vars.product_short %> registers itself with the <%= vars.pas_short %>
-marketplace and therefore must be installed in an environment with <%= vars.pas_short %>.
+<%= vars.product_short %> registers itself with the <%= vars.pas_full %>
+marketplace and therefore must be installed in an environment with <%= vars.pas_full %>.
 
 1. Click **Import a Product** to upload the product file.
 
@@ -75,8 +75,8 @@ service broker and to select networks.
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the same network you use for the <%= vars.pas_short %> component VMs.
-          To view the network PAS component VMs use, navigate to <strong>PCF Ops Manager</strong> >
+        <td>Select the same network you use for the <%= vars.pas_full %> component VMs.
+          To view the network PAS component VMs use, navigate to <strong>Ops Manager</strong> >
           <strong><%= vars.product_full %></strong> > <strong>Assign AZs and Networks</strong>.
         </td>
      </tr>
@@ -102,9 +102,9 @@ default settings for your kubeconfig:
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
 1. Create a dedicated service account for <%= vars.product_short %>
-with the `cluster-admin` role by doing the following:
+with the `cluster-admin` role:
     1. Create a YAML file for the <%= vars.product_short %> service account
-    and `ClusterRoleBinding` using the following:
+    and `ClusterRoleBinding` using the following YAML:
 
         ```yml
         ---
@@ -151,7 +151,7 @@ with the `cluster-admin` role by doing the following:
 
     <br>
     Record the output.
-1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
+1. Navigate to **Ops Manager** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -185,17 +185,22 @@ in the Kubernetes documentation.
 ### <a id="storage"></a> Configure Storage
 
 <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
-The operator is responsible for backing up this bucket following instructions from their IaaS provider.
+The operator is responsible for backing up this bucket.
+Follow the instructions from your IaaS provider.
 
 If you use a cloud storage provider that does not natively support S3 buckets,
 you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
 See [Prerequisites](#storage-preq), below.
 
-<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %> may not be changed at a later time.</p>
+<p class="note warning"><strong>Warning:</strong> If you change the storage configurations,
+  the service offering data is lost and you must re-add the service offering to <%= vars.product_short %>.
+  For offerings with multiple versions provisioned, the old versions should also be re-added.
+  See <a href="./using.html#add">Add a Service Offering to KSM</a>.
+</p>
 
 #### <a name="storage-preq"></a> Prerequisites
 
-To configure storage for <%= vars.product_short %>:
+To configure your cloud storage provider for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider.
@@ -205,15 +210,15 @@ The policy must give <%= vars.product_short %> permissions to list and upload bu
 For instructions on how to create a policy and access key, see your provider's documentation.
 
 + **If you are using GCS, you must generate a developer key to be compatible with S3:**
-This developer key is used to configure **Access Key ID** and **Secret Access Key** in the below table.
+This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
 
-<p class="note"><strong>Note:</strong> The storage configuration set for <%= vars.product_short %> may not be changed at a later time.</p>
+#### <a name="storage-ksm"></a> Configure Storage in <%= vars.product_short %>
 
-To configure storage:
+To configure storage in <%= vars.product_short %>:
 
-1. Navigate to **PCF Ops Manager** > **<%= vars.product_full %>** > **Storage Configuration**.
+1. Navigate to **Ops Manager** > **<%= vars.product_full %>** > **Storage Configuration**.
 
 1. Configure the fields as follows:
 
@@ -256,31 +261,40 @@ To configure storage:
         <td><strong>Skip SSL Validation</strong></td>
         <td>Select this checkbox if your environment uses a self-signed certificate
           for the storage provider.
-          Do not select this checkbox if you are using a production environment. </td>
+          Do not select this checkbox if you use a production environment. </td>
       </tr>
     </table>
 
-### <a id="container"></a> Configure Container Registry
+### <a id="container"></a> Configure Private Container Registry
 
-To use <%= vars.product_short %> in an air gapped environment, configure a private registry.
-<%= vars.product_short %> can then modify your Helm charts to point to images in the private registry.
+Pivotal recommends using a private container registry in production.
+<%= vars.product_short %> can then modify your Helm charts to point to images in the private
+container registry.
+If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
+container registry.
 
-Pivotal recommends using a private registry in production.
+You obtain the values needed to configure the private container registry from your container registry.
 
-You obtain the values needed to configure the private registry from your container registry.
+<p class="note warning"><strong>Warning:</strong> If you change the private container registry
+  configurations, you must load all container images to the new private container registry.
+  You must also clear the <%= vars.product_short %> cache by adding a new service offering or updating an existing service offering.<br>
+  See <a href="./prepare-offer.html#images">Load Container Images into a Private Container Registry</a>
+  and <a href="./using.html#add">
+  Add a Service Offering to KSM</a>.
+</p>
 
-To configure a private registry:
+To configure a private container registry:
 
 1. Click **Container Registry Configuration**.
 1. Enter the **Registry Server URL**.
-This is the URL including your container registry hostname and project.
+This is the URL including your private container registry hostname and project.
 For example, `gcr.io/myproject`.
 For Docker Hub, use `docker.io/<repository>` for the registry server URL.
-This is the location from which <%= vars.product_short %>  pushes and pulls images.
+This is the location of the private container registry that <%= vars.product_short %> pushes and pulls images.
 1. Enter the **Registry Username**.
-This is the username that <%= vars.product_short %>  uses to push and pull images to the registry.
+This is the username that <%= vars.product_short %> uses to push and pull images to the private container registry.
 1. Enter the **Registry Password**.
-This is the password that <%= vars.product_short %> uses to push and pull images to the registry.
+This is the password that <%= vars.product_short %> uses to push and pull images to the private container registry.
 
 ### <a id="errands"></a>Errands
 
@@ -296,6 +310,6 @@ To deploy <%= vars.product_short %> and apply your configurations:
 
 1. If you are use Ops Manager v2.3 or later, click Review Pending Changes.
    For more information about this Ops Manager page,
-   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4 <%# Use &ndash; for a range, not a regular dash. %>/customizing/review-pending-changes.html).
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.

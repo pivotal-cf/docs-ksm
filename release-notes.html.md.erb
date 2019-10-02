@@ -11,39 +11,32 @@ owner: Platform Engineering (KSM Team)
 
 These are release notes for <%= vars.product_full %>.
 
-##<a id="v0.X.XX"></a> v0.X.XX
+##<a id="0-X-XX"></a> v0.6.XX
 
-**Release Date:** XXXX XX, 2019
+**Release Date:** XXXX XX, XXXX
 
-<p class="note"><strong>Note:</strong> This release is incompatible with previous
-  releases of <%= vars.product_short %>. This is because <%= vars.product_short %> v0.X.XX xxxxxxxxxxxxxxxx.
-  It is recommended to delete the service instances and the Tile from previous releases of <%= vars.product_short %>
-  before installing <%= vars.product_short %> v0.X.XX. You must add your offerings again.
-  To do this, do the procedures in
-  <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %> </a>
-   and <a href="./using.html#enable">Enable Service Offering Access</a>.
+<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.5
+  beta release of <%= vars.product_short %>.
+  Before you install <%= vars.product_short %> v0.6, you must uninstall
+  <%= vars.product_short %> v0.5 from Pivotal Ops Manager. After you install <%= vars.product_short %> v0.6,
+  you must re-add your service offerings.
+  For more information, see <a href="./upgrading.html">Upgrading KSM</a>.
   </p>
 
 ### Features
 
 New features and changes in this release:
 
-* Platform operators can offer services that have multiple Helm charts.
-For more information, see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts).
-* The KSM CLI replaces the Bazaar CLI.
-* Binding credentials are automatically stored in runtime CredHub.
-This requires <%= vars.product_short %> to be installed on a <%= vars.pas_short %> deployment
-with CredHub enabled. For instructions about enabling CredHub,
-see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 
-### Known Issues
+### Known Issue
 
-Upgrading from previous versions of KSM Tile will leave orphaned service instances and service broker.
-It is recommended to delete the service instances and the Tile from previous releases of <%= vars.product_short %>
-before installing <%= vars.product_short %> v0.X.XX, instead of upgrading the Tile.
+This release has the following issue:
 
-If your chart uses a custom resource, there is a small window of time in which the broker will report that the service was
-provisioned successfully. However, in this small window, the custom objects have not yet been created. This is due to 
-Kubernetes not having a generic way to detect resource readiness. Kubernetes primitives have known patterns for detecting 
-readiness, while readiness for a custom resource is defined by its author. In the unlikely event that this happens, waiting
-additional time before binding will mitigate any issues with missings details in bind response.
++ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
+was created successfully before the custom resources are created.
+This is because Kubernetes does not have a generic method to detect resource readiness.
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author.
+
+In the unlikely event that this happens, wait until the custom resources are created before binding
+a service instances to an app.
+This mitigates any issues with missing details in the bind response.

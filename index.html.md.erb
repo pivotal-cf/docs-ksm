@@ -18,25 +18,25 @@ These services run on Enterprise Pivotal Container Service (Enterprise PKS)
 for consumption by <%= vars.pas_full %> apps.
 
 For more information about the `cf marketplace`,
-see [Pivotal Cloud Foundry Developer Guide](https://docs.pivotal.io/pivotalcf/2-5/devguide/index.html).
+see [<%= vars.platform_name %> Developer Guide](https://docs.pivotal.io/pivotalcf/2-5/devguide/index.html).
 For more information about Enterprise PKS,
 see [Enterprise Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service).
 
 <%= vars.product_short %> enables platform operators to do the following:
 
-* Offer ISV and open source Helm charts as on-demand services to <%= vars.pas_short %> developers.
+* Offer ISV and open source Helm charts as on-demand services to <%= vars.pas_full %> developers.
 
 <%= vars.product_short %> enables app developers to do the following:
 
-* Provision dedicated service instances onto a PKS cluster through the `cf marketplace`.
-* Consume services running on Enterprise PKS in apps running on <%= vars.pas_short %>.
+* Provision dedicated service instances onto a Kubernetes cluster through the `cf marketplace`.
+* Consume services running on Enterprise PKS in apps running on <%= vars.pas_full %>.
 
 ## <a id='features'></a> Key Features
 
 <%= vars.product_short %> includes the following key features:
 
 * A service broker that provisions dedicated service instances into a
-PKS cluster and binds service instances to PAS apps.
+Kubernetes cluster and binds service instances to PAS apps.
 * A CLI for managing service offerings.
 * The ability to create and manage a catalog of services to the `cf marketplace`.
 
@@ -53,18 +53,14 @@ The following table provides version and version-support information about <%= v
     </tr>
     <tr>
         <td>Release date</td>
-        <td>XXXX XX, 2019</td>
+        <td>XXXX XX, XXX</td>
     </tr>
     <tr>
-        <td>Software component version</td>
-        <td>0.X.X</td>
+        <td>Compatible Pivotal Ops Manager version(s)</td>
+        <td>XXXX</td>
     </tr>
     <tr>
-        <td>Compatible Ops Manager version(s)</td>
-        <td>XXX6</td>
-    </tr>
-    <tr>
-        <td>Compatible <%= vars.pas_short %> version(s)</td>
+        <td>Compatible <%= vars.pas_full %> version(s)</td>
         <td>XXX</td>
     </tr>
     <tr>
@@ -89,17 +85,19 @@ The following table provides version and version-support information about <%= v
 
 <%= vars.product_short %> requires the following:
 
-* **PKS CLI:** For information about installing the PKS CLI,
-  see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
 * **KSM CLI:** For information about installing the KSM CLI, see
 [Install the KSM CLI](./installing.html#ksm) .
-* **<%= vars.pas_short %> Deployment:** A running <%= vars.pas_short %> deployment with runtime CredHub enabled that is installed on the
-same foundation as <%= vars.product_short %>. For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
-* **PKS Cluster:** A running PKS cluster.
+* **<%= vars.pas_full %> Deployment:** A running <%= vars.pas_full %> deployment with runtime CredHub enabled that is installed on the
+same foundation as <%= vars.product_short %>.
+For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
+* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports PKS clusters.
+* **PKS CLI (optional):** If you use a PKS cluster, you must install
+the PKS CLI. For information about installing the PKS CLI,
+  see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
 * **Private Container Registry (optional):** You need this to manage container images
 in air-gapped environments.
   Pivotal recommends using a private container registry in production deployments.
-  You can use a container registry such as
+  You can use a private container registry such as
   [Harbor](https://network.pivotal.io/products/harbor-container-registry).
 * **Helm CLI (optional):** For information about installing the Helm CLI,
 see [Installing Helm](https://helm.sh/docs/using_helm/#installing-helm) in the Helm documentation.

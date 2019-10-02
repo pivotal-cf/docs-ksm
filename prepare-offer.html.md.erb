@@ -85,8 +85,9 @@ For example, if your Helm chart requires an Ingress controller to enable service
     the Ingress controller must be manually installed onto the cluster. For information
     about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
     in the Kubernetes documentation.
-+ **Load Container Images:** You might have to load your container images into a private registry.
-See [(Optional) Load Container Images](#images) below.
++ **Load Container Images:** You might have to load your container images into a private
+container registry.
+See [Load Container Images into a Private Container Registry](#images) below.
 
 
 ##<a id='config-helm'></a> Configure Your Helm Charts
@@ -293,7 +294,7 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
 
 ##<a id='env'></a> (Optional) Create Binding Template for App Consumption
 
-Apps running in <%= vars.pas_short %>  gain access to bound service instances through an environment
+Apps running in <%= vars.pas_full %>  gain access to bound service instances through an environment
 variable credentials hash called `VCAP_SERVICES`.
 Libraries such as Spring Cloud
 Cloud Foundry Connector automatically support services if their credentials in `VCAP_SERVICES` are formatted
@@ -394,46 +395,60 @@ ingress:
 
 The plan-specific values files also go through the templating engine.
 
-##<a id='images'></a> (Optional) Load Container Images into a Private Container Registry
+##<a id='images'></a> Load Container Images into a Private Container Registry
 
-If either of the following applies:
+Pivotal recommends using a private container registry in production.
+<%= vars.product_short %> can then modify your Helm charts to point to images in the private
+container registry.
 
-+ Your environment is air-gapped and cannot connect to common registries such as
-[Docker Hub](https://hub.docker.com/) and
-[Quay](https://quay.io/).
+If you either of the following applies, you must configure a private
+container registry:
+
++ Your environment is air-gapped and cannot connect to public container registries such as
+Docker Hub or Quay.
+For information about commonly used public container registries,
+see [Docker Hub](https://hub.docker.com/), [Harbor](https://goharbor.io/), and [Quay](https://quay.io/).
 + The images referenced in the Helm chart are not public.
 
-Before you can use KSM to offer a chart, you must
-+ [Configure a private container registry] (http://docs-pcf-staging.cfapps.io/ksm/0-n/installing.html#container)
-+ Load the product's container images into that private registry
-+ Ensure the helm chart points to the updated image path for the private registry
 
-If the images are not loaded, a user cannot run `cf create-service` on the marketplace offering successfully.
+If you do not load your container images in to a private container registry, a developer cannot create a service instance
+offered on <%= vars.product_short %>.
 
-To load your container images follow instructions for your specific registry.
+To load your container images:
+
+1. Load your container images by following the instructions for your specific container registry.
 For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
 
-Note: Our assumption is that helm chart uses "image" or "images" key to specify the value of repository, if helm chart uses some other keys <%= vars.product_short %> won't be able to do image transformation to private registry.
-Below is an example of the supported structures
 
-* A single-image chart's values:
+1. Confirm that your `Chart.yaml` file uses either an `image` or `images` key to specify the value of repository.
 
-    ```yaml
-    ---
-    image: "my-image"
-    imageTag: "5.7.14"
-    ```
+     For example:
+  * If you use a chart with a single image:
 
-* A multi-image chart's values:
+      ```yaml
+      ---
+      image: "my-image"
+      imageTag: "5.7.14"
+      ```
+  * If you use a chart with multiple images:
 
-    ```yaml
-    ---
-    images:
-      component1:
-        image: "my-first-image"
-        imageTag: "5.7.14"
-      component2:
-        image: "my-second-image"
-        imageTag: "1.2.3"
-    ```
+      ```yaml
+      ---
+      images:
+        component1:
+          image: "my-first-image"
+          imageTag: "5.7.14"
+        component2:
+          image: "my-second-image"
+          imageTag: "1.2.3"
+      ```
+
+    If the Helm chart uses a key other than an `image` or `images` key,
+    then <%= vars.product_short %> does not change
+    the image reference used to pull from the private container registry.
+    
+1. Confirm that your `Chart.yaml` file points to the updated image path for the private container registry.
+    
+1. Configure your private container registry in the <%= vars.product_short %> tile and apply changes. 
+See [Configure Private Container Registry](./installing.html#container).

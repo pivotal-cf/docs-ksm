@@ -1,0 +1,39 @@
+---
+title: Upgrading KSM
+owner: MySQL
+---
+
+<strong><%= modified_date %></strong>
+
+This topic explains how to upgrade the <%= vars.product_full %>.
+
+## <a id="overview"></a>Overview
+
+<%= vars.product_short %> v0.6 is incompatible with the v0.5 beta release of <%= vars.product_short %>.
+  Before you install <%= vars.product_short %> v0.6, you must uninstall
+  <%= vars.product_short %> v0.5 from Pivotal Ops Manager.
+  After you install <%= vars.product_short %> v0.6, you must re-add your service offerings.
+
+To upgrade from <%= vars.product_short %> v0.5:
+
+1. Uninstall <%= vars.product_short %> v0.5.
+  See [Uninstall <%= vars.product_short %>](#uninstall) below.
+1. Install  <%= vars.product_short %> v0.6.
+  See [Installing and Configuring <%= vars.product_short %>](./installing.html).
+1. Add and enable access to your service offerings. See [Add a Service Offering to KSM](./using.html#add)
+  and [Enable Service Offering Access](./using.html#enable).
+
+## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
+
+To uninstall <%= vars.product_short %>:
+
+1. Navigate to **Ops Manager Installation Dashboard** >
+**<%= vars.product_full %>** > **Errands**.
+1. Confirm that **deregister** is set to **On**.
+2. Navigate to **Ops Manager Installation Dashboard** and click the trash icon
+for **<%= vars.product_full %>**.
+1. If you are use Ops Manager v2.3 or later, click Review Pending Changes.
+   For more information about this Ops Manager page,
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
+
+1. Click **Apply Changes**.

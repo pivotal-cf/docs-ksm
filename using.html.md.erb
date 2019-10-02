@@ -40,7 +40,7 @@ To use the KSM CLI, you need to retrieve your KSM API credentials.
 
 To retrieve your KSM API Credentials:
 
-1. Navigate to the **Ops Manager Installation Dashboard** > **<%= vars.product_full %>** > **Credentials**.
+1. Navigate to the **Pivotal Ops Manager Installation Dashboard** > **<%= vars.product_full %>** > **Credentials**.
 
 1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
 
@@ -52,13 +52,13 @@ To retrieve your KSM API Credentials:
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in the above step.
     + `PASSWORD` is the value of `password` you recorded in the above step.
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
-You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers 
+You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers
 to use the service.
 
 To add your offering to <%= vars.product_short %>:
@@ -73,7 +73,7 @@ your Helm chart directory:
     Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your
     Helm chart directory.
 
-1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %> 
+1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %>
 by doing one of the following:
     + **If you are adding a single chart,** run the following command:
 
@@ -81,7 +81,7 @@ by doing one of the following:
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.
@@ -92,7 +92,7 @@ by doing one of the following:
         /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your PCF system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
@@ -107,7 +107,7 @@ by doing one of the following:
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
 
@@ -146,108 +146,106 @@ To enable access to your service offering:
     cf marketplace
     ```
 
-
 ## <a id="update-offering"></a> Update a Service Offering
 
-When you update a service offering in  <%= vars.product_short %>, new instances of the service created will be of the newer version.
-Existing instances will need to manually upgrade them. See [Upgrade a Service Instance](#upgrade-instance) below.
+When you update a service offering in <%= vars.product_short %>, any newly-created service instances
+use the newer version of the service offering.
+Existing instances must be manually upgraded.
+See [Upgrade a Service Instance](#upgrade-instance) below.
 
 To update a single chart service offering in  <%= vars.product_short %>:
 
-1. After making changes to the Chart, update the Chart version in the Chart's `Chart.yaml` file.
+1. Update your chart by doing one of the following:
+      + **If you are updating a single chart,** after you edit your Helm chart,
+        update the chart version in the `Chart.yaml` file.
+      + **If you are adding multiple charts,** after you edit the Helm charts and `ksm.yaml`,
+        update the chart versions in the `Chart.yaml` files.
+        For more information about multiple charts and `ksm.yaml`,
+        see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
-1. Package an updated version of the Helm chart by running the following command from the root level of your Helm chart directory:
+1. Package an updated version of your Helm chart by running the following command from the root level of your Helm chart directory:
 
-   ```
-   helm package .
-   ```
+     ```
+     helm package .
+     ```
 
-   Verify that you now have a file named CHART-NAME-#.#.#.tgz in the root level of your Helm chart directory.
+     Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
 
-1. Update the service offering by running the following command:
+     <p class="note"><strong>Note:</strong> If you are updating multiple charts, run the above command for each updated chart.
+     </p>
 
-    ```
-    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save CHART-NAME-#.#.#.tgz --update-manifest
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `YOUR-CHART` is the name of the service offering you want to delete.
+1. Update the service offering by running one of the following commands:
+    + **If you are adding a single chart,** run the following command:
 
-To update a multi chart service offering in  <%= vars.product_short %>:
+        ```
+        ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save CHART-NAME-#.#.#.tgz --update-manifest
+        ```
+        Where:
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+        + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `YOUR-CHART` is the name of the service offering you want to delete.
+    + **If you are adding a multiple charts,** run the following command:
 
-1. Make any needed changes to the `ksm.yaml` for the service offering. For more information about multiple charts and `ksm.yaml`, see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
-
-1. For any chart with changes, update the Chart version in the Chart's `Chart.yaml`
-
-1. For any updated charts, package an updated version of the Helm chart by running the following command from the root level of your Helm chart directory:
-
-   ```
-   helm package .
-   ```
-
-   Verify that you now have a file named CHART-NAME-#.#.#.tgz in the root level of your Helm chart directory.
-
-1. Update the service offering by running the following command:
-
-    ```
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-    /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update-manifest
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
-    + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
-    + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+        ```
+        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
+        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update-manifest
+        ```
+        Where:
+        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+        + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
-1. Follow the steps in [Update a Service Offering](#update-offering) to update and package a new version of your Helm chart.
+To upgrade service instances:
 
-1. Follow the steps in [Run Helm Commands](./troubleshooting.html#helm) to get the mTLS credentials needed to use `helm` commands.
-These will be needed in the following steps.
+1. Update and package a new version of your Helm chart by doing the steps in [Update a Service Offering](#update-offering).
 
-1. Retrieve the GUID for the service instance you would like to upgrade by running:
+1. Retrieve and record your mTLS credentials by doing the steps in [Run Helm Commands](./troubleshoot.html#helm).
+
+1. Retrieve the GUID for the service instance that you are updating by running the following command:
 
     ```
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD instance list MARKETPLACE-NAME
+    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD instance list SERVICE-OFFERING
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `MARKETPLACE-NAME` is the name of the service offering you want to see instances of.
+    + `SERVICE-OFFERING` is the name of the service offering that you want to see service instances of.
 
-    Note down the value in the `INSTANCE GUID` column for the instance you would like to update. This value will be used in the next step
+    Record the value in `INSTANCE GUID` column for the instance you are upgrading.
 
-1. Retrieve the Helm release name for the service instance GUID noted in the previous step by running:
+1. Retrieve the Helm release name for a service instance by running the following command:
 
     ```
     helm ls --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY --namespace=kibosh-INSTANCE-GUID
     ```
     Where:
-    + `PATH-TO-CERT` is the path to the certificate file you created in the [Run Helm Commands](./troubleshooting.html#helm) step.
-    + `PATH-TO-KEY` is the path to the private key file you created in the [Run Helm Commands](./troubleshooting.html#helm) step.
+    + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
+    + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
     + `INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
 
-    Note down the value in the `NAME` column. This is the release name of the service instance. This value will be used in the next step.
-    For multi-chart offerings, there may be multiple releases list. Choose the release or releases of charts that have been updated.
+    Record the value in the `NAME` column. This is the release name of the service instance
+    <p class="note"><strong>Note:</strong> If your service offering has multiple charts, the above command might list multiple releases. Record the release names for charts that have been updated.
+    </p>
 
-1. Run the following command to upgrade your service instance. Run this command for each release retrieved in the previous step:
+1. For each Helm release, upgrade your service instances by running the following command:
 
     ```
     helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
     ```
     Where:
-   + `RELEASE-NAME` is the name of the release to upgrade you retrieved in the previous step.
-   + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in the[Update a Service Offering](#update-offering) step.
-   + `PATH-TO-CERT` is the path to the certificate file you created in the [Run Helm Commands](./troubleshooting.html#helm) step.
-   + `PATH-TO-KEY` is the path to the private key file you created in the [Run Helm Commands](./troubleshooting.html#helm) step.
+   + `RELEASE-NAME` is the name of the release you retrieved in the previous step.
+   + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in [Update a Service Offering](#update-offering).
+   + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
+   + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
 
-    Note: only changes to values in the chart `Values.yaml` will be applied to the upgraded release. Any changes to values in `plans.yaml` will be ignored.
+   <p class="note"><strong>Note:</strong> The above command only applies changes to values in <code>values.yaml</code> to service instances. Any changes to values in <code>plans.yaml</code> are ignored.</p>
 
 ## <a id="delete"></a> Delete a Service Offering
 
@@ -257,7 +255,7 @@ These will be needed in the following steps.
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your PCF system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `YOUR-CHART` is the name of the service offering you want to delete.
