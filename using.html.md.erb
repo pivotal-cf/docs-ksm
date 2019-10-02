@@ -149,7 +149,7 @@ To enable access to your service offering:
 ## <a id="update-offering"></a> Update a Service Offering
 
 When you update a service offering in <%= vars.product_short %>, any newly-created service instances
-use the newer version of the service offering.
+use the latest version of the service offering.
 Existing instances must be manually upgraded.
 See [Upgrade a Service Instance](#upgrade-instance) below.
 
@@ -207,7 +207,7 @@ To upgrade service instances:
 
 1. Retrieve and record your mTLS credentials by doing the steps in [Run Helm Commands](./troubleshoot.html#helm).
 
-1. Retrieve the GUID for the service instance that you are updating by running the following command:
+1. Retrieve the GUID for the service instance that you are upgrading by running the following command:
 
     ```
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD instance list SERVICE-OFFERING
@@ -245,7 +245,9 @@ To upgrade service instances:
    + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
    + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
 
-   <p class="note"><strong>Note:</strong> The above command only applies changes to values in <code>values.yaml</code> to service instances. Any changes to values in <code>plans.yaml</code> are ignored.</p>
+   <p class="note"><strong>Note:</strong> The above command only applies changes to values in <code>values.yaml</code> to service instances.
+     Any changes to values in <code>plans.yaml</code> are ignored.
+   </p>
 
 ## <a id="delete"></a> Delete a Service Offering
 
