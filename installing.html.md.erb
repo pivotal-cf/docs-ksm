@@ -94,11 +94,11 @@ service broker and to select networks.
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
 default settings for your kubeconfig:
 
-1. Retrieve your cluster credentials with the PKS CLI by
+1. Retrieve your cluster credentials with the [PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html) by
    doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
-  + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
+  + `certificate-authority-data`. The base64 encoded PEM Cluster CA certificate.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
 1. Create a dedicated service account for <%= vars.product_short %>
@@ -209,7 +209,7 @@ You should apply a minimal policy that lets the user account upload backups to y
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
 
-+ **If you are using GCS, you must generate a developer key to be compatible with S3:**
++ **If you are using Google Cloud Storage (GCS), you must generate a developer key for GCS to use an S3 compatible API:**
 This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
