@@ -91,6 +91,11 @@ service broker and to select networks.
 
 ### <a id="kubeconfig"></a> Configure Cluster Credentials
 
+If you are using a Enterprise Pivotal Container Service (Enterprise PKS) cluster, you
+can configure cluster credentials with the Pivotal Container Service Command Line Interface (PKS CLI).
+For information about installing the PKS CLI,
+see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
+
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
 default settings for your kubeconfig:
 
@@ -98,7 +103,8 @@ default settings for your kubeconfig:
    doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
-  + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
+  + `certificate-authority-data`. This is the base64 encoded CA certificate for your Enterprise PKS cluster
+  in PEM format.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
 1. Create a dedicated service account for <%= vars.product_short %>
@@ -128,7 +134,8 @@ with the `cluster-admin` role:
             namespace: kube-system
         ```
         For information about service accounts,
-        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin) in the Kubernetes documentation. <br>
+        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
+        in the Kubernetes documentation. <br>
 
         For information about `ClusterRoleBinding`,
         see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
