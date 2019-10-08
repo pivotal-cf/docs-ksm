@@ -199,9 +199,9 @@ To update a single chart service offering in  <%= vars.product_short %>:
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
-## <a id="update-instance"></a> Update a Service Instance
+## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
-To update service instances:
+To upgrade service instances:
 
 1. Update and package a new version of your Helm chart by doing the steps in [Update a Service Offering](#update-offering).
 
@@ -218,7 +218,7 @@ To update service instances:
     + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `SERVICE-OFFERING` is the name of the service offering that you want to see service instances of.
 
-    Record the value in `INSTANCE GUID` column for the instance you are updating.
+    Record the value in `INSTANCE GUID` column for the instance you are upgrading.
 
 1. Retrieve the Helm release name for a service instance by running the following command:
 
@@ -234,7 +234,7 @@ To update service instances:
     <p class="note"><strong>Note:</strong> If your service offering has multiple charts, the above command might list multiple releases. Record the release names for charts that have been updated.
     </p>
 
-1. For each Helm release, update your service instances by running the following command:
+1. For each Helm release, upgrade your service instances by running the following command:
 
     ```
     helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
