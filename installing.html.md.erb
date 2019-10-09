@@ -32,12 +32,12 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running the 
 
 ##<a id='install'></a> Download and Install the Tile
 
-To add <%= vars.product_short %> to Pivotal Ops Manager:
+To add <%= vars.product_short %> to <%= vars.ops_manager_full %>:
 
 1. Log in and download the <%= vars.product_full %> tile from
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to the **Ops Manager Installation Dashboard** where
+1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** where
 you have installed <%= vars.pas_full %>.
 <%= vars.product_short %> registers itself with the <%= vars.pas_full %>
 marketplace and therefore must be installed in an environment with <%= vars.pas_full %>.
@@ -76,7 +76,7 @@ service broker and to select networks.
      <tr>
         <td><strong>Network</strong></td>
         <td>Select the same network you use for the <%= vars.pas_full %> component VMs.
-          To view the network PAS component VMs use, navigate to <strong>Ops Manager</strong> >
+          To view the network PAS component VMs use, navigate to <strong><%= vars.ops_manager %></strong> >
           <strong><%= vars.product_full %></strong> > <strong>Assign AZs and Networks</strong>.
         </td>
      </tr>
@@ -158,7 +158,7 @@ with the `cluster-admin` role:
 
     <br>
     Record the output.
-1. Navigate to **Ops Manager** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
+1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -225,7 +225,7 @@ see [Managing developer keys for a simple migration](https://cloud.google.com/st
 
 To configure storage in <%= vars.product_short %>:
 
-1. Navigate to **Ops Manager** > **<%= vars.product_full %>** > **Storage Configuration**.
+1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %>** > **Storage Configuration**.
 
 1. Configure the fields as follows:
 
@@ -313,10 +313,10 @@ This errand is disabled by default.
 
 To deploy <%= vars.product_short %> and apply your configurations:
 
-1. Navigate to the Ops Manager Installation Dashboard.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. If you are use Ops Manager v2.3 or later, click Review Pending Changes.
-   For more information about this Ops Manager page,
+1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
+   For more information about this <%= vars.ops_manager %> page,
    see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.
