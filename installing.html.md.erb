@@ -91,6 +91,11 @@ service broker and to select networks.
 
 ### <a id="kubeconfig"></a> Configure Cluster Credentials
 
+If you are using an Enterprise Pivotal Container Service (Enterprise PKS) cluster, you
+can configure cluster credentials with the Pivotal Container Service Command Line Interface (PKS CLI).
+For information about installing the PKS CLI,
+see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
+
 To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
 default settings for your kubeconfig:
 
@@ -98,7 +103,8 @@ default settings for your kubeconfig:
    doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
-  + `certificate-authority-data`. This value is the CA certificate for the PKS cluster.
+  + `certificate-authority-data`. This is the base64 encoded CA certificate for your Enterprise PKS cluster
+  in PEM format.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
 1. Create a dedicated service account for <%= vars.product_short %>
@@ -128,7 +134,8 @@ with the `cluster-admin` role:
             namespace: kube-system
         ```
         For information about service accounts,
-        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin) in the Kubernetes documentation. <br>
+        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
+        in the Kubernetes documentation. <br>
 
         For information about `ClusterRoleBinding`,
         see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
@@ -209,7 +216,8 @@ You should apply a minimal policy that lets the user account upload backups to y
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
 
-+ **If you are using GCS, you must generate a developer key to be compatible with S3:**
++  **If you are using Google Cloud Storage (GCS),
+you must generate a developer key for GCS to use an S3 compatible API:**
 This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.

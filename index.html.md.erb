@@ -56,7 +56,7 @@ The following table provides version and version-support information about <%= v
         <td>XXXX XX, XXX</td>
     </tr>
     <tr>
-        <td>Compatible Pivotal Ops Manager version(s)</td>
+        <td>Compatible <%= vars.ops_manager_full %> version(s)</td>
         <td>XXXX</td>
     </tr>
     <tr>
@@ -90,8 +90,9 @@ The following table provides version and version-support information about <%= v
 * **<%= vars.pas_full %> Deployment:** A running <%= vars.pas_full %> deployment with runtime CredHub enabled that is installed on the
 same foundation as <%= vars.product_short %>.
 For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
-* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports PKS clusters.
-* **PKS CLI (optional):** If you use a PKS cluster, you must install
+* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports Enterprise PKS clusters. For information
+about Enterprise PKS, see [Pivotal Container Service (PKS)](https://docs.pivotal.io/pks/index.html).
+* **PKS CLI (optional):** If you use an Enterprise PKS cluster, you must install
 the PKS CLI. For information about installing the PKS CLI,
   see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
 * **Private Container Registry (optional):** You need this to manage container images

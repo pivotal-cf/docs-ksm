@@ -11,7 +11,7 @@ This topic explains how to upgrade the <%= vars.product_full %>.
 
 <%= vars.product_short %> v0.6 is incompatible with the v0.5 beta release of <%= vars.product_short %>.
   Before you install <%= vars.product_short %> v0.6, you must uninstall
-  <%= vars.product_short %> v0.5 from Pivotal Ops Manager.
+  <%= vars.product_short %> v0.5 from <%= vars.ops_manager_full %>.
   After you install <%= vars.product_short %> v0.6, you must re-add your service offerings.
 
 To upgrade from <%= vars.product_short %> v0.5:
@@ -27,13 +27,13 @@ To upgrade from <%= vars.product_short %> v0.5:
 
 To uninstall <%= vars.product_short %>:
 
-1. Navigate to **Ops Manager Installation Dashboard** >
+1. Navigate to **<%= vars.ops_manager %> Installation Dashboard** >
 **<%= vars.product_full %>** > **Errands**.
 1. Confirm that **deregister** is set to **On**.
-2. Navigate to **Ops Manager Installation Dashboard** and click the trash icon
+2. Navigate to **<%= vars.ops_manager %> Installation Dashboard** and click the trash icon
 for **<%= vars.product_full %>**.
-1. If you are use Ops Manager v2.3 or later, click Review Pending Changes.
-   For more information about this Ops Manager page,
+1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
+   For more information about this <%= vars.ops_manager %> page,
    see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.
