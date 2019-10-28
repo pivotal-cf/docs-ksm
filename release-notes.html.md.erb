@@ -15,16 +15,25 @@ These are release notes for <%= vars.product_full %>.
 
 **Release Date:** October 28, 2019
 
-### Features
+### Resolved Issue
 
-New features and changes in this release:
+This release has the following fix:
 
-* KSM automatically enables "Include OpsManager Root CA in Trusted Certs" in the BOSH director. 
-This fixes a bug where users could not validate bind credentials with CredHub if the box was not selected in Ops Manager.
+* KSM now automatically enables the **Include OpsManager Root CA in Trusted Certs** checkbox in BOSH Director. This
+fixes an issue where users could not validate bind credentials with CredHub if the checkbox was not selected.
 
 ### Known Issue
 
-This release still has the issues associated with the minor line 0.5.0
+This release has the following issue:
+
++ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
+was created successfully before the custom resources are created.
+This is because Kubernetes does not have a generic method to detect resource readiness.
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author.
+
+In the unlikely event that this happens, wait until the custom resources are created before binding
+a service instances to an app.
+This mitigates any issues with missing details in the bind response.
 
 
 ##<a id="0-5-0"></a> v0.5.0
@@ -64,3 +73,5 @@ Kubernetes primitives have known patterns for detecting readiness, but custom re
 In the unlikely event that this happens, wait until the custom resources are created before binding
 a service instances to an app.
 This mitigates any issues with missing details in the bind response.
+
++ Users cannot validate bind credentials with CredHub if the **Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
