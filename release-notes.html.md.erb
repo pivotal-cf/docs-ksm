@@ -20,8 +20,8 @@ These are release notes for <%= vars.product_full %>.
 This release has the following fix:
 
 * KSM now automatically trusts the Runtime Credhub for storing binding secrets.
-This fixes a bug where users could not store bind credentials with CredHub if the 
-**Include Ops manager Root CA in Trusted Certs** check box was not selected in Ops Manager.
+This fixes an issue where users could not store bind credentials with CredHub if the 
+**Include Ops manager Root CA in Trusted Certs** checkbox was not selected in Ops Manager.
 
 ### Known Issue
 
@@ -60,9 +60,9 @@ This requires <%= vars.product_short %> to be installed on a <%= vars.pas_short 
 with CredHub enabled. For instructions about enabling CredHub,
 see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 
-### Known Issue
+### Known Issues
 
-This release has the following issue:
+This release has the following issues:
 
 + If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
 was created successfully before the custom resources are created.
@@ -72,4 +72,4 @@ In the unlikely event that this happens, wait until the custom resources are cre
 a service instances to an app.
 This mitigates any issues with missing details in the bind response.
 
-+ Users cannot validate bind credentials with CredHub if the **Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
++ Users cannot store bind credentials with CredHub if the **Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
