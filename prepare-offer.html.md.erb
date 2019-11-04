@@ -240,9 +240,11 @@ To offer a service with multiple Helm charts, you must create a `ksm.yaml` file.
     marketplace-name: SERVICE-NAME
     charts:
       - chart: CHART-NAME
+        version: CHART-VERSION
         offered: OFFERED-VALUE
         scope: SCOPE-VALUE
       - chart: CHART-NAME
+        version: CHART-VERSION
         offered: OFFERED-VALUE
         scope: SCOPE-VALUE
     ```
@@ -250,6 +252,7 @@ To offer a service with multiple Helm charts, you must create a `ksm.yaml` file.
     Where:
     + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`. The service name is listed under `service`.
     + `CHART-NAME` is the name of a chart that you are including in the service offering.
+    + `CHART-VERSION` is the version of the chart that you are including in the service offering.
     + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
     + `SCOPE-VALUE` is set to either `scope` or `namespace`. For more information, see the below table.
 
