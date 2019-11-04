@@ -251,6 +251,13 @@ To upgrade service instances:
 
 ## <a id="delete"></a> Delete a Service Offering
 
+ 
+ <p class="note"><strong>Note:</strong> A service offering cannot be deleted if instances of that service exist. If an offer is removed while service instances exist, then <%= vars.productshort %> will no longer be able to perform operations against that service instance (e.g. `cf update-service`).
+
+To remove the offer, first delete all service instances using `cf delete-service SERVICE-NAME`. After all service instances have been deprovisioned, follow the step below to delete the service offering.
+    </p>
+  
+    
 1. Delete a service offering by running the following command:
 
     ```
@@ -265,3 +272,5 @@ To upgrade service instances:
     <p class="note"><strong>Note:</strong> If you only have one service offering in
       <%= vars.product_short %>, you cannot delete it.
     </p>
+    
+   
