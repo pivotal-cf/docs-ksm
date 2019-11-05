@@ -35,7 +35,8 @@ a service instances to an app.
 This mitigates any issues with missing details in the bind response.
 + Binding credentials for service instances brokered by <%= vars.product_short %> are not consistently unique.
 If more than one app is bound to the same service instance, 
-all of the apps use the same credentials to connect to the service instance.
+all of the apps use the same credentials to connect to the service instance. If your binding credentials
+are compromised, you must rotate the binding credential for all the apps that use the credential.
 
 
 ##<a id="0-5-0"></a> v0.5.0
