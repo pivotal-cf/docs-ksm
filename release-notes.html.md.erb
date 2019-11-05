@@ -33,9 +33,8 @@ This is because Kubernetes does not have a generic method to detect resource rea
 Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>In the unlikely event that this happens, wait until the custom resources are created before binding
 a service instances to an app.
 This mitigates any issues with missing details in the bind response.
-+ Binding credentials are not guaranteed to be unique for services brokered by <%= vars.product_short %>.
-In general, every application bound to a specific service instance will receive and use the
-same credentials to connect to the service.
++ Binding credentials for services brokered by <%= vars.product_short %> are not consistently unique.
+In general, every app bound to a specific service instance uses the same credentials to connect to the service.
 
 
 ##<a id="0-5-0"></a> v0.5.0
