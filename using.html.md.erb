@@ -251,18 +251,23 @@ To upgrade service instances:
 
 ## <a id="delete"></a> Delete a Service Offering
 
- 
- <p class="note warning"><strong>Warning:</strong> You cannot delete a service offering if service instances of that offering exist. If an offering is removed while service instances of the offering exist, you cannot do operations against that service instance. For example, you cannot run <code>cf update-service</code>.
+
+ <p class="note warning"><strong>Warning:</strong>
+   <%= vars.product_short %> does not permit deleting service offerings if service instances of that offering exist.
+   This is because if an offering was deleted while service instances of the offering existed,
+   you could not do operations against that service instance.
+   For example, you could not run <code>cf update-service</code>.
 </p>
 
 To delete a service offering:
 
-1. If service instances of the service offering exist, for each service instance, delete the  instance by running:
-    
+1. If service instances of the service offering exist, for each service instance,
+delete the instance by running:
+
     ```
-    cf delete-service SERVICE-NAME 
+    cf delete-service SERVICE-NAME
     ```
-    
+
 1. Delete a service offering by running the following command:
 
     ```
@@ -270,8 +275,10 @@ To delete a service offering:
     ```
     Where:
     + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `USERNAME` is the value of `identity` you recorded in
+    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+    + `PASSWORD` is the value of `password` you recorded in
+    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `YOUR-CHART` is the name of the service offering you want to delete.
 
     <p class="note"><strong>Note:</strong> If you only have one service offering in
