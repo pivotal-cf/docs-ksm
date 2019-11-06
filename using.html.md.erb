@@ -253,8 +253,13 @@ To upgrade service instances:
 
 
  <p class="note warning"><strong>Warning:</strong>
+<<<<<<< HEAD
    <%= vars.product_short %> does not permit service offering deletion if service instances of that offering exist.
    This is because if an offering was removed while service instances of the offering existed,
+=======
+   <%= vars.product_short %> does not permit deleting service offerings if service instances of that offering exist.
+   This is because if an offering was deleted while service instances of the offering existed,
+>>>>>>> cef3f24... I like this version more [#169538080]
    you could not do operations against that service instance.
    For example, you could not run <code>cf update-service</code>.
 </p>
