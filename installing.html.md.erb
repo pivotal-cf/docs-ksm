@@ -35,12 +35,12 @@ If you are using MacOS or Linux, to move the binary file into your `PATH`, run t
 
 ##<a id='install'></a> Download and Install the Tile
 
-To add KSM for PCF to Ops Manager, do the following:
+To add KSM for PCF to <%= vars.ops_manager %>, do the following:
 
 1. Log in and download the Kubernetes Service Manager for PCF file from
 [Pivotal Network](https://network.pivotal.io/).
 
-1. Navigate to your Ops Manager Installation Dashboard and click **Import a Product**
+1. Navigate to your <%= vars.ops_manager %> Installation Dashboard and click **Import a Product**
 to upload the product file.
 
 1. Under **Import a Product**, click **+** next to the version number of KSM for PCF.
@@ -131,12 +131,12 @@ see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/doc
 
 ### <a id="storage"></a> Configure Storage
 
-KSM for PCF requires S3-compatible buckets to store offered charts and the chart cache. 
-The operator is responsible for backing up this bucket with their IaaS provider. 
+KSM for PCF requires S3-compatible buckets to store offered charts and the chart cache.
+The operator is responsible for backing up this bucket with their IaaS provider.
 
-If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to be compatible with S3 to use KSM for PCF. 
-See [Prerequisites](#storage-preq), below. 
+If you are using a cloud storage provider that does not natively support S3 buckets,
+you must configure your cloud storage to be compatible with S3 to use KSM for PCF.
+See [Prerequisites](#storage-preq), below.
 
 
 #### <a name="storage-preq"></a> Prerequisites
@@ -145,12 +145,12 @@ To configure storage for KSM for PCF, you must do the following:
 
 + **Create a policy and an access key for your cloud storage provider:** Policy creation varies depending
 on your cloud storage provider. Pivotal recommends that this account be solely for KSM for PCF.
-You must apply a minimal policy that lets the user account upload backups to your S3 store. 
-The policy must give KSM for PCF permissions to list and upload buckets. 
+You must apply a minimal policy that lets the user account upload backups to your S3 store.
+The policy must give KSM for PCF permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
 
-+ **If you are using a cloud storage provider that does not natively support S3 buckets, 
-you must configure your cloud storage to be S3 compatible:** If you are using Azure Blob Storage or Google Cloud 
++ **If you are using a cloud storage provider that does not natively support S3 buckets,
+you must configure your cloud storage to be S3 compatible:** If you are using Azure Blob Storage or Google Cloud
 Storage (GCS), you can use the Minio for PCF title to do this.
 For information, see the [Minio for PCF](https://docs.pivotal.io/partners/minio/)
 documentation.
@@ -240,10 +240,10 @@ This errand is disabled by default.
 
 To deploy KSM for PCF and apply your configurations, do the following:
 
-1. Navigate to the Ops Manager Installation Dashboard.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. If you are using Ops Manager v2.3 or later, click Review Pending Changes.
-   For more information about this Ops Manager page,
+1. If you are using <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
+   For more information about this <%= vars.ops_manager %> page,
    see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
 
 1. Click **Apply Changes**.

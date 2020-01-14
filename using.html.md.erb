@@ -224,7 +224,7 @@ To create and test a `bind.yaml` file, do the following:
     your chart is deployed.
 
     For example:
-    <pre class="terminal">$ template-tester default bind.yaml    
+    <pre class="terminal">$ template-tester default bind.yaml
       {
        "hostname": "192.168.1.1",
        "jdbcUrl": "jdbc:mysql<span>:</span>//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
@@ -373,7 +373,7 @@ To install a Helm chart for a shared service instance or cluster add-on, do the 
 
     <p class="note"><strong>Note:</strong> If you are using self-signed certificates, you can include the <code>-k</code> flag</p>
 
-1. To retrieve and record the Helm and Ops Manager client credentials, do the following:
+1. To retrieve and record the Helm and <%= vars.ops_manager %> client credentials, do the following:
 
     1. Navigate to the **Ops Manager Installation Dashboard > Kubernetes Service Manager > Credentials**.
 
@@ -383,7 +383,7 @@ To install a Helm chart for a shared service instance or cluster add-on, do the 
         You need the paths to these files for the `bazaar chart install` command
         and to configure TLS communication with Tiller.
 
-    1. To retrieve the Ops Manager CA certificate,
+    1. To retrieve the <%= vars.ops_manager %> CA certificate,
     download the certificate from `https://OPS-MAN-FQDN/download_root_ca_cert`.
 
       <p class="note"><strong>Note:</strong> You can also use the following environment variables to
@@ -416,7 +416,7 @@ To install a Helm chart for a shared service instance or cluster add-on, do the 
     you obtained in step 2c.
     + `HELM-TLS-KEY-FILE` is the path to the TLS client key file with the `private_kep_pem` credential
     you obtained in step 2c.
-    + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the Ops Manager CA
+    + `TILLER-TLS-CA-CERT-FILE` is the path to the TLS CA certificate file with the <%= vars.ops_manager %> CA
     certificate you obtained in 2d.
 
     <p class="note"><strong>Note:</strong> If you want to override default Helm chart values with custom
