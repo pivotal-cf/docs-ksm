@@ -13,6 +13,7 @@ https://github.com/pivotal-cf/docs-book-ksm
 | Branch name | Use for… |
 |-------------| ------|
 | master      | upcoming releases http://docs-pcf-staging.cfapps.io/ksm/0-n/ - If your PR is not version-specific, please use this branch |
+| 0.6       | v0.6.x  http://docs-pcf-staging.cfapps.io/ksm/0-6/ |
 | 0.5       | v0.5.x  http://docs-pcf-staging.cfapps.io/ksm/0-5/ |
 | 0.4       | v0.4.x  http://docs-pcf-staging.cfapps.io/ksm/0-4/ |
 
