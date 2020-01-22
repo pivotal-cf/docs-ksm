@@ -425,7 +425,7 @@ For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
 
 
-1. Confirm that your `values.yaml` file uses either `image`, `images`, or `global.imageRegistry`.
+1. Confirm that your `values.yaml` file uses either `image`, `images` or `global.imageRegistry`.
    By following one of these patterns, KSM uses the private registry values in the tile to fetch your images,
    regardless of the actual values that are in these keys.
 
@@ -458,9 +458,9 @@ For example, if you use Harbor, follow the instructions in
       ```
 
 
-    If the Helm chart uses a key other than an `image` or `images` key,
+    If the Helm chart uses a key other than an `image`, `images` or `global.imageRegistry` key,
     then <%= vars.product_short %> does not change
     the image reference used to pull from the private container registry.
-    
+
 1. Configure your private container registry in the <%= vars.product_short %> tile and apply changes.
 See [Configure Private Container Registry](./installing.html#container).
