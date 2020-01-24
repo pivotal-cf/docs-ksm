@@ -93,7 +93,7 @@ by doing one of the following:
 
         ```
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tg] /PATH-TO-YOUR-CHART_2.tgz
+        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
         + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
@@ -104,6 +104,7 @@ by doing one of the following:
         + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+
         <p class="note"><strong>Note:</strong>
           If you have already added a packaged chart to <%= vars.product_short %>,
             you do not need to provide the path to the same chart when you
