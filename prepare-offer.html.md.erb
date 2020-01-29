@@ -162,6 +162,21 @@ or ExternalDNS to access services.
    resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
  </p>
 
+### <a id='define'></a> Define Custom Resource Definitions
+
+<%= vars.product_short %> supports charts that use the Helm 2 and Helm 3 CLIs.
+Helm 2 and Helm 3 use different method to install Custom Resource Definitions (CRDs).
+
+To ensure that a chart supports both the Helm 2 and Helm 3 CLIs:
+
+ 1. Define your CRDs using the Helm 2 method by referring to the
+ [Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
+ Helm 2 uses a hook annotation to install CRDs.
+
+ 1. Define your CRDs using the Helm 3 method by referring to the
+    [Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
+    Helm 3 uses a `crds` directory to install CRDs.
+
 ##<a id='plans'></a> (Optional) Define Plans Configuration
 
 In `cf marketplace`, each service has a set of plans that developers can provision.
@@ -464,23 +479,3 @@ For example, if you use Harbor, follow the instructions in
 
 1. Configure your private container registry in the <%= vars.product_short %> tile and apply changes.
 See [Configure Private Container Registry](./installing.html#container).
-
-
-##<a id='helm2-vs-3'></a> Helm 2 vs 3
-
-<%= vars.product_short %> support Helm 3 charts. Many Helm 2 charts are compatible with Helm 3, with the exception
-of how Custom Resource Definitions (CRDs) are handled.
-
-The Helm 2 CRDs is installed via a hook annotation:
-```yaml
-...
-metadata:
-  annotations:
-    helm.sh/hook: crd-install
-```yaml
-
-while in a Helm 3 chart, CRDs instead must be configured in files inside the specific folder `/crds`.
-
-A chart can support both Helm 2 and 3 if that contains both methods for installing CRDs.
-
-See [the helm documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/) for more details.

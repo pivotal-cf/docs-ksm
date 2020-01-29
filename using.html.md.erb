@@ -252,10 +252,9 @@ To upgrade service instances:
     ```
     helm ls --namespace=kibosh-INSTANCE-GUID
     ```
-    Where:
-    + `INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
+    Where INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
 
-    Record the value in the `NAME` column. This is the release name of the service instance
+    Record the value in the `NAME` column. This is the release name of the service instance.
     <p class="note"><strong>Note:</strong> If your service offering has multiple charts,
       the above command might list multiple releases.
       Record the release names for charts that have been updated.
@@ -264,7 +263,7 @@ To upgrade service instances:
 1. For each Helm release, upgrade your service instances by running:
 
     ```
-    helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --namespace=kibosh-INSTANCE-GUID
+    helm upgrade RELEASE /PATH-TO-YOUR-CHART.tgz --namespace=kibosh-INSTANCE-GUID
     ```
     Where:
    + `RELEASE-NAME` is the name of the release you retrieved in the previous step.
