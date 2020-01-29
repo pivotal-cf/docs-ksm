@@ -19,14 +19,6 @@ This section describes techniques for troubleshooting.
 
 Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
-Tiller is the server-side component of Helm.
-<%= vars.product_short %> installs Tiller with mTLS into the  `kibosh` namespace
-and upgrades Tiller during tile upgrades.
-If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials.
-
-For information about Tiller, see [Tiller](https://docs.helm.sh/glossary/#tiller) in the Helm documentation.
-
-
 ### <a id='helm'></a> Run Helm Commands
 
 To manually run `helm` commands:
