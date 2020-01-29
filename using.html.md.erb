@@ -232,8 +232,6 @@ To upgrade service instances:
 
 1. Update and package a new version of your Helm chart by doing the steps in [Update a Service Offering](#update-offering) above.
 
-1. Retrieve and record your mTLS credentials by doing the steps in [Run Helm Commands](./troubleshoot.html#helm).
-
 1. Retrieve the GUID for the service instance that you are upgrading by running:
 
     ```
@@ -252,11 +250,9 @@ To upgrade service instances:
 1. Retrieve the Helm release name for a service instance by running:
 
     ```
-    helm ls --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY --namespace=kibosh-INSTANCE-GUID
+    helm ls --namespace=kibosh-INSTANCE-GUID
     ```
     Where:
-    + `PATH-TO-CERT` is the path to the certificate file you created in [Run Helm Commands](./troubleshoot.html#helm).
-    + `PATH-TO-KEY` is the path to the private key file you created in [Run Helm Commands](./troubleshoot.html#helm).
     + `INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
 
     Record the value in the `NAME` column. This is the release name of the service instance
@@ -268,16 +264,12 @@ To upgrade service instances:
 1. For each Helm release, upgrade your service instances by running:
 
     ```
-    helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
+    helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --namespace=kibosh-INSTANCE-GUID
     ```
     Where:
    + `RELEASE-NAME` is the name of the release you retrieved in the previous step.
    + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in
    [Update a Service Offering](#update-offering) above.
-   + `PATH-TO-CERT` is the path to the certificate file you created in
-   [Run Helm Commands](./troubleshoot.html#helm).
-   + `PATH-TO-KEY` is the path to the private key file you created in
-   [Run Helm Commands](./troubleshoot.html#helm).
 
    <p class="note"><strong>Note:</strong> The above command only applies changes to values in
      <code>values.yaml</code> to service instances.
