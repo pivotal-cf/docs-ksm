@@ -34,21 +34,12 @@ To manually run `helm` commands:
 1. Target your Kubernetes cluster by following the procedure in
 [Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
 
-1. Retrieve your mTLS credentials:
-    1. Navigate to the **<%= vars.ops_manager_full %> Installation Dashboard** > **<%= vars.product_full %>** >
-    **Credentials** > **Tiller Certificate**.
-    1. Create a `.pem` private key file with the value of `private_key_pem`.
-    1. Create a `.pem` certificate file with the value of the `cert_pem`.
-
-1. You can run `helm` commands with mTLS using the credentials you recorded in the previous step.
+1. You can run `helm` commands against the cluster targeted in the previous step.
 For example:
 
     ```
-    helm list --tiller-namespace kibosh --tls --tls-cert PATH-TO-CERT --tls-key PATH-TO-KEY
+    helm list --all-namespaces
     ```
-    Where:
-    + `PATH-TO-CERT` is the path to the certificate file you created in the above step.
-    + `PATH-TO-KEY` is the path to the private key file you created in the above step.
 
     For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
     in the Helm documentation.
@@ -79,10 +70,12 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
 1. For each namespace, delete the Helm release using the Helm CLI by running the following command:
 
     ```
-    helm delete namespace NAMESPACE
+    helm ls --namespace=NAMESPACE-NAME
+    # note the releases above, and for each release
+    helm delete RELEASE --namespace=NAMESPACE-NAME
     ```
 1. For each namespace, delete the namespace using `kubectl` by running the following command:
 
     ```
-    kubectl delete namespace NAMESPACE
+    kubectl delete namespace NAMESPACE-NAME
     ```
