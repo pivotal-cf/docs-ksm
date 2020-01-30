@@ -13,6 +13,25 @@ owner: Platform Engineering (KSM Team)
 This topic provides platform operators with basic instructions for troubleshooting
 <%= vars.product_full %>.
 
+## <a id='errors'></a> Troubleshooting Errors
+
+This section describes solutions for specific troubleshooting errors.
+
+<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
+
+<%= partial vars.path_to_partials + "/troubleshoot-template", locals: {
+    id: 'helm-versions',
+    description: 'Incompatible Helm CLI Versions' ,
+    symptom: 'When run <code>ksm offer save</code>,
+    you see following error: <pre class="terminal"> SOME ERROR OUTPUT </pre>',
+    cause:  vars.product_short  + ' supports charts that use the Helm 2 and Helm 3 CLIs.
+    However, Helm 2 and Helm 3 use different methods to install Custom Resource Definitions (CRDs).
+    <br><br>If a chart does not define CRDs using both methods, adding or
+    updating the service offering fails.',
+    solution: 'Define the CRDs in your Helm chart by
+    doing the procedure in <a href="./prepare-offer.html#define">Define Custom Resource Definitions</a>.'
+} %>
+
 ## <a id='techniques'></a> Troubleshooting Techniques
 
 This section describes techniques for troubleshooting.
@@ -82,5 +101,6 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
 1. For each namespace, delete the namespace by running:
 
     ```
-    kubectl delete namespace NAMESPACE-NAME
+    kubectl delete namespace NAMESPACE
     ```
+    Where `NAMESPACE` is the name of the namespace you are deleting.
