@@ -93,7 +93,7 @@ by doing one of the following:
 
         ```
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
+        /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
         + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
@@ -101,7 +101,7 @@ by doing one of the following:
         [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in
         [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
+        + `PATH-TO-KSM-DIRECTORY/` is the path to the ksm directory that includes the `ksm.yaml` file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
@@ -209,13 +209,13 @@ To update a single chart service offering in  <%= vars.product_short %>:
 
         ```
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-        /PATH-TO-KSM.YAML /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
+        /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
         ```
         Where:
         + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PATH-TO-KSM.YAML` is the path to the `ksm.yaml` file for your service offering.
+        + `PATH-TO-KSM-DIRECTORY/` is the path to the ksm directory that includes the `ksm.yaml` file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
