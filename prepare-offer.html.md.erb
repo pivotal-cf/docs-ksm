@@ -93,7 +93,9 @@ See [Load Container Images into a Private Container Registry](#images) below.
 
 ##<a id='config-helm'></a> Configure Your Helm Charts
 
-To upload a Helm chart to <%= vars.product_short %>, you must configure the chart to be compatible with <%= vars.product_short %>. For examples of <%= vars.product_short %>-compatible charts,
+To upload a Helm chart to <%= vars.product_short %>,
+you must configure the chart to be compatible with <%= vars.product_short %>.
+For examples of <%= vars.product_short %>-compatible charts,
 see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
 If you do not include a `plans.yaml` or `ksm.yaml`file with your service offering, one plan is offered.
@@ -166,16 +168,18 @@ or ExternalDNS to access services.
 
 <%= vars.product_short %> supports charts that use the Helm 2 and Helm 3 CLIs.
 Helm 2 and Helm 3 use different methods to install Custom Resource Definitions (CRDs).
+ <%= vars.product_short %> requires Helm 3, while Helm 2 is optional.
 
-To ensure that a chart supports both the Helm 2 and Helm 3 CLIs:
+If you are using a Helm 2 chart, use both the Helm 2 and Helm 3 CLIs methods:
 
- 1. Define your CRDs using the Helm 2 method by referring to the
- [Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
- Helm 2 uses a hook annotation to install CRDs.
+1. Define your CRDs using the Helm 3 method by referring to the
+   [Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
+   Helm 3 uses a `crds` directory to install CRDs.
 
- 1. Define your CRDs using the Helm 3 method by referring to the
-    [Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
-    Helm 3 uses a `crds` directory to install CRDs.
+1. Define your CRDs using the Helm 2 method by referring to the
+[Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
+Helm 2 uses a hook annotation to install CRDs.
+
 
 ##<a id='plans'></a> (Optional) Define Plans Configuration
 

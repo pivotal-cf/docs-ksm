@@ -22,12 +22,11 @@ This section describes solutions for specific troubleshooting errors.
 <%= partial vars.path_to_partials + "/troubleshoot-template", locals: {
     id: 'helm-versions',
     description: 'Incompatible Helm CLI Versions' ,
-    symptom: 'When run <code>ksm offer save</code>,
-    you see an error similar to the following:
+    symptom: 'When you run <code>ksm offer save</code>, you see an error similar to the following:
     <pre class="terminal"> helm.sh/hook: crd-install found in [Chart1, Chart2....] but no Helm /crds dir; this looks like a Helm 2 only chart </pre>',
     cause:  vars.product_short  + ' supports charts that use the Helm 2 and Helm 3 CLIs.
     However, Helm 2 and Helm 3 use different methods to install Custom Resource Definitions (CRDs).
-    <br><br>If a chart does not define CRDs using both methods, adding or
+    <br><br>If a Helm 2 chart does not define CRDs using both methods, adding or
     updating the service offering might fail.',
     solution: 'Define the CRDs in your Helm chart using both the Helm 2 and Helm 3 methods by
     doing the procedure in <a href="./prepare-offer.html#define">Define Custom Resource Definitions</a>.'
