@@ -263,10 +263,10 @@ To upgrade service instances:
 1. For each Helm release, upgrade your service instances by running:
 
     ```
-    helm upgrade RELEASE /PATH-TO-YOUR-CHART.tgz --namespace=kibosh-INSTANCE-GUID
+    helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --namespace=kibosh-INSTANCE-GUID
     ```
     Where:
-   + `RELEASE` is the name of the release you retrieved in the previous step.
+   + `RELEASE-NAME` is the name of the release you retrieved in the previous step.
    + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in
    [Update a Service Offering](#update-offering) above.
 
