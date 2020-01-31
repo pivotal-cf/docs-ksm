@@ -307,13 +307,11 @@ This is the password that <%= vars.product_short %> uses to push and pull images
 
 ### <a id="advanced-config"></a>Advanced Configuration
 
-Most installations should leave the default for "Store Bind Credentials" turned on.
-Bind credentials will then be stored in Credhub and therefore more secure. 
+When `Store Bind Credentials` is enabled, bind credentials are securely stored in CredHub. This setting is enabled by default. For most foundations, you should leave this setting enabled.
 
-Only turn this off if you have special integration requirements where Credhub cannot be used. 
-
-Once the tile is installed with a given "Store Bind Credentials" setting, it should not be changed. 
-
+You should only disable `Store Bind Credentials` if you have integration requirements
+where CredHub cannot be used. After you deploy <%= vars.product_short %>, you should not change
+the `Store Bind Credentials` setting.
 
 ### <a id="errands"></a>Errands
 
