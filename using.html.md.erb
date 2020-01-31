@@ -198,13 +198,13 @@ To update a single chart service offering in  <%= vars.product_short %>:
     + **If you are adding a single chart,** run:
 
         ```
-        ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save YOUR-CHART-#.#.#.tgz --update
+        ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz --update
         ```
         Where:
         + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
         + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `YOUR-CHART` is the name of the service offering you want to delete.
+        + `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete.
     + **If you are adding a multiple charts,** run:
 
         ```
