@@ -305,16 +305,6 @@ This is the username that <%= vars.product_short %> uses to push and pull images
 1. Enter the **Registry Password**.
 This is the password that <%= vars.product_short %> uses to push and pull images to the private container registry.
 
-### <a id="advanced-config"></a>Advanced Configuration
-
-Most installations should leave the default for "Store Bind Credentials" turned on.
-Bind credentials will then be stored in Credhub and therefore more secure. 
-
-Only turn this off if you have special integration requirements where Credhub cannot be used. 
-
-Once the tile is installed with a given "Store Bind Credentials" setting, it should not be changed. 
-
-
 ### <a id="errands"></a>Errands
 
 The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from `cf marketplace`
