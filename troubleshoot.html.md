@@ -17,6 +17,24 @@ This topic provides platform operators with basic instructions for troubleshooti
 
 This section describes techniques for troubleshooting.
 
+### <a id='versions'></a>Validate the version of <%= vars.product_short %> CLI and Tile
+
+It is helpful to validate that the <%= vars.product_short %> CLI and <%= vars.product_short %> Tile are the same version. 
+
+To check the <%= vars.product_short %> CLI version, run:
+
+```
+ksm version
+```
+
+To check the <%= vars.product_short %> CLI and Tile version, run:
+
+```
+ksm version -t http://ksm.SYSTEM-DOMAIN
+```
+
+### <a id='helm'></a> Run Helm Commands
+
 Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
 Tiller is the server-side component of Helm.
@@ -25,9 +43,6 @@ and upgrades Tiller during tile upgrades.
 If you run Helm commands, you must communicate with the cluster over mTLS using Tiller credentials.
 
 For information about Tiller, see [Tiller](https://docs.helm.sh/glossary/#tiller) in the Helm documentation.
-
-
-### <a id='helm'></a> Run Helm Commands
 
 To manually run `helm` commands:
 
