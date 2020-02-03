@@ -20,35 +20,37 @@ Before you add a service offering to `cf marketplace`,
 you must configure your Helm charts to be compatible with <%=  vars.product_short %>.
 You can also  customize your Helm charts to enable additional features.
 
-A service offering is broken down into two parts:
+A service offering includes the following:
 
 + **One or more Helm charts:** You must configure a Helm chart to compatible with <%=  vars.product_short %>.
 See [Configure Your Helm Charts](#config-helm) below.
 
-+ **A ksm directory that can include the following files:**
- + **A `plans.yaml` file and plan configurations:** You use these files to offer
++ **A `ksm` directory that can include the following files:**
+  + **`bind.yaml`:** This file is a template for app binding and service consumption.
+  See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env) below.
+  + **`ksm.yaml`  :** This file enables you to offer multiple Helm charts in a single
+ service offering. You must include this file if you deploy multiple charts or use Operator patterns.
+ See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below.
+ For information about Operators in Kubernetes,
+ see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
+ in the Kubernetes documentation.
+ + **`plans.yaml` and `plans` directory:** You use these files and the directory to offer
 customized plans and override default values.
 See [(Optional) Define Plans Configuration](#plans) below.
- + **A `ksm.yaml` file:** This file enables you to offer multiple Helm charts in a single
-service offering. You must include this file if you deploy multiple charts or use Operator patterns.
-See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below.
-For information about Operators in Kubernetes,
-see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
-in the Kubernetes documentation.
- + **A bind.yaml:** This file is a template for app binding and service consumption.
-See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env) below.
-<br>
 
- For example:
+The following code snippet shows an example of a service offering directory structure:
 
- ```yaml
-ksm/
-   bind.yaml
-   ksm.yaml
-   plans.yaml
-   plans/
-      small.yaml
-      medium.yaml
+```yaml
+service-offering/
+  ksm/
+     bind.yaml
+     ksm.yaml
+     plans.yaml
+     plans/
+        small.yaml
+        medium.yaml
+  Chart.yaml
+  values.yaml
 ```
 
 ###<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
@@ -62,8 +64,8 @@ without additional configurations, with a `ksm.yaml` file or a `plans.yaml` file
 
 <table>
   <tr>
-    <th width="16%">Additional YAML file</th>
-    <th width="25%">Name</th>
+    <th width="17%">Additional YAML file</th>
+    <th width="24%">Name</th>
     <th>Description</th>
     <th>Plan Name</th>
   </tr>
@@ -204,13 +206,13 @@ For example, different plans might represent a large or a small instance of a da
 
 For Kubernetes services, each <%= vars.product_short %> plan represents a set of values overriding
 the default values in the Helm chart.
-These values are configured in `plans.yaml` inside the ksm directory.
+These values are configured in `plans.yaml` in the `ksm` directory.
 For examples of `plans.yaml` files,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 If you want to override the default settings in `values.yaml` and offer custom plans:
 
-1. Create a `plans` subdirectory inside the ksm directory.
+1. Create a `plans` subdirectory in the `ksm` directory.
 
 1. Create and edit `plans/PLAN-FILE.yaml` with the Helm values that you want to override.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
@@ -228,7 +230,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
         cpu: 100m
     ```
 
-1. Create a `plans.yaml` file inside the ksm directory.
+1. Create a `plans.yaml` file in the `ksm` directory.
 
 1. Edit your `plans.yaml` file to add your custom plan information using the following template:
 
@@ -267,9 +269,11 @@ You might want to offer multiple Helm charts in the following cases:
 * A service that uses multiple charts.
 For example, a service that uses a data service chart and a monitoring service chart.
 
-To offer a service with multiple Helm charts, you must create a `ksm.yaml` file. The `charts` section in a `ksm.yaml` file is an ordered list of the charts that are included in the service offering.
+To offer a service with multiple Helm charts, you must create a `ksm.yaml` file.
+The `charts` section in a `ksm.yaml` file is an ordered list of the charts that are included
+in the service offering.
 
-1. Create a `ksm.yaml` file inside the ksm directory using the following as a template:
+1. Create a `ksm.yaml` file in the `ksm` directory using the following as a template:
 
     ```yaml
     marketplace-name: SERVICE-NAME
@@ -285,7 +289,8 @@ To offer a service with multiple Helm charts, you must create a `ksm.yaml` file.
     ```
 
     Where:
-    + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`. The service name is listed under `service`.
+    + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`.
+        The service name is listed under `service`.
     + `CHART-NAME` is the name of a chart that you are including in the service offering.
     + `CHART-VERSION` is the version of the chart that you are including in the service offering.
     + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
@@ -295,8 +300,8 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
 
 <table>
   <tr>
-    <th width=13%>Key</th>
-    <th width=20% >Values</th>
+    <th width=14%>Key</th>
+    <th width=21% >Values</th>
     <th>Description</th>
   </tr>
 
@@ -305,7 +310,7 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
     <td><code>cluster</code></td>
     <td>If you use this value, the chart is only deployed once on a cluster.
     Subsequent service instances created on the same Kubernetes cluster
-    do not cause a cluster-scoped chart to be deployed additional times.
+    do not cause a cluster-scoped chart to be deployed additional times.<br><br>
     You can use this scope for operators and controllers that manage multiple
     instances from a single deployment.</td>
   </tr>
@@ -322,7 +327,7 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
     <td><code>true</code> | <code>false</code></td>
     <td>Only a single chart can have <code>offered</code> to <code>true</code>.
       The chart that is set to <code>true</code> must also have
-      <code>scope</code> set to <code>namespace</code>.
+      <code>scope</code> set to <code>namespace</code>. <br><br>
       The offered chart represents the service the user binds to.
       However, you can expose more resources with <code>cf bind-service</code>.</td>
 
@@ -343,9 +348,9 @@ Cloud Foundry Connector with a MySQL service, see
 [MySQL](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql)
 in the Spring Cloud Cloud Foundry Connector documentation.
 
-Chart authors can create a `bind.yaml` file to enable the broker to
-return a valid JSON object containing service credentials. This `bind.yaml` file is added
-to the root directory of the chart and contains a Jsonnet template.
+Chart authors can create a `bind.yaml` file in the `ksm` directory to enable the broker to
+return a valid JSON object containing service credentials.
+This `bind.yaml` file contains a Jsonnet template.
 When a developer binds the service instance to their app,
 service credentials are delivered to `VCAP_SERVICES` for app consumption.
 
@@ -353,7 +358,7 @@ For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org).
 
 To create and test a `bind.yaml` file:
 
-1. Add a `bind.yaml` file inside the ksm directory. <br><br>
+1. Create a `bind.yaml` file in the `ksm` directory. <br><br>
 
     For example, the following `bind.yaml` enables the broker to return
     MySQL credentials in a valid JSON obejct:
