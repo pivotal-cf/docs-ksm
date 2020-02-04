@@ -309,8 +309,8 @@ This is the password that <%= vars.product_short %> uses to push and pull images
 
 When `Store Bind Credentials` is enabled, bind credentials are securely stored in CredHub. This setting is enabled by default. For most foundations, you should leave this setting enabled.
 
-You should only disable `Store Bind Credentials` if you have integration requirements
-where CredHub cannot be used. After you deploy <%= vars.product_short %>, you should not change
+Unless you have integration requirements where CredHub cannot be used,
+do not disable `Store Bind Credentials`. After you deploy <%= vars.product_short %>, you should not change
 the `Store Bind Credentials` setting.
 
 ### <a id="errands"></a>Errands
