@@ -12,6 +12,28 @@ owner: Platform Engineering (KSM Team)
 
 These are release notes for <%= vars.product_full %>.
 
+##<a id="0-6-42"></a> v0.6.42
+
+**Release Date:** February 4, 2020
+
+### Features
+
+New features and changes in this release:
+
++ Updated CredHub to 2.6.2.
+
+### Known Issue
+
+This release has the following issue:
+
++ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
+was created successfully before the custom resources are created.
+This is because Kubernetes does not have a generic method to detect resource readiness.
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br> <br>
+In the unlikely event that this happens, wait until the custom resources are created before binding
+a service instances to an app.
+This mitigates any issues with missing details in the bind response.
+
 ##<a id="0-6-36"></a> v0.6.36
 
 **Release Date:** January 21, 2020
