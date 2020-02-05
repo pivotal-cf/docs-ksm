@@ -22,22 +22,30 @@ You can also  customize your Helm charts to enable additional features.
 
 A service offering includes the following:
 
-+ **One or more Helm charts:** You must configure a Helm chart to compatible with <%=  vars.product_short %>.
-See [Configure Your Helm Charts](#config-helm) below. For best practices see 
-[Resources to Help Build Your Helm Chart](#building-a-helm-chart). 
++ **One or more Helm charts:** You must configure a Helm chart to compatible with
+ <%=  vars.product_short %>. See [Configure Your Helm Charts](#config-helm) below.
+ Pivotal recommends that you refer to the following resources when creating your Helm chart:
+     + For information about creating your first Helm chart,
+     see this topic in the [Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
+     + For information about best practices for creating production-ready Helm charts,
+     see this topic in the  [Bitnami documentation](https://docs.bitnami.com/tutorials/production-ready-charts/).
+     + For more information about best practices,
+     see the [Helm 2 documentation](https://helm.sh/docs/topics/chart_best_practices/)
 
 + **A `ksm` directory that can include the following files:**
   + **`bind.yaml`:** This file is a template for app binding and service consumption.
   See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env) below.
   + **`ksm.yaml`  :** This file enables you to offer multiple Helm charts in a single
- service offering. You must include this file if you deploy multiple charts or use Operator patterns.
- See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below.
- For information about Operators in Kubernetes,
- see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
- in the Kubernetes documentation.
+   service offering. You must include this file if you deploy multiple charts or use Operator patterns.
+   See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below.
+   For information about Operators in Kubernetes,
+   see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
+   in the Kubernetes documentation.
  + **`plans.yaml` and `plans` directory:** You use these files and the directory to offer
-customized plans and override default values. You can also override the default cluster. 
-See [(Optional) Define Plans Configuration](#plans) below.
+  customized plans, override default values and change the default cluster.
+  See [(Optional) Define Plans Configuration](#plans) below.
+  + **`cluster.yaml` and `cluster` directory:**
+  You use these files and the directory to provide credentials for clusters.
 
 The following code snippet shows an example of a service offering directory structure:
 
@@ -51,7 +59,7 @@ service-offering/
        small.yaml
        medium.yaml
      clusters/
-       clusterA.yaml
+       cluster.yaml
   Chart.yaml
   values.yaml
 ```
@@ -109,16 +117,6 @@ For example, if your Helm chart requires an Ingress controller to enable service
 + **Load Container Images:** You might have to load your container images into a private
 container registry.
 See [Load Container Images into a Private Container Registry](#images) below.
-
-
-##<a id='building-a-helm-chart'></a> Resources to Help Build Your Helm Chart
-
-[Creating your first chart](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/)
-
-[Best Practices](https://docs.bitnami.com/tutorials/production-ready-charts/)
-
-[Best Practices In Helm Docs](https://helm.sh/docs/topics/chart_best_practices/)
-
 
 ##<a id='config-helm'></a> Configure Your Helm Charts
 
@@ -241,6 +239,37 @@ If you want to override the default settings in `values.yaml` and offer custom p
         memory: 128Mi
         cpu: 100m
     ```
+1. (Optional) If you want to use a nondefault cluster for a plan,
+    create a `clusters` subdirectory in the `ksm` directory.
+    For example, you could create a plan that enables all instances created
+    with that plan to run on their own cluster.
+
+1. (Optional) Create and edit `clusters/CLUSTER-CREDENTIALS-FILE.yaml`
+    with the credentials for the alternate cluster you want to use.
+    <br><br>
+    For example:
+
+    ```
+    ---
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority-data: aBcDefG1HIJ== ....
+        server: https://127.0.0.1:8443
+      name: my-cluster
+    contexts:
+    - context:
+        cluster: my-cluster
+        user: my-user
+      name: my-cluster
+    current-context: my-cluster
+    kind: Config
+    preferences: {}
+    users:
+    - name: my-user
+      user:
+        token: kLmNoP2qrSt3= ...
+    ```
 
 1. Create a `plans.yaml` file in the `ksm` directory.
 
@@ -260,13 +289,10 @@ If you want to override the default settings in `values.yaml` and offer custom p
     * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run `cf marketplace`.
         The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
-    * `CLUSTER-CREDENTIALS-FILE` (optional) allows specifying an alternate (not default) cluster
-       for the plan.  For example, you could create a plan that allows all instances created
-       with that plan to run on their own cluster.  
+    * (Optional) `CLUSTER-CREDENTIALS-FILE` is name of the cluster credentials file for the plan.
 
     For example:
 
-    plans.yaml
     ```
     - name: "small"
       description: "default (small) plan for mysql"
@@ -274,38 +300,9 @@ If you want to override the default settings in `values.yaml` and offer custom p
     - name: "medium"
       description: "medium sized plan for mysql"
       file: "medium.yaml"
-      credentials: clusterA.yaml
+      credentials: "cluster.yaml"
     ```
-   
-   small.yaml
-   ```
-   persistence:
-     size: 16Gi
-   ```
 
-   clusterA.yaml
-   ```
-   apiVersion: v1
-   clusters:
-   - cluster:
-       certificate-authority-data: bXkZktY2VA== .... 
-       server: https://127.0.0.1:8443
-     name: my-cluster
-   contexts:
-   - context:
-       cluster: my-cluster
-       user: my-user
-     name: my-cluster
-   current-context: my-cluster
-   kind: Config
-   preferences: {}
-   users:
-   - name: my-user
-     user:
-       token: bXktdG9raAz4= ...
-   ```
-      
-   
 ##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
