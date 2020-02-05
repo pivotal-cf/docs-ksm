@@ -13,6 +13,7 @@ owner: Platform Engineering (KSM Team)
 This topic provides platform operators with basic instructions for troubleshooting
 <%= vars.product_full %>.
 
+
 ## <a id='errors'></a> Troubleshooting Errors
 
 This section describes solutions for specific troubleshooting errors.
@@ -36,9 +37,39 @@ This section describes solutions for specific troubleshooting errors.
 
 This section describes techniques for troubleshooting.
 
-Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
+### <a id='versions'></a>Check <%= vars.product_short %> CLI and Tile Versions
+
+If the version for the <%= vars.product_short %> CLI and tile are not the same,
+errors can occur.
+
+To validate that the <%= vars.product_short %> CLI and tile versions match:
+
+1.  Check the <%= vars.product_short %> CLI and tile versions by running:
+
+    ```
+    ksm version -t http://ksm.SYSTEM-DOMAIN
+    ```
+    Where `SYSTEM-DOMAIN` is your Pivotal Platform system domain URL.
+    <br><br>
+    For example:
+    <pre class="terminal">$ ksm version -t http<span>:</span>//ksm.my-env.com
+    Client Version [0.6.40]
+    Server Version [0.6.40]
+    </pre>
+
+    The value of `Client Version` is the <%= vars.product_short %> CLI version.<br>
+    The value of `Server Version` is the <%= vars.product_short %> tile version.
+
+1. If the versions are not the same, do one of the following:
+    + **If you want to upgrade the <%= vars.product_short %> CLI,**
+      follow the procedure in [Install the <%= vars.product_short %> CLI](./installing.html#ksm).
+    + **If you want to upgrade the <%= vars.product_short %> tile,** follow
+      the procedure in [Upgrading <%= vars.product_short %>](./upgrading.html).
+
 
 ### <a id='helm'></a> Run Helm Commands
+
+Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
 
 To manually run `helm` commands:
 
