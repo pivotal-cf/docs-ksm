@@ -36,7 +36,7 @@ See [Configure Your Helm Charts](#config-helm) below. For best practices see
  see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
  in the Kubernetes documentation.
  + **`plans.yaml` and `plans` directory:** You use these files and the directory to offer
-customized plans and override default values.
+customized plans and override default values. You can also override the default cluster. 
 See [(Optional) Define Plans Configuration](#plans) below.
 
 The following code snippet shows an example of a service offering directory structure:
@@ -48,8 +48,10 @@ service-offering/
      ksm.yaml
      plans.yaml
      plans/
-        small.yaml
-        medium.yaml
+       small.yaml
+       medium.yaml
+     clusters/
+       clusterA.yaml
   Chart.yaml
   values.yaml
 ```
@@ -248,6 +250,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
     - name: PLAN-NAME
       description: PLAN-DESCRIPTION
       file: PLAN-FILE
+      credentials: CLUSTER-CREDENTIALS-FILE
     ```
 
     Where:
@@ -257,9 +260,13 @@ If you want to override the default settings in `values.yaml` and offer custom p
     * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run `cf marketplace`.
         The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
+    * `CLUSTER-CREDENTIALS-FILE` (optional) allows specifying an alternate (not default) cluster
+       for the plan.  For example, you could create a plan that allows all instances created
+       with that plan to run on their own cluster.  
 
     For example:
 
+    plans.yaml
     ```
     - name: "small"
       description: "default (small) plan for mysql"
@@ -267,8 +274,38 @@ If you want to override the default settings in `values.yaml` and offer custom p
     - name: "medium"
       description: "medium sized plan for mysql"
       file: "medium.yaml"
+      credentials: clusterA.yaml
     ```
+   
+   small.yaml
+   ```
+   persistence:
+     size: 16Gi
+   ```
 
+   clusterA.yaml
+   ```
+   apiVersion: v1
+   clusters:
+   - cluster:
+       certificate-authority-data: bXkZktY2VA== .... 
+       server: https://127.0.0.1:8443
+     name: my-cluster
+   contexts:
+   - context:
+       cluster: my-cluster
+       user: my-user
+     name: my-cluster
+   current-context: my-cluster
+   kind: Config
+   preferences: {}
+   users:
+   - name: my-user
+     user:
+       token: bXktdG9raAz4= ...
+   ```
+      
+   
 ##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
