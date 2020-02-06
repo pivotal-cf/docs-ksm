@@ -423,13 +423,10 @@ To create and test a `bind.yaml` file:
       and <code>$.secrets</code> come from the namespace in which the chart is deployed.
       </p>
 
-1. Download the `template-tester` binary from
-[kibosh](https://github.com/cf-platform-eng/kibosh/releases/latest) in GitHub.
-
 1. Test that `bind.yaml` is creating a valid JSON object by running the following command:
 
     ```
-    template-tester NAMESPACE bind.yaml
+    ksm test-bind-template NAMESPACE bind.yaml
     ```
 
     Where `NAMESPACE` is the name of the namespace in your cluster where
@@ -450,24 +447,19 @@ To create and test a `bind.yaml` file:
 
 ###<a id='values-templating'></a> (Optional) Template Values
 
-<%# The below distinction is not very clear to me.
-For instance what is meant by "the values themselves"? The values in `values.yaml`?
-Also: what is the `templating engine`?%>
+Helm uses literal contents of a chart's `values.yaml` as the concrete set of substitutions when creating a release.
+<%= vars.product_short %>, on the other hand, uses `values.yaml` as a template for multiple releases.
+This difference can create situations where `values.yaml` needs to go through Helm's templating engine before
+the charts `/templates` are rendered with those values.
 
-Helm uses `values.yaml` as a the concrete set of substitutions needed to create a release.
-<%= vars.product_short %> uses the values themselves as a template for multiple releases.
-This difference can create situations where `values.yaml` needs to go through the Jsonnet templating engine.
-
-For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org)
-
-`values.yaml` might need to go through the Jsonnet templating engine in the following situations:
+`values.yaml` might need to go through Helm's templating engine in the following situations:
 
 * When a chart uses Ingress controller. For information
 about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 in the Kubernetes documentation.
 * When there is a unique name, in addition to the release name, required in a chart.
 
-<%= vars.product_short %> runs the values themselves through the  Jsonnet templating engine.
+<%= vars.product_short %> runs the values through Helm's templating engine.
 For example, in a chart with ingress hosts, you can edit `values.yaml` to use the release name as the unique
 subdomain discriminator in the ingress definition:
 
@@ -480,7 +472,7 @@ ingress:
 ...
 ```
 
-The plan-specific values files also go through the templating engine.
+The plan-specific values files also go through Helm's templating engine.
 
 ##<a id='images'></a> Load Container Images into a Private Container Registry
 
