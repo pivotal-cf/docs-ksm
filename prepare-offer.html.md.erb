@@ -108,6 +108,10 @@ This plan uses the default values for the Helm chart.
 
 To configure your Helm chart to be compatible with <%= vars.product_short %>:
 
+<p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
+   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
+</p>
+
 1. Open the `values.yaml` file at the root level of your chart.
 
 1. Edit your `values.yaml` file to configure storage. Edit the `storageClass:` value to correspond to
@@ -165,9 +169,7 @@ or ExternalDNS to access services.
 
  <%# <!-- TODO: does this belong here or in using section--> %>
 
-<p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
-   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
- </p>
+
 
 ##<a id='plans'></a> (Optional) Define Plans Configuration
 
@@ -229,6 +231,16 @@ If you want to override the default settings in `values.yaml` and offer custom p
       description: "medium sized plan for mysql"
       file: "medium.yaml"
     ```
+
+<p class="note"><strong>Note:</strong> Developers can override plan and Helm chart values
+  using the <code>-c</code> flag when they provision or update a service instance with the cf CLI.
+  They can use the <code>-c</code> flag to provide service-specific configuration parameters. <br><br>
+  When developers provide these configuration parameters,
+  the JSON configurations are mapped directly onto the chart
+  values and take precedence over any chart default and plan values.
+  For information service-specific about configuration parameters, see <a href="https://docs.pivotal.io/platform/application-service/devguide/services/managing-services.html#-arbitrary-parameters">
+  Arbitrary Parameters</a>.
+</p>
 
 ##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
@@ -343,9 +355,9 @@ To create and test a `bind.yaml` file:
         username: "root"
       }
     ```
-    <p class="note"><strong>Note:</strong> The values of <code>$.services</code>
-      and <code>$.secrets</code> come from the namespace in which the chart is deployed.
-      </p>
+    <p class="note"><strong>Note:</strong> The values of <code>$.services</code>, <code>$.secrets</code>
+     and <code>$.ingresses</code> are from the namespace where the chart is deployed.
+    </p>
 
 1. Download the `template-tester` binary from
 [kibosh](https://github.com/cf-platform-eng/kibosh/releases/latest) in GitHub.
