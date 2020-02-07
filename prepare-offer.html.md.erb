@@ -236,13 +236,11 @@ For example, different plans might represent a large or a small instance of a da
 
 For Kubernetes services, each <%= vars.product_short %> plan represents a set of values overriding
 the default values in the Helm chart.
-These values are configured in `plans.yaml` in the `ksm` directory.
+These values are configured in `plans.yaml`.
 For examples of `plans.yaml` files,
 see [kibosh-sample](https://github.com/cf-platform-eng/kibosh-sample/blob/master/sample-charts) on GitHub.
 
 If you want to override the default settings in `values.yaml` and offer custom plans:
-
-1. Create a `plans` subdirectory in the `ksm` directory.
 
 1. Create and edit `plans/PLAN-FILE.yaml` with the Helm values that you want to override.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
@@ -260,7 +258,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
         cpu: 100m
     ```
 1. (Optional) If you want to use a nondefault cluster for a plan,
-    create a `clusters` subdirectory in the `ksm` directory.
+    create a `clusters` subdirectory in the directory for your service offering.
     For example, you could create a plan that enables all instances created
     with that plan to run on their own cluster.
 
@@ -290,8 +288,6 @@ If you want to override the default settings in `values.yaml` and offer custom p
       user:
         token: kLmNoP2qrSt3= ...
     ```
-
-1. Create a `plans.yaml` file in the `ksm` directory.
 
 1. Edit your `plans.yaml` file to add your custom plan information using the following template:
 
@@ -344,11 +340,11 @@ You might want to offer multiple Helm charts in the following cases:
 * A service that uses multiple charts.
 For example, a service that uses a data service chart and a monitoring service chart.
 
-To offer a service with multiple Helm charts, you must create a `ksm.yaml` file.
+To offer a service with multiple Helm charts, you must edit the `ksm.yaml` file.
 The `charts` section in a `ksm.yaml` file is an ordered list of the charts that are included
 in the service offering.
 
-1. Create a `ksm.yaml` file in the `ksm` directory using the following as a template:
+1. Edit the `ksm.yaml` file directory using the following as a template:
 
     ```yaml
     marketplace-name: SERVICE-NAME
@@ -423,7 +419,7 @@ Cloud Foundry Connector with a MySQL service, see
 [MySQL](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql)
 in the Spring Cloud Cloud Foundry Connector documentation.
 
-Chart authors can create a `bind.yaml` file in the `ksm` directory to enable the broker to
+Chart authors can edit the `bind.yaml` file to enable the broker to
 return a valid JSON object containing service credentials.
 This `bind.yaml` file contains a Jsonnet template.
 When a developer binds the service instance to their app,
@@ -431,10 +427,9 @@ service credentials are delivered to `VCAP_SERVICES` for app consumption.
 
 For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org).
 
-To create and test a `bind.yaml` file:
+To edit and test the `bind.yaml` file:
 
-1. Create a `bind.yaml` file in the `ksm` directory. <br><br>
-
+1. Edit the `bind.yaml` file. <br><br>
     For example, the following `bind.yaml` enables the broker to return
     MySQL credentials in a valid JSON obejct:
 
