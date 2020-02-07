@@ -445,7 +445,7 @@ To create and test a `bind.yaml` file:
       and <code>$.secrets</code> come from the namespace in which the chart is deployed.
       </p>
 
-1. Test that `bind.yaml` is creating a valid JSON object by running the following command:
+1. Test that `bind.yaml` is creating a valid JSON object by running:
 
     ```
     ksm test-bind-template NAMESPACE bind.yaml
@@ -455,7 +455,7 @@ To create and test a `bind.yaml` file:
     your chart is deployed.
 
     For example:
-    <pre class="terminal">$ template-tester default bind.yaml
+    <pre class="terminal">$ ksm test-bind-template default bind.yaml
       {
        "hostname": "192.168.1.1",
        "jdbcUrl": "jdbc&#58;mysql&#58;//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
