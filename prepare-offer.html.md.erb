@@ -50,17 +50,16 @@ A service offering includes the following:
 The following code snippet shows an example of a service offering directory structure:
 
 ```yaml
-service-offering/
-  ksm/
-     bind.yaml
-     ksm.yaml
-     plans.yaml
-     plans/
-       small.yaml
-       medium.yaml
-     clusters/
-       cluster.yaml
-  helm-chart.tgz
+service-name/
+   bind.yaml
+   ksm.yaml
+   plans.yaml
+   plans/
+     small.yaml
+     medium.yaml
+   clusters/
+     cluster.yaml
+helm-chart.tgz
 ```
 
 ###<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
@@ -125,10 +124,11 @@ You can use the <%= vars.product_short %> CLI to create a directory structure fo
 When you create the service offering directory with the <%= vars.product_short %> CLI,
 the directory includes the following sample files:
 
-+ `ksm/bind.yaml`
-+ `ksm/ksm.yaml`
-+ `ksm/plans.yaml`
-+ `ksm/plans/sample-plan.yaml`
++ `SERVICE-NAME/bind.yaml`
++ `SERVICE-NAME/ksm.yaml`
++ `SERVICE-NAME/plans.yaml`
++ `SERVICE-NAME/plans/small.yaml`
++ `SERVICE-NAME/plans/medium.yaml`
 
 To create a sample service offering directory:
 
