@@ -152,6 +152,9 @@ If you do not include a `plans.yaml` or `ksm.yaml`file with your service offerin
 This plan uses the default values for the Helm chart.
 
 To configure your Helm chart to be compatible with <%= vars.product_short %>:
+<p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
+   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
+ </p>
 
 1. Open the `values.yaml` file at the root level of your chart.
 
@@ -207,12 +210,6 @@ or ExternalDNS to access services.
       in the Kubernetes documentation. For information about
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
-
- <%# <!-- TODO: does this belong here or in using section--> %>
-
-<p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
-   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
- </p>
 
 ### <a id='define'></a> Define Custom Resource Definitions
 
@@ -326,11 +323,14 @@ If you want to override the default settings in `values.yaml` and offer custom p
       credentials: "cluster.yaml"
     ```
 
-<p class="note"><strong>Note:</strong> As an operator, keep in mind that plan and chart values can be overridden
-by the developer provisioning a service instance from the `cf marketplace` using the `-c` flag to specify
-<a href="https://docs.pivotal.io/platform/application-service/devguide/services/managing-services.html#-arbitrary-parameters">service-specific configuration parameters</a>.
-The contents of the json configuration are mapped directly onto the chart
-values and take precedence over any chart default and plan values.
+<p class="note"><strong>Note:</strong> Developers can override plan and Helm chart values
+  using the <code>-c</code> flag when they provision or update a service instance with the cf CLI.
+  They can use the <code>-c</code> flag to provide service-specific configuration parameters. <br><br>
+  When developers provide these configuration parameters,
+  the JSON configurations are mapped directly onto the chart
+  values and take precedence over any chart default and plan values.
+  For information service-specific about configuration parameters, see <a href="https://docs.pivotal.io/platform/application-service/devguide/services/managing-services.html#-arbitrary-parameters">
+  Arbitrary Parameters</a>.
 </p>
 
 
@@ -451,7 +451,7 @@ To create and test a `bind.yaml` file:
       }
     ```
     <p class="note"><strong>Note:</strong> The values of <code>$.services</code>, <code>$.secrets</code>
-    and <code>$.ingresses</code> come from the namespace in which the chart is deployed.
+    and <code>$.ingresses</code> are from the namespace where the chart is deployed.
       </p>
 
 1. Test that `bind.yaml` is creating a valid JSON object by running:
@@ -462,7 +462,7 @@ To create and test a `bind.yaml` file:
 
     Where `NAMESPACE` is the name of the namespace in your cluster where
     your chart is deployed.
-
+    <br><br>
     For example:
     <pre class="terminal">$ ksm test-bind-template default bind.yaml
     Services, secrets, and ingress:
@@ -470,28 +470,28 @@ To create and test a `bind.yaml` file:
         "secrets": [
             {
                 "data": {
-                    "mysql-password": "hc1gVF399Q",
-                    "mysql-root-password": "igNIIf1p81N"
+                    "mysql-password": "aBcDefG1HIJ",
+                    "mysql-root-password": "kLmNoP2qrSt3"
                 },
-                "name": "k-3qwroy3v-mysql"
+                "name": "1-23456789-mysql"
             },
         ],
         "services": [
             {
                 "metadata": {
-                    "name": "k-3qwroy3v-mysql",
-                    "namespace": "kibosh-testing-301",
-                    "selfLink": "/api/v1/namespaces/kibosh-95eef7e7-abaf-4c31-a323-636b6b90fd45/services/k-3qwroy3v-mysql",
+                    "name": "1-23456789-mysql",
+                    "namespace": "kibosh",
+                    "selfLink": "/api/v1/namespaces/kibosh-95eef7e7-abaf-4c31-a323-636b6b90fd45/services/1-23456789-mysql",
                     "uid": "9f2d94c1-4900-11ea-a03a-42010a800053",
                     "resourceVersion": "4943530",
                     "creationTimestamp": "2020-02-06T16:49:20Z",
                     "labels": {
-                        "app": "k-3qwroy3v-mysql",
+                        "app": "1-23456789-mysql",
                         "heritage": "Helm",
-                        "release": "k-3qwroy3v"
+                        "release": "1-23456789"
                     }
                 },
-                "name": "k-3qwroy3v-mysql",
+                "name": "1-23456789-mysql",
                 "spec": {
                     "ports": [
                         {
@@ -503,7 +503,7 @@ To create and test a `bind.yaml` file:
                         }
                     ],
                     "selector": {
-                        "app": "k-3qwroy3v-mysql"
+                        "app": "1-23456789-mysql"
                     },
                     "clusterIP": "10.24.2.216",
                     "type": "LoadBalancer",
@@ -522,17 +522,15 @@ To create and test a `bind.yaml` file:
             }
         ]
     }
-
     Rendered template {
        "hostname": "33.44.55.66",
-       "jdbcUrl": "jdbc:mysql://33.44.55.66/my_db?user=root&password=igNIIf1p81N&useSSL=false",
-       "name": "k-3qwroy3v-mysql",
-       "password": "igNIIf1p81N",
+       "jdbcUrl": "jdbc&#58;mysql&#58;://33.44.55.66/my&#95;db?user=root&password=kLmNoP2qrSt3&useSSL=false",
+       "name": "1-23456789-mysql",
+       "password": "kLmNoP2qrSt3",
        "port": 3306,
-       "uri": "mysql://root:igNIIf1p81N@33.44.55.66:3306/my_db?reconnect=true",
+       "uri": "mysql&#58;//root&#58;kLmNoP2qrSt3&#64;33.44.55.66:3306/my_db?reconnect=true",
        "username": "root"
-    }
-    </pre>
+    }</pre>
 
 
 ###<a id='values-templating'></a> (Optional) Template Values
