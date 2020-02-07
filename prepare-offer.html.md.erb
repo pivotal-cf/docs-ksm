@@ -60,9 +60,19 @@ service-offering/
        medium.yaml
      clusters/
        cluster.yaml
-  Chart.yaml
-  values.yaml
+  helm-chart.tgz
 ```
+###<a id='offer-init'></a> Initialize a KSM Service Offering Directory Structure
+
+1. Download and install the <%= vars.product_short %> CLI. See [Install the KSM CLI](installing.html#ksm).
+
+1. Create a skeleton directory structure for your service offering by running:
+
+    ```
+    ksm offer init MARKETPLACE-NAME
+    ```
+    Where:
+    + `MARKETPLACE-NAME` is the name of the service offering
 
 ###<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
 
