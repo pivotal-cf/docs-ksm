@@ -469,21 +469,25 @@ To create and test a `bind.yaml` file:
 
 ###<a id='values-templating'></a> (Optional) Template Values
 
-Helm uses literal contents of a chart's `values.yaml` as the concrete set of substitutions when creating a release.
-<%= vars.product_short %>, on the other hand, uses `values.yaml` as a template for multiple releases.
-This difference can create situations where `values.yaml` needs to go through Helm's templating engine before
-the charts `/templates` are rendered with those values.
+Helm uses the literal contents of the `values.yaml` file
+as the concrete set of substitutions when creating a release.
+However, <%= vars.product_short %> uses `values.yaml` as a template for multiple releases.
 
-`values.yaml` might need to go through Helm's templating engine in the following situations:
+This difference can create cases where `values.yaml`
+needs to go through the Helm templating engine before
+any template files in the `/templates` directory are rendered with those values.
+
+`values.yaml` might need to go through the Helm templating engine in the following cases:
 
 * When a chart uses Ingress controller. For information
 about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 in the Kubernetes documentation.
 * When there is a unique name, in addition to the release name, required in a chart.
 
-<%= vars.product_short %> runs the values through Helm's templating engine.
-For example, in a chart with ingress hosts, you can edit `values.yaml` to use the release name as the unique
-subdomain discriminator in the ingress definition:
+<%= vars.product_short %> runs the values through the Helm templating engine.
+For example, in a chart with ingress hosts,
+you can edit `values.yaml` to use the release name as
+the unique subdomain discriminator in the ingress definition:
 
 ```yaml
 ...
@@ -494,7 +498,7 @@ ingress:
 ...
 ```
 
-The plan-specific values files also go through Helm's templating engine.
+The plan-specific values files also go through the Helm templating engine.
 
 ##<a id='images'></a> Load Container Images into a Private Container Registry
 
