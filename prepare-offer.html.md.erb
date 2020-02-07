@@ -326,6 +326,14 @@ If you want to override the default settings in `values.yaml` and offer custom p
       credentials: "cluster.yaml"
     ```
 
+<p class="note"><strong>Note:</strong> As an operator, keep in mind that plan and chart values can be overridden
+by the developer provisioning a service instance from the `cf marketplace` using the `-c` flag to specify
+<a href="https://docs.pivotal.io/platform/application-service/devguide/services/managing-services.html#-arbitrary-parameters">service-specific configuration parameters</a>.
+The contents of the json configuration are mapped directly onto the chart
+values and take precedence over any chart default and plan values.
+</p>
+
+
 ##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
@@ -442,8 +450,8 @@ To create and test a `bind.yaml` file:
         username: "root"
       }
     ```
-    <p class="note"><strong>Note:</strong> The values of <code>$.services</code>
-      and <code>$.secrets</code> come from the namespace in which the chart is deployed.
+    <p class="note"><strong>Note:</strong> The values of <code>$.services</code>, <code>$.secrets</code>
+    and <code>$.ingresses</code> come from the namespace in which the chart is deployed.
       </p>
 
 1. Test that `bind.yaml` is creating a valid JSON object by running:
@@ -457,15 +465,74 @@ To create and test a `bind.yaml` file:
 
     For example:
     <pre class="terminal">$ ksm test-bind-template default bind.yaml
-      {
-       "hostname": "192.168.1.1",
-       "jdbcUrl": "jdbc&#58;mysql&#58;//192.168.1.1/my&#95;db?user=root&password=ab1cdeFgH3IJKLMN&useSSL=false",
-       "name": "kibosh-46588108-0  ba5-4  7c0-ba97-bd76e33af0d1-grafana",
-       "password": "ab1cdeFgH3IJKLMN",
+    Services, secrets, and ingress:
+    {
+        "secrets": [
+            {
+                "data": {
+                    "mysql-password": "hc1gVF399Q",
+                    "mysql-root-password": "igNIIf1p81N"
+                },
+                "name": "k-3qwroy3v-mysql"
+            },
+        ],
+        "services": [
+            {
+                "metadata": {
+                    "name": "k-3qwroy3v-mysql",
+                    "namespace": "kibosh-testing-301",
+                    "selfLink": "/api/v1/namespaces/kibosh-95eef7e7-abaf-4c31-a323-636b6b90fd45/services/k-3qwroy3v-mysql",
+                    "uid": "9f2d94c1-4900-11ea-a03a-42010a800053",
+                    "resourceVersion": "4943530",
+                    "creationTimestamp": "2020-02-06T16:49:20Z",
+                    "labels": {
+                        "app": "k-3qwroy3v-mysql",
+                        "heritage": "Helm",
+                        "release": "k-3qwroy3v"
+                    }
+                },
+                "name": "k-3qwroy3v-mysql",
+                "spec": {
+                    "ports": [
+                        {
+                            "name": "mysql",
+                            "protocol": "TCP",
+                            "port": 3306,
+                            "targetPort": "mysql",
+                            "nodePort": 32257
+                        }
+                    ],
+                    "selector": {
+                        "app": "k-3qwroy3v-mysql"
+                    },
+                    "clusterIP": "10.24.2.216",
+                    "type": "LoadBalancer",
+                    "sessionAffinity": "None",
+                    "externalTrafficPolicy": "Cluster"
+                },
+                "status": {
+                    "loadBalancer": {
+                        "ingress": [
+                            {
+                                "ip": "33.44.55.66"
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+
+    Rendered template {
+       "hostname": "33.44.55.66",
+       "jdbcUrl": "jdbc:mysql://33.44.55.66/my_db?user=root&password=igNIIf1p81N&useSSL=false",
+       "name": "k-3qwroy3v-mysql",
+       "password": "igNIIf1p81N",
        "port": 3306,
-       "uri": "mysql&#58;//root&#58;ab1cdeFgH3IJKLMN@192&#46;168&#46;1&#46;1&#58;3306/my&#95;db?reconnect=true",
+       "uri": "mysql://root:igNIIf1p81N@33.44.55.66:3306/my_db?reconnect=true",
        "username": "root"
-      }</pre>
+    }
+    </pre>
 
 
 ###<a id='values-templating'></a> (Optional) Template Values
