@@ -1,10 +1,8 @@
 ---
-title: Documentation does not exist in this version
+title: Topic does not exist in this version
 owner: ISM
 ---
 
 <strong><%= modified_date %></strong>
 
-The <%= vars.product_full %> v<%= product_info['local_product_version']%> documentation does not exist. This is because the documentation is no longer needed.
-
-The latest documentation is available in <a href="https://docs.pivotal.io/ksm/"><%= vars.product_full %> v<%= product_info['latest_stable_version'] %></a>.
+<%= partial(vars.path_to_partials + "/topic-does-not-exist", :locals => { :topic  => vars.product_full , :closest_available_version => product_info['latest_stable_version'] }) %>
