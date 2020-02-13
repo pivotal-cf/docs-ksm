@@ -106,7 +106,7 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     kubectl get namespaces
     ```
 1. Record the namespaces that are used by the service instances deployed by <%= vars.product_short %>.<br><br>
-    The namespaces are named `kibosh-GUID`, where `GUID` is the `service-instance-guid` for the service instance.
+    The namespaces are named `ksm-GUID`, where `GUID` is the `service-instance-guid` for the service instance.
     You can view the `service-instance-guid` for a service instance by running `cf service INSTANCE-NAME --guid`.
 
 1. For each namespace, retrieve the Helm release names by running:
