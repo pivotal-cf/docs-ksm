@@ -294,8 +294,9 @@ If you want to override the default settings in `values.yaml` and offer custom p
     ```
 
 1. (Optional) Create and edit `resource-quotas/RESOURCE-QUOTA-FILE.yaml`
-    with the ResourceQuota definition you want to use. For more information 
-    about ResourceQuota objects see 
+    with the ResourceQuota definition you want to use. This ResourceQuota will
+    be created in each Kubernetes namespace where a service instance is provisioned. 
+    For more information about ResourceQuota objects see 
     [Configure Memory and CPU Quotas for a Namespace](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)
     <br><br>
     For example:
