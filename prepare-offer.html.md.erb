@@ -46,6 +46,9 @@ A service offering includes the following:
   See [(Optional) Define Plans Configuration](#plans) below.
   + **`cluster.yaml` and `cluster` directory:**
   You use these files and the directory to provide credentials for clusters.
+ + **`quota.yaml` and `resource-quotas` directory:** You use these files and the directory to 
+  define ResourceQuota(s) that can limit the memory and cpu that instances may consume.
+  See [(Optional) Define Plans Configuration](#plans) below.
 
 The following code snippet shows an example of a service offering directory structure:
 
@@ -59,6 +62,8 @@ service-name/
      medium.yaml
    clusters/
      cluster.yaml
+   resource-quotas/
+     quota.yaml
 helm-chart.tgz
 ```
 
@@ -288,6 +293,28 @@ If you want to override the default settings in `values.yaml` and offer custom p
         token: kLmNoP2qrSt3= ...
     ```
 
+1. (Optional) Create and edit `resource-quotas/RESOURCE-QUOTA-FILE.yaml`
+    with the ResourceQuota definition you want to use. This ResourceQuota will
+    be created in each Kubernetes namespace where a service instance is provisioned. 
+    For more information about ResourceQuota objects see 
+    [Configure Memory and CPU Quotas for a Namespace](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)
+    <br><br>
+    For example:
+
+    ```
+    ---
+    apiVersion: v1
+    kind: ResourceQuota
+    metadata:
+      name: mem-cpu-demo
+    spec:
+      hard:
+        requests.cpu: "1"
+        requests.memory: 1Gi
+        limits.cpu: "2"
+        limits.memory: 2Gi
+    ```
+
 1. Edit your `plans.yaml` file to add your custom plan information using the following template:
 
     ```
@@ -295,6 +322,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
       description: PLAN-DESCRIPTION
       file: PLAN-FILE
       credentials: CLUSTER-CREDENTIALS-FILE
+      resourceQuotaPath: RESOURCE-QUOTA-FILE
     ```
 
     Where:
@@ -305,6 +333,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
         The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
     * (Optional) `CLUSTER-CREDENTIALS-FILE` is name of the cluster credentials file for the plan.
+    * (Optional) `RESOURCE-QUOTA-FILE` is name of the resource quota file for the plan.
 
     For example:
 
@@ -312,6 +341,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
     - name: "small"
       description: "default (small) plan for mysql"
       file: "small.yaml"
+      resourceQuotaPath: "quota.yaml"
     - name: "medium"
       description: "medium sized plan for mysql"
       file: "medium.yaml"
@@ -389,7 +419,7 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
     <td></td>
     <td><code>namespace</code></td>
     <td>If you use this value, the chart is deployed on the cluster every time
-      the service is created.</td<
+      the service is created.</td>
   </tr>
 
   <tr>
