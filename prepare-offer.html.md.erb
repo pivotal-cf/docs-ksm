@@ -32,7 +32,7 @@ A service offering includes the following:
      + For more information about best practices,
      see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/)
 
-+ **A `ksm` directory that can include the following files:**
++ **A service offering directory that can include the following files:**
   + **`bind.yaml`:** This file is a template for app binding and service consumption.
   See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env) below.
   + **`ksm.yaml`  :** This file enables you to offer multiple Helm charts in a single
@@ -46,8 +46,8 @@ A service offering includes the following:
   See [(Optional) Define Plans Configuration](#plans) below.
   + **`cluster.yaml` and `cluster` directory:**
   You use these files and the directory to provide credentials for clusters.
- + **`quota.yaml` and `resource-quotas` directory:** You use these files and the directory to 
-  define ResourceQuota(s) that can limit the memory and cpu that instances may consume.
+ + **`quota.yaml` and `resource-quotas` directory:** You use these files and the directory to
+  define resource quotas that limit the memory and CPU that instances consume.
   See [(Optional) Define Plans Configuration](#plans) below.
 
 The following code snippet shows an example of a service offering directory structure:
@@ -294,10 +294,9 @@ If you want to override the default settings in `values.yaml` and offer custom p
     ```
 
 1. (Optional) Create and edit `resource-quotas/RESOURCE-QUOTA-FILE.yaml`
-    with the ResourceQuota definition you want to use. This ResourceQuota will
-    be created in each Kubernetes namespace where a service instance is provisioned. 
-    For more information about ResourceQuota objects see 
-    [Configure Memory and CPU Quotas for a Namespace](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)
+    with the `ResourceQuota` definition you want to use. This `ResourceQuota` is created in each Kubernetes namespace where a service instance is provisioned.
+    For more information about `ResourceQuota` objects, see
+    [Configure Memory and CPU Quotas for a Namespace](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/).
     <br><br>
     For example:
 
