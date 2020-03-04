@@ -135,3 +135,18 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     kubectl delete namespace NAMESPACE
     ```
     Where `NAMESPACE` is the name of the namespace you are deleting.
+
+### <a id='mapping-resources'></a> Mapping Cluster resources to Cloud Foundry resources
+When a developer uses 'cf create-service' to provision a Helm-based service in Kubernetes, 
+KSM stamps the resources in Kubernetes with metadata that allows platform engineers to 
+map the cloud foundry service to its Kubernetes counterpart. Here's how: 
+
+1. KSM uses the service instance GUID to name namespaces. 
+   You can view the `service-instance-guid` for a service instance by running `cf service INSTANCE-NAME --guid`.
+   Record the service instance GUID.
+
+1. Find the configmap in the service's namespace:
+ 
+    ```
+    kubectl get configmap ksm-metadata -n ksm-GUID -o go-template --template="{{.data.brokerContext}}"
+    ```
