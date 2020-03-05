@@ -136,17 +136,11 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     ```
     Where `NAMESPACE` is the name of the namespace you are deleting.
 
-### <a id='mapping-resources'></a> Map Cluster Resources to Cloud Foundry Resources
+### <a id='view-service-instance'></a> View Service Instance Metadata for Kubernetes Clusters
 
-When a developer uses `cf create-service` to provision a Helm-based service in Kubernetes,
- <%= vars.product_short %> creates a metadata file for the Kubernetes cluster resources.
-Platform operators can use this file to map the Cloud Foundry service to its Kubernetes counterpart.
-
-The file contains the following information:
-
- + service name
- + org name
- + space name
+When a developer provisions a service instance onto a Kubernetes cluster,
+ <%= vars.product_short %> creates a metadata file for the service instance in the cluster.
+Platform operators can use this file to determine which <%= vars.app_runtime_abbr %> apps or services depend on a resource in the Kubernetes cluster.
 
 To view the metadata file:
 
@@ -155,16 +149,25 @@ To view the metadata file:
     ```
     cf service SERVICE-INSTANCE --guid
     ```
-    Record the output
-    <%= vars.product_short %> uses the service instance GUID to name namespaces.
+    Record the output.
+
 1. View the configmap by running:
 
     ```
     kubectl get configmap ksm-metadata -n ksm-GUID \
     -o go-template --template="{{.data.brokerContext}}"
     ```
-    Where `GUID` is the service instance GUID you retrieved above
+    Where `GUID` is the output you recorded above. <br><br>
+
     For example:
 
-
-    Example of the file
+    <pre class="terminal">$ kubectl get configmap ksm-metadata -n ksm-GUID \
+-o go-template --template="{{.data.brokerContext}}" <br>
+      {
+        "platform": "myplatform",
+        "organization_guid": "a12345b6-cf17-4109-aefb-0510d09d1374",
+        "space_guid": "zyx9u8765-e6c2-4a52-861f-1b0663cf6524",
+        "organization_name": "myorg",
+        "space_name": "myspace",
+        "instance_name": "mydb"
+      }</pre>
