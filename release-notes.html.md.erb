@@ -20,7 +20,21 @@ These are release notes for <%= vars.product_full %>.
 
 ### Features
 
-This is a small release that adds additional logging in the error condition when the broker fails to reload its catalog.
+New features and changes in this release:
+
++ Adds additional logging when the broker fails to reload its catalog.
+
+### Known Issue
+
+This release has the following issue:
+
++ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
+was created successfully before the custom resources are created.
+This is because Kubernetes does not have a generic method to detect resource readiness.
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>
+In the unlikely event that this happens, wait until the custom resources are created before binding
+a service instances to an app.
+This mitigates any issues with missing details in the bind response.
 
 ##<a id="0-7-88"></a> v0.7.88
 
