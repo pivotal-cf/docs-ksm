@@ -41,12 +41,15 @@ A service offering includes the following:
    For information about Operators in Kubernetes,
    see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
    in the Kubernetes documentation.
- + **`plans.yaml` and `plans` directory:** You use these files and the directory to offer
+  + **`override` directory:** You use these directory files to override the 
+     default values defined in the chart `values.yaml` file.
+    See [(Optional) Define Override Configuration](#override) below.
+  + **`plans.yaml` and `plans` directory:** You use these files and the directory to offer
   customized plans, override default values and change the default cluster.
   See [(Optional) Define Plans Configuration](#plans) below.
   + **`cluster.yaml` and `cluster` directory:**
   You use these files and the directory to provide credentials for clusters.
- + **`quota.yaml` and `resource-quotas` directory:** You use these files and the directory to
+  + **`quota.yaml` and `resource-quotas` directory:** You use these files and the directory to
   define resource quotas that limit the memory and CPU that instances consume.
   See [(Optional) Define Plans Configuration](#plans) below.
 
@@ -57,6 +60,9 @@ service-name/
    bind.yaml
    ksm.yaml
    plans.yaml
+   override/
+     chart1.yaml
+     chart2.yaml
    plans/
      small.yaml
      medium.yaml
@@ -64,6 +70,7 @@ service-name/
      cluster.yaml
    resource-quotas/
      quota.yaml
+
 helm-chart.tgz
 ```
 
@@ -148,21 +155,46 @@ To create a sample service offering directory:
 ##<a id='config-helm'></a> Configure Your Helm Charts
 
 To upload a Helm chart to <%= vars.product_short %>,
-you must configure the chart to be compatible with <%= vars.product_short %>.
-For examples of <%= vars.product_short %>-compatible charts,
+you must certify the chart configuration is compatible with <%= vars.product_short %>. 
+For examples of <%= vars.product_short %>-compatible charts, you can 
 see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
-If you do not include a `plans.yaml` or `ksm.yaml`file with your service offering, one plan is offered.
-This plan uses the default values for the Helm chart.
+See below some configurations that must be overridden on the offer (in the case the chart uses those), 
+in order to the chart become compatible.
 
-To configure your Helm chart to be compatible with <%= vars.product_short %>:
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
    resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
- </p>
+</p>
 
-1. Open the `values.yaml` file at the root level of your chart.
+###<a id='override'></a> Define Override Configuration
 
-1. Edit your `values.yaml` file to configure storage. Edit the `storageClass:` value to correspond to
+1. Create the [<%= vars.product_short %> directory structure](#offer-init) and configure the `ksm.yaml` file override
+the default values of each chart desired to be overridden. 
+    
+    For example:
+    
+    ```yaml
+    marketplace-name: <my-offer-name>
+    charts:
+      - chart: <chart1>
+        offered: true
+        scope: namespace
+        version: 1.3.0
+        overrideValuesFile: chart1.yaml
+      - chart: <chart2>
+        offered: true
+        scope: cluster
+        version: 1.3.0
+        overrideValuesFile: chart2.yaml   
+    ```
+
+1. Create a `override` folder in your directory structure if missing, and create the override files `chart1.yaml` and 
+`chart2.yaml` inside that folder.
+
+Ensure that the properties you add to `chart-N.yaml` files match the properties
+    in `values.yaml` and that you only change the values.
+
+1. Edit your `override` yaml files to configure storage. Edit the `storageClass:` value to correspond to
 the storageClass name for your configured Enterprise Pivotal Container Service (PKS) cluster.
 The default name for PKS is `standard`.
       For more information,
@@ -179,7 +211,7 @@ The default name for PKS is `standard`.
       ...
     ```
 
-1. Edit your `values.yaml` file to enable service access.
+1. Edit your `override` yaml files to enable service access.
 <%= vars.product_short %> supports using a load balancer, Ingress
 or ExternalDNS to access services.
     + **If want your service to be accessed directly using a load balancer,** set
@@ -214,6 +246,15 @@ or ExternalDNS to access services.
       in the Kubernetes documentation. For information about
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
+    
+    <p class="note"><strong>Note:</strong> You can also override other configurations defined on the default chart values file by adding those configurations 
+    to the override files.
+    </p>
+
+    <p class="note"><strong>Note:</strong> If you do not include a <b>plans.yaml</b>, <b>ksm.yaml</b> or <b>override</b> files with 
+    your service offering, one plan is offered. This plan uses the default values for the Helm chart.
+    </p>  
+
 
 ### <a id='define'></a> Define Custom Resource Definitions
 
@@ -233,6 +274,10 @@ Helm 2 uses a hook annotation to install CRDs.
 
 
 ##<a id='plans'></a> (Optional) Define Plans Configuration
+
+<p class="note warning"><strong>Warning:</strong> The plans files configuration have priority and will override the 
+<a href="#override">Override Configuration</a>.
+</p>
 
 In `cf marketplace`, each service has a set of plans that developers can provision.
 A plan is a template for service instances.
