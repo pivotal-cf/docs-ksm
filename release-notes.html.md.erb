@@ -14,9 +14,9 @@ These are release notes for <%= vars.product_full %>.
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
-##<a id="0-X-XX"></a> v0.X.XX
+##<a id="0-X-XX"></a> v0.7.88
 
-**Release Date:** XXX XX, 2020
+**Release Date:** March 6, 2020
 
 <p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.6
   beta release of <%= vars.product_short %>.
@@ -29,6 +29,9 @@ These are release notes for <%= vars.product_full %>.
 ### Features
 
 New features and changes in this release:
+
++ Upgrade from Helm 2 to [Helm 3](https://helm.sh/docs/faq/#changes-since-helm-2). This means <%= vars.product_short %> no longer installs Tiller into the Kubernetes cluster. Charts offered in <%= vars.product_short %> must be compatible with Helm 3.
++ Moved <%= vars.product_short %> specific customizations (i.e. plans, bind template, cluster configuration) out of the Helm chart and into its own directory. This means users needing to customize their service offering no longer need to repackage the Helm chart.
 
 ### Known Issue
 
