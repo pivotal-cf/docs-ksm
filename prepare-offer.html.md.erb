@@ -160,7 +160,7 @@ For examples of <%= vars.product_short %>-compatible charts, you can
 see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
 See below some configurations that must be overridden on the offer (in the case the chart uses those), 
-in order to the chart become compatible.
+in order to make the chart compatible.
 
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
    resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
@@ -168,8 +168,8 @@ in order to the chart become compatible.
 
 ###<a id='override'></a> Define Override Configuration
 
-1. Create the [<%= vars.product_short %> directory structure](#offer-init) and configure the `ksm.yaml` file override
-the default values of each chart desired to be overridden. 
+1. Create the [<%= vars.product_short %> directory structure](#offer-init) and configure the `ksm.yaml` file pointing to 
+overrideValuesFile files with values to override each chart desired to be configured. 
     
     For example:
     
