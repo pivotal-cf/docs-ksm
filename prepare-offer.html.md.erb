@@ -169,7 +169,7 @@ To configure your Helm chart:
 1. Define Custom Resource Definitions for Helm 2 charts.
   See [Define Custom Resource Definitions](#crd).
 
-###<a id='override'></a> Override Chart Values
+###<a id='override'></a> (Optional) Override Chart Values
 To ensure that your chart is compatible with <%= vars.product_short %>,
 you might need to override specific values in <code>values.yaml</code>.
 
@@ -280,7 +280,7 @@ Helm 2 uses a hook annotation to install CRDs.
 
 ##<a id='plans'></a> (Optional) Define Plans Configuration
 
-<p class="note"><strong>Note:</strong> The properties in <code>plan.yaml</code> and
+<p class="note"><strong>Note:</strong> The properties in <code>plans.yaml</code> and
   <code>PLAN-FILE.yaml</code> files override configurations in
   override files.
   For information about override files, see <a href="#override">Override Chart Values</a> above.
