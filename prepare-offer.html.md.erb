@@ -179,7 +179,7 @@ You must follow the procedure in this section if your chart uses any of the foll
 + services.type
 + hosts.name
 
-You can optionally override other properties defined the chat `values.yml` by adding those properties to an `OVERRIDE-FILE.yaml` file.
+You can optionally override other properties defined the chart `values.yml` by adding those properties to an `OVERRIDE-FILE.yaml` file.
 
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
    resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
@@ -192,7 +192,7 @@ To override chart values:
     in `values.yaml`.
     Do not change the names of the properties.
 
-1. Edit your `override` yaml files to configure storage. Edit the `storageClass:` value to correspond to
+1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
 the storageClass name for your configured Enterprise Pivotal Container Service (PKS) cluster.
 The default name for PKS is `standard`. <br><br>
       For more information,
@@ -209,7 +209,7 @@ The default name for PKS is `standard`. <br><br>
       ...
     ```
 
-1. Edit your `override` yaml files to enable service access.
+1. Edit your override file to enable service access.
 <%= vars.product_short %> supports using a load balancer, Ingress,
 or ExternalDNS to access services.
     + **If want your service to be accessed directly using a load balancer,** set
@@ -282,8 +282,8 @@ Helm 2 uses a hook annotation to install CRDs.
 
 <p class="note"><strong>Note:</strong> The properties in <code>plan.yaml</code> and
   <code>PLAN-FILE.yaml</code> files override configurations in
-   <code>override/OVERRIDE-FILE.yaml</code>files.
-  For information about override configurations, see <a href="#override">Override Chart Values</a> above.
+  override files.
+  For information about override files, see <a href="#override">Override Chart Values</a> above.
 </p>
 
 In `cf marketplace`, each service has a set of plans that developers can provision.
