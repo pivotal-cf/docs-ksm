@@ -171,7 +171,7 @@ To enable access to your service offering:
 
 When you update a service offering in <%= vars.product_short %>, any newly-created service instances
 use the latest version of the service offering.
-Existing instances must be explicitly upgraded via Cloud Foundry.
+Existing instances must be upgraded using the Cloud Foundry Command Line Interface (cf CLI).
 See [Upgrade a Service Instance](#upgrade-instance) below.
 
 To update a single chart service offering in  <%= vars.product_short %>:
@@ -230,26 +230,43 @@ To update a single chart service offering in  <%= vars.product_short %>:
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
+After you update your service offering,
+ask developers to follow this procedure to upgrade their service instances.
+For instructions for updating a service offering, see [Update a Service Offering](#update-offering) above.
+
 To upgrade service instances:
 
-1. Update and package a new version of your Helm chart by doing the steps in [Update a Service Offering](#update-offering) above.
+1. Find the service instances that you can upgrade by running:
 
-1. PCF developers will run  `cf services` in the space containing the service instance. The output will show upgrade available
-   ```
-   name             service   plan    bound apps     last operation     broker                       upgrade available
-   mysql-instance   mysql     small   spring-music   create succeeded   container-services-manager   true
-   ```
+    ```
+    cf services
+    ```
+    For example:
+     <pre class="terminal">$ cf services
+     name             service   plan    bound apps     last operation     broker                       upgrade available
+     mysql-instance   mysql     small   spring-music   create succeeded   container-services-manager   true</pre>
 
-1. Upgrade the service instance
-   ```
-   cf update-service mysql-instance -u
-   ```
-   The service will be upgraded asynchronously. To check the status and watch for completion,
-   use `cf services` to monitor the `last operation column`
-   ```
+     Service instances that are available for upgrade have `true` under the `upgrade available` column.
+
+1. Upgrade the service instance by running:
+
+     ```
+     cf update-service SERVICE-INSTANCE-NAME -u
+     ```
+1. Check the status of your serivce instance and watch for completion by running:
+
+    ```
+    watch cf services
+    ```
+    For example:
+  <pre class="terminal">$ watch cf services
+   Getting services in org my-org / space my-space as user...
+   OK
    name             service   plan    bound apps     last operation     broker                       upgrade available
-   mysql-instance   mysql     small   spring-music   upgrade succeeded   container-services-manager
-   ```
+   mysql-instance   mysql     small   spring-music   upgrade succeeded  container-services-manager</pre>
+   Service instances are upgraded asynchronously.
+   Wait for the `last operation` for your instance to show as `create succeeded`.
+
 
 ## <a id="delete"></a> Delete a Service Offering
 
