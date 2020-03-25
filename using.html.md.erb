@@ -171,7 +171,7 @@ To enable access to your service offering:
 
 When you update a service offering in <%= vars.product_short %>, any newly-created service instances
 use the latest version of the service offering.
-Existing instances must be manually upgraded.
+Existing instances must be explicitly upgraded via Cloud Foundry.
 See [Upgrade a Service Instance](#upgrade-instance) below.
 
 To update a single chart service offering in  <%= vars.product_short %>:
@@ -234,48 +234,22 @@ To upgrade service instances:
 
 1. Update and package a new version of your Helm chart by doing the steps in [Update a Service Offering](#update-offering) above.
 
-1. Retrieve the GUID for the service instance that you are upgrading by running:
+1. PCF developers will run  `cf services` in the space containing the service instance. The output will show upgrade available
+   ```
+   name             service   plan    bound apps     last operation     broker                       upgrade available
+   mysql-instance   mysql     small   spring-music   create succeeded   container-services-manager   true
+   ```
 
-    ```
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD instance list SERVICE-OFFERING
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in
-    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PASSWORD` is the value of `password` you recorded in
-    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `SERVICE-OFFERING` is the name of the service offering that you want to see service instances of.
-
-    Record the value in `INSTANCE GUID` column for the instance you are upgrading.
-
-1. Retrieve the Helm release name for a service instance by running:
-
-    ```
-    helm ls --namespace=ksm-INSTANCE-GUID
-    ```
-    Where `INSTANCE-GUID` is the GUID of the service instance retrieved in the previous step.
-
-    Record the value in the `NAME` column. This is the release name of the service instance.
-    <p class="note"><strong>Note:</strong> If your service offering has multiple charts,
-      the above command might list multiple releases.
-      Record the release names for charts that have been updated.
-    </p>
-
-1. For each Helm release, upgrade your service instances by running:
-
-    ```
-    helm upgrade RELEASE-NAME /PATH-TO-YOUR-CHART.tgz --namespace=ksm-INSTANCE-GUID
-    ```
-    Where:
-   + `RELEASE-NAME` is the name of the release you retrieved in the previous step.
-   + `PATH-TO-YOUR-CHART.tgz` is the path to the updated packaged chart that was created in
-   [Update a Service Offering](#update-offering) above.
-
-   <p class="note"><strong>Note:</strong> The above command only applies changes to values in
-     <code>values.yaml</code> to service instances.
-     Any changes to values in <code>plans.yaml</code> are ignored.
-   </p>
+1. Upgrade the service instance
+   ```
+   cf update-service mysql-instance -u
+   ```
+   The service will be upgraded asynchronously. To check the status and watch for completion,
+   use `cf services` to monitor the `last operation column`
+   ```
+   name             service   plan    bound apps     last operation     broker                       upgrade available
+   mysql-instance   mysql     small   spring-music   upgrade succeeded   container-services-manager
+   ```
 
 ## <a id="delete"></a> Delete a Service Offering
 
