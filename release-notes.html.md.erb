@@ -52,12 +52,13 @@ This mitigates any issues with missing details in the bind response.
 
 New features and changes in this release:
 
-* Upgrade from Helm 2 to [Helm 3](https://helm.sh/docs/faq/#changes-since-helm-2).
-This means <%= vars.product_short %> no longer installs Tiller into the Kubernetes cluster.
+* Upgrades from Helm 2 to [Helm 3](https://helm.sh/docs/faq/#changes-since-helm-2).
+This means that <%= vars.product_short %> no longer installs Tiller onto the Kubernetes cluster.
 Charts offered in <%= vars.product_short %> must be compatible with Helm 3.
 
-* Moved <%= vars.product_short %> specific customizations (i.e. plans, bind template, cluster configuration) out of the Helm chart and into its own directory.
-This means users needing to customize their service offering no longer need to repackage the Helm chart.
+* Moved <%= vars.product_short %> specific customizations out of the Helm chart and into their own directory.
+This includes the plans, bind template, and cluster configuration.
+This means that users needing to customize their service offering no longer need to repackage the Helm chart.
 
 ### Known Issue
 
