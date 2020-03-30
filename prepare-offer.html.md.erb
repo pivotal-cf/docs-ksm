@@ -194,12 +194,9 @@ To override chart values:
 
 1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
 the storageClass name for your configured Enterprise Pivotal Container Service (PKS) cluster.
-The default name for PKS is `standard`. <br>
-      For more information,
-      see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
-      <br><br>
-
-    For example:
+The default name for PKS is `standard`.
+For more information, see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
+<br><br>For example:
 
     ```yaml
     ...
@@ -210,19 +207,18 @@ The default name for PKS is `standard`. <br>
     ```
 
 1. Edit your override file to enable service access.
-<%= vars.product_short %> supports using a load balancer, Ingress,
-or ExternalDNS to access services.
+<%= vars.product_short %> supports using a load balancer, Ingress, or ExternalDNS to access services.
     + **If want your service to be accessed directly using a load balancer,** set
     `services.type:` to `LoadBalancer`. For example:
 
         ```yaml
-       ...
-       service:
+        ...
+        service:
           type: LoadBalancer
           port: 3306
-       ...
-       ```
-    + **If want your service to accessed using Ingress or ExternalDNS:**
+        ...
+        ```
+    + **If want your service to be accessed using Ingress or ExternalDNS:**
     Edit the value of the `hosts.name` to include a templatized value for uniqueness.
     For example:
 
@@ -235,8 +231,7 @@ or ExternalDNS to access services.
         ...
         ```
 
-    For more information,
-    see [(Optional) Template Values](#values-templating) below.
+    For more information, see [(Optional) Template Values](#values-templating) below.
 
     <p class="note"><strong>Note:</strong> The Ingress controller or ExternalDNS
       controller need to be installed and configured manually. <br><br>For information
@@ -244,9 +239,8 @@ or ExternalDNS to access services.
       in the Kubernetes documentation. For information about
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
-
 1. Edit the `ksm.yaml` file to use the override file you created in step 1.<br><br>
-   For example:
+For example:
 
     ```yaml
     marketplace-name: SERVICE-NAME
