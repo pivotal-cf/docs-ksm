@@ -158,7 +158,8 @@ you must ensure that the chart is compatible with <%= vars.product_short %>.
 For examples of <%= vars.product_short %>-compatible charts,
 see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
-<p class="note"><strong>Note:</strong> If you do not include a <code>plans.yaml</code>, a <code>ksm.yaml</code> file, or override files with your service offering, one plan is offered.
+<p class="note"><strong>Note:</strong> If you do not include a <code>plans.yaml</code>,
+  a <code>ksm.yaml</code> file, or override files with your service offering, one plan is offered.
 This plan uses the default values for the Helm chart.
 </p>
 
@@ -166,10 +167,11 @@ To configure your Helm chart:
 
 1. Override values in the chart `values.yaml` file.
   See [Override Chart Values](#override).
-1. Define Custom Resource Definitions for Helm 2 charts.
-  See [Define Custom Resource Definitions](#crd).
+1. If you are using Helm 2 charts, define custom resource definitions (CRDs) using
+    Helm 2 and Helm 3 methods.
+    See [Define Custom Resource Definitions](#crd).
 
-###<a id='override'></a> (Optional) Override Chart Values
+###<a id='override'></a> Override Chart Values
 To ensure that your chart is compatible with <%= vars.product_short %>,
 you might need to override specific values in <code>values.yaml</code>.
 
@@ -179,7 +181,8 @@ You must follow the procedure in this section if your chart uses any of the foll
 + services.type
 + hosts.name
 
-You can optionally override other properties defined the chart `values.yml` by adding those properties to an `OVERRIDE-FILE.yaml` file.
+You can optionally override other properties defined the chart `values.yml` by
+adding those properties to an `OVERRIDE-FILE.yaml` file.
 
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
    resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
@@ -235,8 +238,9 @@ For more information, see [Configuring and Using PersistentVolumes](https://docs
 
     <p class="note"><strong>Note:</strong> The Ingress controller or ExternalDNS
       controller need to be installed and configured manually. <br><br>For information
-      about Ingress, see <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a>
-      in the Kubernetes documentation. For information about
+      about Ingress, see the
+      <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Kubernetes documentation</a>.
+      For information about
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
 1. Edit the `ksm.yaml` file to use the override file you created in step 1.<br><br>
@@ -257,7 +261,7 @@ For example:
 ### <a id='crd'></a> Define Custom Resource Definitions
 
 <%= vars.product_short %> supports charts that use the Helm 2 and Helm 3 CLIs.
-Helm 2 and Helm 3 use different methods to install Custom Resource Definitions (CRDs).
+Helm 2 and Helm 3 use different methods to install CRDs.
  <%= vars.product_short %> requires Helm 3, while Helm 2 is optional.
 
 If you are using a Helm 2 chart, use both the Helm 2 and Helm 3 CLIs methods:
@@ -339,9 +343,10 @@ If you want to override the default settings in `values.yaml` and offer custom p
     ```
 
 1. (Optional) Create and edit `resource-quotas/RESOURCE-QUOTA-FILE.yaml`
-    with the `ResourceQuota` definition you want to use. This `ResourceQuota` is created in each Kubernetes namespace where a service instance is provisioned.
-    For more information about `ResourceQuota` objects, see
-    [Configure Memory and CPU Quotas for a Namespace](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/).
+    with the `ResourceQuota` definition you want to use.
+    This `ResourceQuota` is created in each Kubernetes namespace where a service instance is provisioned.
+    For more information about `ResourceQuota` objects, see the
+    [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/).
     <br><br>
     For example:
 
@@ -398,7 +403,8 @@ If you want to override the default settings in `values.yaml` and offer custom p
   When developers provide these configuration parameters,
   the JSON configurations are mapped directly onto the chart
   values and take precedence over any chart default and plan values.
-  For information about service-specific configuration parameters, see <a href="https://docs.pivotal.io/platform/application-service/devguide/services/managing-services.html#-arbitrary-parameters">
+  For information about service-specific configuration parameters,
+  see <a href="https://docs.pivotal.io/platform/application-service/devguide/services/managing-services.html#-arbitrary-parameters">
   Arbitrary Parameters</a>.
 </p>
 
@@ -484,13 +490,12 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
 Apps running in <%= vars.pas_full %>  gain access to bound service instances through an environment
 variable credentials hash called `VCAP_SERVICES`.
 Libraries such as Spring Cloud
-Cloud Foundry Connector automatically support services if their credentials in `VCAP_SERVICES` are formatted
-in a valid JSON object.
+Cloud Foundry Connector automatically support services if their credentials in
+`VCAP_SERVICES` are formatted in a valid JSON object.
 
 For an example of the requirements for using Spring Cloud
-Cloud Foundry Connector with a MySQL service, see
-[MySQL](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql)
-in the Spring Cloud Cloud Foundry Connector documentation.
+Cloud Foundry Connector with a MySQL service, see the
+[Spring Cloud Cloud Foundry Connector documentation](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql).
 
 Chart authors can edit the `bind.yaml` file to enable the broker to
 return a valid JSON object containing service credentials.
@@ -649,14 +654,16 @@ see [Docker Hub](https://hub.docker.com/), [Harbor](https://goharbor.io/), and [
 + The images referenced in the Helm chart are not public.
 
 
-If you do not load your container images in to a private container registry, a developer cannot create a service instance
+If you do not load your container images in to a private container registry,
+a developer cannot create a service instance
 offered on <%= vars.product_short %>.
 
 To load your container images:
 
 1. Load your container images by following the instructions for your specific container registry.
 For example, if you use Harbor, follow the instructions in
-[Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client) on GitHub.
+[Pulling and pushing images using Docker client](https://github.com/goharbor/harbor/blob/master/docs/user_guide.md#pulling-and-pushing-images-using-docker-client)
+in GitHub.
 
 
 1. Confirm that your `values.yaml` file uses `image`, `images`, or `global.imageRegistry` keys.
