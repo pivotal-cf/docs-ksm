@@ -194,7 +194,7 @@ To override chart values:
 
 1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
 the storageClass name for your configured Enterprise Pivotal Container Service (PKS) cluster.
-The default name for PKS is `standard`. <br><br>
+The default name for PKS is `standard`. <br>
       For more information,
       see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
       <br><br>
@@ -215,25 +215,25 @@ or ExternalDNS to access services.
     + **If want your service to be accessed directly using a load balancer,** set
     `services.type:` to `LoadBalancer`. For example:
 
-    ```yaml
-   ...
-   service:
-      type: LoadBalancer
-      port: 3306
-   ...
-   ```
+        ```yaml
+       ...
+       service:
+          type: LoadBalancer
+          port: 3306
+       ...
+       ```
     + **If want your service to accessed using Ingress or ExternalDNS:**
     Edit the value of the `hosts.name` to include a templatized value for uniqueness.
     For example:
 
-     ```yaml
-    ...
-    ingress:
-      enabled: true
-      hosts:
-      - name: "{{ .Release.Name }}.example.com"
-    ...
-    ```
+        ```yaml
+        ...
+        ingress:
+          enabled: true
+          hosts:
+          - name: "{{ .Release.Name }}.example.com"
+        ...
+        ```
 
     For more information,
     see [(Optional) Template Values](#values-templating) below.
@@ -245,9 +245,8 @@ or ExternalDNS to access services.
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
 
-1. Edit the `ksm.yaml` file to use the override file you created in step 1.
-
-    For example:
+1. Edit the `ksm.yaml` file to use the override file you created in step 1.<br><br>
+   For example:
 
     ```yaml
     marketplace-name: SERVICE-NAME
