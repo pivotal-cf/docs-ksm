@@ -41,9 +41,9 @@ A service offering includes the following:
    For information about Operators in Kubernetes,
    see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
    in the Kubernetes documentation.
-  + **`override` directory:** You use files in this directory to override the
+  + **`overrides` directory:** You use files in this directory to override the
      default values defined in the chart `values.yaml` file.
-    See [(Optional) Define Override Configuration](#override) below.
+    See [(Optional) Override Chart Values](#override) below.
   + **`plans.yaml` and `plans` directory:** You use this file and the directory files to offer
   customized plans, override default values, and change the default cluster.
   See [(Optional) Define Plans Configuration](#plans) below.
@@ -60,7 +60,7 @@ service-name/
    bind.yaml
    ksm.yaml
    plans.yaml
-   override/
+   overrides/
      override-values.yaml
    plans/
      small.yaml
@@ -190,7 +190,7 @@ adding those properties to an `OVERRIDE-FILE.yaml` file.
 
 To override chart values:
 
-1. Create an `override` directory and an `override/OVERRIDE-FILE.yaml` file. <br><br>
+1. Create an `overrides` directory and an `overrides/OVERRIDE-FILE.yaml` file. <br><br>
     Ensure that the properties you add to `OVERRIDE-FILE.yaml` match the properties
     in `values.yaml`.
     Do not change the names of the properties.
