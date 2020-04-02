@@ -173,14 +173,16 @@ When you update a service offering in <%= vars.product_short %>, any newly-creat
 use the latest version of the service offering.
 Existing instances must be upgraded using the Cloud Foundry Command Line Interface (cf CLI).
 See [Upgrade a Service Instance](#upgrade-instance) below.
+If any of the charts in the service offering include CustomResourceDefinitions (CRDs), 
+these have special behavior. Please see [Updating a Service Offering with CustomResourceDefinitions (CRDs)](#crd-validation) below.
 
-To update a single chart service offering in  <%= vars.product_short %>:
+To update a service offering in  <%= vars.product_short %>:
 
-1. Update your chart by doing one of the following:
-      + **If you are updating a single chart,** after you edit your Helm chart,
-        update the chart version in the `Chart.yaml` file.
-      + **If you are adding multiple charts,** after you edit the Helm charts and `ksm.yaml`,
-        update the chart versions in the `Chart.yaml` files.
+1. Update your chart(s) by doing the following:
+      + **For each chart you are updating,** after you edit your Helm chart,
+        increment the chart version in the `Chart.yaml` file.
+      + **If you have a `ksm.yaml` for the offer,** after you do the above,
+        update the chart versions in the `ksm.yaml` file to match the `Chart.yaml` version.
         For more information about multiple charts and `ksm.yaml`,
         see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
@@ -221,12 +223,29 @@ To update a single chart service offering in  <%= vars.product_short %>:
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
-    <p class="note"><strong>Note:</strong>
-      If the Helm chart version specified in <code>ksm.yaml</code>
-      and <code>Chart.yaml</code> do not match, <%= vars.product_short %>
-      returns a error message similar to the following:
-      <code>Error: The offer yaml version [2.3.0] for chart [mysql] does not match the version [1.3.0] in chart</code>
-    </p>
+### <a id="crd-validation"></a> Updating a Service Offering with CustomResourceDefinitions (CRDs)
+
+Helm 3 handles CRDs differently from other Kubernetes Resources. <%= vars.product_short %> follows the guidelines
+for CRDs described in [Helm Best Practices](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/).
+
+When a chart in a Service Offering includes CRDs, <%= vars.product_short %> by default will reject an updated Service Offering that has
+any changes to the CRD versions and warn. This is because <%= vars.product_short %> will not modify the CRDs that currently exist on the Kubernetes cluster.
+
+The suggested steps for this scenario are:
++ If any instances of the service offering have been provisioned at any time, manually update the CRDs on the Kubernetes cluster directly. 
+
+    You may need to unpackage the chart that includes the CRDs and run `kubectl apply -f PATH-TO-CRD-MANIFEST.yaml` for each CRD manifest.
+ 
+    Where:
+    + `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest, which is in the `crds` folder of the chart.
+
++ Once the CRDs have been manually applied, OR no instances of the service offering have ever been provisioned, you may update the service offering 
+and safely ignore the warning from <%= vars.product_short %> by including the `--ignore-crd-warning` flag. For example:
+           
+    ```bash
+    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
+            /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update --ignore-crd-warning
+    ```
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
