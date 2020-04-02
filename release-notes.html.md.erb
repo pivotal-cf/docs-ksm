@@ -18,11 +18,11 @@ These are release notes for <%= vars.product_full %>.
 
 **Release Date:** XXX XX, 2020
 
-<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.7
-  beta release of <%= vars.product_short %>.
+<p class="note breaking"><strong>Breaking Change:</strong>
+  This release is incompatible with the v0.7 beta release of <%= vars.product_short %>.
   Before you install <%= vars.product_short %> v0.8, you must uninstall
-  <%= vars.product_short %> v0.7 from <%= vars.ops_manager_full %>. After you install <%= vars.product_short %> v0.8,
-  you must re-add your service offerings.
+  <%= vars.product_short %> v0.7 from <%= vars.ops_manager_full %>.
+  After you install <%= vars.product_short %> v0.8, you must re-add your service offerings.
   For more information, see <a href="./upgrading.html">Upgrading KSM</a>.
   </p>
 
@@ -30,11 +30,22 @@ These are release notes for <%= vars.product_full %>.
 
 New features and changes in this release:
 
-+ Upgrade service instances with Cloud Foundry `cf upgrade <instance-name> -u` when a new version of a service offering is available. For more information, see  <a href="./using.html#upgrade-instance">Upgrade a Service Instance</a>.
-+ Improve <%= vars.product_short %> stability. Fixed bugs around BOSH process monitoring and restarting. 
-+ Support overriding default `values.yaml` in Helm chart package. For more information, see  <a href="./prepare-offer.html#override">(Optional) Override Chart Values</a>.
-+ Listing service instances in <%= vars.product_short %> now includes Cloud Foundry instance name, org, and space. 
-+ Cluster scoped charts and resources are now cleaned up from the Kubernetes cluster when the last service instance is deleted. 
++ Developers can upgrade service instances with `cf update-service SERVICE-INSTANCE-NAME -u`.
+  For more information, see [Upgrade a Service Instance](./using.html#upgrade-instance).
++ Adds support for overriding values in `values.yaml` in the Helm chart.
+  For more information, see [(Optional) Override Chart Values](./prepare-offer.html#override).
++ Operators can view service instance metadata for <%= vars.product_short %> service instances.
+  The metadata includes the Cloud Foundry instance name, org, and space. For more information,
+  see [View Service Instance Metadata in Kubernetes](./troubleshoot.html#view-service-instance)
++ When you delete all your service instances, cluster-scoped charts and resources
+  are also removed from the Kubernetes cluster.
+
+### Resolved Issues
+
+This release has the following fix:
+
++ Improve <%= vars.product_short %> stability.
+Fixed bugs around BOSH process monitoring and restarting.
 
 ### Known Issue
 
