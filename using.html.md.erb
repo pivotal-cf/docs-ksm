@@ -63,11 +63,6 @@ To retrieve your KSM API Credentials:
 You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers
 to use the service.
 
-<p class="note"><strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
-For information about best practices for using CRDs, see
-the <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
-</p>
-
 To add your offering to <%= vars.product_short %>:
 
 1. Package your Helm chart by running the following command from the root level of
@@ -183,12 +178,6 @@ When you update a service offering in <%= vars.product_short %>, any newly-creat
 use the latest version of the service offering.
 Existing instances must be upgraded using the Cloud Foundry Command Line Interface (cf CLI).
 See [Upgrade a Service Instance](#upgrade-instance) below.
-
-
-<p class="note"><strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
-For information about best practices for using CRDs, see
-the <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
-</p>
 
 To update a service offering in  <%= vars.product_short %>:
 

@@ -171,6 +171,11 @@ To configure your Helm chart:
     Helm 2 and Helm 3 methods.
     See [Define Custom Resource Definitions](#crd).
 
+    <p class="note"><strong>Note:</strong>Helm 3 handles CRDs differently from other Kubernetes Resources.
+    For information about best practices for using CRDs, see
+    the <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>
+  </p>
+
 ###<a id='override'></a> Override Chart Values
 To ensure that your chart is compatible with <%= vars.product_short %>,
 you might need to override specific values in <code>values.yaml</code>.
