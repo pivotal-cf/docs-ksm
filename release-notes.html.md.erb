@@ -71,3 +71,5 @@ Kubernetes primitives have known patterns for detecting readiness, but custom re
 In the unlikely event that this happens, wait until the custom resources are created before binding
 a service instances to an app.
 This mitigates any issues with missing details in the bind response.
+
++ Decreased <%= vars.product_short %> stability around BOSH process monitoring and restarting.
