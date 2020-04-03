@@ -63,6 +63,11 @@ To retrieve your KSM API Credentials:
 You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers
 to use the service.
 
+<p class="note"><strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
+For information about best practices for using CRDs, see
+the <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
+</p>
+
 To add your offering to <%= vars.product_short %>:
 
 1. Package your Helm chart by running the following command from the root level of
@@ -77,6 +82,11 @@ your Helm chart directory:
 
 1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %>
 by doing one of the following:
+    <p class="note"><strong>Note:</strong> If your chart includes CRDs, you can
+      safely ignore a CRD warning from <%= vars.product_short %>
+      by adding the  <code>--ignore-crd-warning</code> flag to the below <code>ksm offer save</code>
+      commands.
+    </p>
     + **If you are adding a single chart,** run:
 
         ```
@@ -173,20 +183,36 @@ When you update a service offering in <%= vars.product_short %>, any newly-creat
 use the latest version of the service offering.
 Existing instances must be upgraded using the Cloud Foundry Command Line Interface (cf CLI).
 See [Upgrade a Service Instance](#upgrade-instance) below.
-If any of the charts in the service offering include CustomResourceDefinitions (CRDs), 
-these have special behavior. Please see [Updating a Service Offering with CustomResourceDefinitions (CRDs)](#crd-validation) below.
+
+
+<p class="note"><strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
+For information about best practices for using CRDs, see
+the <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
+</p>
 
 To update a service offering in  <%= vars.product_short %>:
 
-1. Update your chart(s) by doing the following:
-      + **For each chart you are updating,** after you edit your Helm chart,
-        increment the chart version in the `Chart.yaml` file.
-      + **If you have a `ksm.yaml` for the offer,** after you do the above,
-        update the chart versions in the `ksm.yaml` file to match the `Chart.yaml` version.
-        For more information about multiple charts and `ksm.yaml`,
-        see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
+1. For each chart you are updating, after you edit your Helm chart,
+  increment the chart version in `Chart.yaml`.
+1. If you have a `ksm.yaml` file for your service offering,
+  update the chart versions in `ksm.yaml` to match the the version in `Chart.yaml`.
+  For more information about multiple charts and `ksm.yaml`,
+    see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
+1. If any of your charts include modified Custom Resource Definitions (CRDs),
+  for each CRD manifest, manually apply the changes to the cluster by running:
 
-1. Package an updated version of your Helm chart by running the following command from the root level of your Helm chart directory:
+      ```
+      kubectl apply -f PATH-TO-CRD-MANIFEST.yaml
+      ```
+      Where:
+      + `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest.
+      The CRD manifest is in the `crds` directory in the chart.
+      <p class="note"><strong>Note:</strong>
+      By default, <%= vars.product_short %> rejects an updated service offering with any CRD changes in the chart.
+      This is because <%= vars.product_short %> does not modify any CRDs that currently exist on the Kubernetes cluster.
+      </p>
+1. Package an updated version of your Helm chart by running the following command from
+    the root level of your Helm chart directory:
 
      ```
      helm package .
@@ -194,10 +220,15 @@ To update a service offering in  <%= vars.product_short %>:
 
      Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
 
-     <p class="note"><strong>Note:</strong> If you are updating multiple charts, run the above command for each updated chart.
+     <p class="note"><strong>Note:</strong> If you are updating multiple charts,
+       run the above command for each updated chart.
      </p>
 
 1. Update the service offering by running one of the following commands:
+      <p class="note"><strong>Note:</strong> If your chart includes CRDs, you can
+        safely ignore a CRD warning from <%= vars.product_short %>
+        by adding the <code>--ignore-crd-warning</code> flag to the below commands.
+      </p>
     + **If you are adding a single chart,** run:
 
         ```
@@ -205,8 +236,10 @@ To update a service offering in  <%= vars.product_short %>:
         ```
         Where:
         + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
-        + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `USERNAME` is the value of `identity` you recorded in
+        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PASSWORD` is the value of `password` you recorded in
+        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete.
     + **If you are adding a multiple charts,** run:
 
@@ -216,36 +249,15 @@ To update a service offering in  <%= vars.product_short %>:
         ```
         Where:
         + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
-        + `USERNAME` is the value of `identity` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PASSWORD` is the value of `password` you recorded in [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `USERNAME` is the value of `identity` you recorded in
+        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+        + `PASSWORD` is the value of `password` you recorded in
+        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-KSM-DIRECTORY/` is the path to the `ksm` directory that includes
             the `ksm.yaml` file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
-### <a id="crd-validation"></a> Updating a Service Offering with CustomResourceDefinitions (CRDs)
-
-Helm 3 handles CRDs differently from other Kubernetes Resources. <%= vars.product_short %> follows the guidelines
-for CRDs described in [Helm Best Practices](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/).
-
-When a chart in a Service Offering includes CRDs, <%= vars.product_short %> by default will reject an updated Service Offering that has
-any changes to the CRD versions and warn. This is because <%= vars.product_short %> will not modify the CRDs that currently exist on the Kubernetes cluster.
-
-The suggested steps for this scenario are:
-+ If any instances of the service offering have been provisioned at any time, manually update the CRDs on the Kubernetes cluster directly. 
-
-    You may need to unpackage the chart that includes the CRDs and run `kubectl apply -f PATH-TO-CRD-MANIFEST.yaml` for each CRD manifest.
- 
-    Where:
-    + `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest, which is in the `crds` folder of the chart.
-
-+ Once the CRDs have been manually applied, OR no instances of the service offering have ever been provisioned, you may update the service offering 
-and safely ignore the warning from <%= vars.product_short %> by including the `--ignore-crd-warning` flag. For example:
-           
-    ```bash
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-            /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update --ignore-crd-warning
-    ```
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
