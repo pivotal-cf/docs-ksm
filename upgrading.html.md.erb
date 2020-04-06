@@ -14,18 +14,24 @@ This topic explains how to upgrade the <%= vars.product_full %>.
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
+<%# The below uses the local product variable and math so we do not need to update this page
+with every release %>
+
 ## <a id="overview"></a>Overview
 
-<%= vars.product_short %> v0.8 is incompatible with the v0.7 beta release of <%= vars.product_short %>.
-  Before you install <%= vars.product_short %> v0.8, you must uninstall
-  <%= vars.product_short %> v0.7 from <%= vars.ops_manager_full %>.
-  After you install <%= vars.product_short %> v0.8, you must re-add your service offerings.
+<%= vars.product_short %> v<%= product_info['local_product_version'] %> is incompatible with the
+v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%> beta release of <%= vars.product_short %>.
+Before you install <%= vars.product_short %> v<%= product_info['local_product_version'] %>, you must uninstall
+<%= vars.product_short %> v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%> from <%= vars.ops_manager_full %>.
+After you install <%= vars.product_short %> v<%= product_info['local_product_version'] %>, you must re-add your service offerings.
 
-To upgrade from <%= vars.product_short %> v0.7:
+To upgrade from <%= vars.product_short %>
+v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%>:
 
-1. Uninstall <%= vars.product_short %> v0.7.
+1. Uninstall <%= vars.product_short %>
+v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%>.
   See [Uninstall <%= vars.product_short %>](#uninstall) below.
-1. Install  <%= vars.product_short %> v0.8.
+1. Install  <%= vars.product_short %> v<%= product_info['local_product_version'] %>.
   See [Installing and Configuring <%= vars.product_short %>](./installing.html).
 1. Add and enable access to your service offerings. See [Add a Service Offering to KSM](./using.html#add)
   and [Enable Service Offering Access](./using.html#enable).
