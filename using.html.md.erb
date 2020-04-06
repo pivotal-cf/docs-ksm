@@ -77,11 +77,6 @@ your Helm chart directory:
 
 1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %>
 by doing one of the following:
-    <p class="note"><strong>Note:</strong> If your chart includes CRDs, you can
-      safely ignore a CRD warning from <%= vars.product_short %>
-      by adding the  <code>--ignore-crd-warning</code> flag to the below <code>ksm offer save</code>
-      commands.
-    </p>
     + **If you are adding a single chart,** run:
 
         ```
@@ -214,8 +209,9 @@ To update a service offering in  <%= vars.product_short %>:
      </p>
 
 1. Update the service offering by running one of the following commands:
-      <p class="note"><strong>Note:</strong> If your chart includes CRDs, you can
-        safely ignore a CRD warning from <%= vars.product_short %>
+      <p class="note"><strong>Note:</strong> 
+        If you manually applied CRD changes to the cluster in step 3,
+        you can safely ignore a CRD warning from <%= vars.product_short %>
         by adding the <code>--ignore-crd-warning</code> flag to the below commands.
       </p>
     + **If you are adding a single chart,** run:
