@@ -17,7 +17,7 @@ This section describes solutions for specific troubleshooting errors.
 
 <%= partial vars.path_to_partials + "/troubleshoot-template", locals: {
     id: 'helm-versions',
-    description: 'Incompatible Helm Command Line Interface (CLI) Versions' ,
+    description: 'Incompatible Helm CLI Versions' ,
     symptom: 'When you run <code>ksm offer save</code>, you see an error similar to the following:
     <pre class="terminal"> helm.sh/hook: crd-install found in [Chart1, Chart2....] but no Helm /crds dir; this looks like a Helm 2 only chart </pre>',
     cause:  vars.product_short  + ' supports charts that use the Helm 2 and Helm 3 CLIs.
@@ -44,7 +44,7 @@ To validate that the <%= vars.product_short %> CLI and tile versions match:
     ```
     ksm version -t http://ksm.SYSTEM-DOMAIN
     ```
-    Where `SYSTEM-DOMAIN` is your <%= ops_manager %> system domain URL.
+    Where `SYSTEM-DOMAIN` is your <%=vars.ops_manager %> system domain URL.
     <br><br>
     For example:
     <pre class="terminal">$ ksm version -t http<span>:</span>//ksm.my-env.com
