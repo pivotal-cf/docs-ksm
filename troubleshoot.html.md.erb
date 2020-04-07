@@ -3,15 +3,10 @@ title: Troubleshooting
 owner: Platform Engineering (KSM Team)
 ---
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
-
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
-
 <strong><%= modified_date %></strong>
 
 This topic provides platform operators with basic instructions for troubleshooting
-<%= vars.product_full %>.
+<%= vars.product_full %> (<%= vars.product_short %>).
 
 
 ## <a id='errors'></a> Troubleshooting Errors
@@ -22,7 +17,7 @@ This section describes solutions for specific troubleshooting errors.
 
 <%= partial vars.path_to_partials + "/troubleshoot-template", locals: {
     id: 'helm-versions',
-    description: 'Incompatible Helm CLI Versions' ,
+    description: 'Incompatible Helm Command Line Interface (CLI) Versions' ,
     symptom: 'When you run <code>ksm offer save</code>, you see an error similar to the following:
     <pre class="terminal"> helm.sh/hook: crd-install found in [Chart1, Chart2....] but no Helm /crds dir; this looks like a Helm 2 only chart </pre>',
     cause:  vars.product_short  + ' supports charts that use the Helm 2 and Helm 3 CLIs.
@@ -49,7 +44,7 @@ To validate that the <%= vars.product_short %> CLI and tile versions match:
     ```
     ksm version -t http://ksm.SYSTEM-DOMAIN
     ```
-    Where `SYSTEM-DOMAIN` is your Pivotal Platform system domain URL.
+    Where `SYSTEM-DOMAIN` is your <%= ops_manager %> system domain URL.
     <br><br>
     For example:
     <pre class="terminal">$ ksm version -t http<span>:</span>//ksm.my-env.com
@@ -87,10 +82,10 @@ For example:
     in the Helm documentation.
 
 ### <a id='issue-cleanup'></a> Clean Up a Service Instance
-<%= vars.platform_name %> gives an asynchronously provisioned service instance seven days to become healthy.
+<%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) gives an asynchronously provisioned service instance seven days to become healthy.
 In some failure modes, you might have to manually clean up services earlier.
 
-You can use the cf CLI to purge a service instance from <%= vars.platform_name %>.
+You can use the cf CLI to purge a service instance from <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 However, this can leave resources in the Kubernetes cluster.
 To fully clean up a service instance, you must delete any remaining namespaces.
 

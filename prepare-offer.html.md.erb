@@ -5,17 +5,12 @@ owner: Platform Engineering (KSM Team)
 
 <strong><%= modified_date %></strong>
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
-
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
-
-This topic describes how to prepare an offered service for <%= vars.product_full %>.
+This topic describes how to prepare an offered service for <%= vars.product_full %> (<%= vars.product_short %>).
 
 ##<a id='using'></a> Overview
 
 <%= vars.product_short %> enables platform operators to offer Helm charts as
-on-demand services to developers on <%= vars.pas_full %>.
+on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 Before you add a service offering to `cf marketplace`,
 you must configure your Helm charts to be compatible with <%=  vars.product_short %>.
 You can also  customize your Helm charts to enable additional features.
@@ -24,7 +19,7 @@ A service offering includes the following:
 
 + **One or more Helm charts:** You must configure a Helm chart to compatible with
  <%=  vars.product_short %>. See [Configure Your Helm Charts](#config-helm) below.
- Pivotal recommends that you refer to the following resources when creating your Helm chart:
+ VMware recommends that you refer to the following resources when creating your Helm chart:
      + For information about creating your first Helm chart,
      see this topic in the [Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
      + For information about best practices for creating production-ready Helm charts,
@@ -77,7 +72,7 @@ helm-chart.tgz
 
 Uploading a Helm chart to <%= vars.product_short %> with either a `ksm.yaml` or `plans.yaml` file
 overrides the default values for the service offering name, description, and plan names.
-These values are displayed when a <% vars.pas_short %> developer runs `cf marketplace`.
+These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
 
 The following table describes the values for your service that are used when you upload a Helm chart
 without additional configurations, with a `ksm.yaml` file or a `plans.yaml` file:
@@ -126,7 +121,7 @@ For example, if your Helm chart requires an Ingress controller to enable service
 + **Load Container Images:** You might have to load your container images into a private
 container registry.
 See [Load Container Images into a Private Container Registry](#images) below.
-+ **Install the <%= vars.product_short %> CLI:**
++ **Install the <%= vars.product_short %> (Command Line Interface) CLI:**
 See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
 
 ##<a id='offer-init'></a> Create a Sample Service Offering Directory
@@ -201,8 +196,8 @@ To override chart values:
     Do not change the names of the properties.
 
 1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
-the storageClass name for your configured Enterprise Pivotal Container Service (PKS) cluster.
-The default name for PKS is `standard`.
+the storageClass name for your configured <%= vars.k8s_runtime_full %> cluster.
+The default name for <%= vars.k8s_runtime_abbr %> is `standard`.
 For more information, see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
 <br><br>For example:
 
@@ -492,7 +487,7 @@ The following table describes the Helm chart configurations in `ksm.yaml`:
 
 ##<a id='env'></a> (Optional) Create Binding Template for App Consumption
 
-Apps running in <%= vars.pas_full %>  gain access to bound service instances through an environment
+Apps running in <%= vars.app_runtime_abbr %> gain access to bound service instances through an environment
 variable credentials hash called `VCAP_SERVICES`.
 Libraries such as Spring Cloud
 Cloud Foundry Connector automatically support services if their credentials in
@@ -645,7 +640,7 @@ The plan-specific values files also go through the Helm templating engine.
 
 ##<a id='images'></a> Load Container Images into a Private Container Registry
 
-Pivotal recommends using a private container registry in production.
+VMware recommends using a private container registry in production.
 <%= vars.product_short %> can then modify your Helm charts to point to images in the private
 container registry.
 

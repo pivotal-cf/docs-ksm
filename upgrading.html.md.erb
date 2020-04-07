@@ -5,12 +5,7 @@ owner: MySQL
 
 <strong><%= modified_date %></strong>
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
-
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
-
-This topic explains how to upgrade the <%= vars.product_full %>.
+This topic explains how to upgrade the <%= vars.product_full %> (<%= vars.product_short %>).
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
@@ -24,7 +19,7 @@ with every release %>
 <%= vars.product_short %> v<%= current_version %> is incompatible with the v<%= previous_version %>
 beta release of <%= vars.product_short %>.
 Before you install <%= vars.product_short %> v<%= current_version %>, you must uninstall
-<%= vars.product_short %> v<%= previous_version %> from <%= vars.ops_manager_full %>.
+<%= vars.product_short %> v<%= previous_version %> from <%= vars.ops_manager %>.
 After you install <%= vars.product_short %> v<%= current_version %>, you must re-add your service offerings.
 
 To upgrade from <%= vars.product_short %> v<%= previous_version %>:
@@ -35,20 +30,20 @@ To upgrade from <%= vars.product_short %> v<%= previous_version %>:
 1. Install  <%= vars.product_short %> v<%= current_version %>.
    See [Installing and Configuring <%= vars.product_short %>](./installing.html).
 
-1. Add and enable access to your service offerings. See [Add a Service Offering to KSM](./using.html#add)
+1. Add and enable access to your service offerings. See [Add a Service Offering to <%= vars.product_short %>](./using.html#add)
    and [Enable Service Offering Access](./using.html#enable).
 
 ## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
 
 To uninstall <%= vars.product_short %>:
 
-1. Navigate to **<%= vars.ops_manager %> Installation Dashboard** > **<%= vars.product_full %>** >
+1. Navigate to **<%= vars.ops_manager %> Installation Dashboard** > **<%= vars.product_full %> (<%= vars.product_short %>)** >
   **Errands**.
 
 1. Confirm that **deregister** is set to **On**.
 
 2. Navigate to **<%= vars.ops_manager %> Installation Dashboard** and click the trash icon
-   for **<%= vars.product_full %>**.
+   for **<%= vars.product_full %> (<%= vars.product_short %>)**.
 
 1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
    For more information about this <%= vars.ops_manager %> page,

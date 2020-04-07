@@ -4,25 +4,20 @@ owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
+This topic describes how to install and configure <%= vars.product_full %> (<%= vars.product_short %>).
 
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
+##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
 
-This topic describes how to install and configure <%= vars.product_full %>.
+To install the <%= vars.product_short %> (Command Line Interface)CLI:
 
-##<a id='ksm'></a>  Install the KSM CLI
-
-To install the KSM CLI:
-
-1. Log in and navigate to **<%= vars.product_full %>** in
-[Pivotal Network](https://network.pivotal.io/).
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
 
 1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
 
 1. Rename the downloaded binary file to `ksm`.
 
-1. If you use MacOS or Linux, make the KSM binary act as an executable file by running the following command:
+1. If you use MacOS or Linux, make the <%= vars.product_short %> binary act as an executable file by running the following command:
 
     <pre class="terminal">chmod +x ksm</pre>
 
@@ -33,22 +28,22 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running the 
 
 ##<a id='install'></a> Download and Install the Tile
 
-To add <%= vars.product_short %> to <%= vars.product_full %>:
+To add <%= vars.product_short %> to <%= vars.ops_manager %>:
 
-1. Log in and download the <%= vars.product_full %> tile from
-[Pivotal Network](https://network.pivotal.io/).
+1. Log in and download the <%= vars.product_full %> (<%= vars.product_short %>) tile from
+[<%= vars.product_network %>](https://network.pivotal.io/).
 
-1. Navigate to the **<%= vars.ops_manager_full %> Installation Dashboard** where
-you have installed <%= vars.pas_full %>.
-<%= vars.product_short %> registers itself with the <%= vars.pas_full %>
-marketplace and therefore must be installed in an environment with <%= vars.pas_full %>.
+1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** where
+you have installed <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+<%= vars.product_short %> registers itself with the <%= vars.app_runtime_abbr %>
+marketplace and therefore must be installed in an environment with <%= vars.app_runtime_abbr %>.
 
 1. Click **Import a Product** to upload the product file.
 
 1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>.
 This adds the tile to your staging area.
 
-1. Click the newly-added **<%= vars.product_full %>** tile to open its configuration panes.
+1. Click the newly-added **<%= vars.product_full %> (<%= vars.product_short %>)** tile to open its configuration panes.
 
 ## <a id="configure"></a>Configure the Tile
 Follow the steps below to configure <%= vars.product_short %> service.
@@ -76,9 +71,9 @@ service broker and to select networks.
      </tr>
      <tr>
         <td><strong>Network</strong></td>
-        <td>Select the same network you use for the <%= vars.pas_full %> component VMs.
-          To view the network PAS component VMs use, navigate to <strong><%= vars.ops_manager %></strong> >
-          <strong><%= vars.product_full %></strong> > <strong>Assign AZs and Networks</strong>.
+        <td>Select the same network you use for the <%= vars.app_runtime_abbr %> component VMs.
+          To view the network <%= vars.app_runtime_abbr %> component VMs use, navigate to <strong><%= vars.ops_manager %></strong> >
+          <strong><%= vars.product_full %> (<%= vars.product_short %>)</strong> > <strong>Assign AZs and Networks</strong>.
         </td>
      </tr>
    </table>
@@ -92,19 +87,19 @@ service broker and to select networks.
 
 ### <a id="kubeconfig"></a> Configure Cluster Credentials
 
-If you are using an Enterprise Pivotal Container Service (Enterprise PKS) cluster, you
-can configure cluster credentials with the Pivotal Container Service Command Line Interface (PKS CLI).
-For information about installing the PKS CLI,
-see [Installing the PKS CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
+If you are using an <%= vars.k8s_runtime_full %> cluster, you
+can configure cluster credentials with the <%= vars.k8s_runtime_abbr %> Command Line Interface (<%= vars.k8s_runtime_abbr %> CLI).
+For information about installing the <%= vars.k8s_runtime_abbr %> CLI,
+see [Installing the <%= vars.k8s_runtime_abbr %> CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
 
-To use the Pivotal Container Service Command Line Interface (PKS CLI) to configure
+To use the <%= vars.k8s_runtime_abbr %> Command Line Interface (<%= vars.k8s_runtime_abbr %> CLI) to configure
 default settings for your kubeconfig:
 
-1. Retrieve your cluster credentials with the PKS CLI by
+1. Retrieve your cluster credentials with the <%= vars.k8s_runtime_abbr %> CLI by
    doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
 
 1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
-  + `certificate-authority-data`. This is the base64 encoded CA certificate for your Enterprise PKS cluster
+  + `certificate-authority-data`. This is the base64 encoded CA certificate for your <%= vars.k8s_runtime_abbr %> cluster
   in PEM format.
   + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
 
@@ -159,7 +154,7 @@ with the `cluster-admin` role:
 
     <br>
     Record the output.
-1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %>** > **Kubernetes Configuration**.
+1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %> (<%= vars.product_short %>)** > **Kubernetes Configuration**.
 
 1. Configure the fields as follows:
    <table class="nice">
@@ -203,7 +198,7 @@ See [Prerequisites](#storage-preq), below.
 <p class="note warning"><strong>Warning:</strong> If you change the storage configurations,
   the service offering data is lost and you must re-add the service offering to <%= vars.product_short %>.
   For offerings with multiple versions provisioned, the old versions should also be re-added.
-  See <a href="./using.html#add">Add a Service Offering to KSM</a>.
+  See <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %></a>.
 </p>
 
 #### <a name="storage-preq"></a> Prerequisites
@@ -212,7 +207,7 @@ To configure your cloud storage provider for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider.
-Pivotal recommends that this account only be used by <%= vars.product_short %>.
+VMware recommends that this account only be used by <%= vars.product_short %>.
 You should apply a minimal policy that lets the user account upload backups to your S3 store.
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
@@ -227,7 +222,7 @@ see [Managing developer keys for a simple migration](https://cloud.google.com/st
 
 To configure storage in <%= vars.product_short %>:
 
-1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %>** > **Storage Configuration**.
+1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %> (<%= vars.product_short %>)** > **Storage Configuration**.
 
 1. Configure the fields as follows:
 
@@ -276,7 +271,7 @@ To configure storage in <%= vars.product_short %>:
 
 ### <a id="container"></a> Configure Private Container Registry
 
-Pivotal recommends using a private container registry in production.
+VMware recommends using a private container registry in production.
 <%= vars.product_short %> can then modify your Helm charts to point to images in the private
 container registry.
 If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
@@ -289,7 +284,7 @@ You obtain the values needed to configure the private container registry from yo
   You must also clear the <%= vars.product_short %> cache by adding a new service offering or updating an existing service offering.<br>
   See <a href="./prepare-offer.html#images">Load Container Images into a Private Container Registry</a>
   and <a href="./using.html#add">
-  Add a Service Offering to KSM</a>.
+  Add a Service Offering to <%= vars.product_short %></a>.
 </p>
 
 To configure a private container registry:

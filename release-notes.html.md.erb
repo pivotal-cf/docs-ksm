@@ -5,12 +5,7 @@ owner: Platform Engineering (KSM Team)
 
 <strong><%= modified_date %></strong>
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
-
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
-
-These are release notes for <%= vars.product_full %>.
+These are release notes for <%= vars.product_full %> (<%= vars.product_short %>).
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
@@ -21,7 +16,7 @@ These are release notes for <%= vars.product_full %>.
 <p class="note breaking"><strong>Breaking Change:</strong>
   This release is incompatible with the v0.7 beta release of <%= vars.product_short %>.
   Before you install <%= vars.product_short %> v0.8, you must uninstall
-  <%= vars.product_short %> v0.7 from <%= vars.ops_manager_full %>.
+  <%= vars.product_short %> v0.7 from <%= vars.ops_manager %>.
   After you install <%= vars.product_short %> v0.8, you must re-add your service offerings.
   For more information, see <a href="./upgrading.html">Upgrading KSM</a>.
   </p>

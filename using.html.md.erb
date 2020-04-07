@@ -5,16 +5,11 @@ owner: Platform Engineering (KSM Team)
 
 <strong><%= modified_date %></strong>
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
-
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
-
-This topic describes how to use <%= vars.product_full %>.
+This topic describes how to use <%= vars.product_full %> (<%= vars.product_short %>).
 
 ##<a id='using'></a> Overview
 
-<%= vars.product_short %> uses the KSM CLI and a generic broker deployed by the tile.
+<%= vars.product_short %> uses the <%= vars.product_short %> (Command Line Interface) CLI and a generic broker deployed by the tile.
 You can use <%= vars.product_short %> to do the following:
 
 + Offer on-demand provisioning of a dedicated service instance for developers through `cf marketplace`.
@@ -22,7 +17,7 @@ You can use <%= vars.product_short %> to do the following:
 
 To add a service offering:
 
-1. Retrieve the credentials needed to use the KSM CLI. <br>
+1. Retrieve the credentials needed to use the <%= vars.product_short %> CLI. <br>
 See [Retrieve Credentials for <%= vars.product_short %>](#credentials) below.
 1. Package your Helm chart and add the chart to <%= vars.product_short %>. <br>
 See [Add a Service Offering to <%= vars.product_short %>](#add) below.
@@ -37,14 +32,14 @@ See [Preparing a Service Offering](./prepare-offer.html).
 
 ## <a id="credentials"></a> Retrieve Credentials for <%= vars.product_short %>
 
-To use the KSM CLI, you need to retrieve your KSM API credentials.
+To use the <%= vars.product_short %> CLI, you need to retrieve your KSM API credentials.
 
-To retrieve your KSM API Credentials:
+To retrieve your <%= vars.product_short %> API Credentials:
 
-1. Navigate to the **<%= vars.ops_manager_full %> Installation Dashboard** >
-**<%= vars.product_full %>** > **Credentials**.
+1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** >
+**<%= vars.product_full %> (<%= vars.product_short %>)** > **Credentials**.
 
-1. Retrieve your **KSM API Credentials** by clicking **Link to Credentials**.
+1. Retrieve your **<%= vars.product_short %> API Credentials** by clicking **Link to Credentials**.
 
 1. Record the values for `identity` and `password`.
 
@@ -54,7 +49,7 @@ To retrieve your KSM API Credentials:
     ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in the above step.
     + `PASSWORD` is the value of `password` you recorded in the above step.
 
@@ -83,7 +78,7 @@ by doing one of the following:
         ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
         + `USERNAME` is the value of `identity` you recorded in
         [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in
@@ -96,7 +91,7 @@ by doing one of the following:
         /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
         + `USERNAME` is the value of `identity` you recorded in
         [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in
@@ -126,7 +121,7 @@ by doing one of the following:
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
     + `USERNAME` is the value of `identity` you recorded in
     [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in
@@ -138,16 +133,16 @@ After you add your service offering, you must enable access to the service offer
 
 To enable access to your service offering:
 
-1. Log in to your PAS deployment by running:
+1. Log in to your <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) deployment by running:
 
     ```
     cf login -a API-URL -u USERNAME -p PASSWORD
     ```
 
     Where:
-    + `API-URL` is the API endpoint for your PAS instance.
-    + `USERNAME` is your username for your PAS instance.
-    + `PASSWORD` is your password for your PAS instance.
+    + `API-URL` is the API endpoint for your <%= vars.app_runtime_abbr %> instance.
+    + `USERNAME` is your username for your <%= vars.app_runtime_abbr %> instance.
+    + `PASSWORD` is your password for your <%= vars.app_runtime_abbr %> instance.
 
     For more information,
     see [Getting Started with the cf CLI](https://docs.pivotal.io/pivotalcf/2-4/cf-cli/getting-started.html#login).
@@ -209,7 +204,7 @@ To update a service offering in  <%= vars.product_short %>:
      </p>
 
 1. Update the service offering by running one of the following commands:
-      <p class="note"><strong>Note:</strong> 
+      <p class="note"><strong>Note:</strong>
         If you manually applied CRD changes to the cluster in step 3,
         you can safely ignore a CRD warning from <%= vars.product_short %>
         by adding the <code>--ignore-crd-warning</code> flag to the below commands.
@@ -220,7 +215,7 @@ To update a service offering in  <%= vars.product_short %>:
         ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz --update
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
         + `USERNAME` is the value of `identity` you recorded in
         [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in
@@ -233,7 +228,7 @@ To update a service offering in  <%= vars.product_short %>:
         /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
         + `USERNAME` is the value of `identity` you recorded in
         [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PASSWORD` is the value of `password` you recorded in
@@ -308,7 +303,7 @@ delete the instance by running:
     ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.platform_name %> system domain URL.
+    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
     + `USERNAME` is the value of `identity` you recorded in
     [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `PASSWORD` is the value of `password` you recorded in

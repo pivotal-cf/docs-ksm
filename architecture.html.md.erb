@@ -4,20 +4,15 @@ owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
 
-<%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
-
-<%= partial vars.path_to_partials + '/services/beta-notice',
-:locals => {:product_full => vars.product_full, :platform_name => vars.platform_name} %>
-
-This topic describes <%= vars.product_full %> components, architecture, and technical detail.
+This topic describes <%= vars.product_full %> (<%= vars.product_short %>) components, architecture, and technical detail.
 
 ##<a id='overview'></a> Overview
 
 <%= vars.product_short %> is a collection of components running on a BOSH-deployed
-VM that communicates with both Kubernetes clusters and <%= vars.platform_name %>.
+VM that communicates with both Kubernetes clusters and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
 The following diagram describes how <%= vars.product_short %> communicates with
-<%= vars.platform_name %> and a Kubernetes cluster:
+<%= vars.app_runtime_abbr %> and a Kubernetes cluster:
 
 <a href="images/reference_architecture.png" target="_blank">
     <img src="images/reference_architecture.png" alt="<%= vars.product_short %> reference architecture">
@@ -34,13 +29,14 @@ in more detail for clarity/accessibility reasons. %>
 
 <%= vars.product_short %> contains the following components:
 
-* [KSM Daemon](#ksm-d)
-* [KSM Broker](#ksm-broker)
+* [<%= vars.product_short %> Daemon](#ksm-d)
+* [<%= vars.product_short %> Broker](#ksm-broker)
 
-###<a id='ksm-d'></a> KSM Daemon
+###<a id='ksm-d'></a> <%= vars.product_short %> Daemon
 
-The <%= vars.product_short %> daemon (ksm-d) provides the API that the KSM CLI communicates with.
-When a platform operator adds a service offering using the KSM CLI,
+The <%= vars.product_short %> daemon (ksm-d) provides the API that the
+<%= vars.product_short %> Command Line Interface (CLI) communicates with.
+When a platform operator adds a service offering using the <%= vars.product_short %> CLI,
 ksm-d validates the Helm chart and stores it in ChartMuseum. For information about ChartMuseum,
 see the [chartmuseum](https://github.com/helm/chartmuseum) repository on GitHub.
 
@@ -48,11 +44,11 @@ If you provide a `ksm.yaml` file with the service offering, ksm-d stores
 the file in a configured S3-compatible bucket. For more information about the `ksm.yaml` file,
 see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
-###<a id='ksm-broker'></a> KSM Broker
+###<a id='ksm-broker'></a> <%= vars.product_short %> Broker
 
-The KSM broker is an Open Service Broker that creates
+The <%= vars.product_short %> broker is an Open Service Broker that creates
 dedicated service instances in a Kubernetes cluster.
-When a <% vars.pas_short %> developer runs `cf create-service`
+When a <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) developer runs `cf create-service`
 Cloud Controller sends that request to the broker. The broker then deploys
 the Helm chart needed for the service.
 
@@ -99,7 +95,7 @@ see [Configure Cluster Credentials](./installing.html#kubeconfig).
 
 ## <a id='life-cycle'></a> <%= vars.product_short %> Life Cycle
 
-This section outlines what happens when a <%= vars.pas_full %> developer uses the
+This section outlines what happens when a <%= vars.app_runtime_abbr %> developer uses the
 Cloud Foundry Command Line Interface (cf CLI) to create, bind,
 update, unbind, and delete service instances with <%= vars.product_short %>.
 
@@ -109,7 +105,7 @@ in the Cloud Foundry documentation.
 
 ###<a id='create'></a> Create
 
-When a <%= vars.pas_full %>  developer runs `cf create-service`, <%= vars.product_short %>
+When a <%= vars.app_runtime_abbr %>  developer runs `cf create-service`, <%= vars.product_short %>
 deploys Helm charts into the Kubernetes cluster.
 
 If your service offering
@@ -150,11 +146,11 @@ It uses the predictable namespace names to find resources in the Kubernetes clus
 
 ###<a id='bind'></a> Bind
 
-When a <%= vars.pas_full %> developer runs `cf bind-service`,
+When a <%= vars.app_runtime_abbr %> developer runs `cf bind-service`,
 <%= vars.product_short %> retrieves the `services` and `secrets` credentials for the service offering.
-The retrieved credentials are serialized as JSON and stored in <%= vars.pas_full %> CredHub.
+The retrieved credentials are serialized as JSON and stored in <%= vars.app_runtime_abbr %> CredHub.
 The bound app is given permissions to read the newly created CredHub variable.
-<%# Not to docs folks: to be technically accurate, this needs to be PAS Credhub be platform or something generic %>
+<%# Not to docs folks: to be technically accurate, this needs to be TAS Credhub be platform or something generic %>
 
 <%= vars.product_short %> passes these credentials to CredHub as follows:
 
@@ -169,7 +165,7 @@ For information about CredHub, see [CredHub](https://docs.pivotal.io/pivotalcf/2
 
 ###<a id='update'></a> Update
 
-When a <%= vars.pas_full %>  developer runs `cf update-service`, <%= vars.product_short %> triggers
+When a <%= vars.app_runtime_abbr %>  developer runs `cf update-service`, <%= vars.product_short %> triggers
 the upgrade cycle for Helm. For information about the Helm upgrade cycle,
 see [helm upgrade](https://github.com/helm/helm/blob/master/docs/helm/helm_upgrade.md) on GitHub.
 
@@ -179,12 +175,12 @@ The update also does not upgrade the Helm chart to a newer version.
 
 ###<a id='unbind'></a> Unbind
 
-When a <%= vars.pas_full %>  developer runs `cf unbind-service`, deletes the CredHub variables that
+When a <%= vars.app_runtime_abbr %>  developer runs `cf unbind-service`, deletes the CredHub variables that
 were created when the service was bound your app. See [Bind](#bind) above.
 
 ###<a id='delete'></a> Delete
 
-When a <%= vars.pas_full %>  developer runs `cf delete-service`, <%= vars.product_short %> does the
+When a <%= vars.app_runtime_abbr %>  developer runs `cf delete-service`, <%= vars.product_short %> does the
 following:
 
 * Deletes each Helm chart with the `namespace` scope.
