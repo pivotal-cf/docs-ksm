@@ -16,35 +16,40 @@ This topic explains how to upgrade the <%= vars.product_full %>.
 
 <%# The below uses the local product variable and math so we do not need to update this page
 with every release %>
+<% previous_version = (product_info["local_product_version"].to_f - 0.1).round(2) %>
+<% current_version = product_info['local_product_version'] %>
 
 ## <a id="overview"></a>Overview
 
-<%= vars.product_short %> v<%= product_info['local_product_version'] %> is incompatible with the
-v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%> beta release of <%= vars.product_short %>.
-Before you install <%= vars.product_short %> v<%= product_info['local_product_version'] %>, you must uninstall
-<%= vars.product_short %> v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%> from <%= vars.ops_manager_full %>.
-After you install <%= vars.product_short %> v<%= product_info['local_product_version'] %>, you must re-add your service offerings.
+<%= vars.product_short %> v<%= current_version %> is incompatible with the v<%= previous_version %>
+beta release of <%= vars.product_short %>.
+Before you install <%= vars.product_short %> v<%= current_version %>, you must uninstall
+<%= vars.product_short %> v<%= previous_version %> from <%= vars.ops_manager_full %>.
+After you install <%= vars.product_short %> v<%= current_version %>, you must re-add your service offerings.
 
-To upgrade from <%= vars.product_short %>
-v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%>:
+To upgrade from <%= vars.product_short %> v<%= previous_version %>:
 
-1. Uninstall <%= vars.product_short %>
-v<%= (product_info["local_product_version"].to_f - 0.1).round(2)%>.
-  See [Uninstall <%= vars.product_short %>](#uninstall) below.
-1. Install  <%= vars.product_short %> v<%= product_info['local_product_version'] %>.
-  See [Installing and Configuring <%= vars.product_short %>](./installing.html).
+1. Uninstall <%= vars.product_short %> v<%= previous_version %>.
+   See [Uninstall <%= vars.product_short %>](#uninstall) below.
+
+1. Install  <%= vars.product_short %> v<%= current_version %>.
+   See [Installing and Configuring <%= vars.product_short %>](./installing.html).
+
 1. Add and enable access to your service offerings. See [Add a Service Offering to KSM](./using.html#add)
-  and [Enable Service Offering Access](./using.html#enable).
+   and [Enable Service Offering Access](./using.html#enable).
 
 ## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
 
 To uninstall <%= vars.product_short %>:
 
-1. Navigate to **<%= vars.ops_manager %> Installation Dashboard** >
-**<%= vars.product_full %>** > **Errands**.
+1. Navigate to **<%= vars.ops_manager %> Installation Dashboard** > **<%= vars.product_full %>** >
+  **Errands**.
+
 1. Confirm that **deregister** is set to **On**.
+
 2. Navigate to **<%= vars.ops_manager %> Installation Dashboard** and click the trash icon
-for **<%= vars.product_full %>**.
+   for **<%= vars.product_full %>**.
+
 1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
    For more information about this <%= vars.ops_manager %> page,
    see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
