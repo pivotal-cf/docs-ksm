@@ -41,17 +41,25 @@ To retrieve your <%= vars.product_short %> API Credentials:
 
 1. Retrieve your **<%= vars.product_short %> API Credentials** by clicking **Link to Credentials**.
 
-1. Record the values for `identity` and `password`.
+1. Configure the following environment variables
 
+    ```bash
+    export KSM_TARGET=http://ksm.SYSTEM-DOMAIN
+    export KSM_USER=USERNAME
+    export KSM_PASSWORD=PASSWORD
+    export KSM_INSECURE=true
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %> system domain URL. ([See configure domains here...](https://docs.pivotal.io/platform/application-service/2-8/operating/configure-pas.html#domains))
+    + `USERNAME` is the value of `identity` you recorded in the above step.
+    + `PASSWORD` is the value of `password` you recorded in the above step.
+    + `KSM_INSECURE` true means ignoring certificate validation.
+    
 1. Validate the credentials for <%= vars.product_short %> by running the following command:
 
     ```
-    ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %> system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in the above step.
-    + `PASSWORD` is the value of `password` you recorded in the above step.
+    ksm offer list
+    ```    
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
@@ -75,27 +83,17 @@ by doing one of the following:
     + **If you are adding a single chart,** run:
 
         ```
-        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz
+        ksm offer save /PATH-TO-YOUR-CHART.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
-        + `USERNAME` is the value of `identity` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PASSWORD` is the value of `password` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.
     + **If you are adding multiple charts,** run:
 
         ```
-        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-        /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
+        ksm offer save /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
-        + `USERNAME` is the value of `identity` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PASSWORD` is the value of `password` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
+      
         + `PATH-TO-KSM-DIRECTORY/` is the path to the `ksm` directory that includes the `ksm.yaml`
             file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
@@ -118,14 +116,8 @@ by doing one of the following:
 1. Ensure your offering has been saved to <%= vars.product_short %> by running:
 
     ```
-    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer list
+    ksm offer list
     ```
-    Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in
-    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PASSWORD` is the value of `password` you recorded in
-    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
 
 ## <a id="enable"></a> Enable Service Offering Access
 
@@ -212,27 +204,16 @@ To update a service offering in  <%= vars.product_short %>:
     + **If you are adding a single chart,** run:
 
         ```
-        ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save /PATH-TO-YOUR-CHART.tgz --update
+        ksm offer save /PATH-TO-YOUR-CHART.tgz --update
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
-        + `USERNAME` is the value of `identity` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PASSWORD` is the value of `password` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete.
     + **If you are adding a multiple charts,** run:
 
         ```
-        ksm -t http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer save \
-        /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
+        ksm offer save /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
         ```
         Where:
-        + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
-        + `USERNAME` is the value of `identity` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-        + `PASSWORD` is the value of `password` you recorded in
-        [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
         + `PATH-TO-KSM-DIRECTORY/` is the path to the `ksm` directory that includes
             the `ksm.yaml` file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
@@ -300,14 +281,9 @@ delete the instance by running:
 1. Delete a service offering by running:
 
     ```
-    ksm -t  http://ksm.SYSTEM-DOMAIN -u USERNAME -p PASSWORD offer delete YOUR-CHART
+    ksm offer delete YOUR-CHART
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %>  system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in
-    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
-    + `PASSWORD` is the value of `password` you recorded in
-    [Retrieve Credentials for <%= vars.product_short %>](#credentials) above.
     + `YOUR-CHART` is the name of the service offering you want to delete.
 
     <p class="note"><strong>Note:</strong> If you only have one service offering in
