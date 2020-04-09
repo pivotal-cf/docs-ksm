@@ -41,25 +41,30 @@ To retrieve your <%= vars.product_short %> API Credentials:
 
 1. Retrieve your **<%= vars.product_short %> API Credentials** by clicking **Link to Credentials**.
 
-1. Configure the following environment variables
+1. Configure environment variables by running the following commands:
 
-    ```bash
+    ```
     export KSM_TARGET=http://ksm.SYSTEM-DOMAIN
     export KSM_USER=USERNAME
     export KSM_PASSWORD=PASSWORD
     export KSM_INSECURE=true
     ```
     Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.ops_manager %> system domain URL. ([See configure domains here...](https://docs.pivotal.io/platform/application-service/2-8/operating/configure-pas.html#domains))
+    + `SYSTEM-DOMAIN` is your <%= vars.app_runtime_full %> system domain URL.
     + `USERNAME` is the value of `identity` you recorded in the above step.
     + `PASSWORD` is the value of `password` you recorded in the above step.
-    + `KSM_INSECURE` true means ignoring certificate validation.
-    
-1. Validate the credentials for <%= vars.product_short %> by running the following command:
+
+    <p class="note"><strong>Note:</strong> <%= vars.product_short %> uses the above environment
+    variables to set credentials and target your deployment.
+    <code>KSM_INSECURE=true</code> enables <%= vars.product_short %> to ignore
+     certificate validation.
+     </p>
+
+1. Validate the credentials for <%= vars.product_short %> by running:
 
     ```
     ksm offer list
-    ```    
+    ```
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
@@ -85,15 +90,14 @@ by doing one of the following:
         ```
         ksm offer save /PATH-TO-YOUR-CHART.tgz
         ```
-        Where:
-        + `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.
+        Where `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.<br><br>
     + **If you are adding multiple charts,** run:
 
         ```
         ksm offer save /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
-      
+
         + `PATH-TO-KSM-DIRECTORY/` is the path to the `ksm` directory that includes the `ksm.yaml`
             file for your service offering.
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
@@ -206,8 +210,7 @@ To update a service offering in  <%= vars.product_short %>:
         ```
         ksm offer save /PATH-TO-YOUR-CHART.tgz --update
         ```
-        Where:
-        + `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete.
+        Where `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete. <br><br>
     + **If you are adding a multiple charts,** run:
 
         ```
@@ -283,8 +286,7 @@ delete the instance by running:
     ```
     ksm offer delete YOUR-CHART
     ```
-    Where:
-    + `YOUR-CHART` is the name of the service offering you want to delete.
+    Where `YOUR-CHART` is the name of the service offering you want to delete.
 
     <p class="note"><strong>Note:</strong> If you only have one service offering in
       <%= vars.product_short %>, you cannot delete it.

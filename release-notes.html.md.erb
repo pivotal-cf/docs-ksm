@@ -27,13 +27,17 @@ New features and changes in this release:
 
 + Developers can upgrade service instances with `cf update-service SERVICE-INSTANCE-NAME -u`.
   For more information, see [Upgrade a Service Instance](./using.html#upgrade-instance).
-+ Adds support for overriding values in `values.yaml` in the Helm chart.
++ Operators can set environment variables for <%= vars.product_short %>  credentials and the <%= vars.app_runtime_full %>
+  system domain. <%= vars.product_short %> uses these environment variables for <%= vars.product_short %>
+  Command Line Interface (CLI) commands without requiring flags.
++ Operators can override values in `values.yaml` in the Helm chart.
   For more information, see [Override Chart Values](./prepare-offer.html#override).
 + Operators can view service instance metadata for <%= vars.product_short %> service instances.
   The metadata includes the Cloud Foundry instance name, org, and space. For more information,
   see [View Service Instance Metadata in Kubernetes](./troubleshoot.html#view-service-instance)
 + When all service instances are deleted from <%= vars.product_short %>,
   cluster-scoped charts and resources are also removed from the Kubernetes cluster.
+
 
 ### Resolved Issues
 
