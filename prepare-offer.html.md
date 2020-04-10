@@ -110,8 +110,12 @@ without additional configurations, with a `ksm.yaml` file or a `plans.yaml` file
 
 ##<a id='prereq'></a> Prerequisites
 
-Before you deploy your service offering, you must:
+Before you save your service offering to <%= vars.product_short %, you must:
 
++ **Install the <%= vars.product_short %> (Command Line Interface) CLI:**
+See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
++ **Register a Kubernetes cluster using the <%= vars.product_short %> CLI:**
+See [Managing Kubernetes Clusters for Services](managing-clusters.html).
 + **Install External Dependencies:** If your Helm charts have any external dependencies,
 they must be installed before you offer your service.
 For example, if your Helm chart requires an Ingress controller to enable service through ingress,
@@ -121,8 +125,7 @@ For example, if your Helm chart requires an Ingress controller to enable service
 + **Load Container Images:** You might have to load your container images into a private
 container registry.
 See [Load Container Images into a Private Container Registry](#images) below.
-+ **Install the <%= vars.product_short %> (Command Line Interface) CLI:**
-See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
+
 
 ##<a id='offer-init'></a> Create a Sample Service Offering Directory
 
