@@ -84,107 +84,6 @@ service broker and to select networks.
 
  2. Click **Save**.
 
-
-### <a id="kubeconfig"></a> Configure Cluster Credentials
-
-If you are using an <%= vars.k8s_runtime_full %> cluster, you
-can configure cluster credentials with the <%= vars.k8s_runtime_abbr %> Command Line Interface (<%= vars.k8s_runtime_abbr %> CLI).
-For information about installing the <%= vars.k8s_runtime_abbr %> CLI,
-see [Installing the <%= vars.k8s_runtime_abbr %> CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
-
-To use the <%= vars.k8s_runtime_abbr %> Command Line Interface (<%= vars.k8s_runtime_abbr %> CLI) to configure
-default settings for your kubeconfig:
-
-1. Retrieve your cluster credentials with the <%= vars.k8s_runtime_abbr %> CLI by
-   doing the procedure in [Retrieve Cluster Credentials](https://docs.pivotal.io/pks/cluster-credentials.html#get-credentials).
-
-1. Navigate to `$HOME/.kube/config` and record the following values for your cluster:
-  + `certificate-authority-data`. This is the base64 encoded CA certificate for your <%= vars.k8s_runtime_abbr %> cluster
-  in PEM format.
-  + `server`. This value includes both the Kubernetes API endpoint and port in the format `ENDPOINT:PORT`.
-
-1. Create a dedicated service account for <%= vars.product_short %>
-with the `cluster-admin` role:
-    1. Create a YAML file for the <%= vars.product_short %> service account
-    and `ClusterRoleBinding` using the following YAML:
-
-        ```yml
-        ---
-        apiVersion: v1
-        kind: ServiceAccount
-        metadata:
-          name: ksm-admin
-          namespace: kube-system
-        ---
-        apiVersion: rbac.authorization.k8s.io/v1beta1
-        kind: ClusterRoleBinding
-        metadata:
-          name: ksm-cluster-admin
-        roleRef:
-          apiGroup: rbac.authorization.k8s.io
-          kind: ClusterRole
-          name: cluster-admin
-        subjects:
-          - kind: ServiceAccount
-            name: ksm-admin
-            namespace: kube-system
-        ```
-        For information about service accounts,
-        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
-        in the Kubernetes documentation. <br>
-
-        For information about `ClusterRoleBinding`,
-        see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
-        in the Kubernetes documentation.  <br><br>
-    1. Create the service account and `ClusterRoleBinding` defined in your YAML file
-    by running the following command:
-
-        ```
-        kubectl apply -f SERVICE-ACCOUNT.yml
-        ```
-        Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step.
-
-1. Print your service account token by running the following commands:
-
-    <pre class="terminal">$ secret&#95;name=$(kubectl get serviceaccount ksm-admin \
-      --namespace=kube-system -o jsonpath='{.secrets[0].name}')  <br>
-    $ secret&#95;val=$(kubectl --namespace=kube-system get secret $secret&#95;name \
-      -o jsonpath='{.data.token}') <br>
-    $ echo ${secret&#95;val} | base64 --decode</pre>
-
-    <br>
-    Record the output.
-1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %> (<%= vars.product_short %>)** > **Kubernetes Configuration**.
-
-1. Configure the fields as follows:
-   <table class="nice">
-  <tr>
-  <th>Field</th>
-  <th>Instructions</th>
-  </tr>
-  <tr>
-    <td><strong>A base64 encoded PEM Cluster CA certificate</strong></td>
-    <td>Enter the value of <code>certificate-authority-data</code>
-      in your kubeconfig that you recorded.</td>
-  </tr>
-  <tr>
-    <td><strong>K8s API endpoint</strong></td>
-    <td>Enter the endpoint value of <code>server</code> in your kubeconfig that you recorded. </td>
-  </tr>
-  <tr>
-    <td><strong>K8s API endpoint port</strong></td>
-    <td>Enter the port value of <code>server</code> in your kubeconfig that you recorded.</td>
-  </tr>
-  <tr>
-    <td><strong>Token</strong></td>
-    <td>Enter the value of <code>token</code> for service account token that you recorded.</td>
-  </tr>
-  </table>
-
-For more information about using kubeconfig files,
-see [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/)
-in the Kubernetes documentation.
-
 ### <a id="storage"></a> Configure Storage
 
 <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
@@ -312,7 +211,7 @@ do not change the `Store Bind Credentials` setting.
 
 ### <a id="errands"></a>Errands
 
-The pre-delete errand `deregistar` removes the pre-provisioned Kubernetes service from `cf marketplace`
+The pre-delete errand `deregistar`removes <%= vars.product_short %> service offers from `cf marketplace`
 and **deletes all associated service instances and bindings**.
 This errand is disabled by default.
 

@@ -82,8 +82,6 @@ for <%= vars.product_short %>, see [Configure Storage](./installing.html#storage
 ### <a id='clusters'></a> Kubernetes Clusters
 
 <%= vars.product_short %> is backed by at least one default Kubernetes cluster.
-You can override this default cluster with service offering plans.
-<%# todo: link to configuring plan specific credentials %>
 
 You can use different service offering plans to configure different types of clusters.
 For example, you could configure a large default cluster for more ephemeral
@@ -91,7 +89,7 @@ service instances used in development.
 You could also configure another cluster with workload specialization for specific service plans.
 
 For instructions about configuring a default Kubernetes cluster,
-see [Configure Cluster Credentials](./installing.html#kubeconfig).
+see [Managing Clusters](./managing-clusters.html).
 
 ## <a id='life-cycle'></a> <%= vars.product_short %> Life Cycle
 
