@@ -222,6 +222,25 @@ To update a service offering in  <%= vars.product_short %>:
         + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
 
+## <a id="list-instance"></a> Listing Service Instances
+You can view the service instances that have been created by filtering on marketplace name or cluster name.
+
+To view service instances for a given marketplace name:
+ ```
+ ksm instance list MARKETPLACE-NAME
+ ```
+    
+ Where:
+ + `MARKTEPLACE-NAME` is the name of the offer.
+
+To see a list of service instances for a given cluster:
+ ```
+ ksm instance list --cluster-name CLUSTER-NAME
+ ```
+    
+ Where:
+ + `CLUSTER-NAME` is the name of the cluster.
+
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 

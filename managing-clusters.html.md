@@ -10,15 +10,15 @@ This topic describes how to register, manage, and deregister Kubernetes clusters
 ##<a id='overview'></a> Overview
 
 Before offering a service with <%= vars.product_short %>, you must register the Kubernetes cluster(s) that service instances
-will be provisioned to and run on. <%= vars.product_short %> stores the Kubernetes cluster credentials securely in Credhub. 
-This makes it possible for each plan in your KSM service offering to be provisioned to different. This may be useful for services that
+will use. <%= vars.product_short %> stores the Kubernetes cluster credentials securely in CredHub. 
+This makes it possible for each plan in your KSM service offering to be provisioned to a different cluster. This may be useful for services that
 require special cluster configurations. (See plans)
 
-For each plan in your KSM service offerings, you must either:
-+ Specify a registered Kubernetes cluster that service instances will be provisioned on
+For each plan in your KSM offer, you must either:
++ Specify a registered Kubernetes cluster
 
 OR
-+ Before saving the offer, set a default cluster that service instances will be provisioned on.  (see setting default)
++ Before saving the offer, set a default cluster (see setting default)
 
 ##<a id='create-cluster-file'></a> Creating a cluster credentials file
 1. Get your server and certificate authority by running the following commands:
@@ -107,6 +107,22 @@ Where:
 + `CLUSTER-NAME` is the name <%= vars.product_short %> will use to track the cluster.
 + `PATH/TO/CLUSTER-CREDS.YAML`is the path to your cluster credentials file [Creating a cluster credentials file](#create-cluster-file).
 
+##<a id='updating'></a> Updating Kubernetes Clusters
+To update the credentials for an existing cluster that has already been registered with <%= vars.product_short %>: 
+
+1. Create a cluster credentials yaml file with server, token, and caData. See [Creating a cluster credentials file](#create-cluster-file).
+
+1. Update a registered Kubernetes cluster with <%= vars.product_short %> by running:
+
+```
+ksm cluster register CLUSTER-NAME PATH/TO/CLUSTER-CREDS.YAML --update
+```
+Where:  
++ `CLUSTER-NAME` is the name <%= vars.product_short %> will use to track the cluster.
++ `PATH/TO/CLUSTER-CREDS.YAML`is the path to your cluster credentials file [Creating a cluster credentials file](#create-cluster-file).
+
+*NOTE:* If there are existing instances running on the cluster, you will be required to use the --force flag.
+
 ##<a id='set-default'></a> (Optional) Set a Default Kubernetes Cluster
 
 If you set a default cluster, you do not need to specify a cluster when you create an offer. See [Creating an offer]().
@@ -118,4 +134,8 @@ ksm cluster set-default CLUSTER-NAME
 Where:  
 + `CLUSTER-NAME` is the name you previously registered the cluster with in <%= vars.product_short %>
 
-
+##<a id='listing'></a> Listing registered Kubernetes Clusters
+To see a list of registered Kubernetes Clusters:
+```
+ksm cluster list
+```
