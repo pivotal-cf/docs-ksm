@@ -139,3 +139,14 @@ To see a list of registered Kubernetes Clusters:
 ```
 ksm cluster list
 ```
+##<a id='deregistering'></a> Deregistering Kubernetes Clusters
+Before deregistering a cluster, be sure that it is not the default cluster, it does not have any instances,
+and the cluster is not associated with any plans in any offers.
+
+To deregister a cluster:
+```
+ksm cluster deregister CLUSTER-NAME
+```
+
+Where:  
++ `CLUSTER-NAME` is the name you previously registered the cluster with in <%= vars.product_short %>
