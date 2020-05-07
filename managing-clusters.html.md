@@ -104,7 +104,7 @@ To register a cluster:
 ksm cluster register CLUSTER-NAME PATH/TO/CLUSTER-CREDS.YAML
 ```
 Where:  
-+ `CLUSTER-NAME` is the name <%= vars.product_short %> will use to track the cluster.
++ `CLUSTER-NAME` is the name <%= vars.product_short %> will use to track the cluster. Name must be lowercase letters, numbers, and hyphens
 + `PATH/TO/CLUSTER-CREDS.YAML`is the path to your cluster credentials file [Creating a cluster credentials file](#create-cluster-file).
 
 ##<a id='updating'></a> Updating Kubernetes Clusters
