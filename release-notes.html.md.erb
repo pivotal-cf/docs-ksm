@@ -3,56 +3,33 @@ title: Release Notes
 owner: Platform Engineering (KSM Team)
 ---
 
+
+
 <strong><%= modified_date %></strong>
 
 These are release notes for <%= vars.product_full %> (<%= vars.product_short %>).
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
-##<a id="0-8-43"></a> v0.8.43
+<%= partial vars.path_to_partials + "/ksm/incompatible" %>
 
-**Release Date:** April 16, 2020
+##<a id="0-9-XX"></a> v0.9.XX
 
-<p class="note breaking"><strong>Breaking Change:</strong>
-  This release is incompatible with the v0.7 beta release of <%= vars.product_short %>.
-  Before you install <%= vars.product_short %> v0.8, you must uninstall
-  <%= vars.product_short %> v0.7 from <%= vars.ops_manager %>.
-  After you install <%= vars.product_short %> v0.8, you must re-add your service offerings.
-  For more information, see <a href="./upgrading.html">Upgrading KSM</a>.
-  </p>
+**Release Date:** XXXX XX, 2020
 
 ### Features
 
 New features and changes in this release:
 
-+ Developers can upgrade service instances with `cf update-service SERVICE-INSTANCE-NAME -u`.
-  For more information, see [Upgrade a Service Instance](./using.html#upgrade-instance).
-+ Operators can set environment variables for <%= vars.product_short %>  credentials and the <%= vars.app_runtime_full %>
-  system domain. <%= vars.product_short %> uses these environment variables for <%= vars.product_short %>
-  Command Line Interface (CLI) commands without requiring flags.
-+ Operators can override values in `values.yaml` in the Helm chart.
-  For more information, see [Override Chart Values](./prepare-offer.html#override).
-+ Operators can view service instance metadata for <%= vars.product_short %> service instances.
-  The metadata includes the Cloud Foundry instance name, org, and space. For more information,
-  see [View Service Instance Metadata in Kubernetes](./troubleshoot.html#view-service-instance)
-+ When all service instances are deleted from <%= vars.product_short %>,
-  cluster-scoped charts and resources are also removed from the Kubernetes cluster.
-
++
 
 ### Resolved Issues
 
 This release has the following fix:
 
-+ Improved <%= vars.product_short %> stability around BOSH process monitoring and restarting.
 
 ### Known Issue
 
 This release has the following issue:
 
-+ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
-was created successfully before the custom resources are created.
-This is because Kubernetes does not have a generic method to detect resource readiness.
-Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>
-In the unlikely event that this happens, wait until the custom resources are created before binding
-a service instances to an app.
-This mitigates any issues with missing details in the bind response.
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
