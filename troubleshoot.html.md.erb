@@ -168,35 +168,44 @@ To view the metadata file:
         "instance_name": "mydb"
       }</pre>
 
-      ### <a id='view-logs'></a> View <%= vars.product_short %> Logs
+### <a id='view-logs'></a> View <%= vars.product_short %> Logs
 
-      If none of the steps below worked or the <%= vars.product_short %> server is misbehaving
-      you can use the logs command to verify if something unexpected is happening on the server.
-      
-      The syntax is very simple:
-      
-      ```
-          # Shows chartmuseum, ksm daemon and broker logs.
-          # By default it lists the last 250 lines log
-          
-          ksm logs 
-      
-          # The --lines / -n option can be optionally used to change the number of returned lines
-      
-          ksm logs -n 10
-      ```
-      
-      The logs command result should look like the following
-      ```
-      2020-05-05T14:41:40+00:00	allksm.ksm1.chartmuseum	{"level":"INFO","msg":"Starting ChartMuseum","payload":"{\"port\": 8080}","tag":"ksm1.chartmuseum"}
-      2020-05-05T14:41:40+00:00	allksm.ksm1.ksmd	{"level":"info","msg":"Starting PKS Ksm","tag":"ksm1.ksmd"}
-      2020-05-05T14:41:40+00:00	allksm.ksm1.broker	{"level":"info","msg":"Starting KSM Generic Broker","tag":"ksm1.broker"}
-      2020-05-05T14:41:40+00:00	allksm.ksm1.broker	{"level":"info","msg":"No private registry configured","tag":"ksm1.broker"}
-      2020-05-05T14:41:40+00:00	allksm.ksm1.broker	{"level":"info","msg":"Offer: [mysql]","tag":"ksm1.broker"}
-      2020-05-05T14:41:40+00:00	allksm.ksm1.broker	{"level":"info","msg":"Listening on 9017","tag":"ksm1.broker"}
-      2020-05-05T15:04:54+00:00	allksm.ksm0.ksmd.err	{"level":"debug","msg":"Cache version [DEVELOPMENT] does not match current config version [0.9.63], returning empty list","tag":"ksm0.ksmd.err"}
-      2020-05-05T15:04:54+00:00	allksm.ksm0.ksmd.err	{"level":"debug","msg":"Offers cache is length 0, building chart list","tag":"ksm0.ksmd.err"}
-      ```
-      The first column shows the log date time, the second column shows the fluentd tag almost for internal usage, but you can
-       identify the ksm node the log is coming from (ksm0, ksm1, ksmN), and what component it is coming from (chartmuseum, 
-       ksmd, broker). The third column has the log details including the log level, message, tag and payload (for chartmuseum lines).
+You can view <%= vars.product_short %> server logs to troubleshoot <%= vars.product_short %> by running
+the `ksm logs` command.
+The command lists log entires for the ChartMuseum, <%= vars.product_short %> broker, and
+<%= vars.product_short %> daemon components. By default, the command returns the last 250 log entries.
+
+Log entires use the following format:
+
+```
+TIMESTAMP allksm.SOURCE-NODE.SOURCE-COMPONENT LOG-MESSAGE
+```
+
+For example:
+
+<pre class="terminal">2020-05-05T15:04:54+00:00	allksm.ksm0.ksmd.err {"level":"debug","msg":"Offers cache is length 0, building chart list","tag":"ksm0.ksmd.err"}</pre>
+
+In the above output, `.err` and `"level":"debug"` indicate that the log entry is an error message.
+
+To view logs for <%= vars.product_short %>:
+
+1. Output <%= vars.product_short %> logs by running:
+
+    ```
+    ksm logs
+    ```
+
+    You can optionally add the `-n` flag to the above command to set the number of returned
+    log entires. <br>
+
+    For example:
+
+    <pre class=terminal>$ ksm logs -n 8
+      2020-05-05T14:41:40+00:00	allksm.ksm1.chartmuseum {"level":"INFO","msg":"Starting ChartMuseum","payload":"{\"port\": 8080}","tag":"ksm1.chartmuseum"}
+      2020-05-05T14:41:40+00:00	allksm.ksm1.ksmd {"level":"info","msg":"Starting PKS Ksm","tag":"ksm1.ksmd"}
+      2020-05-05T14:41:40+00:00	allksm.ksm1.broker {"level":"info","msg":"Starting KSM Generic Broker","tag":"ksm1.broker"}
+      2020-05-05T14:41:40+00:00	allksm.ksm1.broker {"level":"info","msg":"No private registry configured","tag":"ksm1.broker"}
+      2020-05-05T14:41:40+00:00	allksm.ksm1.broker {"level":"info","msg":"Offer: [mysql]","tag":"ksm1.broker"}
+      2020-05-05T14:41:40+00:00	allksm.ksm1.broker {"level":"info","msg":"Listening on 9017","tag":"ksm1.broker"}
+      2020-05-05T15:04:54+00:00	allksm.ksm0.ksmd.err {"level":"debug","msg":"Cache version [DEVELOPMENT] does not match current config version [0.9.63], returning empty list","tag":"ksm0.ksmd.err"}
+      2020-05-05T15:04:54+00:00	allksm.ksm0.ksmd.err {"level":"debug","msg":"Offers cache is length 0, building chart list","tag":"ksm0.ksmd.err"}</pre>
