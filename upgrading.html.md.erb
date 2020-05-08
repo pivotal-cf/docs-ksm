@@ -3,12 +3,17 @@ title: Upgrading KSM
 owner: MySQL
 ---
 
+<%# The below uses the local product variable and math so we do not need to update this page
+with every release %>
+<% previous_version = (product_info["local_product_version"].to_f - 0.1).round(2) %>
+<% current_version = product_info['local_product_version'] %>
+
+
 <strong><%= modified_date %></strong>
 
 This topic explains how to upgrade the <%= vars.product_full %> (<%= vars.product_short %>).
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
-
 
 ## <a id="overview"></a>Overview
 
