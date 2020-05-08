@@ -30,18 +30,12 @@ This fixes an issue where users could not store binding credentials with CredHub
 
 This release has the following issue:
 
-+ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that
-a service instance was created successfully before the custom resources are created.
-This is because Kubernetes does not have a generic method to detect resource readiness.
-Kubernetes primitives have known patterns for detecting readiness,
-but custom resource readiness is defined by its author.
-<br><br>In the unlikely event that this happens, wait until the custom resources are created before binding
-a service instances to an app.
-This mitigates any issues with missing details in the bind response.
 + Binding credentials for service instances brokered by <%= vars.product_short %> are not consistently unique.
 If more than one app is bound to the same service instance,
 all of the apps use the same credentials to connect to the service instance. If your binding credentials
 are compromised, you must rotate the binding credential for all the apps that use the credential.
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
 
 
 ##<a id="0-5-0"></a> v0.5.0
@@ -73,14 +67,6 @@ see [Securing Services Instance Credentials with Runtime CredHub](https://docs.p
 
 This release has the following issues:
 
-+ If your chart uses custom resources, <%= vars.product_short %> might incorrectly report that a service instance
-was created successfully before the custom resources are created.
-This is because Kubernetes does not have a generic method to detect resource readiness.
-Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author.<br><br>
-In the unlikely event that this happens, wait until the custom resources are created before binding
-a service instances to an app.
-This mitigates any issues with missing details in the bind response.
-
 + Binding credentials for service instances brokered by <%= vars.product_short %> are not consistently unique.
 If more than one app is bound to the same service instance,
 all of the apps use the same credentials to connect to the service instance. If your binding credentials
@@ -88,3 +74,5 @@ are compromised, you must rotate the binding credential for all the apps that us
 
 + Users cannot store binding credentials with CredHub
 if the **Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
