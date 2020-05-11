@@ -108,10 +108,10 @@ without additional configurations, with a `ksm.yaml` file or a `plans.yaml` file
 
 Before you save your service offering to <%= vars.product_short %>, you must:
 
-+ **Install the <%= vars.product_short %> (Command Line Interface) CLI:**
-See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
++ **Install the <%= vars.product_short %> Command Line Interface (CLI):**
+For more information, see [Install the <%= vars.product_short %> CLI](installing.html#ksm).
 + **Register a Kubernetes cluster using the <%= vars.product_short %> CLI:**
-See [Managing Kubernetes Clusters for Services](managing-clusters.html).
+For more information, see [Managing Kubernetes Clusters for Services](managing-clusters.html).
 + **Install External Dependencies:** If your Helm charts have any external dependencies,
 they must be installed before you offer your service.
 For example, if your Helm chart requires an Ingress controller to enable service through ingress,
@@ -348,9 +348,9 @@ If you want to override the default settings in `values.yaml` and offer custom p
     * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run `cf marketplace`.
         The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
-    * (Optional) `CLUSTER-NAME` is the name of a cluster that has been registered with <%= vars.product_short %>.
-    See [Registering Kubernetes Clusters](managing-clusters.html#registering). If this is not included, service instances
-    will be provisioned to the default cluster.
+    * (Optional) `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
+    For more information, see [Registering Kubernetes Clusters](managing-clusters.html#registering). By default, 
+    service instances are provisioned to the default cluster.
     * (Optional) `RESOURCE-QUOTA-FILE` is name of the resource quota file for the plan.
 
     For example:
