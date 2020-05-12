@@ -1,0 +1,124 @@
+---
+title: Quickstart Guide
+owner: Platform Engineering (KSM Team)
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how you can quickly get started with <%= vars.product_full %> (<%= vars.product_short %>).
+
+##<a id='cf-marketplace'></a> Prerequisites
+The following prerequisites are required for a successful use of KSM:
++ **Install the <%= vars.product_short %> Tile:**
+See [Download and Install the <%= vars.product_short %> Tile](installing.html#install).
+
++ **Install the <%= vars.product_short %> CLI (Command Line Interface) :**
+See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
++ A Kubernetes cluster
+
+##<a id='cf-marketplace'></a> Configure the CLI
+1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** >
+**<%= vars.product_full %> (<%= vars.product_short %>)** > **Credentials**.
+
+1. Retrieve your **<%= vars.product_short %> API Credentials** by clicking **Link to Credentials**.
+
+1. Configure environment variables by running the following commands:
+
+    ```
+    export KSM_TARGET=http://ksm.SYSTEM-DOMAIN
+    export KSM_USER=USERNAME
+    export KSM_PASSWORD=PASSWORD
+    export KSM_INSECURE=true
+    ```
+    Where:
+    + `SYSTEM-DOMAIN` is your <%= vars.app_runtime_full %> system domain URL.
+    + `USERNAME` is the value of `identity` you recorded in the above step.
+    + `PASSWORD` is the value of `password` you recorded in the above step.
+
+    <p class="note"><strong>Note:</strong> <%= vars.product_short %> uses the above environment
+    variables to set credentials and target your deployment.
+    <code>KSM_INSECURE=true</code> enables <%= vars.product_short %> to ignore
+     certificate validation.
+     </p>
+     
+##<a id='cf-marketplace'></a> Register a Cluster
+To register a cluster:
+
+1. Create a cluster credentials yaml file with server, token, and caData. See [Create a Cluster Credentials File](#create-cluster-file).
+
+1. Register a Kubernetes cluster with <%= vars.product_short %>  by running:
+
+    ```
+    ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML
+    ```
+    Where:
+    + `CLUSTER-NAME` is the name <%= vars.product_short %> uses to track the cluster.
+    Name must be lowercase letters, numbers, and hyphens.
+    + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
+    that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
+
+
+Set the cluster as the default:
+Set a default cluster by running:
+
+    ```
+    ksm cluster set-default CLUSTER-NAME
+    ```
+
+    Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
+
+##<a id='cf-marketplace'></a> Add an Example Offer
+To add an offer to KSM, you can run the`ksm offer save` command. You can use any Helm chart. Let's use Bitnami's mysql chart.
+
+Clone and package mysql
+```bash
+git clone https://github.com/bitnami/charts.git
+helm package charts/bitnami/mysql
+```
+
+Save offer to KSM
+```bash
+ksm offer save charts/stable/mysql-1.6.3.tgz
+ksm offer list
+```
+
+List newly added offer
+```bash
+ksm offer list
+```
+##<a id='cf-marketplace'></a> Enable Service Access for Offer
+After you add your service offer, you must enable access.
+
+To enable access to your service offer:
+
+1. Log in to your <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) deployment by running:
+
+    ```
+    cf login -a API-URL -u USERNAME -p PASSWORD
+    ```
+
+    Where:
+    + `API-URL` is the API endpoint for your <%= vars.app_runtime_abbr %> instance.
+    + `USERNAME` is your username for your <%= vars.app_runtime_abbr %> instance.
+    + `PASSWORD` is your password for your <%= vars.app_runtime_abbr %> instance.
+
+    For more information,
+    see [Getting Started with the cf CLI](https://docs.pivotal.io/pivotalcf/2-4/cf-cli/getting-started.html#login).
+
+1. Enable access to the service for all orgs by running:
+
+    ```
+    cf enable-service-access SERVICE-NAME
+    ```
+    Where `SERVICE-NAME` is the name of the new service that you viewed in step 6 of
+    [Add a Service Offering to <%= vars.product_short %>](#add) above.
+
+1. View the newly created service plan by running:
+
+    ```
+    cf marketplace
+    ```
+##<a id='cf-marketplace'></a> What's Next
+To learn more about preparing an offer with advanced features, see Prepare Offer.
+
+
