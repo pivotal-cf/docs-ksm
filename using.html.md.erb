@@ -225,20 +225,22 @@ To update a service offering in  <%= vars.product_short %>:
 ## <a id="list-instance"></a> List Service Instances
 You can list existing service instances and filter by marketplace name or cluster name.
 
-To filter services instances by marketplace name or cluster name, choose one of the following 
+To filter services instances by marketplace name or cluster name, choose one of the following
 options:
 
-- **Filter by marketplace name by running:**<br>
-  ```
-  ksm instance list MARKETPLACE-NAME
-  ```
-    <br><br>Where `MARKETPLACE-NAME` is the name of the offer.
+- **Filter by marketplace name by running:**
 
-- **Filter by cluster by running:**<br>
-  ```
-  ksm instance list --cluster-name CLUSTER-NAME
-  ```
-  <br><br>Where `CLUSTER-NAME` is the name of the cluster.
+    ```
+    ksm instance list MARKETPLACE-NAME
+    ```
+    Where `MARKETPLACE-NAME` is the name of the offer.
+
+- **Filter by cluster by running:**
+
+    ```
+    ksm instance list --cluster-name CLUSTER-NAME
+    ```
+    Where `CLUSTER-NAME` is the name of the cluster.
 
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance

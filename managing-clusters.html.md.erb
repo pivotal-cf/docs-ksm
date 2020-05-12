@@ -22,7 +22,7 @@ For each plan in your <%= vars.product_short %> offer, you must do either of the
 following:
 
 + Specify a registered Kubernetes cluster. For more information, see
-[Registering Kubernetes Clusters](#registering).
+[Register Kubernetes Clusters](#registering).
 
 + Set a default cluster before saving the offer. For more information, see
 [Set a Default Kubernetes Cluster](#set-default).
@@ -33,15 +33,21 @@ You need a cluster credential file to register and set default Kubernetes cluste
 
 To create a cluster credentials file:
 
-1. Get your server and certificate authority by running:<pre>
-kube_config="PATH_TO_KUBE_CONFIG"<br>
-cluster=\`grep current $kube_config|sed "s/ //g"|cut -d ":" -f 2\`<br>
-echo "Using cluster $cluster"<br>
-server=\`grep -B 2 "name: $cluster" $kube_config /
-  |grep server|sed "s/ //g"|sed "s/^[^:]*://g"\`<br>
-certificate=`grep -B 2 "name: $cluster" $kube_config|grep /
-  certificate|sed "s/ //g"|sed "s/.*://"`
-</pre> <br>
+1. Get your server and certificate authority by running:
+
+    ```
+    kube_config="PATH_TO_KUBE_CONFIG"
+
+    cluster=`grep current $kube_config|sed "s/ //g"|cut -d ":" -f 2`
+
+    echo "Using cluster $cluster"
+
+    server=`grep -B 2 "name: $cluster" $kube_config /
+      |grep server|sed "s/ //g"|sed "s/^[^:]*://g"`
+
+    certificate=`grep -B 2 "name: $cluster" $kube_config /
+      |grep certificate|sed "s/ //g"|sed "s/.*://"`
+    ```
 
 1. To create a dedicated service account for <%= vars.product_short %>
 with the `cluster-admin` role:
@@ -49,26 +55,26 @@ with the `cluster-admin` role:
     1. Create a YAML file for the <%= vars.product_short %> service account
     and `ClusterRoleBinding` using the following YAML:
 
-        ```yaml
-            ---
-            apiVersion: v1
-            kind: ServiceAccount
-            metadata:
-              name: ksm-admin
-              namespace: kube-system
-            ---
-            apiVersion: rbac.authorization.k8s.io/v1beta1
-            kind: ClusterRoleBinding
-            metadata:
-              name: ksm-cluster-admin
-            roleRef:
-              apiGroup: rbac.authorization.k8s.io
-              kind: ClusterRole
-              name: cluster-admin
-            subjects:
-              - kind: ServiceAccount
-                name: ksm-admin
-                namespace: kube-system
+        ```
+        ---
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          name: ksm-admin
+          namespace: kube-system
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1beta1
+        kind: ClusterRoleBinding
+        metadata:
+          name: ksm-cluster-admin
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: cluster-admin
+        subjects:
+          - kind: ServiceAccount
+            name: ksm-admin
+            namespace: kube-system
         ```
 
         For information about service accounts,
@@ -86,25 +92,29 @@ with the `cluster-admin` role:
         ```
        Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step.
 
- 1. Get your service account token by running:
-     <pre>
-     secret&#95;name=$(kubectl get serviceaccount ksm-admin \
-       --namespace=kube-system -o jsonpath='{.secrets[0].name}')  <br>
-     secret&#95;val=$(kubectl --namespace=kube-system get secret $secret&#95;name \
-       -o jsonpath='{.data.token}') <br>
-     secret_val=$(echo ${secret&#95;val} | base64 --decode)
-     </pre>
+1. Get your service account token by running:
 
- 1. Save variables to a file by running:
-    <pre>
+    ```
+    secret&#95;name=$(kubectl get serviceaccount ksm-admin \
+     --namespace=kube-system -o jsonpath='{.secrets[0].name}')
+
+    secret&#95;val=$(kubectl --namespace=kube-system get secret $secret&#95;name \
+     -o jsonpath='{.data.token}')
+
+    secret_val=$(echo ${secret&#95;val} | base64 --decode)
+    ```
+
+1. Save variables to a file by running:
+
+    ```
     cat > cluster-creds.yaml << EOF
     token: ${secret_val}
     server: ${server}
     caData: ${certificate}
     EOF
-    </pre>
+    ```
 
-##<a id='registering'></a> Registering Kubernetes Clusters
+##<a id='registering'></a> Register Kubernetes Clusters
 
 You must use the <%= vars.product_short %> CLI to register a Kubernetes cluster with KSM.
 
@@ -115,28 +125,28 @@ To register a cluster:
 1. Register a Kubernetes cluster with <%= vars.product_short %>  by running:
 
     ```
-    ksm cluster register CLUSTER-NAME PATH/TO/CLUSTER-CREDS.YAML
+    ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML
     ```
     Where:
     + `CLUSTER-NAME` is the name <%= vars.product_short %> uses to track the cluster.
     Name must be lowercase letters, numbers, and hyphens.
-    + `PATH/TO/CLUSTER-CREDS.YAML` is the path to your cluster credentials file
+    + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
     that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
 
 ##<a id='updating'></a> Update Kubernetes Clusters
 
-To update the credentials for an existing cluster that has already been registered
+To update the credentials for an existing cluster that you have already registered
 with <%= vars.product_short %>:
 
-1. Update a registered Kubernetes cluster with <%= vars.product_short %> by running:
+1. Update the Kubernetes cluster credentials by running:
 
     ```
-    ksm cluster register CLUSTER-NAME PATH/TO/CLUSTER-CREDS.YAML --update
+    ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML --update
     ```
 
     Where:
-    + `CLUSTER-NAME` is the name <%= vars.product_short %> will use to track the cluster.
-    + `PATH/TO/CLUSTER-CREDS.YAML` is the path to your cluster credentials file
+    + `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
+    + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
     that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
 
 <p class="note"><strong>Note:</strong> If existing instances are running on the cluster,
@@ -155,11 +165,11 @@ To set a default cluster:
     ksm cluster set-default CLUSTER-NAME
     ```
 
-    Where `CLUSTER-NAME` is the name you previously registered the cluster in <%= vars.product_short %>.
+    Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
 
 ##<a id='listing'></a> List Registered Kubernetes Clusters
 
-To see a list of registered Kubernetes Clusters:
+To see a list of registered Kubernetes clusters:
 
 1. List registered clusters by running:
 
@@ -170,15 +180,15 @@ To see a list of registered Kubernetes Clusters:
 
 ##<a id='deregistering'></a> Deregister Kubernetes Clusters
 
-Before deregistering a cluster, be sure that it is not the default cluster, it
+Before deregistering a cluster, ensure that it is not the default cluster, it
 does not have any instances, and the cluster is not associated with any plans in any offers.
 
 To deregister a cluster:
 
-1. Reregister the cluster by running:
+1. Deregister the cluster by running:
 
     ```
     ksm cluster deregister CLUSTER-NAME
     ```
 
-    Where `CLUSTER-NAME` is the name you previously registered the cluster in <%= vars.product_short %>
+    Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
