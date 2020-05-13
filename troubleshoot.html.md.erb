@@ -178,15 +178,15 @@ The command lists log entires for the ChartMuseum, <%= vars.product_short %> bro
 Log entires use the following format:
 
 ```
-TIMESTAMP   TAG     LEVEL   MESSAGE     PAYLOAD
+TIMESTAMP  INSTANCE.COMPONENT.LOG  LEVEL  MESSAGE   PAYLOAD
 ```
 
 For example:
 
-<pre class="terminal">2020-05-12T21:54:58	ksm1.ksmd.out       	info 	Starting PKS Ksm</pre>
+<pre class="terminal">2020-05-13T01:30:08  ksm1.chartmuseum.err   info   Starting ChartMuseum   {"port": 8080}</pre>
 
-In the above output, `ksm1.ksmd.out` means the log originally came from server instance 1, from ksm daemon component and 
-the output log.
+In the above output, `ksm1.chartmuseum.err` indicates that the source of the log entry is
+from the error log of the ChartMuseum in the `ksm1` service instance.
 
 To view logs for <%= vars.product_short %>:
 
@@ -202,6 +202,7 @@ To view logs for <%= vars.product_short %>:
     For example:
 
     <pre class=terminal>$ ksm logs -n 8
+
     TIMESTAMP               TAG                 	LEVEL	MESSAGE                                                                                         	PAYLOAD
     2020-05-13T01:30:07     ksm0.broker.out     	info 	Brokering offerings:
     2020-05-13T01:30:07     ksm1.broker.out     	info 	Offer: [mymysql]
