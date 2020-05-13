@@ -16,8 +16,11 @@ you must configure your Helm charts to be compatible with <%=  vars.product_shor
 You can also  customize your Helm charts to enable additional features.
 
 A service offering includes the following:
++ **One or more Helm charts**
++ **KSM package**
 
-+ **One or more Helm charts:** You must configure a Helm chart to compatible with
+###<a id='helm-charts'></a> Helm Charts
++ You must configure a Helm chart to compatible with
  <%=  vars.product_short %>. See [Configure Your Helm Charts](#config-helm) below.
  VMware recommends that you refer to the following resources when creating your Helm chart:
      + For information about creating your first Helm chart,
@@ -27,24 +30,27 @@ A service offering includes the following:
      + For more information about best practices,
      see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/)
 
-+ **A service offering directory that can include the following files:**
-  + **`bind.yaml`:** This file is a template for app binding and service consumption.
-  See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env) below.
-  + **`ksm.yaml`  :** This file enables you to offer multiple Helm charts in a single
-   service offering. You must include this file if you deploy multiple charts or use Operator patterns.
-   See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below.
-   For information about Operators in Kubernetes,
-   see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
-   in the Kubernetes documentation.
-  + **`overrides` directory:** You use files in this directory to override the
-     default values defined in the chart `values.yaml` file.
-    See [(Optional) Override Chart Values](#override) below.
-  + **`plans.yaml` and `plans` directory:** You use this file and the directory files to offer
-  customized plans, override default values, and change the default cluster.
-  See [(Optional) Define Plans Configuration](#plans) below.
-  + **`resource-quotas` directory:** You use the files in this directory to
-  define resource quotas that limit the memory and CPU that instances consume.
-  See [(Optional) Define Plans Configuration](#plans) below.
+###<a id='package'></a> <%=  vars.product_short %> Package
+A `ksm.yaml` file is necessary if you need one of the following options:
++ A custom cf marketplace name
+  see [Service Offerings in CF Marketplace](#cf-marketplace)
++ An offer with more than one helm chart
+  See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts)
++ An offer that uses the Operator pattern
+  For information about Operators in Kubernetes,
+     see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
+     in the Kubernetes documentation
++ An overrides file to override the default values defined in the chart `values.yaml` file.
+  See [(Optional) Override Chart Values](#override)
+
+A `plans.yaml` file is necessary if you need one of the following options:
++ A non default plan in the cf marketplace
++ To provision services on a non default cluster
++ If you want to define resource quotas that limit the memory and CPU that instances consume
+See [(Optional) Define Plans Configuration](#plans)
+
+A `bind.yaml` file is necessary if you do not want to return all of the secrets and services on bind.
+See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env)
 
 The following code snippet shows an example of a service offering directory structure:
 
