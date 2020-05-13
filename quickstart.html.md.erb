@@ -7,7 +7,7 @@ owner: Platform Engineering (KSM Team)
 
 This topic describes how you can quickly get started with <%= vars.product_full %> (<%= vars.product_short %>).
 
-##<a id='cf-marketplace'></a> Prerequisites
+##<a id='prerequisites'></a> Prerequisites
 The following prerequisites are required for a successful use of KSM:
 + **Install the <%= vars.product_short %> Tile:**
 See [Download and Install the <%= vars.product_short %> Tile](installing.html#install).
@@ -16,7 +16,7 @@ See [Download and Install the <%= vars.product_short %> Tile](installing.html#in
 See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
 + A Kubernetes cluster
 
-##<a id='cf-marketplace'></a> Configure the CLI
+##<a id='cli'></a> Configure the CLI
 1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** >
 **<%= vars.product_full %> (<%= vars.product_short %>)** > **Credentials**.
 
@@ -41,10 +41,10 @@ See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
      certificate validation.
      </p>
      
-##<a id='cf-marketplace'></a> Register a Cluster
+##<a id='register'></a> Register a Cluster
 To register a cluster:
 
-1. Create a cluster credentials yaml file with server, token, and caData. See [Create a Cluster Credentials File](#create-cluster-file).
+1. Create a cluster credentials yaml file with server, token, and caData. See [Create a Cluster Credentials File](managing-clusters.html#create-cluster-file).
 
 1. Register a Kubernetes cluster with <%= vars.product_short %>  by running:
 
@@ -55,7 +55,7 @@ To register a cluster:
     + `CLUSTER-NAME` is the name <%= vars.product_short %> uses to track the cluster.
     Name must be lowercase letters, numbers, and hyphens.
     + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
-    that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
+    that you created in [Create a Cluster Credentials File](managing-clusters.html#create-cluster-file) above.
 
 
 Set the cluster as the default:
@@ -67,26 +67,26 @@ Set a default cluster by running:
 
     Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
 
-##<a id='cf-marketplace'></a> Add an Example Offer
+##<a id='offer'></a> Add an Example Offer
 To add an offer to KSM, you can run the`ksm offer save` command. You can use any Helm chart. Let's use Bitnami's mysql chart.
 
-Clone and package mysql
+Clone and package mysql:
 ```bash
 git clone https://github.com/bitnami/charts.git
 helm package charts/bitnami/mysql
 ```
 
-Save offer to KSM
+Save offer to KSM:
 ```bash
 ksm offer save charts/stable/mysql-1.6.3.tgz
 ksm offer list
 ```
 
-List newly added offer
+List newly added offer:
 ```bash
 ksm offer list
 ```
-##<a id='cf-marketplace'></a> Enable Service Access for Offer
+##<a id='access'></a> Enable Service Access for Offer
 After you add your service offer, you must enable access.
 
 To enable access to your service offer:
@@ -118,7 +118,7 @@ To enable access to your service offer:
     ```
     cf marketplace
     ```
-##<a id='cf-marketplace'></a> What's Next
+##<a id='next'></a> What's Next
 To learn more about preparing an offer with advanced features, see Prepare Offer.
 
 
