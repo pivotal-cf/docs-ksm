@@ -132,30 +132,33 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     Where `NAMESPACE` is the name of the namespace you are deleting.
     
     
-#### <a id='cleanup-script'></a> Clean Up Script
+#### <a id='cleanup-script'></a> Cleanup Script
 
-The following script automates the clean up steps above. You may use the below script to automate the cleanup of
-a development Kubernetes cluster during the development process, such as in CI or manually. 
+A cleanup script automates the cleanup of a development 
+Kubernetes cluster during the development process.
 
-<p class="note warning"><strong>Warning:</strong> Running this cleanup script could be destructive. The script will delete
-Helm releases and Kubernetes resources such as clusterroles, clusterrolebindings, namespaces, podsecuritypolicies, MutatingWebhookConfigurations,
-and ValidatingWebhookConfigurations on the cluster. Only run this clean up script against a development cluster. 
-Please validate the targeted cluster by running `kubectl config current-context` before running this script</a>.
+To automate cleanup, do the following: 
+
+<p class="note warning"><strong>Warning:</strong> Only run this cleanup script against a development cluster. 
+The script deletes Helm releases and Kubernetes resources on the cluster. 
+Validate the targeted cluster by running <code>kubectl config current-context</code> before running the cleanup script below</a>.
 </p>
+
+1. Automate cleanup by running in CI or manually:
+
+    ```
+    #!/usr/bin/env bash
+    set +e
     
-```
-#!/usr/bin/env bash
-set +e
-
-helm ls -A | tail -n +2 | awk -F '\t' '{ print "helm uninstall " $1 " -n " $2 }' | xargs -I {} sh -c "{}"
-
-kubectl get clusterrole        | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrole {}
-kubectl get clusterrolebinding | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrolebinding {}
-kubectl get namespace          | grep ksm-    | cut -d " " -f 1 | xargs -I {} kubectl delete namespace {}
-kubectl get podsecuritypolicies -A | grep ksm-    | cut -d " " -f 1 | xargs -I {} kubectl delete podsecuritypolicy {}
-kubectl get MutatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete MutatingWebhookConfiguration {}
-kubectl get ValidatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete ValidatingWebhookConfiguration {}
-```
+    helm ls -A | tail -n +2 | awk -F '\t' '{ print "helm uninstall " $1 " -n " $2 }' | xargs -I {} sh -c "{}"
+    
+    kubectl get clusterrole        | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrole {}
+    kubectl get clusterrolebinding | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrolebinding {}
+    kubectl get namespace          | grep ksm-    | cut -d " " -f 1 | xargs -I {} kubectl delete namespace {}
+    kubectl get podsecuritypolicies -A | grep ksm-    | cut -d " " -f 1 | xargs -I {} kubectl delete podsecuritypolicy {}
+    kubectl get MutatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete MutatingWebhookConfiguration {}
+    kubectl get ValidatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete ValidatingWebhookConfiguration {}
+    ```
 
 
 ### <a id='view-service-instance'></a> View Service Instance Metadata in Kubernetes
