@@ -1,0 +1,154 @@
+---
+title: About Service Offerings
+owner: Platform Engineering (KSM Team)
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes the structure of a <%= vars.product_full %> (<%= vars.product_short %>)
+service offering and how an offering displays in `cf marketplace`.
+
+
+##<a id='using'></a> Overview
+
+A service offering includes the following:
+
++ **One or more Helm charts:** You must configure a Helm chart to be compatible with <%=  vars.product_short %>.
+See [Configure Your Helm Charts](./prepare-offer.html#config-helm).
++ **A <%= vars.product_short %> package:**
+The <%= vars.product_short %> package contains YAML files that <%= vars.product_short %> uses to
+customize your service offering.
+
+To customize a service offering to <%= vars.product_short %>, follow the procedures
+in [Preparing a Service Offering](./prepare-offer.html).
+
+##<a id='directory'></a> Service Offering Directory
+
+
+The following code snippet shows an example of a service offering directory structure:
+
+```yaml
+service-name/
+   bind.yaml
+   ksm.yaml
+   plans.yaml
+   overrides/
+     override-values.yaml
+   plans/
+     small.yaml
+     medium.yaml
+   resource-quotas/
+     quota.yaml
+
+helm-chart.tgz
+```
+
+In the above example:
+
++  `service-name/` is the directory for the <%= vars.product_short %> package.
+Depending on your customization, you must include some or all of the above
+YAML files and subdirectories in the <%= vars.product_short %> package.
+
++ `helm-chart.tgz` is the Helm chart for the service offering.<br><br>
+
+Reference the following table to determine which files you must include in your
+<%= vars.product_short %> package:
+
+<table>
+  <tr>
+    <th width="30%">If you want to...</th>
+    <th width="7%">Required File</th>
+    <th width="20%">More Information</th>
+  </tr>
+
+  <tr>
+    <td>Not return service credentials when a developer binds a service instance.</td>
+    <td><code>bind.yaml</code></td>
+    <td><a target="_blank" href="./prepare-offer.html#env">(Optional) Create Binding Template for App Consumption</a></td>
+  </tr>
+
+  <tr>
+    <th colspan="3"></th>
+  </tr>
+
+  <tr>
+    <td>Add a custom <code>cf marketplace</code> name</td>
+    <td rowspan="4"><code>ksm.yaml</code></td>
+    <td><a href="#cf-marketplace">Service Offerings in CF Marketplace</a></td>
+  </tr>
+  <tr>
+    <td>Offer more than one Helm chart</td>
+    <td><a target="_blank" href="./prepare-offer.html#multiple-charts">(Optional) Offer Multiple Charts in a Single Offering</a></td>
+  </tr>
+
+  <tr>
+  <td>Add a service offering with an Operator pattern</td>
+  <td>For information about Operators, see the <a target="_blank" href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator">Kubernetes documentation</a></td>
+  </tr>
+
+  <tr>
+    <td>Override default chart values</td>
+    <td><a target="_blank"  href="./prepare-offer.html#override">(Optional) Override Chart Values</a></td>
+  </tr>
+
+  <tr>
+    <th colspan="3"></th>
+  </tr>
+
+  <tr>
+    <td>Create a non-default plan in the <code>cf marketplace</code></td>
+    <td rowspan="3"><code>plans.yaml</code></td>
+    <td rowspan="3"><a target="_blank" href="./prepare-offer#plans">(Optional) Define Plans Configuration</a></td>
+  </tr>
+
+  <tr>
+    <td>Provision a service on a non-default cluster</td>
+  </tr>
+
+  <tr>
+    <td>Define resource quotas that limit memory and CPU consumption</td>
+  </tr>
+
+</table>
+
+
+
+##<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
+
+Uploading a Helm chart to <%= vars.product_short %> with either a `ksm.yaml` or `plans.yaml` file
+overrides the default values for the service offering name, description, and plan names.
+These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
+
+The following table describes the values for your service that are used when you upload a Helm chart
+without additional configurations, with a `ksm.yaml` file or a `plans.yaml` file:
+
+<table>
+  <tr>
+    <th width="17%">Additional YAML file</th>
+    <th width="24%">Name</th>
+    <th>Description</th>
+    <th>Plan Name</th>
+  </tr>
+
+  <tr>
+    <td><strong>None</strong></td>
+    <td><code>name</code> value in <code>Chart.yaml</code></td>
+    <td><code>description</code> value in <code>Chart.yaml</code></td>
+    <td><code>default</code></td>
+  </tr>
+
+  <tr>
+    <td><strong><code>ksm.yaml</code></strong></td>
+    <td><code>marketplace-name</code> value in <code>ksm.yaml</code></td>
+    <td>No effect</td>
+    <td>No effect</td>
+  </tr>
+
+  <tr>
+    <td><strong><code>plans.yaml</code></strong></td>
+    <td>No effect</td>
+    <td>For each plan, <code>description</code> value in <code>plans.yaml</code></td>
+    <td>For each plan, <code>name</code> value in <code>plans.yaml</code></td>
+  </tr>
+
+</table>

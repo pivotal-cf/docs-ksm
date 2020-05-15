@@ -5,115 +5,33 @@ owner: Platform Engineering (KSM Team)
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to prepare an offered service for <%= vars.product_full %>.
+This topic describes how to prepare an offered service for <%= vars.product_full %> (<%= vars.product_short %>).
 
 ##<a id='using'></a> Overview
 
 <%= vars.product_short %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+
 Before you add a service offering to `cf marketplace`,
 you must configure your Helm charts to be compatible with <%=  vars.product_short %>.
-You can also  customize your Helm charts to enable additional features.
+You can also customize your Helm charts to enable additional features.
 
-A service offering includes the following:
-+ **One or more Helm charts**
-+ **KSM package**
+To prepare a service offering:
 
-###<a id='helm-charts'></a> Helm Charts
-+ You must configure a Helm chart to compatible with
- <%=  vars.product_short %>. See [Configure Your Helm Charts](#config-helm) below.
- VMware recommends that you refer to the following resources when creating your Helm chart:
-     + For information about creating your first Helm chart,
-     see this topic in the [Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
-     + For information about best practices for creating production-ready Helm charts,
-     see this topic in the  [Bitnami documentation](https://docs.bitnami.com/tutorials/production-ready-charts/).
-     + For more information about best practices,
-     see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/)
+1. [Create a Sample Service Offering Directory](#offer-init).
+1. [Configure Your Helm Charts](#config-helm)
+1. [(Optional) Define Plans Configuration](#plans)
+1. [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts)
+1. [(Optional) Create Binding Template for App Consumption](#env)
+1. [Load Container Images into a Private Container Registry](#images)
 
-###<a id='package'></a> <%=  vars.product_short %> Package
-A `ksm.yaml` file is necessary if you need one of the following options:
-+ A custom cf marketplace name
-  see [Service Offerings in CF Marketplace](#cf-marketplace)
-+ An offer with more than one helm chart
-  See [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts)
-+ An offer that uses the Operator pattern
-  For information about Operators in Kubernetes,
-     see [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator)
-     in the Kubernetes documentation
-+ An overrides file to override the default values defined in the chart `values.yaml` file.
-  See [(Optional) Override Chart Values](#override)
-
-A `plans.yaml` file is necessary if you need one of the following options:
-+ A non default plan in the cf marketplace
-+ To provision services on a non default cluster
-+ If you want to define resource quotas that limit the memory and CPU that instances consume
-See [(Optional) Define Plans Configuration](#plans)
-
-A `bind.yaml` file is necessary if you do not want to return all of the secrets and services on bind.
-See [(Optional) Create Binding Template for App Consumption](prepare-offer.html#env)
-
-The following code snippet shows an example of a service offering directory structure:
-
-```yaml
-service-name/
-   bind.yaml
-   ksm.yaml
-   plans.yaml
-   overrides/
-     override-values.yaml
-   plans/
-     small.yaml
-     medium.yaml
-   resource-quotas/
-     quota.yaml
-
-helm-chart.tgz
-```
-
-###<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
-
-Uploading a Helm chart to <%= vars.product_short %> with either a `ksm.yaml` or `plans.yaml` file
-overrides the default values for the service offering name, description, and plan names.
-These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
-
-The following table describes the values for your service that are used when you upload a Helm chart
-without additional configurations, with a `ksm.yaml` file or a `plans.yaml` file:
-
-<table>
-  <tr>
-    <th width="17%">Additional YAML file</th>
-    <th width="24%">Name</th>
-    <th>Description</th>
-    <th>Plan Name</th>
-  </tr>
-
-  <tr>
-    <td><strong>None</strong></td>
-    <td><code>name</code> value in <code>Chart.yaml</code></td>
-    <td><code>description</code> value in <code>Chart.yaml</code></td>
-    <td><code>default</code></td>
-  </tr>
-
-  <tr>
-    <td><strong><code>ksm.yaml</code></strong></td>
-    <td><code>marketplace-name</code> value in <code>ksm.yaml</code></td>
-    <td>No effect</td>
-    <td>No effect</td>
-  </tr>
-
-  <tr>
-    <td><strong><code>plans.yaml</code></strong></td>
-    <td>No effect</td>
-    <td>For each plan, <code>description</code> value in <code>plans.yaml</code></td>
-    <td>For each plan, <code>name</code> value in <code>plans.yaml</code></td>
-  </tr>
-
-</table>
 
 ##<a id='prereq'></a> Prerequisites
 
 Before you save your service offering to <%= vars.product_short %>, you must:
 
++ Determine which YAML files you want to include in your <%= vars.product_short %> service offering.
+  See [About Service Offerings](./about-offer.html).
 + **Install the <%= vars.product_short %> Command Line Interface (CLI):**
 For more information, see [Install the <%= vars.product_short %> CLI](installing.html#ksm).
 + **Register a Kubernetes cluster using the <%= vars.product_short %> CLI:**
@@ -157,6 +75,15 @@ To upload a Helm chart to <%= vars.product_short %>,
 you must ensure that the chart is compatible with <%= vars.product_short %>.
 For examples of <%= vars.product_short %>-compatible charts,
 see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
+
+VMware recommends that you refer to the following resources when creating your Helm chart:
+
++ For information about creating your first Helm chart,
+see this topic in the [Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
++ For information about best practices for creating production-ready Helm charts,
+see this topic in the  [Bitnami documentation](https://docs.bitnami.com/tutorials/production-ready-charts/).
++ For more information about best practices,
+see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/).
 
 <p class="note"><strong>Note:</strong> If you do not include a <code>plans.yaml</code>,
   a <code>ksm.yaml</code> file, or override files with your service offering, one plan is offered.
