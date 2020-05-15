@@ -241,6 +241,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
       requests:
         memory: 128Mi
         cpu: 100m
+    ```
 
 1. (Optional) Create and edit `resource-quotas/RESOURCE-QUOTA-FILE.yaml`
     with the `ResourceQuota` definition you want to use.
@@ -282,8 +283,9 @@ If you want to override the default settings in `values.yaml` and offer custom p
         The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
     * (Optional) `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
-    For more information, see [Register Kubernetes Clusters](managing-clusters.html#registering). By default,
+    For more information, see [Register a Kubernetes Cluster](managing-clusters.html#registering). If omitted,
     service instances are provisioned to the default cluster.
+    For more infomation, see [Set a Default Cluster](managing-clusters.html#registering)
     * (Optional) `RESOURCE-QUOTA-FILE` is name of the resource quota file for the plan.
 
     For example:

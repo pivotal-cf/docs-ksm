@@ -117,7 +117,7 @@ with the `cluster-admin` role:
 The following sections describe how to list, register, and deregister Kubernetes
 clusters.
 
-You can register individual clusters or set a default cluster.
+You can register individual clusters and set a default cluster.
 
 See the following sections:
 
@@ -140,16 +140,17 @@ To see a list of registered Kubernetes clusters:
     ksm cluster list
     ```
 
-### <a id='registering'></a> Register Kubernetes Clusters
+### <a id='registering'></a> Register a Kubernetes Cluster
 
-You must use the <%= vars.product_short %> CLI to register a Kubernetes cluster with KSM.
+Before creating a plan, you must register the Kubernetes cluster that you want
+service instances to use.
 
-To register a cluster:
+To register a cluster with <%= vars.product_short %>:
 
-1. Create a cluster credentials yaml file with server, token, and caData. See
+1. Create a cluster credentials YAML file with server, token, and caData. See
 [Create a Cluster Credentials File](#create-cluster-file).
 
-1. Register a Kubernetes cluster with <%= vars.product_short %>  by running:
+1. Register the cluster with <%= vars.product_short %>  by running:
 
     ```
     ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML
@@ -158,16 +159,16 @@ To register a cluster:
     + `CLUSTER-NAME` is the name of your cluster. <%= vars.product_short %> uses it to track the cluster.
     Name must be lowercase letters, numbers, and hyphens.
     + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
-    that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
+    that you created in the previous step.
 
-### <a id='set-default'></a> Register a Default Kubernetes Cluster
+### <a id='set-default'></a> Set a Default Kubernetes Cluster
 
-If you register a default cluster, you do not need to specify a cluster when you
-create an service offering.
+If you set a default cluster, you do not need to specify a cluster when you
+create plans for a service offering.
 
-To register a default cluster:
+To set a default cluster:
 
-1. Register a default cluster by running:
+1. Set a default cluster by running:
 
     ```
     ksm cluster set-default CLUSTER-NAME
@@ -176,8 +177,17 @@ To register a default cluster:
     Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
 
 
+### <a id='listing'></a> List Registered Kubernetes Clusters
 
-### <a id='deregistering'></a> Deregister Kubernetes Clusters
+To see a list of registered Kubernetes clusters:
+
+1. List registered clusters by running:
+
+    ```
+    ksm cluster list
+    ```
+
+### <a id='deregistering'></a> Deregister a Kubernetes Cluster
 
 Before deregistering a cluster, ensure that it is not the default cluster, it
 does not have any instances, and the cluster is not associated with any plans in any service offering.
@@ -198,6 +208,9 @@ To deregister a cluster:
 To update the credentials for an existing cluster that you have already registered
 with <%= vars.product_short %>:
 
+1. Create a cluster credentials YAML file with server, token, and caData. See
+[Create a Cluster Credentials File](#create-cluster-file).
+
 1. Update the Kubernetes cluster credentials by running:
 
     ```
@@ -205,9 +218,9 @@ with <%= vars.product_short %>:
     ```
 
     Where:
-    + `CLUSTER-NAME` is the name of your cluster. <%= vars.product_short %> uses it to track the cluster.
+    + `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
     + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
-    that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
+    that you created in the previous step.
 
 <p class="note"><strong>Note:</strong> If existing instances are running on the cluster,
   use the <code>--force</code> flag.
