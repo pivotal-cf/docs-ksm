@@ -12,17 +12,17 @@ for use with <%= vars.product_full %> (<%= vars.product_short %>).
 
 Before offering a service with <%= vars.product_short %>, you must register the
 Kubernetes clusters that service instances use.
-<%= vars.product_short %> stores the Kubernetes cluster credentials securely in CredHub.
-
-You can provision each plan in your <%= vars.product_short %> service offering
-to a different cluster. Provisioning to different
-clusters allows you to require special cluster configurations.
+For more information about how to register your clusters with <%= vars.product_short %>, 
+see [Kubernetes Cluster Registration](#registration-management) below.
 
 To register clusters, you must first create a cluster credentials file.
-See [Create a Cluster Credentials File](#create-cluster-file) below.
+See [Create a Cluster Credentials File](#create-cluster-file) below. 
+KSM stores the Kubernetes cluster credentials securely in CredHub.
 
-For more information about how to register your clusters, see
-[Kubernetes Cluster Registration](#registration-management) below.
+After you have registered your clusters with KSM, you can provision each plan in
+your KSM service offering to a different cluster.
+Provisioning to different clusters allows you to require special cluster configurations.
+You can also set a default cluster to provision plans to. See [Set a Default Kubernetes Cluster](#set-default) below.
 
 
 ##<a id='create-cluster-file'></a> Create a Cluster Credentials File
@@ -123,7 +123,7 @@ See the following sections:
 
 - **Register clusters individually:** See [Register a Kubernetes Cluster](#registering) below.
 
-- **Set a default cluster:** See [Set a Default Kubernetes Cluster](#set-default) below.
+- **Set a default registered cluster:** See [Set a Default Kubernetes Cluster](#set-default) below.
 
 - **List clusters that are registered:** See [List Registered Kubernetes Clusters](#listing) below.
 
@@ -155,6 +155,9 @@ To register a cluster with <%= vars.product_short %>:
 
 If you set a default cluster, you do not need to specify a cluster when you
 create plans for a service offering.
+
+To set a default cluster, you must first register the cluster. For more information, 
+see [Register a Kubernetes Cluster](#registering) above.
 
 To set a default cluster:
 
