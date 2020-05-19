@@ -612,30 +612,21 @@ See [Configure Private Container Registry](./installing.html#container).
 
 ##<a id='additional'></a> Additional Helm Chart Considerations
 
-Many Helm charts use patterns.
-
-For example, the [MySQL Helm Stable chart](https://github.com/helm/charts/blob/master/stable/mysql/templates/secrets.yaml) can 
-use patterns to generate a root password.
-
-See the following example command to configure a pattern for a MySQL Helm Stable root password:
+Many Helm charts use patterns like the one employed by the
+[MySQL Helm Stable chart](https://github.com/helm/charts/blob/master/stable/mysql/templates/secrets.yaml),
+where the root secret is generated when not supplied:
 
 ```
 mysql-root-password: {{ randAlphaNum 10 | b64enc | quote }}
 ```
 
-If the secret re-renders on update or upgrade,
-the password is regenerated.
+If the secret resource is not also prevented from re-rendering on an update or upgrade,
+the password will be regenerated. This is a problem for two reasons:
 
-This is a problem for the following reasons:
+1. Many services do not support changing that password. The service and chart must be written in such a way that it supports that change.
+1. The bind flow doesn't support a password change at that point. The developer needs to re-bind on a password change.Additional
 
-- Many services do not support changing the password.
-
-- The bind flow does not support a password change. The developer needs 
-to re-bind on a password change.
-
-When possible, VMware recommends modifying helm charts to prevent the issue.
-
-For example, you may add a metadata annotation by running:
+Helm charts may require modification to prevent this issue, such as adding metadata annotations to prevent this behavior:
 
 ```
 ...
@@ -646,4 +637,4 @@ metadata:
 ...
 ```
 
-For more information about the issue, see the [Random passwords change on upgrade](https://github.com/helm/charts/issues/5167) issue in GitHub.
+For additional details, visit [this GitHub issue](https://github.com/helm/charts/issues/5167)
