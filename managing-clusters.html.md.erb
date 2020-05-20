@@ -12,11 +12,11 @@ for use with <%= vars.product_full %> (<%= vars.product_short %>).
 
 Before offering a service with <%= vars.product_short %>, you must register the
 Kubernetes clusters that service instances use.
-For more information about how to register your clusters with <%= vars.product_short %>, 
+For more information about how to register your clusters with <%= vars.product_short %>,
 see [Kubernetes Cluster Registration](#registration-management) below.
 
 To register clusters, you must first create a cluster credentials file.
-See [Create a Cluster Credentials File](#create-cluster-file) below. 
+See [Create a Cluster Credentials File](#create-cluster-file) below.
 <%= vars.product_short %> stores the Kubernetes cluster credentials securely in CredHub.
 
 After you have registered your clusters with <%= vars.product_short %>, you can provision each plan in
@@ -137,26 +137,27 @@ service instances to use.
 
 To register a cluster with <%= vars.product_short %>:
 
-1. Create a cluster credentials YAML file with server, token, and caData. See
-[Create a Cluster Credentials File](#create-cluster-file).
+1. Create a cluster credentials YAML file with the service account token, server, and certificate.
+See [Create a Cluster Credentials File](#create-cluster-file).
 
-1. Register the cluster with <%= vars.product_short %>  by running:
+1. Register the cluster with <%= vars.product_short %> by running:
 
     ```
     ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML
     ```
     Where:
-    + `CLUSTER-NAME` is the name of your cluster. <%= vars.product_short %> uses it to track the cluster.
-    Name must be lowercase letters, numbers, and hyphens.
+    + `CLUSTER-NAME` is the name of your cluster.
+    <%= vars.product_short %> uses this name to track the cluster.
+    Valid characters include lowercase letters, digits, and `-`.
     + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
-    that you created in the previous step.
+    that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
 
 ### <a id='set-default'></a> Set a Default Kubernetes Cluster
 
 If you set a default cluster, you do not need to specify a cluster when you
 create plans for a service offering.
 
-To set a default cluster, you must first register the cluster. For more information, 
+To set a default cluster, you must first register the cluster. For more information,
 see [Register a Kubernetes Cluster](#registering) above.
 
 To set a default cluster:
