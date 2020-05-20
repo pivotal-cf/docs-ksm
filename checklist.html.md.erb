@@ -1,0 +1,48 @@
+---
+title: Getting Started Checklist
+owner: Platform Engineering (KSM Team)
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to minimally configure <%= vars.product_full %>
+(<%= vars.product_short %>) for evaluation or testing purposes.
+This topic does not include procedures for adding custom service offerings.
+
+
+## <a id="overview"></a> Overview
+
+To get started with <%= vars.product_short %>:
+
+1. **Install and configure a Kubernetes cluster:**
+  <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information about
+  <%= vars.k8s_runtime_abbr %>,
+  see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+1. **Install and configure <%= vars.product_short %>:**
+  See [Installing and Configuring <%= vars.product_short %>](./installing.html).
+1. **Configure the <%= vars.product_short %> CLI:**
+  See [Retrieve Credentials for KSM](./using.html#credentials).
+1. **Register your Kubernetes cluster with <%= vars.product_short %>:**
+    You can register clusters individually or set a default one.
+    See [Register Kubernetes Clusters](./managing-clusters.html#registering)
+    or [Register a Default Kubernetes Cluster](./managing-clusters.html#set-default).
+1. **Add an example service offering:**
+  For evaluation or testing purposes,
+  you can add the Bitnami MySQL chart to <%= vars.product_short %>.
+  To add the Bitnami MySQL chart:
+      1. Clone the `bitnami/charts` repo by running:
+
+          ```
+          git clone https://github.com/bitnami/charts.git
+          ```
+      1. Add the MySQL service offering by following the procedure in
+          [Add a Service Offering to KSM](./using.html#add).
+1. **Enable developer access to the service offering:**
+  See [Enable Service Offering Access](.//using.html#enable).
+
+After you follow the above procedure,
+a developer can use Cloud Foundry Command Line Interface (cf CLI) commands to
+manage a MySQL service instance. This service instance runs on a Kubernetes cluster.
+
+If you want to configure a custom service offering,
+follow the procedures in [Preparing a Service Offering](./prepare-offer.html).
