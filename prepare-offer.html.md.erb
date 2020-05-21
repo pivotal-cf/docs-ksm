@@ -169,6 +169,33 @@ or ExternalDNS to access services.
 
  <%# <!-- TODO: does this belong here or in using section--> %>
 
+### <a id='secret-regeneration'></a> Prevent Secret Regeneration
+
+When Helm charts use secret patterns, the secrets regenerate on upgrade by default. Many services do not support secret regeneration.
+
+VMware recommends configuring your Helm chart to prevent secret regeneration where it defines secret patterns.
+
+To prevent secret regeneration, do the following:
+
+1. Search your Helm chart for a line containing `randAlphaNum`. 
+    For example:
+
+    ```
+    mysql-root-password: {{ randAlphaNum 10 | b64enc | quote }}
+    ```
+
+1. If a file contains `randAlphaNum`, add the following
+in the same file:
+
+    ```yaml
+    metadata:
+      annotations:
+        "helm.sh/hook": "pre-install"
+        "helm.sh/hook-delete-policy": "before-hook-creation"
+    ```
+
+For more information about this issue, see [Random passwords change on upgrade](https://github.com/helm/charts/issues/5167)
+in GitHub.
 
 
 ##<a id='plans'></a> (Optional) Define Plans Configuration
