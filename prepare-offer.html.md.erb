@@ -206,7 +206,7 @@ If you are using a Helm 2 chart, use both the Helm 2 and Helm 3 CLIs methods:
 [Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
 Helm 2 uses a hook annotation to install CRDs.
 
-### <a id='secret-regeneration'></a> Resolve Secret Regeneration
+### <a id='secret-regeneration'></a> Prevent Secret Regeneration
 
 When Helm charts use secret patterns, the secrets regenerate on upgrade by default. Many services do not support secret regeneration.
 
