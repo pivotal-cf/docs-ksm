@@ -214,7 +214,7 @@ VMware recommends configuring your Helm chart to prevent secret regeneration whe
 
 To prevent secret regeneration, do the following:
 
-1. Search your Helm chart for a line containing `randAlphaNum`. 
+1. Search your Helm chart for a line containing `randAlphaNum`.
     For example:
 
     ```
@@ -576,7 +576,7 @@ VMware recommends using a private container registry in production.
 <%= vars.product_short %> can then modify your Helm charts to point to images in the private
 container registry.
 
-If you either of the following applies, you must configure a private
+If either of the following applies, you must configure a private
 container registry:
 
 + Your environment is air-gapped and cannot connect to public container registries such as
@@ -637,5 +637,3 @@ in GitHub.
 
 1. Configure your private container registry in the <%= vars.product_short %> tile and apply changes.
 See [Configure Private Container Registry](./installing.html#container).
-
-
