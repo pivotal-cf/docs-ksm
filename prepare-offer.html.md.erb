@@ -116,9 +116,6 @@ For example, if your Helm chart requires an Ingress controller to enable service
     the Ingress controller must be manually installed onto the cluster. For information
     about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
     in the Kubernetes documentation.
-+ **Load Container Images:** You might have to load your container images into a private
-container registry.
-See [Load Container Images into a Private Container Registry](#images) below.
 + **Install the <%= vars.product_short %> CLI:**
 See [Install the <%= vars.product_short %> CLI](installing.html#ksm).
 
@@ -238,7 +235,7 @@ VMware recommends configuring your Helm chart to prevent secret regeneration whe
 
 To prevent secret regeneration, do the following:
 
-1. Search your Helm chart for a line containing `randAlphaNum`. 
+1. Search your Helm chart for a line containing `randAlphaNum`.
     For example:
 
     ```
