@@ -25,7 +25,7 @@ This section describes solutions for specific troubleshooting errors.
     <br><br>If a Helm 2 chart does not define CRDs using both methods, adding or
     updating the service offering might fail.',
     solution: 'Define the CRDs in your Helm chart using both the Helm 2 and Helm 3 methods by
-    doing the procedure in <a href="./prepare-offer.html#define">Define Custom Resource Definitions</a>.'
+    doing the procedure in <a href="./configure-helm.html#crd">Define Custom Resource Definitions</a>.'
 } %>
 
 ## <a id='techniques'></a> Troubleshooting Techniques
@@ -130,17 +130,17 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     kubectl delete namespace NAMESPACE
     ```
     Where `NAMESPACE` is the name of the namespace you are deleting.
-    
-    
+
+
 #### <a id='cleanup-script'></a> Cleanup Script
 
-A cleanup script automates the cleanup of a development 
+A cleanup script automates the cleanup of a development
 Kubernetes cluster during the development process.
 
-To automate cleanup, do the following: 
+To automate cleanup, do the following:
 
-<p class="note warning"><strong>Warning:</strong> Only run this cleanup script against a development cluster. 
-The script deletes Helm releases and Kubernetes resources on the cluster. 
+<p class="note warning"><strong>Warning:</strong> Only run this cleanup script against a development cluster.
+The script deletes Helm releases and Kubernetes resources on the cluster.
 Validate the targeted cluster by running <code>kubectl config current-context</code> before running the cleanup script below</a>.
 </p>
 
@@ -149,9 +149,9 @@ Validate the targeted cluster by running <code>kubectl config current-context</c
     ```
     #!/usr/bin/env bash
     set +e
-    
+
     helm ls -A | tail -n +2 | awk -F '\t' '{ print "helm uninstall " $1 " -n " $2 }' | xargs -I {} sh -c "{}"
-    
+
     kubectl get clusterrole        | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrole {}
     kubectl get clusterrolebinding | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrolebinding {}
     kubectl get namespace          | grep ksm-    | cut -d " " -f 1 | xargs -I {} kubectl delete namespace {}

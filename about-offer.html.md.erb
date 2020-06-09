@@ -14,13 +14,10 @@ service offering and how an offering displays in `cf marketplace`.
 A service offering includes the following:
 
 + **One or more Helm charts:** You must configure a Helm chart to be compatible with <%=  vars.product_short %>.
-See [Configure Your Helm Charts](./prepare-offer.html#config-helm).
+See [Configuring a Helm Chart](./configure-helm.html).
 + **A <%= vars.product_short %> package:**
 The <%= vars.product_short %> package contains YAML files that <%= vars.product_short %> uses to
-customize your service offering.
-
-To customize a service offering to <%= vars.product_short %>, follow the procedures
-in [Preparing a Service Offering](./prepare-offer.html).
+customize your service offering. See [Preparing a Service Offering](./prepare-offer.html).
 
 ##<a id='directory'></a> Service Offering Directory
 
@@ -88,7 +85,7 @@ Reference the following table to determine which files you must include in your
 
   <tr>
     <td>Override default chart values</td>
-    <td><a target="_blank"  href="./prepare-offer.html#override">(Optional) Override Chart Values</a></td>
+    <td><a target="_blank"  href="./configure-helm.html#override">(Optional) Override Chart Values</a></td>
   </tr>
 
   <tr>
@@ -119,7 +116,7 @@ Uploading a Helm chart to <%= vars.product_short %> with either a `ksm.yaml` or 
 overrides the default values for the service offering name, description, and plan names.
 These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
 
-The following table describes the values that <%= vars.product_short %> uses when you upload a Helm chart either 
+The following table describes the values that <%= vars.product_short %> uses when you upload a Helm chart either
 without additional configurations, with a `ksm.yaml` file, or with a `plans.yaml` file:
 
 <table>
