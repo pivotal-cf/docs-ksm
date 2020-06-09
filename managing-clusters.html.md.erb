@@ -93,13 +93,13 @@ with the `cluster-admin` role:
 1. Get your service account token by running:
 
     ```
-    secret&#95;name=$(kubectl get serviceaccount ksm-admin \
+    secret_name=$(kubectl get serviceaccount ksm-admin \
      --namespace=kube-system -o jsonpath='{.secrets[0].name}')
 
-    secret&#95;val=$(kubectl --namespace=kube-system get secret $secret&#95;name \
+    secret_val=$(kubectl --namespace=kube-system get secret $secret_name \
      -o jsonpath='{.data.token}')
 
-    secret_val=$(echo ${secret&#95;val} | base64 --decode)
+    secret_val=$(echo ${secret_val} | base64 --decode)
     ```
 
 1. Save your service account token, server, and certificate to a file by running:
