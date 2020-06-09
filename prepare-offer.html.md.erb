@@ -13,13 +13,12 @@ This topic describes how to prepare an offered service for <%= vars.product_full
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
 Before you add a service offering to `cf marketplace`,
-you must configure your Helm charts to be compatible with <%=  vars.product_short %>.
-You can also customize your Helm charts to enable additional features.
+you must configure the <%= vars.product_short %> package.
+You can also configure the package to enable additional features.
 
 To prepare a service offering:
 
 1. [Create a Sample Service Offering Directory](#offer-init).
-1. [Configure Your Helm Charts](#config-helm)
 1. [(Optional) Define Plans Configuration](#plans)
 1. [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts)
 1. [(Optional) Create Binding Template for App Consumption](#env)
@@ -64,179 +63,17 @@ To create a sample service offering directory:
     ```
     Where `SERVICE-NAME` is the name of the service offering.
 
-
-##<a id='config-helm'></a> Configure Your Helm Charts
-
-To upload a Helm chart to <%= vars.product_short %>,
-you must ensure that the chart is compatible with <%= vars.product_short %>.
-For examples of <%= vars.product_short %>-compatible charts,
-see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
-
-VMware recommends that you refer to the following resources when creating your Helm chart:
-
-+ For information about creating your first Helm chart,
-see this topic in the [Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
-+ For information about best practices for creating production-ready Helm charts,
-see this topic in the  [Bitnami documentation](https://docs.bitnami.com/tutorials/production-ready-charts/).
-+ For more information about best practices,
-see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/).
-
-<p class="note"><strong>Note:</strong> If you do not include a <code>plans.yaml</code>,
-  a <code>ksm.yaml</code> file, or override files with your service offering, one plan is offered.
-This plan uses the default values for the Helm chart.
-</p>
-
-To configure your Helm chart:
-
-1. Override values in the chart `values.yaml` file.
-  See [Override Chart Values](#override).
-1. If you are using Helm 2 charts, define Custom Resource Definitions (CRDs) using
-    Helm 2 and Helm 3 methods.
-    See [Define Custom Resource Definitions](#crd).
-
-    <p class="note"><strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
-    For information about best practices for using CRDs, see
-    the <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
-  </p>
-
-###<a id='override'></a> Override Chart Values
-To ensure that your chart is compatible with <%= vars.product_short %>,
-you might need to override specific values in <code>values.yaml</code>.
-
-You must follow the procedure in this section if your chart uses any of the following properties:
-
-+ storageClass
-+ services.type
-+ hosts.name
-
-You can optionally override other properties defined the chart `values.yaml` by
-adding those properties to an `OVERRIDE-FILE.yaml` file.
-
-<p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
-   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
-</p>
-
-To override chart values:
-
-1. Create an `overrides` directory and an `overrides/OVERRIDE-FILE.yaml` file. <br><br>
-    Ensure that the properties you add to `OVERRIDE-FILE.yaml` match the properties
-    in `values.yaml`.
-    Do not change the names of the properties.
-
-1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
-the storageClass name for your configured <%= vars.k8s_runtime_full %> cluster.
-The default name for <%= vars.k8s_runtime_abbr %> is `standard`.
-For more information, see [Configuring and Using PersistentVolumes](https://docs.pivotal.io/runtimes/pks/volumes.html).
-<br><br>For example:
-
-    ```yaml
-    ...
-    persistence:
-      enabled: true
-      storageClass: "standard"
-      ...
-    ```
-
-1. Edit your override file to enable service access.
-<%= vars.product_short %> supports using a load balancer, Ingress, or ExternalDNS to access services.
-    + **If want your service to be accessed directly using a load balancer,** set
-    `services.type:` to `LoadBalancer`. For example:
-
-        ```yaml
-        ...
-        service:
-          type: LoadBalancer
-          port: 3306
-        ...
-        ```
-    + **If want your service to be accessed using Ingress or ExternalDNS:**
-    Edit the value of the `hosts.name` to include a templatized value for uniqueness.
-    For example:
-
-        ```yaml
-        ...
-        ingress:
-          enabled: true
-          hosts:
-          - name: "{{ .Release.Name }}.example.com"
-        ...
-        ```
-
-    For more information, see [(Optional) Template Values](#values-templating) below.
-
-    <p class="note"><strong>Note:</strong> The Ingress controller or ExternalDNS
-      controller need to be installed and configured manually. <br><br>For information
-      about Ingress, see the
-      <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Kubernetes documentation</a>.
-      For information about
-      ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
+    <p class="note"><strong>Note:</strong> If you do not include a <code>plans.yaml</code>,
+      a <code>ksm.yaml</code> file, or override files with your service offering, one plan is offered.
+    This plan uses the default values for the Helm chart.
     </p>
-1. Edit the `ksm.yaml` file to use the override file you created in step 1.<br><br>
-For example:
-
-    ```yaml
-    marketplace-name: SERVICE-NAME
-    charts:
-      - chart: CHART-NAME
-        version: CHART-VERSION
-        offered: OFFERED-VALUE
-        scope: SCOPE-VALUE
-        overrideValuesFile: OVERRIDE-FILE
-    ```
-    For information about the properties used in `ksm.yaml`,
-    see [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts) below.
-
-### <a id='crd'></a> Define Custom Resource Definitions
-
-<%= vars.product_short %> supports charts that use the Helm 2 and Helm 3 CLIs.
-Helm 2 and Helm 3 use different methods to install CRDs.
- <%= vars.product_short %> requires Helm 3, while Helm 2 is optional.
-
-If you are using a Helm 2 chart, use both the Helm 2 and Helm 3 CLIs methods:
-
-1. Define your CRDs using the Helm 3 method by referring to the
-   [Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
-   Helm 3 uses a `crds` directory to install CRDs.
-
-1. Define your CRDs using the Helm 2 method by referring to the
-[Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
-Helm 2 uses a hook annotation to install CRDs.
-
-### <a id='secret-regeneration'></a> Prevent Secret Regeneration
-
-When Helm charts use secret patterns, the secrets regenerate on upgrade by default. Many services do not support secret regeneration.
-
-VMware recommends configuring your Helm chart to prevent secret regeneration where it defines secret patterns.
-
-To prevent secret regeneration, do the following:
-
-1. Search your Helm chart for a line containing `randAlphaNum`.
-    For example:
-
-    ```
-    mysql-root-password: {{ randAlphaNum 10 | b64enc | quote }}
-    ```
-
-1. If a file contains `randAlphaNum`, add the following
-in the same file:
-
-    ```yaml
-    metadata:
-      annotations:
-        "helm.sh/hook": "pre-install"
-        "helm.sh/hook-delete-policy": "before-hook-creation"
-    ```
-
-For more information about this issue, see [Random passwords change on upgrade](https://github.com/helm/charts/issues/5167)
-in GitHub.
-
 
 ##<a id='plans'></a> (Optional) Define Plans Configuration
 
 <p class="note"><strong>Note:</strong> The properties in <code>plans.yaml</code> and
   <code>PLAN-FILE.yaml</code> files override configurations in
   override files.
-  For information about override files, see <a href="#override">Override Chart Values</a> above.
+  For information about override files, see <a href="./configure-helm.html#override">Override Chart Values</a>.
 </p>
 
 In `cf marketplace`, each service has a set of plans that developers can provision.
@@ -309,7 +146,7 @@ If you want to override the default settings in `values.yaml` and offer custom p
     * (Optional) `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
     For more information, see [Register a Kubernetes Cluster](managing-clusters.html#registering). If omitted,
     service instances are provisioned to the default cluster.
-    For more infomation, see [Set a Default Cluster](managing-clusters.html#registering)
+    For more infomation, see [Set a Default Cluster](managing-clusters.html#registering).
     * (Optional) `RESOURCE-QUOTA-FILE` is name of the resource quota file for the plan.
 
     For example:
