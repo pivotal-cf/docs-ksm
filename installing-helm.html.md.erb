@@ -1,0 +1,437 @@
+---
+title: Installing and Configuring KSM using Helm
+owner: Platform Engineering (KSM Team)
+---
+<strong><%= modified_date %></strong>
+
+This topic describes how to install and configure <%= vars.product_full %> (<%= vars.product_short %>) for Kubernetes via Helm.
+
+##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
+
+To install the <%= vars.product_short %> (Command Line Interface)CLI:
+
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
+
+1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
+
+1. Rename the downloaded binary file to `ksm`.
+
+1. If you use MacOS or Linux, make the <%= vars.product_short %> binary act as an executable file by running the following command:
+
+    <pre class="terminal">chmod +x ksm</pre>
+
+1. Move the binary file into your `PATH`.
+If you use MacOS or Linux, move the binary file into your `PATH` by running the following command:
+
+    <pre class="terminal">mv ksm /usr/local/bin/ksm</pre>
+
+
+##<a id='move-images-to-private-registry'></a> Move the KSM Images to Your Private Registry
+
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
+
+1. Click the Image References and each of the images to get the docker pull commands. 
+
+1. Use the docker pull commands to move the images to your local system. For example: 
+
+    ```
+    docker pull registry.pivotal.io/container-services-manager/broker:0.10.25
+    docker pull registry.pivotal.io/container-services-manager/chartmuseum:v0.12.0
+    docker pull registry.pivotal.io/container-services-manager/daemon:0.10.25
+    ```
+
+1. Tag the images for your private repository. For example: 
+
+    ```
+    docker tag registry.pivotal.io/container-services-manager/broker:0.10.25 <registry>/container-services-manager/broker:0.10.25 
+    docker tag registry.pivotal.io/container-services-manager/chartmuseum:v0.12.0 <registry>/container-services-manager/chartmuseum:v0.12.0
+    docker tag registry.pivotal.io/container-services-manager/daemon:0.10.25 <registry>/container-services-manager/daemon:0.10.25
+    ```
+
+1. Push the images up to your private repository. For example: 
+
+    ```
+    docker push <registry>/container-services-manager/broker:0.10.25 
+    docker push <registry>/container-services-manager/chartmuseum:v0.12.0
+    docker push <registry>/container-services-manager/daemon:0.10.25
+    ```
+
+##<a id='install'></a> Download and Install the Helm Chart
+
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
+
+1. Download the helm chart tgz file and unzip it. This will create a new directory named ksm: 
+
+    ```
+    tar zxvf ksm-<version>.tgz
+    ```
+    
+1. <%= vars.product_short %> requires an s3 bucket. Create and gather the credentials.  
+   Modify these sections of the `ksm/values.yaml` file to specify the s3 data:  
+
+    ```
+    chartmuseum:
+      env:
+        open:
+          STORAGE_AMAZON_BUCKET: <bucket name>
+          STORAGE_AMAZON_ENDPOINT: <storage.googleapis.com or endpoint>
+        secret:
+          AWS_ACCESS_KEY_ID: <access key>
+          AWS_SECRET_ACCESS_KEY: <secret>
+    s3:
+      s3AccessKey: <access key>
+      s3Bucket: <bucket name>
+      s3Endpoint: <storage.googleapis.com or endpoint>
+      s3Secret: <secret>
+    ```
+
+1. <%= vars.product_short %> requires networking. You can choose LoadBalancer or Ingress. 
+
+   If using LoadBalancer set: 
+   ```
+    broker:
+      service:
+        type: LoadBalancer
+    daemon:
+      service:
+        type: LoadBalancer
+   ``` 
+   
+   If using Ingress: 
+   ```
+    ingress:
+      enabled: true
+      hosts:
+        - <INGRESS-DOMAIN>
+   ```
+
+1. Update values.yaml to specify your private registry.  
+
+```
+broker:
+  image:
+    repository: <registry>/container-services-manager/broker
+    tag: <version>
+daemon:
+  image:
+    repository: <registry>/container-services-manager/daemon
+    tag: <version>
+chartmuseum:
+  image:
+    repository: <registry>/container-services-manager/chartmuseum
+    tag: <chartmuseum version>
+```
+
+1. <%= vars.product_short %> requires a Cloud Foundry environment. Note: if using LoadBalancer, you will need to do
+   a Helm upgrade later to set these values (you will not know your LoadBalancer IP at this point)
+
+    ```
+    cf:
+      apiAddress: https://api.sys.<cloud foundry domain>
+      username: <cloud foundry username>
+      password: <cloud foundry password>
+      brokerName: ksm
+      brokerUrl: http://broker.<INGRESS-DOMAIN>
+    ```
+
+
+
+
+
+```
+affinity: {}
+broker:
+  annotations: {}
+  image:
+    pullPolicy: IfNotPresent
+    repository: dev.registry.pivotal.io/container-services-manager/broker
+    tag: latest
+  labels: {}
+  password: null
+  replicaCount: 2
+  service:
+    port: 80
+    type: LoadBalancer
+  userName: admin
+cf:
+  apiAddress: null
+  brokerName: null
+  brokerUrl: null
+  password: null
+  skipSslValidation: false
+  username: null
+chartmuseum:
+  deployment:
+    labels: {}
+  env:
+    open:
+      BASIC_AUTH_PASSWORD: null
+      BASIC_AUTH_USER: chartuser
+      DISABLE_API: false
+      STORAGE: amazon
+      STORAGE_AMAZON_BUCKET: null
+      STORAGE_AMAZON_ENDPOINT: null
+      STORAGE_AMAZON_PREFIX: null
+    secret:
+      AWS_ACCESS_KEY_ID: null
+      AWS_SECRET_ACCESS_KEY: null
+  image:
+    pullSecrets: null
+    repository: dev.registry.pivotal.io/container-services-manager/chartmuseum
+    tag: v0.12.0
+  replica:
+    annotations: {}
+createPVC: true
+daemon:
+  annotations: {}
+  image:
+    pullPolicy: IfNotPresent
+    repository: dev.registry.pivotal.io/container-services-manager/daemon
+    tag: latest
+  labels: {}
+  password: null
+  replicaCount: 2
+  service:
+    port: 80
+    type: LoadBalancer
+  userName: admin
+imageCredentials: {}
+ingress:
+  annotations: {}
+  brokerPrefix: broker
+  daemonPrefix: daemon
+  enabled: false
+  hosts: []
+  tls: []
+nameOverride: ""
+nodeSelector: {}
+podSecurityContext: {}
+resources: {}
+s3:
+  s3AccessKey: null
+  s3Bucket: null
+  s3Endpoint: null
+  s3Secret: null
+  s3SkipSSL: "false"
+securityContext: {}
+serviceAccount:
+  annotations: {}
+  create: true
+  name: null
+tolerations: []
+```
+
+
+
+
+1. 
+
+
+```
+helm repo add container-services-manager https://registry.pivotal.io/chartrepo/container-services-manager --username=<username> --password=<password>
+helm install container-services-manager/ksm --version <version>
+```
+
+
+To add <%= vars.product_short %> to <%= vars.ops_manager %>:
+
+1. Log in and download the <%= vars.product_full %> (<%= vars.product_short %>) tile from
+[<%= vars.product_network %>](https://network.pivotal.io/).
+
+1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** where
+you have installed <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+<%= vars.product_short %> registers itself with the <%= vars.app_runtime_abbr %>
+marketplace and therefore must be installed in an environment with <%= vars.app_runtime_abbr %>.
+
+1. Click **Import a Product** to upload the product file.
+
+1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>.
+This adds the tile to your staging area.
+
+1. Click the newly-added **<%= vars.product_full %> (<%= vars.product_short %>)** tile to open its configuration panes.
+
+## <a id="configure"></a>Configure the Tile
+Follow the steps below to configure <%= vars.product_short %> service.
+
+
+###<a id='az-networks'></a> Configure AZs and Networks
+
+Follow the steps below to select an availability zone (AZ) to run the
+service broker and to select networks.
+
+ 1. Click **Assign AZs and Networks**
+
+ 1. Configure the fields as follows:
+   <table>
+     <tr><th>Field</th><th>Instructions</th></tr>
+     <tr>
+        <td><strong>Place singleton jobs in</strong></td>
+        <td>Select the AZ that you want the singleton VMs to run in.
+            This selection does not affect <%= vars.product_short %>.</td>
+     </tr>
+     <tr>
+        <td><strong>Balance other jobs in</strong></td>
+        <td>Select additional AZs.
+            This selection controls the regions in which <%= vars.product_short %> is deployed.</td>
+     </tr>
+     <tr>
+        <td><strong>Network</strong></td>
+        <td>Select the same network you use for the <%= vars.app_runtime_abbr %> component VMs.
+          To view the network <%= vars.app_runtime_abbr %> component VMs use, navigate to <strong><%= vars.ops_manager %></strong> >
+          <strong><%= vars.product_full %> (<%= vars.product_short %>)</strong> > <strong>Assign AZs and Networks</strong>.
+        </td>
+     </tr>
+   </table>
+    <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
+       after they are assigned your deployment fails. For more information,
+       see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.
+     </p>
+
+ 2. Click **Save**.
+
+### <a id="storage"></a> Configure Storage
+
+<%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
+The operator is responsible for backing up this bucket.
+Follow the instructions from your IaaS provider.
+
+If you use a cloud storage provider that does not natively support S3 buckets,
+you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
+See [Prerequisites](#storage-preq), below.
+
+<p class="note warning"><strong>Warning:</strong> If you change the storage configurations,
+  the service offering data is lost and you must re-add the service offering to <%= vars.product_short %>.
+  For offerings with multiple versions provisioned, the old versions should also be re-added.
+  See <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %></a>.
+</p>
+
+#### <a name="storage-preq"></a> Prerequisites
+
+To configure your cloud storage provider for <%= vars.product_short %>:
+
++ **Create a policy and an access key for your cloud storage provider:**
+Policy creation varies depending on your cloud storage provider.
+VMware recommends that this account only be used by <%= vars.product_short %>.
+You should apply a minimal policy that lets the user account upload backups to your S3 store.
+The policy must give <%= vars.product_short %> permissions to list and upload buckets.
+For instructions on how to create a policy and access key, see your provider's documentation.
+
++  **If you are using Google Cloud Storage (GCS),
+you must generate a developer key for GCS to use an S3 compatible API:**
+This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
+For instructions on how to generate a developer key,
+see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
+
+#### <a name="storage-ksm"></a> Configure Storage in <%= vars.product_short %>
+
+To configure storage in <%= vars.product_short %>:
+
+1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %> (<%= vars.product_short %>)** > **Storage Configuration**.
+
+1. Configure the fields as follows:
+
+    <table class="nice">
+    <tr>
+    <th>Field</th>
+    <th>Instructions</th>
+    </tr>
+    <tr>
+      <td><strong>Endpoint</strong></td>
+      <td>Enter the S3-compatible endpoint URL for uploading backups.
+        The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
+        <ul>
+          <li><code>storage.googleapis.com</code></li>
+          <li><code>s3-us-west-2.amazonaws.com</code></li>
+        </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Region</strong></td>
+        <td> Enter the region where your bucket is located.
+          The region defaults to <code>us-east-1</code>.
+          Some IaaS providers do not require regions for their buckets.
+          For example, Google Cloud Platform Multi-Regional Storage ignores this value.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Bucket Name</strong></td>
+        <td>Enter the name of your bucket.</td>
+      </tr>
+      <tr>
+        <td><strong>Access Key ID</strong></td>
+        <td>Enter the S3 Access Key ID.</td>
+      </tr>
+      <tr>
+        <td><strong>Secret Access Key</strong></td>
+        <td>Enter the Secret Access Key.</td>
+      </tr>
+      <tr>
+        <td><strong>Skip SSL Validation</strong></td>
+        <td>Select this checkbox if your environment uses a self-signed certificate
+          for the storage provider.
+          Do not select this checkbox if you use a production environment. </td>
+      </tr>
+    </table>
+
+### <a id="container"></a> Configure Private Container Registry
+
+VMware recommends using a private container registry in production.
+<%= vars.product_short %> can then modify your Helm charts to point to images in the private
+container registry.
+If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
+container registry.
+
+You obtain the values needed to configure the private container registry from your container registry.
+
+<p class="note warning"><strong>Warning:</strong> If you change the private container registry
+  configurations, you must load all container images to the new private container registry.
+  You must also clear the <%= vars.product_short %> cache by adding a new service offering or updating an existing service offering.<br>
+  See <a href="./prepare-offer.html#images">Load Container Images into a Private Container Registry</a>
+  and <a href="./using.html#add">
+  Add a Service Offering to <%= vars.product_short %></a>.
+</p>
+
+To configure a private container registry:
+
+1. Click **Container Registry Configuration**.
+1. Enter the **Registry Server URL**.
+This is the URL including your private container registry hostname and project.
+For example, `gcr.io/myproject`.
+For Docker Hub, use `docker.io/<repository>` for the registry server URL.
+This is the location of the private container registry that <%= vars.product_short %> pulls images from.
+<%= vars.product_short %> uses the hostname to create the image pull secret and the full path to transform image paths.
+1. Enter the **Registry Username**.
+This is the username that <%= vars.product_short %> uses to pull images from the private container registry.
+1. Enter the **Registry Password**.
+This is the password that <%= vars.product_short %> uses to pull images from the private container registry.
+
+### <a id="advanced-config"></a>Advanced Configuration
+
+When `Store Bind Credentials` is enabled, bind credentials are securely stored in CredHub.
+This setting is enabled by default. For most foundations, you can leave this setting enabled.
+
+Do not disable `Store Bind Credentials`.
+Unless you have integration requirements where CredHub cannot be used, leave the setting enabled.
+After you deploy <%= vars.product_short %>,
+do not change the `Store Bind Credentials` setting.
+
+### <a id="errands"></a>Errands
+
+The pre-delete errand `deregistar`removes <%= vars.product_short %> service offers from `cf marketplace`
+and **deletes all associated service instances and bindings**.
+This errand is disabled by default.
+
+### <a id="apply-changes"></a> Apply All Changes
+
+To deploy <%= vars.product_short %> and apply your configurations:
+
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
+   For more information about this <%= vars.ops_manager %> page,
+   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
+
+1. Click **Apply Changes**.
