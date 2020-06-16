@@ -6,291 +6,10 @@ owner: Platform Engineering (KSM Team)
 
 This topic describes how to install and configure <%= vars.product_full %> (<%= vars.product_short %>) for Kubernetes via Helm.
 
-##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
-
-To install the <%= vars.product_short %> (Command Line Interface)CLI:
-
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
-
-1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
-
-1. Rename the downloaded binary file to `ksm`.
-
-1. If you use MacOS or Linux, make the <%= vars.product_short %> binary act as an executable file by running the following command:
-
-    <pre class="terminal">chmod +x ksm</pre>
-
-1. Move the binary file into your `PATH`.
-If you use MacOS or Linux, move the binary file into your `PATH` by running the following command:
-
-    <pre class="terminal">mv ksm /usr/local/bin/ksm</pre>
-
-
-##<a id='move-images-to-private-registry'></a> Move the KSM Images to Your Private Registry
-
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
-
-1. Click the Image References and each of the images to get the docker pull commands. 
-
-1. Use the docker pull commands to move the images to your local system. For example: 
-
-    ```
-    docker pull registry.pivotal.io/container-services-manager/broker:0.10.25
-    docker pull registry.pivotal.io/container-services-manager/chartmuseum:v0.12.0
-    docker pull registry.pivotal.io/container-services-manager/daemon:0.10.25
-    ```
-
-1. Tag the images for your private repository. For example: 
-
-    ```
-    docker tag registry.pivotal.io/container-services-manager/broker:0.10.25 <registry>/container-services-manager/broker:0.10.25 
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:v0.12.0 <registry>/container-services-manager/chartmuseum:v0.12.0
-    docker tag registry.pivotal.io/container-services-manager/daemon:0.10.25 <registry>/container-services-manager/daemon:0.10.25
-    ```
-
-1. Push the images up to your private repository. For example: 
-
-    ```
-    docker push <registry>/container-services-manager/broker:0.10.25 
-    docker push <registry>/container-services-manager/chartmuseum:v0.12.0
-    docker push <registry>/container-services-manager/daemon:0.10.25
-    ```
-
-##<a id='install'></a> Download and Install the Helm Chart
-
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
-
-1. Download the helm chart tgz file and unzip it. This will create a new directory named ksm: 
-
-    ```
-    tar zxvf ksm-<version>.tgz
-    ```
-    
-1. <%= vars.product_short %> requires an s3 bucket. Create and gather the credentials.  
-   Modify these sections of the `ksm/values.yaml` file to specify the s3 data:  
-
-    ```
-    chartmuseum:
-      env:
-        open:
-          STORAGE_AMAZON_BUCKET: <bucket name>
-          STORAGE_AMAZON_ENDPOINT: <storage.googleapis.com or endpoint>
-        secret:
-          AWS_ACCESS_KEY_ID: <access key>
-          AWS_SECRET_ACCESS_KEY: <secret>
-    s3:
-      s3AccessKey: <access key>
-      s3Bucket: <bucket name>
-      s3Endpoint: <storage.googleapis.com or endpoint>
-      s3Secret: <secret>
-    ```
-
-1. <%= vars.product_short %> requires networking. You can choose LoadBalancer or Ingress. 
-
-   If using LoadBalancer set: 
-   ```
-    broker:
-      service:
-        type: LoadBalancer
-    daemon:
-      service:
-        type: LoadBalancer
-   ``` 
-   
-   If using Ingress: 
-   ```
-    ingress:
-      enabled: true
-      hosts:
-        - <INGRESS-DOMAIN>
-   ```
-
-1. Update values.yaml to specify your private registry.  
-
-```
-broker:
-  image:
-    repository: <registry>/container-services-manager/broker
-    tag: <version>
-daemon:
-  image:
-    repository: <registry>/container-services-manager/daemon
-    tag: <version>
-chartmuseum:
-  image:
-    repository: <registry>/container-services-manager/chartmuseum
-    tag: <chartmuseum version>
-```
-
-1. <%= vars.product_short %> requires a Cloud Foundry environment. Note: if using LoadBalancer, you will need to do
-   a Helm upgrade later to set these values (you will not know your LoadBalancer IP at this point)
-
-    ```
-    cf:
-      apiAddress: https://api.sys.<cloud foundry domain>
-      username: <cloud foundry username>
-      password: <cloud foundry password>
-      brokerName: ksm
-      brokerUrl: http://broker.<INGRESS-DOMAIN>
-    ```
-
-
-
-
-
-```
-affinity: {}
-broker:
-  annotations: {}
-  image:
-    pullPolicy: IfNotPresent
-    repository: dev.registry.pivotal.io/container-services-manager/broker
-    tag: latest
-  labels: {}
-  password: null
-  replicaCount: 2
-  service:
-    port: 80
-    type: LoadBalancer
-  userName: admin
-cf:
-  apiAddress: null
-  brokerName: null
-  brokerUrl: null
-  password: null
-  skipSslValidation: false
-  username: null
-chartmuseum:
-  deployment:
-    labels: {}
-  env:
-    open:
-      BASIC_AUTH_PASSWORD: null
-      BASIC_AUTH_USER: chartuser
-      DISABLE_API: false
-      STORAGE: amazon
-      STORAGE_AMAZON_BUCKET: null
-      STORAGE_AMAZON_ENDPOINT: null
-      STORAGE_AMAZON_PREFIX: null
-    secret:
-      AWS_ACCESS_KEY_ID: null
-      AWS_SECRET_ACCESS_KEY: null
-  image:
-    pullSecrets: null
-    repository: dev.registry.pivotal.io/container-services-manager/chartmuseum
-    tag: v0.12.0
-  replica:
-    annotations: {}
-createPVC: true
-daemon:
-  annotations: {}
-  image:
-    pullPolicy: IfNotPresent
-    repository: dev.registry.pivotal.io/container-services-manager/daemon
-    tag: latest
-  labels: {}
-  password: null
-  replicaCount: 2
-  service:
-    port: 80
-    type: LoadBalancer
-  userName: admin
-imageCredentials: {}
-ingress:
-  annotations: {}
-  brokerPrefix: broker
-  daemonPrefix: daemon
-  enabled: false
-  hosts: []
-  tls: []
-nameOverride: ""
-nodeSelector: {}
-podSecurityContext: {}
-resources: {}
-s3:
-  s3AccessKey: null
-  s3Bucket: null
-  s3Endpoint: null
-  s3Secret: null
-  s3SkipSSL: "false"
-securityContext: {}
-serviceAccount:
-  annotations: {}
-  create: true
-  name: null
-tolerations: []
-```
-
-
-
-
-1. 
-
-
-```
-helm repo add container-services-manager https://registry.pivotal.io/chartrepo/container-services-manager --username=<username> --password=<password>
-helm install container-services-manager/ksm --version <version>
-```
-
-
-To add <%= vars.product_short %> to <%= vars.ops_manager %>:
-
-1. Log in and download the <%= vars.product_full %> (<%= vars.product_short %>) tile from
-[<%= vars.product_network %>](https://network.pivotal.io/).
-
-1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** where
-you have installed <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
-<%= vars.product_short %> registers itself with the <%= vars.app_runtime_abbr %>
-marketplace and therefore must be installed in an environment with <%= vars.app_runtime_abbr %>.
-
-1. Click **Import a Product** to upload the product file.
-
-1. Under **Import a Product**, click **+** next to the version number of <%= vars.product_short %>.
-This adds the tile to your staging area.
-
-1. Click the newly-added **<%= vars.product_full %> (<%= vars.product_short %>)** tile to open its configuration panes.
-
-## <a id="configure"></a>Configure the Tile
-Follow the steps below to configure <%= vars.product_short %> service.
-
-
-###<a id='az-networks'></a> Configure AZs and Networks
-
-Follow the steps below to select an availability zone (AZ) to run the
-service broker and to select networks.
-
- 1. Click **Assign AZs and Networks**
-
- 1. Configure the fields as follows:
-   <table>
-     <tr><th>Field</th><th>Instructions</th></tr>
-     <tr>
-        <td><strong>Place singleton jobs in</strong></td>
-        <td>Select the AZ that you want the singleton VMs to run in.
-            This selection does not affect <%= vars.product_short %>.</td>
-     </tr>
-     <tr>
-        <td><strong>Balance other jobs in</strong></td>
-        <td>Select additional AZs.
-            This selection controls the regions in which <%= vars.product_short %> is deployed.</td>
-     </tr>
-     <tr>
-        <td><strong>Network</strong></td>
-        <td>Select the same network you use for the <%= vars.app_runtime_abbr %> component VMs.
-          To view the network <%= vars.app_runtime_abbr %> component VMs use, navigate to <strong><%= vars.ops_manager %></strong> >
-          <strong><%= vars.product_full %> (<%= vars.product_short %>)</strong> > <strong>Assign AZs and Networks</strong>.
-        </td>
-     </tr>
-   </table>
-    <p class="note warning"><strong>Warning:</strong> If you change the network or its IP address
-       after they are assigned your deployment fails. For more information,
-       see <a href="https://docs.pivotal.io/rabbitmq-cf/changing-ips.html">Changing Network or IP Addresses Results in a Failed Deployment</a>.
-     </p>
-
- 2. Click **Save**.
+##<a id="prereq"></a>Prerequisites
+* If using [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/), 
+the Ingress controller must already be installed on the cluster that KSM will be installed
+on. A subdomain for KSM be reserved in your DNS.
 
 ### <a id="storage"></a> Configure Storage
 
@@ -325,113 +44,257 @@ This developer key is used to configure **Access Key ID** and **Secret Access Ke
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
 
-#### <a name="storage-ksm"></a> Configure Storage in <%= vars.product_short %>
+##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
 
-To configure storage in <%= vars.product_short %>:
+To install the <%= vars.product_short %> (Command Line Interface)CLI:
 
-1. Navigate to **<%= vars.ops_manager %>** > **<%= vars.product_full %> (<%= vars.product_short %>)** > **Storage Configuration**.
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
 
-1. Configure the fields as follows:
+1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
 
-    <table class="nice">
-    <tr>
-    <th>Field</th>
-    <th>Instructions</th>
-    </tr>
-    <tr>
-      <td><strong>Endpoint</strong></td>
-      <td>Enter the S3-compatible endpoint URL for uploading backups.
-        The URL cannot start with <code>http://</code> or <code>https://</code>. For example:<br><br>
-        <ul>
-          <li><code>storage.googleapis.com</code></li>
-          <li><code>s3-us-west-2.amazonaws.com</code></li>
-        </ul>
-        </td>
-      </tr>
-      <tr>
-        <td><strong>Region</strong></td>
-        <td> Enter the region where your bucket is located.
-          The region defaults to <code>us-east-1</code>.
-          Some IaaS providers do not require regions for their buckets.
-          For example, Google Cloud Platform Multi-Regional Storage ignores this value.
-        </td>
-      </tr>
-      <tr>
-        <td><strong>Bucket Name</strong></td>
-        <td>Enter the name of your bucket.</td>
-      </tr>
-      <tr>
-        <td><strong>Access Key ID</strong></td>
-        <td>Enter the S3 Access Key ID.</td>
-      </tr>
-      <tr>
-        <td><strong>Secret Access Key</strong></td>
-        <td>Enter the Secret Access Key.</td>
-      </tr>
-      <tr>
-        <td><strong>Skip SSL Validation</strong></td>
-        <td>Select this checkbox if your environment uses a self-signed certificate
-          for the storage provider.
-          Do not select this checkbox if you use a production environment. </td>
-      </tr>
-    </table>
+1. Rename the downloaded binary file to `ksm`.
 
-### <a id="container"></a> Configure Private Container Registry
+1. If you use MacOS or Linux, make the <%= vars.product_short %> binary act as an executable file by running the following command:
 
-VMware recommends using a private container registry in production.
-<%= vars.product_short %> can then modify your Helm charts to point to images in the private
-container registry.
-If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
-container registry.
+    <pre class="terminal">chmod +x ksm</pre>
 
-You obtain the values needed to configure the private container registry from your container registry.
+1. Move the binary file into your `PATH`.
+If you use MacOS or Linux, move the binary file into your `PATH` by running the following command:
 
-<p class="note warning"><strong>Warning:</strong> If you change the private container registry
-  configurations, you must load all container images to the new private container registry.
-  You must also clear the <%= vars.product_short %> cache by adding a new service offering or updating an existing service offering.<br>
-  See <a href="./prepare-offer.html#images">Load Container Images into a Private Container Registry</a>
-  and <a href="./using.html#add">
-  Add a Service Offering to <%= vars.product_short %></a>.
-</p>
+    <pre class="terminal">mv ksm /usr/local/bin/ksm</pre>
 
-To configure a private container registry:
 
-1. Click **Container Registry Configuration**.
-1. Enter the **Registry Server URL**.
-This is the URL including your private container registry hostname and project.
-For example, `gcr.io/myproject`.
-For Docker Hub, use `docker.io/<repository>` for the registry server URL.
-This is the location of the private container registry that <%= vars.product_short %> pulls images from.
-<%= vars.product_short %> uses the hostname to create the image pull secret and the full path to transform image paths.
-1. Enter the **Registry Username**.
-This is the username that <%= vars.product_short %> uses to pull images from the private container registry.
-1. Enter the **Registry Password**.
-This is the password that <%= vars.product_short %> uses to pull images from the private container registry.
+##<a id='move-images-to-private-registry'></a> Move the KSM Images to Your Private Registry
 
-### <a id="advanced-config"></a>Advanced Configuration
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
 
-When `Store Bind Credentials` is enabled, bind credentials are securely stored in CredHub.
-This setting is enabled by default. For most foundations, you can leave this setting enabled.
+1. Click the Image References and each of the images to get the docker pull commands. 
 
-Do not disable `Store Bind Credentials`.
-Unless you have integration requirements where CredHub cannot be used, leave the setting enabled.
-After you deploy <%= vars.product_short %>,
-do not change the `Store Bind Credentials` setting.
+1. Use the docker pull commands to move the images to your local system
+    ```
+    docker pull registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM_VERSION
+    docker pull registry.pivotal.io/container-services-manager/broker:VERSION
+    docker pull registry.pivotal.io/container-services-manager/daemon:VERSION
+    ```
+    Where:
+    + `VERSION` is the release version
+    + `CHARTMUSEUM_VERSION` is the chartmuseum version
 
-### <a id="errands"></a>Errands
+1. Tag the images for your private repository
 
-The pre-delete errand `deregistar`removes <%= vars.product_short %> service offers from `cf marketplace`
-and **deletes all associated service instances and bindings**.
-This errand is disabled by default.
+    ```
+    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM_VERSION <registry>/container-services-manager/chartmuseum:CHARTMUSEUM_VERSION
+    docker tag registry.pivotal.io/container-services-manager/broker:VERSION <registry>/container-services-manager/broker:VERSION
+    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION <registry>/container-services-manager/daemon:VERSION
+    ```
+   Where:
+   + `VERSION` is the release version
+   + `CHARTMUSEUM_VERSION` is the chartmuseum version
 
-### <a id="apply-changes"></a> Apply All Changes
+1. Push the images up to your private repository 
+    ```
+    docker push <registry>/container-services-manager/chartmuseum:CHARTMUSEUM_VERSION
+    docker push <registry>/container-services-manager/broker:VERSION
+    docker push <registry>/container-services-manager/daemon:VERSION
+    ```
+   Where:
+   + `VERSION` is the release version
+   + `CHARTMUSEUM_VERSION` is the chartmuseum version
 
-To deploy <%= vars.product_short %> and apply your configurations:
+##<a id='install'></a> Download, Modify Values, and Install the Helm Chart
 
-1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
 
-1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
-   For more information about this <%= vars.ops_manager %> page,
-   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
+1. Download the helm chart tgz file and unzip it. This will create a new directory named ksm: 
 
-1. Click **Apply Changes**.
+    ```
+    tar zxvf ksm-<version>.tgz
+    ```
+    
+1. <%= vars.product_short %> requires an s3 bucket. Create and gather the credentials.  
+   Modify these sections of the `ksm/values.yaml` file to specify the s3 data:  
+
+    ```
+    chartmuseum:
+      env:
+        open:
+          STORAGE_AMAZON_BUCKET: BUCKET_NAME
+          STORAGE_AMAZON_ENDPOINT: ENDPOINT
+        secret:
+          AWS_ACCESS_KEY_ID: ACCESS_KEY
+          AWS_SECRET_ACCESS_KEY: SECRET
+    s3:
+      s3AccessKey: <access key>
+      s3Bucket: <bucket name>
+      s3Endpoint: <storage.googleapis.com or endpoint>
+      s3Secret: <secret>
+    ```
+   Where:
+   + `BUCKET_NAME` is the s3 bucket name
+   + `ENDPOINT` is s3 endpoint. For example, in GCP it would be `storage.googleapis.com`
+   + `ACCESS_KEY` is the access key for s3
+   + `SECRET` is the secret for s3
+   
+1. <%= vars.product_short %> requires networking. You can choose LoadBalancer or Ingress. 
+
+   If using LoadBalancer set: 
+   ```
+    broker:
+      service:
+        type: LoadBalancer
+    daemon:
+      service:
+        type: LoadBalancer
+   ``` 
+   
+   If using Ingress: 
+   ```
+    ingress:
+      enabled: true
+      hosts:
+        - INGRESS_DOMAIN
+      annotations:
+        kubernetes.io/ingress.class: INGRESS_ANNOTATION
+   ```
+   Where:
+   + `INGRESS_DOMAIN` is the domain provisioned
+   + `INGRESS_ANNOTATION` is the annotation required by the ingress controller. Note: your ingress controller might require different annotations
+
+1. <%= vars.product_short %> requires authentication for the services. Choose a secure password for each service:
+   ```
+   broker:
+     password: BROKER_PASSWORD
+   daemon:
+     password: DAEMON_PASSWORD
+   chartmuseum:
+     env:
+       open:
+         BASIC_AUTH_PASSWORD: CHARTMUSEUM_PASSWORD
+   ``` 
+   
+   Where:
+   + `BROKER_PASSWORD` is a secure password for broker
+   + `DAEMON_PASSWORD` is a secure password for daemon
+   + `CHARTMUSEUM_PASSWORD` is a secure password for chartmuseum
+         
+1. Update values.yaml to specify your private registry.  
+
+    ```
+    broker:
+      image:
+        repository: <registry>/container-services-manager/broker
+        tag: VERSION
+    daemon:
+      image:
+        repository: <registry>/container-services-manager/daemon
+        tag: <VERSION
+    chartmuseum:
+      image:
+        repository: <registry>/container-services-manager/chartmuseum
+        tag: CHARTMUSEUM_VERSION
+    ```
+   Where:
+   + `VERSION` is the release version
+   + `CHARTMUSEUM_VERSION` is the chartmuseum version
+   + `REGISTRY` is the private registry you have configured
+
+1. VMware recommends using a private container registry in production.
+   <%= vars.product_short %> can then modify your Helm charts that you offer to point to images in the private
+   container registry.
+   If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
+   container registry.
+   To use a private registry, modify these values: 
+    ```bash
+    imageCredentials:
+      registry: REGISTRY
+      username: REG_USER
+      password: REG_PASSWORD
+    ```     
+   Where:
+   + `REGISTRY` is the private registry configured for the offer images
+   + `REG_USER` is the user for the private registry
+   + `REG_PASSWORD` is the password for the private registry
+   
+1. If using Ingress, add the Cloud Foundry environment. (If using a LoadBalancer, you will need to do this as an upgrade after the initial install.)
+    ```
+    cf:
+      apiAddress: http://api.SYS_DOMAIN
+      username: CF_USER
+      password: CF_PASS
+      brokerName: ksm
+      brokerUrl: http://broker.INGRESS-DOMAIN
+    ```
+   Where:
+   + `SYS_DOMAIN` is the API endpoint for your <%= vars.app_runtime_abbr %> instance.
+   + `CF_USER` is your username for your <%= vars.app_runtime_abbr %> instance.
+   + `CF_PASS` is your password for your <%= vars.app_runtime_abbr %> instance. 
+   + `INGRESS_DOMAIN` is the provisioned domain
+
+1. Install the helm chart
+    ```bash
+    cd ksm/
+    helm install RELEASE_NAME .
+    ```
+    Where:
+    + `RELEASE_NAME` is the name you want to give to the release
+    
+1. If using LoadBalancer, get the broker IP address and configure Cloud Foundry:
+
+   1. Get broker IP address
+       ```
+       export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+       ``` 
+   1. Upgrade helm release
+       ```
+      helm upgrade RELEASE_NAME . --reuse-values \
+        --set cf.brokerUrl="http://${BROKER_IP}" \
+        --set cf.brokerName=ksm \
+        --set cf.apiAddress=http://api.SYS_DOMAIN \
+        --set cf.username=CF_USER \
+        --set cf.password=CF_PASS
+       ```
+       Where:
+       + `SYS_DOMAIN` is the API endpoint for your <%= vars.app_runtime_abbr %> instance.
+       + `CF_USER` is your username for your <%= vars.app_runtime_abbr %> instance.
+       + `CF_PASS` is your password for your <%= vars.app_runtime_abbr %> instance.  
+       + `RELEASE_NAME` is the name you want to give to the release        
+
+##<a id="considerations"></a>Considerations
+* <%= vars.product_short %> uses secrets. Secure those secrets by using a [secret provider](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
+* <%= vars.product_short %> exposes two services. Enable [network policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) on the cluster to ensure only appropriate traffic reaches those services.
+* You are responsible for securing communications between KSM components using the tooling of your choice. See Service Mesh example.
+
+
+###<a id="service-mesh"></a>Service Mesh Example
+1. Install [Linkerd](https://linkerd.io/2/getting-started/)
+   1. There is also a [Helm chart](https://linkerd.io/2/tasks/install-helm/)
+1. Add annotations in the KSM Helm chart `values.yaml`
+    ```
+    broker:
+      annotations:
+        linkerd.io/inject: enabled
+    daemon:
+      annotations:
+        linkerd.io/inject: enabled
+    chartmuseum:
+      replica:
+        annotations:
+          linkerd.io/inject: enabled
+    ```
+1. Confirm you have correct permissions to run `linkerd tap` on the [cluster](https://linkerd.io/2/tasks/securing-your-cluster)
+1. To confirm <%= vars.product_short %>  is meshed,
+    ```bash
+    linkerd stat deployments -n KSM_NAMESPACE
+    ```
+    Where:
+    + `KSM_NAMESPACE` is the namespace where <%= vars.product_short %> is running
+1. To see TLS working on the deployment,
+    ```bash
+    linkerd -n KSM_NAMESPACE tap deploy/DAEMON_DEPLOYMENT
+    ```
+   Where:
+   + `KSM_NAMESPACE` is the namespace where <%= vars.product_short %> is running
+   + `DAEMON_DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE_NAME-ksm-daemon`
