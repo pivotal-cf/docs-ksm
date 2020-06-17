@@ -96,9 +96,10 @@ in air-gapped environments.
 * **Helm 3 CLI (optional):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/).
 * **Docker CLI (optional):** For information about installing Docker, see [Docker](https://www.docker.com/).
-* **s3 Compatible Storage:** <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
+* **S3 Compatible Storage:** <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
+See [Configure Storage](./storage.html#storage).
 
-Note: If installing the tile, you will need
+Note: If installing the tile, you will need:
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment with runtime CredHub enabled that is installed on the
 same foundation as <%= vars.product_short %>.
 For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).

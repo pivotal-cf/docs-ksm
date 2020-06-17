@@ -25,7 +25,7 @@ To upgrade from <%= vars.product_short %> v<%= previous_version %>:
    See [Uninstall <%= vars.product_short %>](#uninstall) below.
 
 1. Install  <%= vars.product_short %> v<%= current_version %>.
-   See [Installing and Configuring <%= vars.product_short %>](./installing.html).
+   See [Installing and Configuring <%= vars.product_short %>](./installing-helm.html).
 
 1. Add and enable access to your service offerings. See [Add a Service Offering to <%= vars.product_short %>](./using.html#add)
    and [Enable Service Offering Access](./using.html#enable).
@@ -33,17 +33,8 @@ To upgrade from <%= vars.product_short %> v<%= previous_version %>:
 ## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
 
 To uninstall <%= vars.product_short %>:
-
-1. Navigate to **<%= vars.ops_manager %> Installation Dashboard** > **<%= vars.product_full %> (<%= vars.product_short %>)** >
-  **Errands**.
-
-1. Confirm that **deregister** is set to **On**.
-
-2. Navigate to **<%= vars.ops_manager %> Installation Dashboard** and click the trash icon
-   for **<%= vars.product_full %> (<%= vars.product_short %>)**.
-
-1. If you are use <%= vars.ops_manager %> v2.3 or later, click Review Pending Changes.
-   For more information about this <%= vars.ops_manager %> page,
-   see [Reviewing Pending Product Changes](https://docs.pivotal.io/pivotalcf/2-4/customizing/review-pending-changes.html).
-
-1. Click **Apply Changes**.
+```bash
+helm uninstall RELEASE_NAME
+```
+Where:
++ `RELEASE_NAME` is the name used to install (running `helm ls -a -A` will show all of the current releases)

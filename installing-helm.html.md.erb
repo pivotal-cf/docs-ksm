@@ -11,39 +11,6 @@ This topic describes how to install and configure <%= vars.product_full %> (<%= 
 the Ingress controller must already be installed on the cluster that KSM will be installed
 on. A subdomain for KSM be reserved in your DNS.
 
-### <a id="storage"></a> Configure Storage
-
-<%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
-The operator is responsible for backing up this bucket.
-Follow the instructions from your IaaS provider.
-
-If you use a cloud storage provider that does not natively support S3 buckets,
-you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
-See [Prerequisites](#storage-preq), below.
-
-<p class="note warning"><strong>Warning:</strong> If you change the storage configurations,
-  the service offering data is lost and you must re-add the service offering to <%= vars.product_short %>.
-  For offerings with multiple versions provisioned, the old versions should also be re-added.
-  See <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %></a>.
-</p>
-
-#### <a name="storage-preq"></a> Prerequisites
-
-To configure your cloud storage provider for <%= vars.product_short %>:
-
-+ **Create a policy and an access key for your cloud storage provider:**
-Policy creation varies depending on your cloud storage provider.
-VMware recommends that this account only be used by <%= vars.product_short %>.
-You should apply a minimal policy that lets the user account upload backups to your S3 store.
-The policy must give <%= vars.product_short %> permissions to list and upload buckets.
-For instructions on how to create a policy and access key, see your provider's documentation.
-
-+  **If you are using Google Cloud Storage (GCS),
-you must generate a developer key for GCS to use an S3 compatible API:**
-This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
-For instructions on how to generate a developer key,
-see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
-
 ##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
 
 To install the <%= vars.product_short %> (Command Line Interface)CLI:
@@ -114,8 +81,8 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running the 
     tar zxvf ksm-<version>.tgz
     ```
     
-1. <%= vars.product_short %> requires an s3 bucket. Create and gather the credentials.  
-   Modify these sections of the `ksm/values.yaml` file to specify the s3 data:  
+1. <%= vars.product_short %> requires an S3 bucket (See [Configure Storage](./storage.html#storage)). Create and gather the credentials.  
+   Modify these sections of the `ksm/values.yaml` file to specify the S3 data:
 
     ```
     chartmuseum:
@@ -133,10 +100,10 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running the 
       s3Secret: <secret>
     ```
    Where:
-   + `BUCKET_NAME` is the s3 bucket name
-   + `ENDPOINT` is s3 endpoint. For example, in GCP it would be `storage.googleapis.com`
-   + `ACCESS_KEY` is the access key for s3
-   + `SECRET` is the secret for s3
+   + `BUCKET_NAME` is the S3 bucket name
+   + `ENDPOINT` is S3 endpoint. For example, in GCP it would be `storage.googleapis.com`
+   + `ACCESS_KEY` is the access key for S3
+   + `SECRET` is the secret for S3
    
 1. <%= vars.product_short %> requires networking. You can choose LoadBalancer or Ingress. 
 

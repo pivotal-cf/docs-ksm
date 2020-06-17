@@ -14,8 +14,8 @@ VM that communicates with both Kubernetes clusters and <%= vars.app_runtime_full
 The following diagram describes how <%= vars.product_short %> communicates with
 <%= vars.app_runtime_abbr %> and a Kubernetes cluster:
 
-<a href="images/reference_architecture.png" target="_blank">
-    <img src="images/reference_architecture.png" alt="<%= vars.product_short %> reference architecture">
+<a href="images/reference_architecture_k8s.png" target="_blank">
+    <img src="images/reference_architecture_k8s.png" alt="<%= vars.product_short %> reference architecture">
 </a>
 
 <a href="images/reference_architecture.png" target="_blank"> View a larger version of this diagram.</a>
@@ -72,12 +72,10 @@ and has additional functionality." %>
 
 ### <a id='bucket'></a> S3-Compatible Bucket
 <%= vars.product_short %> uses an external S3-compatible bucket to store the state of
-ChartMuseum, the <%= vars.product_short %> daemon, and the <%= vars.product_short %> broker.
-The <%= vars.product_short %> daemon and <%= vars.product_short %> broker use
-this bucket to persist their caches.
+ChartMuseum.
 
 For instructions for configuring an external S3-compatible bucket
-for <%= vars.product_short %>, see [Configure Storage](./installing-helm.html#storage).
+for <%= vars.product_short %>, see [Configure Storage](./storage.html#storage).
 
 ### <a id='clusters'></a> Kubernetes Clusters
 
