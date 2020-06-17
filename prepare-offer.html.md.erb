@@ -433,7 +433,7 @@ in GitHub.
 
 1. Confirm that your `values.yaml` file uses `image`, `images`, or `global.imageRegistry` keys.
    If you use the keys above, <%= vars.product_short %> always
-   uses the private registry configured in the tile to fetch your images.
+   uses the private registry configured during installation to fetch your images.
 
     For example:
     * If you use a chart with a single image:
@@ -467,6 +467,3 @@ in GitHub.
     If the Helm chart uses a key other than an `image`, `images` or `global.imageRegistry` key,
     then <%= vars.product_short %> does not change
     the image reference used to pull from the private container registry.
-
-1. Configure your private container registry in the <%= vars.product_short %> tile and apply changes.
-See [Configure Private Container Registry](./installing.html#container).

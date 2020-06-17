@@ -45,7 +45,7 @@ The following table provides version and version-support information about <%= v
     <th>Element</th>
     <th>Details</th>
     <tr>
-        <td>Tile version</td>
+        <td><%= vars.product_short %> version</td>
         <td>1.0.XX</td>
     </tr>
     <tr>
@@ -65,10 +65,6 @@ The following table provides version and version-support information about <%= v
         <td>1.7, 1.6, 1.5, 1.4, and 1.3</td>
     </tr>
     <tr>
-       <td>BOSH stemcell version</td>
-       <td>Ubuntu Xenial</td>
-    </tr>
-    <tr>
         <td>IaaS support</td>
         <td>AWS, Azure, GCP, OpenStack, and vSphere</td>
     </tr>
@@ -78,15 +74,15 @@ The following table provides version and version-support information about <%= v
     </tr>
 </table>
 
+Note: If installing with the tile, you will need Ubuntu Xenial stemcell.
+
 ## <a id="reqs"></a>Requirements
 
 <%= vars.product_short %> requires the following:
 
 * **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %> CLI, see
-[Install the <%= vars.product_short %> CLI](./installing.html#ksm) .
-* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment with runtime CredHub enabled that is installed on the
-same foundation as <%= vars.product_short %>.
-For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
+[Install the <%= vars.product_short %> CLI](./installing-helm.html#ksm) .
+* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
 * **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
 about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 * **<%= vars.k8s_runtime_abbr %> CLI (optional):** If you use an <%= vars.k8s_runtime_abbr %> cluster, you must install
@@ -100,6 +96,13 @@ in air-gapped environments.
 * **Helm 3 CLI (optional):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/).
 * **Docker CLI (optional):** For information about installing Docker, see [Docker](https://www.docker.com/).
+* **S3 Compatible Storage:** <%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
+See [Configure Storage](./storage.html#storage).
+
+Note: If installing the tile, you will need:
+* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment with runtime CredHub enabled that is installed on the
+same foundation as <%= vars.product_short %>.
+For instructions about enabling CredHub, see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 
 ## <a id="limitations"></a>Limitations
 

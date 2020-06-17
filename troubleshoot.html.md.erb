@@ -32,14 +32,14 @@ This section describes solutions for specific troubleshooting errors.
 
 This section describes techniques for troubleshooting.
 
-### <a id='versions'></a>Check <%= vars.product_short %> CLI and Tile Versions
+### <a id='versions'></a>Check <%= vars.product_short %> CLI and Server Versions
 
-If the version for the <%= vars.product_short %> CLI and tile are not the same,
+If the version for the <%= vars.product_short %> CLI and server are not the same,
 errors can occur.
 
-To validate that the <%= vars.product_short %> CLI and tile versions match:
+To validate that the <%= vars.product_short %> CLI and server versions match:
 
-1.  Check the <%= vars.product_short %> CLI and tile versions by running:
+1.  Check the <%= vars.product_short %> CLI and server versions by running:
 
     ```
     ksm version -t http://ksm.SYSTEM-DOMAIN
@@ -53,13 +53,13 @@ To validate that the <%= vars.product_short %> CLI and tile versions match:
     </pre>
 
     The value of `Client Version` is the <%= vars.product_short %> CLI version.<br>
-    The value of `Server Version` is the <%= vars.product_short %> tile version.
+    The value of `Server Version` is the <%= vars.product_short %> server version.
 
 1. If the versions are not the same, do one of the following:
     + **If you want to upgrade the <%= vars.product_short %> CLI,**
-      follow the procedure in [Install the <%= vars.product_short %> CLI](./installing.html#ksm).
-    + **If you want to upgrade the <%= vars.product_short %> tile,** follow
-      the procedure in [Upgrading <%= vars.product_short %>](./upgrading.html).
+      follow the procedure in [Install the <%= vars.product_short %> CLI](./installing-helm.html#ksm).
+    + **If you want to upgrade the <%= vars.product_short %> server,** follow
+      the procedure in [Upgrading <%= vars.product_short %>](./upgrading-helm.html).
 
 
 ### <a id='helm'></a> Run Helm Commands
