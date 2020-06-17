@@ -17,7 +17,7 @@ Before you install <%= vars.product_short %> using Helm, you must
 you must install the Ingress controller on the cluster that <%= vars.product_short %> is installed
 on. You must also reserved a subdomain for <%= vars.product_short %> in your DNS.
 For information about Ingress, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
-* Configure an S3 bucket. See [Configure Storage](./storage.html#storage).
+* Configure an external storage solution. See [Configuring External Storage](./storage.html#storage).
 
 ##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
 
@@ -248,18 +248,24 @@ To install the Helm chart:
          + `RELEASE-NAME` is the name of the release.
 
          The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
-         
+
 ##<a id="considerations"></a>Considerations
 
 * <%= vars.product_short %> uses secrets. Secure those secrets by using a [secret provider](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
 * <%= vars.product_short %> exposes two services. Enable [network policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) on the cluster to ensure only appropriate traffic reaches those services.
-* You are responsible for securing communications between KSM components using the tooling of your choice. See Service Mesh example.
+* You must secure traffic between <%= vars.product_short %> components.
+For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
+For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh).
 
 
-###<a id="service-mesh"></a>Service Mesh Example
-1. Install [Linkerd](https://linkerd.io/2/getting-started/)
-   1. There is also a [Helm chart](https://linkerd.io/2/tasks/install-helm/)
-1. Add annotations in the KSM Helm chart `values.yaml`
+###<a id="service-mesh"></a>Configure Service Mesh
+1. Install Linkerd on your Kubernetes cluster using one of the following methods:
+      + Install the service mesh using the Linkerd CLI by following the procedures in this
+  [Linkerd documentation](https://linkerd.io/2/getting-started/).
+      + Install the service mesh using a Helm chart  by following the procedures in this
+      [Linkerd documentation](https://linkerd.io/2/tasks/install-helm/).
+1. Add the following annotations in the <%= vars.product_short %> Helm chart `values.yaml` file:
+
     ```
     broker:
       annotations:
@@ -272,17 +278,18 @@ To install the Helm chart:
         annotations:
           linkerd.io/inject: enabled
     ```
-1. Confirm you have correct permissions to run `linkerd tap` on the [cluster](https://linkerd.io/2/tasks/securing-your-cluster)
-1. To confirm <%= vars.product_short %>  is meshed,
-    ```bash
-    linkerd stat deployments -n KSM_NAMESPACE
+1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
+    following the procedures in the [Linkerd documentation](https://linkerd.io/2/tasks/securing-your-cluster).
+1. Verify that <%= vars.product_short %> is added to the mesh by running:
+
     ```
-    Where:
-    + `KSM_NAMESPACE` is the namespace where <%= vars.product_short %> is running
-1. To see TLS working on the deployment,
-    ```bash
-    linkerd -n KSM_NAMESPACE tap deploy/DAEMON_DEPLOYMENT
+    linkerd stat deployments -n KSM-NAMESPACE
     ```
-   Where:
-   + `KSM_NAMESPACE` is the namespace where <%= vars.product_short %> is running
-   + `DAEMON_DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE_NAME-ksm-daemon`
+    Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
+
+1. Verify that TLS working on the deployment by running:
+
+    ```
+    linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
+    ```
+   Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`

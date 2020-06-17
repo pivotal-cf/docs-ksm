@@ -1,5 +1,5 @@
 ---
-title: Upgrading KSM
+title: Upgrading KSM Using Helm
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -11,7 +11,7 @@ with every release %>
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to upgrade <%= vars.product_full %> (<%= vars.product_short %>).
+This topic explains how to upgrade <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
@@ -33,8 +33,16 @@ To upgrade from <%= vars.product_short %> v<%= previous_version %>:
 ## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
 
 To uninstall <%= vars.product_short %>:
-```bash
-helm uninstall RELEASE_NAME
-```
-Where:
-+ `RELEASE_NAME` is the name used to install (running `helm ls -a -A` will show all of the current releases)
+
+1. View your installed releases by running:
+
+    ```
+    helm ls -a -A
+    ```
+    Record the name of the <%= vars.product_short %> release.
+1. Uninstall <%= vars.product_short %> by running:
+
+    ```
+    helm uninstall RELEASE-NAME
+    ```
+    Where is `RELEASE-NAME` is the name of your  <%= vars.product_short %> release.

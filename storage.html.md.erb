@@ -1,5 +1,5 @@
 ---
-title: Preparing a Service Offering
+title: Configuring External Storage
 owner: Platform Engineering (KSM Team)
 ---
 
@@ -7,15 +7,18 @@ owner: Platform Engineering (KSM Team)
 
 This topic describes how to configure storage for <%= vars.product_full %> (<%= vars.product_short %>).
 
-## <a id="storage"></a> Configure Storage
+## <a id="overview"></a> Overview
 
-<%= vars.product_short %> requires S3-compatible buckets to store offered charts and the chart cache.
+<%= vars.product_short %> requires an S3-compatible bucket to store offered charts and the chart cache.
 The operator is responsible for backing up this bucket.
-Follow the instructions from your IaaS provider.
 
-If you use a cloud storage provider that does not natively support S3 buckets,
-you must configure your cloud storage to be compatible with S3 to use <%= vars.product_short %>.
-See [Prerequisites](#storage-preq), below.
+To configure external storage, do one of the following:
+
++ To configure an S3-compatible bucket, follow the procedures your external storage solution.
+
++ If you use a external storage solution that does not natively support S3 buckets,
+you must configure your cloud storage to be compatible with S3.
+  See [Configure Non-S3 Storage](#non-s3) below.
 
 <p class="note warning"><strong>Warning:</strong> If you change the storage configurations,
   the service offering data is lost and you must re-add the service offering to <%= vars.product_short %>.
@@ -23,7 +26,7 @@ See [Prerequisites](#storage-preq), below.
   See <a href="./using.html#add">Add a Service Offering to <%= vars.product_short %></a>.
 </p>
 
-### <a name="storage-preq"></a> Prerequisites
+## <a id="non-s3"></a> Configure Non-S3 Storage
 
 To configure your cloud storage provider for <%= vars.product_short %>:
 
