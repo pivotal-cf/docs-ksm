@@ -7,37 +7,43 @@ owner: Platform Engineering (KSM Team)
 This topic describes how to install and configure
 <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
 
-##<a id="overview"></a>Overview
-
 ##<a id="prereq"></a>Prerequisites
 
 Before you install <%= vars.product_short %> using Helm, you must
 
 * If you are using Ingress,
-you must install the Ingress controller on the cluster that <%= vars.product_short %> is installed
-on. You must also reserved a subdomain for <%= vars.product_short %> in your DNS.
+you must install the Ingress controller on the cluster where <%= vars.product_short %> is installed.
+You must also reserved a subdomain for <%= vars.product_short %> in your DNS.
 For information about Ingress, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 * Configure an external storage solution. See [Configuring External Storage](./storage.html#storage).
 
-##<a id='ksm'></a>  Install the <%= vars.product_short %> CLI
+##<a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
 
-To install the <%= vars.product_short %> (Command Line Interface) CLI:
+You must get resources from <%= vars.product_network %> to install <%= vars.product_short %>.
+
+To get the resources:
 
 1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
 [<%= vars.product_network %>](https://network.pivotal.io/).
 
-1. Click **<%= vars.product_cli %>** and download the CLI for your operating system.
+1. Get the following resources:
+    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **<%= vars.product_cli %>** and download the CLI for your operating system.
+    + **Docker `pull` commands:** Click **Image References** for each image and record the commands.
+    + **Helm chart TGZ file:** Click **<%= vars.product_full %> Helm Chart**.
 
-1. Rename the downloaded binary file to `ksm`.
+##<a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
-1. If you use MacOS or Linux, make the <%= vars.product_short %> binary act as an executable file by running:
+To install the <%= vars.product_short %> Command Line Interface (CLI):
+
+1. Rename the downloaded <%= vars.product_short %> CLI file to `ksm`.
+
+1. Make the <%= vars.product_short %> binary act as an executable file by running:
 
     ```
     chmod +x ksm
     ```
 
-1. Move the binary file into your `PATH`.
-If you use MacOS or Linux, move the binary file into your `PATH` by running:
+1. Move the binary file into your `PATH` by running:
 
     ```
     mv ksm /usr/local/bin/ksm
@@ -47,11 +53,6 @@ If you use MacOS or Linux, move the binary file into your `PATH` by running:
 
 To move your <%= vars.product_short %> images to a private image container registry:
 
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
-
-1. Find `docker pull` commands for the <%= vars.product_short %> images
-    by clicking **Image References** for each image.
 
 1. Move the images to your local system by running:
 
@@ -61,18 +62,28 @@ To move your <%= vars.product_short %> images to a private image container regis
     docker pull registry.pivotal.io/container-services-manager/daemon:VERSION
     ```
     Where:
-    + `VERSION` is the <%= vars.product_short %> release version.
     + `CHARTMUSEUM-VERSION` is the ChartMuseum version.
+        This value is in the `docker pull` command that you recorded in
+        [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
+    + `VERSION` is the <%= vars.product_short %> release version.
+        This value is in the `docker pull` command that you recorded in
+        [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
-1. Tag the images for your private container image repository by running:
+
+1. Tag the images for your registry by running:
 
     ```
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION <registry>/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
-    docker tag registry.pivotal.io/container-services-manager/broker:VERSION <registry>/container-services-manager/broker:VERSION
-    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION <registry>/container-services-manager/daemon:VERSION
+    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION \
+      <registry>/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
+
+    docker tag registry.pivotal.io/container-services-manager/broker:VERSION \
+      <registry>/container-services-manager/broker:VERSION
+
+    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION \
+      <registry>/container-services-manager/daemon:VERSION
     ```
 
-1. Push the images to your container image repository:
+1. Push the images to your registry:
 
     ```
     docker push <registry>/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
@@ -80,12 +91,11 @@ To move your <%= vars.product_short %> images to a private image container regis
     docker push <registry>/container-services-manager/daemon:VERSION
     ```
 
-##<a id='add'></a> Add <%= vars.product_short %> Values
+##<a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
+To configure the <%= vars.product_short %> Helm chart:
 
-1. Download the Helm chart TGZ file and unzip it by running:
+1. Unzip the downloaded <%= vars.product_short %> Helm chart by running:
 
     ```
     tar zxvf ksm-<version>.tgz
@@ -140,9 +150,9 @@ To move your <%= vars.product_short %> images to a private image container regis
            Where:
          + `INGRESS-DOMAIN` is the name of your provisioned domain.
          + `INGRESS-ANNOTATION` is the annotation required by the Ingress controller.
-            Note: your ingress controller might require different annotations
+            Your Ingress controller might require different annotations.
 
-1. Specify a secure password to authenticate your services by adding the following:
+1. Define a secure password to authenticate your services by adding the following:
 
      ```
      broker:
@@ -160,7 +170,7 @@ To move your <%= vars.product_short %> images to a private image container regis
      + `DAEMON_PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
      + `CHARTMUSEUM_PASSWORD` is a secure password for the ChartMuseum.
 
-1. Specify your private container image registry by adding the following:
+1. Define values for your private container image registry by adding the following:
 
       ```
       broker:
@@ -184,17 +194,17 @@ To move your <%= vars.product_short %> images to a private image container regis
     ```
     imageCredentials:
       registry: REGISTRY
-      username: REG_USERNAME
-      password: REG_PASSWORD
+      username: REGISTRY-USERNAME
+      password: REGISTRY-PASSWORD
     ```
    Where:
-   + `REGISTRY` is the private container image registry you configured to offer images.
-   + `REG_USER` is the username for the private container image registry.
-   + `REG_PASSWORD` is the password for the private container image registry/
+   + `REGISTRY` is the registry you configured to offer images.
+   + `REGISTRY-USERNAME` is the username for the registry.
+   + `REGISTRY-PASSWORD` is the password for the registry.
 
      VMware recommends that you use a private container image registry in production.
        <%= vars.product_short %> modifies the Helm charts that you
-       offer to point to images in the private container image registry.
+       offer to point to images in the  registry.
 
 1. If you are using Ingress, you must add your Cloud Foundry environment by adding the following:
 
@@ -216,17 +226,15 @@ To move your <%= vars.product_short %> images to a private image container regis
 
 To install the Helm chart:
 
-1. Install the Helm chart by running:
+1. From the root level of the chart, install the Helm chart by running:
 
     ```
-    cd ksm/
     helm install RELEASE-NAME .
     ```
-    Where:
-    + `RELEASE-NAME` is a name you choose for the release.
+    Where `RELEASE-NAME` is a name you choose for the release.
 
 1. If are using a load balancer, do the following:
-   1. Retrieve broker IP address by running:
+   1. Retrieve the broker IP address by running:
 
          ```
          export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
@@ -234,7 +242,7 @@ To install the Helm chart:
    1. Upgrade your Helm release by running:
 
          ```
-        helm upgrade RELEASE_NAME . --reuse-values \
+        helm upgrade RELEASE-NAME . --reuse-values \
           --set cf.brokerUrl="http://${BROKER_IP}" \
           --set cf.brokerName=ksm \
           --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
@@ -242,28 +250,36 @@ To install the Helm chart:
           --set cf.password=CF-PASSWORD
          ```
          Where:
-         + `SYSTEM_DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+         + `RELEASE-NAME` is the name of the release.
+         + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
          + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
          + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-         + `RELEASE-NAME` is the name of the release.
+
 
          The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
-##<a id="considerations"></a>Considerations
+##<a id="security"></a>Configure Security
 
-* <%= vars.product_short %> uses secrets. Secure those secrets by using a [secret provider](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
-* <%= vars.product_short %> exposes two services. Enable [network policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) on the cluster to ensure only appropriate traffic reaches those services.
-* You must secure traffic between <%= vars.product_short %> components.
+To configure on your Kubernetes cluster for <%= vars.product_short %>:
+
+1. Secure <%= vars.product_short %> secrets by using a secret provider.
+    See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) in the Kubernetes documentation.
+1. Enable network policies on the cluster to secure traffic between services.
+    See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) in the Kubernetes documentation.
+1. Secure traffic between <%= vars.product_short %> components.
 For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
-For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh).
+For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
 
 
 ###<a id="service-mesh"></a>Configure Service Mesh
+
+To configure a Linkerd service mesh:
+
 1. Install Linkerd on your Kubernetes cluster using one of the following methods:
-      + Install the service mesh using the Linkerd CLI by following the procedures in this
-  [Linkerd documentation](https://linkerd.io/2/getting-started/).
-      + Install the service mesh using a Helm chart  by following the procedures in this
-      [Linkerd documentation](https://linkerd.io/2/tasks/install-helm/).
+      + Install the service mesh using the Linkerd CLI by following the procedures in
+      [Getting Started](https://linkerd.io/2/getting-started/) in the Linkerd documentation.
+      + Install the service mesh using a Helm chart by following the procedures in
+[Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd documentation.
 1. Add the following annotations in the <%= vars.product_short %> Helm chart `values.yaml` file:
 
     ```
@@ -279,7 +295,8 @@ For instructions on how to use Linkerd, see [Configure Service Mesh](#service-me
           linkerd.io/inject: enabled
     ```
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
-    following the procedures in the [Linkerd documentation](https://linkerd.io/2/tasks/securing-your-cluster).
+    following the procedures in the
+    [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
 1. Verify that <%= vars.product_short %> is added to the mesh by running:
 
     ```
@@ -287,7 +304,7 @@ For instructions on how to use Linkerd, see [Configure Service Mesh](#service-me
     ```
     Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
 
-1. Verify that TLS working on the deployment by running:
+1. Verify that TLS is working on the deployment by running:
 
     ```
     linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
