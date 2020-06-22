@@ -27,9 +27,10 @@ To get the resources:
 [<%= vars.product_network %>](https://network.pivotal.io/).
 
 1. Get the following resources:
-    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click CLIs and download the CLI for your operating system.
+    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** for each image and record the commands.
-    + **Helm chart TGZ file:** Download the **<%= vars.product_short %>.VERSION.tgz** file.
+    + **Helm chart TGZ file:** Click **<%= vars.product_short %>.VERSION.tgz** and download the Helm chart
+    for <%= vars.product_short %>.
 
 ##<a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
@@ -54,8 +55,7 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 To move your <%= vars.product_short %> images to a private image container registry:
 
 
-1. Move the images to your local system by running 
-the docker pull commands recorded from **<%= vars.product_network %>**:
+1. Move the images to your local system by running:
 
     ```
     docker pull registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
@@ -69,7 +69,7 @@ the docker pull commands recorded from **<%= vars.product_network %>**:
     + `VERSION` is the <%= vars.product_short %> release version.
         This value is in the `docker pull` command that you recorded in
         [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-
+    You recorded the above commands from the  <%= vars.product_network %>.
 
 1. Tag the images for your registry by running:
 
