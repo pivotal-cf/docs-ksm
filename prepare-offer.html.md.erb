@@ -295,11 +295,11 @@ To edit and test the `bind.yaml` file:
 1. Test that `bind.yaml` is creating a valid JSON object by running:
 
     ```
-    ksm test-bind-template CLUSTER NAMESPACE bind.yaml
+    ksm test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
     ```
 
     Where
-     + `CLUSTER` is the name of the <%= vars.product_short %>-registered cluster
+     + `CLUSTER-NAME` is the name of the <%= vars.product_short %>-registered cluster
        where your chart is deployed. 
      + `NAMESPACE` is the name of the namespace in your cluster where
     your chart is deployed.
