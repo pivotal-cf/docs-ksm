@@ -28,8 +28,9 @@ To get the resources:
 
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download the CLI for your operating system.
-    + **Docker `pull` commands:** Click **Image References** for each image and record the commands.
-    + **Helm chart TGZ file:** Click **<%= vars.product_short %>.VERSION.tgz** and download the Helm chart
+    + **Docker `pull` commands:** Click **Image References** and view record the `docker pull` commands
+    for thr **broker**, **daemon**, and **chartmuseum**.
+    + **Helm chart TGZ file:** Click **ksm-VERSION.tgz** and download the Helm chart
     for <%= vars.product_short %>.
 
 ##<a id='cli'></a>  Install the <%= vars.product_short %> CLI
@@ -54,43 +55,37 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 To move your <%= vars.product_short %> images to a private image container registry:
 
-
-1. Move the images to your local system by running:
-
-    ```
-    docker pull registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
-    docker pull registry.pivotal.io/container-services-manager/broker:VERSION
-    docker pull registry.pivotal.io/container-services-manager/daemon:VERSION
-    ```
-    Where:
-    + `CHARTMUSEUM-VERSION` is the ChartMuseum version.
-        This value is in the `docker pull` command that you recorded in
-        [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-    + `VERSION` is the <%= vars.product_short %> release version.
-        This value is in the `docker pull` command that you recorded in
-        [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-
-    You recorded the above `docker pull` commands from the <%= vars.product_network %>.
+1. Move the images to your local system by running the `docker pull` commands you recorded in
+    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
 1. Tag the images for your registry by running:
 
     ```
     docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION \
-      <registry>/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
+      REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
 
     docker tag registry.pivotal.io/container-services-manager/broker:VERSION \
-      <registry>/container-services-manager/broker:VERSION
+      REGISTRY/container-services-manager/broker:VERSION
 
     docker tag registry.pivotal.io/container-services-manager/daemon:VERSION \
-      <registry>/container-services-manager/daemon:VERSION
+      REGISTRY/container-services-manager/daemon:VERSION
     ```
 
-1. Push the images to your registry:
+    Where:
+    + `CHARTMUSEUM-VERSION` is the ChartMuseum version.
+      This value is in the `docker pull` command that you recorded in
+      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
+    + `VERSION` is the <%= vars.product_short %> release version.
+      This value is in the `docker pull` command that you recorded in
+      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
+    + `REGISTRY` is the private container image registry you configured for <%= vars.product_short %>.
+
+1. Push the images to your registry by running:
 
     ```
-    docker push <registry>/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
-    docker push <registry>/container-services-manager/broker:VERSION
-    docker push <registry>/container-services-manager/daemon:VERSION
+    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
+    docker push REGISTRY/container-services-manager/broker:VERSION
+    docker push REGISTRY/container-services-manager/daemon:VERSION
     ```
 
 ##<a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
@@ -100,7 +95,7 @@ To configure the <%= vars.product_short %> Helm chart:
 1. Unzip the downloaded <%= vars.product_short %> Helm chart by running:
 
     ```
-    tar zxvf ksm-<version>.tgz
+    tar zxvf ksm-VERSION.tgz
     ```
     The above command creates a new directory named `ksm`.
 
@@ -116,10 +111,10 @@ To configure the <%= vars.product_short %> Helm chart:
           AWS_ACCESS_KEY_ID: ACCESS-KEY
           AWS_SECRET_ACCESS_KEY: SECRET
     s3:
-      s3AccessKey: <access key>
-      s3Bucket: <bucket name>
-      s3Endpoint: <storage.googleapis.com or endpoint>
-      s3Secret: <secret>
+      s3AccessKey: ACCESS-KEY
+      s3Bucket: BUCKET-NAME
+      s3Endpoint: ENDPOINT
+      s3Secret: SECRET
     ```
    Where:
    + `BUCKET-NAME` is your S3 bucket name
@@ -147,12 +142,13 @@ To configure the <%= vars.product_short %> Helm chart:
           hosts:
             - INGRESS-DOMAIN
           annotations:
-            kubernetes.io/ingress.class: INGRESS-ANNOTATION
+            ANNOTATION-KEY: ANNOTATION-VALUE
            ```
            Where:
          + `INGRESS-DOMAIN` is the name of your provisioned domain.
-         + `INGRESS-ANNOTATION` is the annotation required by the Ingress controller.
-            Your Ingress controller might require different annotations.
+         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
+            These values depend on the Ingress controller you use.
+            For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
 
 1. Define a secure password to authenticate your services by adding the following:
 
@@ -190,8 +186,7 @@ To configure the <%= vars.product_short %> Helm chart:
       ```
      Where `REGISTRY` is your private container image registry.
 
-1. If you use <%= vars.product_short %> in an air-gapped environment, you must configure a private
-   container image registry by adding the following:
+1. Add the credentials for your private container image registry by adding the following:
 
     ```
     imageCredentials:
@@ -234,8 +229,8 @@ To install the Helm chart:
     helm install RELEASE-NAME .
     ```
     Where `RELEASE-NAME` is a name you choose for the release.
-
-1. If are using a load balancer, do the following:
+    
+1. **If are using a load balancer,** do the following:
    1. Retrieve the broker IP address by running:
 
          ```
