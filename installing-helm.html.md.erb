@@ -12,9 +12,12 @@ This topic describes how to install and configure
 Before you install <%= vars.product_short %> using Helm, you must
 
 * If you are using Ingress,
-you must install the Ingress controller on the cluster where <%= vars.product_short %> is installed.
+you must install the Ingress controller on the cluster where <%= vars.product_short %> will be installed.
 You must also reserved a subdomain for <%= vars.product_short %> in your DNS.
 For information about Ingress, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+* Verify that a default StorageClass exists on the cluster where <%= vars.product_short %> will be installed.
+If you are using Tanzu Kubernetes Grid Integrated Edition, see [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
+For more information about Storage Clases see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 * Configure an external storage solution. See [Configuring External Storage](./storage.html#storage).
 
 ##<a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
