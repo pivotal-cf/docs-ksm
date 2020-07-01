@@ -110,7 +110,7 @@ To configure the <%= vars.product_short %> Helm chart:
     ```
     The above command creates a new directory named `ksm`.
 
-1.  In the `ksm/values.yaml` file, add the credentials for your S3 bucket using the template below:
+1.  In the `ksm/values.yaml` file, add the credentials for your S3 compatible bucket using the template below:
 
     ```
     chartmuseum:
@@ -121,17 +121,16 @@ To configure the <%= vars.product_short %> Helm chart:
         secret:
           AWS_ACCESS_KEY_ID: ACCESS-KEY
           AWS_SECRET_ACCESS_KEY: SECRET
-    s3:
-      s3AccessKey: ACCESS-KEY
-      s3Bucket: BUCKET-NAME
-      s3Endpoint: ENDPOINT
-      s3Secret: SECRET
     ```
    Where:
    + `BUCKET-NAME` is your S3 bucket name
    + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform it would be `storage.googleapis.com`
    + `ACCESS-KEY` is your S3 access key ID.
    + `SECRET` is your S3 secret access key.
+   
+   Note: This is an example for AWS. This is not a comprehensive list of the keys you may need depending on your IaaS. For example, 
+   `STORAGE_AMAZON_REGION` may need to be set if not using the default region. See 
+   [ChartMuseum Helm Chart](https://github.com/helm/charts/tree/master/stable/chartmuseum) for more information.
 
 1. Edit your `ksm/values.yaml` file to enable service access.
     <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
@@ -171,7 +170,7 @@ To configure the <%= vars.product_short %> Helm chart:
      chartmuseum:
        env:
          open:
-           BASIC_AUTH_PASSWORD: CHARTMUSEUM-PASSWORD
+           BASIC_AUTH_PASS: CHARTMUSEUM-PASSWORD
      ```
 
      Where:
@@ -210,10 +209,17 @@ To configure the <%= vars.product_short %> Helm chart:
    + `REGISTRY-USERNAME` is the username for the registry.
    + `REGISTRY-PASSWORD` is the password for the registry.
 
-     VMware recommends that you use a private container image registry in production.
-       <%= vars.product_short %> modifies the Helm charts that you
-       offer to point to images in the  registry.
-
+   <%= vars.product_short %> is using this registry for two things:
+   1. <%= vars.product_short %>'s installation docker images: a new secret named `registrySecretName` of type 
+   `dockerconfigjson` will be created with these credentials.
+   1. The backing registry for the services that <%= vars.product_short %> will 
+   deploy. <%= vars.product_short %> modifies the Helm charts that you offer to 
+   point to images in the registry.
+   
+   This configuration is optional, but VMware recommends using a private container registry in production.
+   If you choose not to configure this, you must configure a `dockerconfigjson` pull secret with the 
+   credentials for your registry. See [Create a Secret based on existing Docker credentials](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials).
+  
 1. If you are using Ingress, you must add your Cloud Foundry environment by adding the following:
 
     ```
@@ -238,9 +244,15 @@ To install the Helm chart:
 1. From the root level of the chart, install the Helm chart by running:
 
     ```
-    helm install RELEASE-NAME .
+    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm dependency build
+    kubectl create ns <%= vars.product_short %>_NAMESPACE
+    helm install RELEASE-NAME . -n <%= vars.product_short %>_NAMESPACE
     ```
-    Where `RELEASE-NAME` is a name you choose for the release.
+    Where:
+    + `RELEASE-NAME` is a name you choose for the release.
+    + `<%= vars.product_short %>_NAMESPACE` is a name you choose for <%= vars.product_short %>'s dedicated namespace.
 
 1. **If are using a load balancer,** do the following:
    1. Retrieve the broker IP address by running:
@@ -256,14 +268,15 @@ To install the Helm chart:
           --set cf.brokerName=ksm \
           --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
           --set cf.username=CF-USERNAME \
-          --set cf.password=CF-PASSWORD
+          --set cf.password=CF-PASSWORD \
+          -n KSM_NAMESPACE
          ```
          Where:
          + `RELEASE-NAME` is the name of the release.
          + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
          + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
          + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-
+         + `<%= vars.product_short %>_NAMESPACE` is a name you choose for <%= vars.product_short %>'s dedicated namespace.
 
          The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
