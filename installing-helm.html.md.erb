@@ -7,40 +7,47 @@ owner: Platform Engineering (KSM Team)
 This topic describes how to install and configure
 <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
 
-##<a id="prereq"></a>Prerequisites
 
-Before you install <%= vars.product_short %> using Helm, you must
+## <a id="prereq"></a>Prerequisites
 
-* If you are using Ingress,
-you must install the Ingress controller on the cluster where <%= vars.product_short %> will be installed.
-You must also reserved a subdomain for <%= vars.product_short %> in your DNS.
-For information about Ingress, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
-* Verify that a default StorageClass exists on the cluster where <%= vars.product_short %> will be installed.
-If you are using Tanzu Kubernetes Grid Integrated Edition, see [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
-For more information about Storage Clases see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
-* Configure an external storage solution. See [Configuring External Storage](./storage.html#storage).
+Before you install <%= vars.product_short %> using Helm:
 
-##<a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+1. If you are using Ingress, install the Ingress controller on the cluster where
+<%= vars.product_short %> will be installed, and reserve a subdomain for <%= vars.product_short %>
+in your DNS.
+For information about Ingress, see the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+1. Verify that a default StorageClass exists on the cluster where you will install
+<%= vars.product_short %>.
+If you are using Tanzu Kubernetes Grid Integrated Edition, see
+[Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
+For more information about Storage Classes see the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+1. Configure an external storage solution. For more information, see
+[Configuring External Storage](./storage.html#storage).
 
-You must get resources from <%= vars.product_network %> to install <%= vars.product_short %>.
 
-To get the resources:
+## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+
+To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
 
 1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
 [<%= vars.product_network %>](https://network.pivotal.io/).
 
 1. Get the following resources:
-    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download the CLI for your operating system.
-    + **Docker `pull` commands:** Click **Image References** and view record the `docker pull` commands
-    for thr **broker**, **daemon**, and **chartmuseum**.
-    + **Helm chart TGZ file:** Click **ksm-VERSION.tgz** and download the Helm chart
+    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+    the CLI for your operating system.
+    + **Docker `pull` commands:** Click **Image References** and view record the `docker pull`
+    commands for the **broker**, **daemon**, and **chartmuseum**.
+    + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
 
-##<a id='cli'></a>  Install the <%= vars.product_short %> CLI
+
+## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
 To install the <%= vars.product_short %> Command Line Interface (CLI):
 
-1. Rename the downloaded <%= vars.product_short %> CLI file to `ksm`.
+1. Rename the downloaded <%= vars.product_short %> CLI file as `ksm`.
 
 1. Make the <%= vars.product_short %> binary act as an executable file by running:
 
@@ -54,9 +61,9 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
     mv ksm /usr/local/bin/ksm
     ```
 
-##<a id='move-images'></a> Move <%= vars.product_short %> Images
+## <a id='move-images'></a> Move <%= vars.product_short %> Images
 
-To move your <%= vars.product_short %> images to a private image container registry:
+To move your <%= vars.product_short %> images to a private container image registry:
 
 1. Move the images to your local system by running the `docker pull` commands you recorded in
     [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
@@ -64,21 +71,21 @@ To move your <%= vars.product_short %> images to a private image container regis
 1. Tag the images for your registry by running:
 
     ```
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION \
-      REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
+    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
+      REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/broker:VERSION \
-      REGISTRY/container-services-manager/broker:VERSION
+    docker tag registry.pivotal.io/container-services-manager/broker:VERSION-NUMBER \
+      REGISTRY/container-services-manager/broker:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION \
-      REGISTRY/container-services-manager/daemon:VERSION
+    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION-NUMBER \
+      REGISTRY/container-services-manager/daemon:VERSION-NUMBER
     ```
 
     Where:
-    + `CHARTMUSEUM-VERSION` is the ChartMuseum version.
+    + `CHARTMUSEUM-VERSION-NUMBER` is the ChartMuseum version number.
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-    + `VERSION` is the <%= vars.product_short %> release version.
+    + `VERSION-NUMBER` is the <%= vars.product_short %> release version number.
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
     + `REGISTRY` is the private container image registry you configured for <%= vars.product_short %>.
@@ -86,19 +93,20 @@ To move your <%= vars.product_short %> images to a private image container regis
 1. Push the images to your registry by running:
 
     ```
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION
-    docker push REGISTRY/container-services-manager/broker:VERSION
-    docker push REGISTRY/container-services-manager/daemon:VERSION
+    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+    docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
+    docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
     ```
 
-##<a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+
+## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
 To configure the <%= vars.product_short %> Helm chart:
 
 1. Unzip the downloaded <%= vars.product_short %> Helm chart by running:
 
     ```
-    tar zxvf ksm-VERSION.tgz
+    tar zxvf ksm-VERSION-NUMBER.tgz
     ```
     The above command creates a new directory named `ksm`.
 
@@ -121,13 +129,13 @@ To configure the <%= vars.product_short %> Helm chart:
     ```
    Where:
    + `BUCKET-NAME` is your S3 bucket name
-   + `ENDPOINT` is your S3 endpoint. For example, in GCP it would be `storage.googleapis.com`
+   + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform it would be `storage.googleapis.com`
    + `ACCESS-KEY` is your S3 access key ID.
    + `SECRET` is your S3 secret access key.
 
 1. Edit your `ksm/values.yaml` file to enable service access.
     <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
-   + **If want your service to be accessed directly using a load balancer,** add the following:
+   + **If you want your service to be accessed directly using a load balancer,** add the following:
 
            ```
         broker:
@@ -177,19 +185,19 @@ To configure the <%= vars.product_short %> Helm chart:
       broker:
         image:
           repository: REGISTRY/container-services-manager/broker
-          tag: VERSION
+          tag: VERSION-NUMBER
       daemon:
         image:
           repository: REGISTRY/container-services-manager/daemon
-          tag: VERSION
+          tag: VERSION-NUMBER
       chartmuseum:
         image:
           repository: REGISTRY/container-services-manager/chartmuseum
-          tag: CHARTMUSEUM-VERSION
+          tag: CHARTMUSEUM-VERSION-NUMBER
       ```
      Where `REGISTRY` is your private container image registry.
 
-1. Add the credentials for your private container image registry by adding the following:
+1. Add the credentials for your private container image registry by adding:
 
     ```
     imageCredentials:
@@ -222,7 +230,8 @@ To configure the <%= vars.product_short %> Helm chart:
    + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
    + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
-##<a id='install'></a> Install the Helm Chart
+
+## <a id='install'></a> Install the Helm Chart
 
 To install the Helm chart:
 
@@ -232,7 +241,7 @@ To install the Helm chart:
     helm install RELEASE-NAME .
     ```
     Where `RELEASE-NAME` is a name you choose for the release.
-    
+
 1. **If are using a load balancer,** do the following:
    1. Retrieve the broker IP address by running:
 
@@ -258,20 +267,23 @@ To install the Helm chart:
 
          The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
-##<a id="security"></a>Configure Security
+
+## <a id="security"></a> Configure Security
 
 To configure on your Kubernetes cluster for <%= vars.product_short %>:
 
 1. Secure <%= vars.product_short %> secrets by using a secret provider.
-    See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) in the Kubernetes documentation.
+    See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
+    in the Kubernetes documentation.
 1. Enable network policies on the cluster to secure traffic between services.
-    See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) in the Kubernetes documentation.
+    See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+    in the Kubernetes documentation.
 1. Secure traffic between <%= vars.product_short %> components.
 For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
 
 
-###<a id="service-mesh"></a>Configure Service Mesh
+### <a id="service-mesh"></a> Configure Service Mesh
 
 To configure a Linkerd service mesh:
 
@@ -309,4 +321,4 @@ To configure a Linkerd service mesh:
     ```
     linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
     ```
-   Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`
+   Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
