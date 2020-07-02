@@ -37,7 +37,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
-    + **Docker `pull` commands:** Click **Image References** and view record the `docker pull`
+    + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
     commands for the **broker**, **daemon**, and **chartmuseum**.
     + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
@@ -68,7 +68,7 @@ To move your <%= vars.product_short %> images to a private container image regis
 1. Move the images to your local system by running the `docker pull` commands you recorded in
     [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
-1. Tag the images for your registry by running:
+1. Tag the images for your registry by running these commands:
 
     ```
     docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
@@ -90,7 +90,7 @@ To move your <%= vars.product_short %> images to a private container image regis
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
     + `REGISTRY` is the private container image registry you configured for <%= vars.product_short %>.
 
-1. Push the images to your registry by running:
+1. Push the images to your registry by running these commands:
 
     ```
     docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
@@ -123,17 +123,19 @@ To configure the <%= vars.product_short %> Helm chart:
           AWS_SECRET_ACCESS_KEY: SECRET
     ```
    Where:
-   + `BUCKET-NAME` is your S3 bucket name
-   + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform it would be `storage.googleapis.com`
+   + `BUCKET-NAME` is your S3 bucket name.
+   + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform (GCP) it is `storage.googleapis.com`.
    + `ACCESS-KEY` is your S3 access key ID.
-   + `SECRET` is your S3 secret access key.<p class="note"><strong>Note:</strong> The above credentials are for AWS. Depending on your IaaS, the credentials 
-    may not be a comprehensive list of keys you need. For example, you may need to set <code>STORAGE_AMAZON_REGION</code> 
-    if you are not using using the default region. For more information about configurations, see 
-  <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a>.</p>
+   + `SECRET` is your S3 secret access key.<p class="note"><strong>Note:</strong> The above credentials are for AWS.
+     Depending on your IaaS, the credentials might not be a comprehensive list of the keys you need.
+     For example, you might need to set <code>STORAGE_AMAZON_REGION</code>
+    if you are not using using the default region.
+    For more information about configurations, see
+  <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.</p>
 
 1. Edit your `ksm/values.yaml` file to enable service access.
     <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
-   + **If you want your service to be accessed directly using a load balancer,** add the following:
+   + **If you want your service to be accessed directly using a load balancer,** add:
 
            ```
         broker:
@@ -143,7 +145,7 @@ To configure the <%= vars.product_short %> Helm chart:
           service:
             type: LoadBalancer
            ```
-   + **If want your service to be accessed using Ingress,** add the following:
+   + **If want your service to be accessed using Ingress,** add:
 
            ```
         ingress:
@@ -159,7 +161,7 @@ To configure the <%= vars.product_short %> Helm chart:
             These values depend on the Ingress controller you use.
             For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
 
-1. Define a secure password to authenticate your services by adding the following:
+1. Define a secure password to authenticate your services by adding:
 
      ```
      broker:
@@ -177,7 +179,7 @@ To configure the <%= vars.product_short %> Helm chart:
      + `DAEMON_PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
      + `CHARTMUSEUM_PASSWORD` is a secure password for the ChartMuseum.
 
-1. Define values for your private container image registry by adding the following:
+1. Define values for your registry by adding:
 
       ```
       broker:
@@ -195,7 +197,7 @@ To configure the <%= vars.product_short %> Helm chart:
       ```
      Where `REGISTRY` is your private container image registry.
 
-1. Add the credentials for your private container image registry by adding:
+1. Add the credentials for your registry by adding:
 
     ```
     imageCredentials:
@@ -209,20 +211,20 @@ To configure the <%= vars.product_short %> Helm chart:
    + `REGISTRY-PASSWORD` is the password for the registry.
 
      <%= vars.product_short %> is using this registry for:<ul>
-     <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named 
+     <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
      <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
-     
-     <li><strong>The backing registry for the services that <%= vars.product_short %> 
-     deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to 
+
+     <li><strong>The backing registry for the services that <%= vars.product_short %>
+     deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
      point to images in the registry.</li>
-     </ul><p class="note"><strong>Note:</strong> While this configuration is optional, VMware recommends using a private container 
+     </ul><p class="note"><strong>Note:</strong> While this configuration is optional, VMware recommends using a private container
      registry in production.
-     If you choose not to configure this, you must configure a `dockerconfigjson` pull secret with the 
-     credentials for your registry. For more information, see 
-     <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Create 
+     If you choose not to configure this, you must configure a <code>dockerconfigjson</code> pull secret with the
+     credentials for your registry. For more information, see
+     <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Create
       a Secret based on existing Docker credentials</a>.</p>
-  
-1. If you are using Ingress, you must add your Cloud Foundry environment by adding the following:
+
+1. If you are using Ingress, you must add your Cloud Foundry environment by adding:
 
     ```
     cf:
@@ -243,7 +245,7 @@ To configure the <%= vars.product_short %> Helm chart:
 
 To install the Helm chart:
 
-1. From the root level of the chart, install the Helm chart by running:
+1. From the root level of the chart, install the Helm chart by running these commands:
 
     ```
     helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -256,7 +258,7 @@ To install the Helm chart:
     + `RELEASE-NAME` is a name you choose for the release.
     + `<%= vars.product_short %>_NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
-1. **If are using a load balancer,** do the following:
+1. If are using a load balancer, do the following:
    1. Retrieve the broker IP address by running:
 
          ```
@@ -285,7 +287,7 @@ To install the Helm chart:
 
 ## <a id="security"></a> Configure Security
 
-To configure on your Kubernetes cluster for <%= vars.product_short %>:
+To configure security on your Kubernetes cluster for <%= vars.product_short %>:
 
 1. Secure <%= vars.product_short %> secrets by using a secret provider.
     See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)

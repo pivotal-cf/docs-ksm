@@ -95,6 +95,8 @@ For instructions about enabling CredHub,
 [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-6/opsguide/secure-si-creds.html).
 * **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
 about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
+For more information, see [Configuring External Storage](./storage.html).
 * **<%= vars.k8s_runtime_abbr %> CLI (optional):** If you use an <%= vars.k8s_runtime_abbr %> cluster, you must install
 the <%= vars.k8s_runtime_abbr %> CLI. For information about installing the <%= vars.k8s_runtime_abbr %> CLI,
   see [Installing the <%= vars.k8s_runtime_abbr %> CLI](https://docs.pivotal.io/pks/installing-pks-cli.html).
@@ -106,8 +108,6 @@ in air-gapped environments.
 * **Helm 3 CLI (optional):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/).
 * **Docker CLI (optional):** For information about installing Docker, see [Docker](https://www.docker.com/).
-* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
-For more information, see [Configuring External Storage](./storage.html).
 
 ## <a id="limitations"></a>Limitations
 

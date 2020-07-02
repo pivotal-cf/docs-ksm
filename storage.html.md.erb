@@ -14,9 +14,9 @@ The operator is responsible for backing up this bucket.
 
 To configure external storage, do one of the following:
 
-+ To configure an S3-compatible bucket, follow the procedures your external storage solution.
++ **To configure an S3-compatible bucket,** follow the procedures your external storage solution.
 
-+ If you use a external storage solution that does not natively support S3 buckets,
++ **If you use a external storage solution that does not natively support S3 buckets,**
 you must configure your cloud storage to be compatible with S3.
   See [Configure Non-S3 Storage](#non-s3) below.
 
@@ -32,7 +32,7 @@ To configure your cloud storage provider for <%= vars.product_short %>:
 
 + **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider.
-VMware recommends that this account only be used by <%= vars.product_short %>.
+VMware recommends that only <%= vars.product_short %> uses this account.
 You should apply a minimal policy that lets the user account upload backups to your S3 store.
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
