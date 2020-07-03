@@ -251,12 +251,12 @@ To install the Helm chart:
     helm repo add stable https://kubernetes-charts.storage.googleapis.com/
     helm repo add bitnami https://charts.bitnami.com/bitnami
     helm dependency build
-    kubectl create ns <%= vars.product_short %>_NAMESPACE
-    helm install RELEASE-NAME . -n <%= vars.product_short %>_NAMESPACE
+    kubectl create ns <%= vars.product_short %>-NAMESPACE
+    helm install RELEASE-NAME . -n <%= vars.product_short %>-NAMESPACE
     ```
     Where:
     + `RELEASE-NAME` is a name you choose for the release.
-    + `<%= vars.product_short %>_NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
 1. If are using a load balancer:
    1. Retrieve the broker IP address by running:
@@ -273,14 +273,14 @@ To install the Helm chart:
           --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
           --set cf.username=CF-USERNAME \
           --set cf.password=CF-PASSWORD \
-          -n KSM_NAMESPACE
+          -n KSM-NAMESPACE
          ```
          Where:
          + `RELEASE-NAME` is the name of the release.
          + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
          + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
          + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-         + `<%= vars.product_short %>_NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+         + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
          The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
