@@ -8,22 +8,44 @@ This topic describes how to install and configure
 <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
 
 
+## <a id="overview"></a> Overview
+
+Helm is a Kubernetes open source package manager. 
+You can use a Helm chart to install and configure <%= vars.product_short %>.
+
+To install and configure <%= vars.product_short %> using Helm:
+
+1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get)
+
+1. [Install the <%= vars.product_short %> CLI](#cli)
+
+1. [Move <%= vars.product_short %> Images](#move-images)
+
+1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
+
+1. [Install the Helm Chart](#install)
+
+1. [Configure Security](#security)
+
+
 ## <a id="prereq"></a>Prerequisites
 
 Before you install <%= vars.product_short %> using Helm:
 
-1. If you are using Ingress, install the Ingress controller on the cluster where
-<%= vars.product_short %> will be installed, and reserve a subdomain for <%= vars.product_short %>
+- **If you are using Ingress, install the Ingress controller on the cluster where you want to install
+<%= vars.product_short %>:** You must also reserve a subdomain for <%= vars.product_short %>
 in your DNS.
 For information about Ingress, see the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
-1. Verify that a default StorageClass exists on the cluster where you will install
-<%= vars.product_short %>.
+
+- **Verify that a default StorageClass exists on the cluster where you want to install
+<%= vars.product_short %>:**
 If you are using Tanzu Kubernetes Grid Integrated Edition, see
 [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
-For more information about Storage Classes see the
+For more information about Storage Classes, see
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
-1. Configure an external storage solution. For more information, see
+
+- **Configure an external storage solution:** For more information, see
 [Configuring External Storage](./storage.html#storage).
 
 
@@ -208,21 +230,17 @@ To configure the <%= vars.product_short %> Helm chart:
    Where:
    + `REGISTRY` is the registry you configured to offer images.
    + `REGISTRY-USERNAME` is the username for the registry.
-   + `REGISTRY-PASSWORD` is the password for the registry.
-
-     <%= vars.product_short %> is using this registry for:<ul>
+   + `REGISTRY-PASSWORD` is the password for the registry.<p><%= vars.product_short %> is using this registry for:<ul></p>
      <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
      <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
-
      <li><strong>The backing registry for the services that <%= vars.product_short %>
      deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
      point to images in the registry.</li>
      </ul><p class="note"><strong>Note:</strong> While this configuration is optional, VMware recommends using a private container
      registry in production.
      If you choose not to configure this, you must configure a <code>dockerconfigjson</code> pull secret with the
-     credentials for your registry. For more information, see
-     <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Create
-      a Secret based on existing Docker credentials</a>.</p>
+     credentials for your registry. For more information, see the
+     <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Kubernetes documentation</a>.</p>
 
 1. If you are using Ingress, you must add your Cloud Foundry environment by adding:
 
