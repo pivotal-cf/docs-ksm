@@ -34,15 +34,23 @@ To upgrade from <%= vars.product_short %> v<%= previous_version %>:
 
 To uninstall <%= vars.product_short %>:
 
-1. View your installed releases by running:
+1. View all of your installed releases across all namespaces by running:
 
     ```
-    helm ls -a -A
+    helm list --all --all-namespaces
     ```
-    Record the name of the <%= vars.product_short %> release.
+    Record the name of the <%= vars.product_short %> release that you 
+    want to uninstall.
 1. Uninstall <%= vars.product_short %> by running:
 
     ```
     helm uninstall RELEASE-NAME
     ```
-    Where is `RELEASE-NAME` is the name of your  <%= vars.product_short %> release.
+    Where `RELEASE-NAME` is the name of the <%= vars.product_short %> 
+    release that you recorded in the previous step.
+    
+    For example:
+
+    ```
+    helm uninstall my-<%= vars.product_short.downcase %>-release
+    ```
