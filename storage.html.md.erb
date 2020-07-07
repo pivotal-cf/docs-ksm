@@ -28,17 +28,15 @@ you must configure your cloud storage to be compatible with S3.
 
 ## <a id="non-s3"></a> Configure Non-S3 Storage
 
-To configure your cloud storage provider for <%= vars.product_short %>:
+To configure your cloud storage provider for <%= vars.product_short %>, you must create a policy and an access key for your cloud storage provider.
 
-+ **Create a policy and an access key for your cloud storage provider:**
 Policy creation varies depending on your cloud storage provider.
 VMware recommends that only <%= vars.product_short %> uses this account.
 You should apply a minimal policy that lets the user account upload backups to your S3 store.
 The policy must give <%= vars.product_short %> permissions to list and upload buckets.
 For instructions on how to create a policy and access key, see your provider's documentation.
 
-+  **If you are using Google Cloud Storage (GCS),
-you must generate a developer key for GCS to use an S3 compatible API:**
-This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
+If you are using Google Cloud Storage (GCS),
+you must generate a developer key for GCS to use an S3 compatible API. This developer key is used to configure **Access Key ID** and **Secret Access Key** in the table below.
 For instructions on how to generate a developer key,
 see [Managing developer keys for a simple migration](https://cloud.google.com/storage/docs/migrating#keys) in the GCP documentation.
