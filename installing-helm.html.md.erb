@@ -227,20 +227,25 @@ To configure the <%= vars.product_short %> Helm chart:
       username: REGISTRY-USERNAME
       password: REGISTRY-PASSWORD
     ```
-   Where:
-   + `REGISTRY` is the registry you configured to offer images.
-   + `REGISTRY-USERNAME` is the username for the registry.
-   + `REGISTRY-PASSWORD` is the password for the registry.<p><%= vars.product_short %> is using this registry for:<ul></p>
-     <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
-     <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
-     <li><strong>The backing registry for the services that <%= vars.product_short %>
-     deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
-     point to images in the registry.</li>
-     </ul><p class="note"><strong>Note:</strong> While this configuration is optional, VMware recommends using a private container
-     registry in production.
-     If you choose not to configure this, you must configure a <code>dockerconfigjson</code> pull secret with the
-     credentials for your registry. For more information, see the
-     <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Kubernetes documentation</a>.</p>
+    Where:
+    + `REGISTRY` is the registry you configured to offer images.
+    + `REGISTRY-USERNAME` is the username for the registry.
+    + `REGISTRY-PASSWORD` is the password for the registry.
+
+    <p><%= vars.product_short %> is using this registry for:</p>
+    <ul>
+      <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
+      <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
+      <li><strong>The backing registry for the services that <%= vars.product_short %>
+      deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
+      point to images in the registry.</li>
+    </ul>
+    <p class="note"><strong>Note:</strong> While this configuration is optional, VMware recommends using a private container
+      registry in production.
+      If you choose not to configure this, you must configure a <code>dockerconfigjson</code> pull secret with the
+      credentials for your registry. For more information, see the
+      <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Kubernetes documentation</a>.
+    </p>
 
 1. If you are using Ingress, you must add your Cloud Foundry environment by adding:
 
@@ -334,7 +339,7 @@ To configure a Linkerd service mesh:
       annotations:
         linkerd.io/inject: enabled
     daemon:
-      annotations:
+      annotations:http://docs-pcf-staging.cfapps.io/ksm/0-n/release-notes.html
         linkerd.io/inject: enabled
     chartmuseum:
       replica:
