@@ -318,6 +318,7 @@ To configure security on your Kubernetes cluster for <%= vars.product_short %>:
 1. Enable network policies on the cluster to secure traffic between services.
     See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
     in the Kubernetes documentation.
+    Also see your cloud specific documentation. For example, in GKE, network policies are not enabled by default.
 1. Secure traffic between <%= vars.product_short %> components.
 For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
