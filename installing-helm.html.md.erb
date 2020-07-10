@@ -340,7 +340,7 @@ To configure a Linkerd service mesh:
       annotations:
         linkerd.io/inject: enabled
     daemon:
-      annotations:http://docs-pcf-staging.cfapps.io/ksm/0-n/release-notes.html
+      annotations:
         linkerd.io/inject: enabled
     chartmuseum:
       replica:
@@ -363,3 +363,26 @@ To configure a Linkerd service mesh:
     linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
     ```
    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
+
+
+### <a id="prometheus"></a> (OPTIONAL) Install / Use Prometheus
+
+You can see the product metrics if you have a prometheus running in the cluster or if you want to install it.
+
+Here is an example of how to install Prometheus to your cluster:
+
+1. Install prometheus helm chart
+
+    ```bash
+        helm install prometheus stable/prometheus -n prometheus
+    ```
+
+1. Create a kubernetes port forward to your local host
+
+    ```bash
+    export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+    kubectl --namespace prometheus port-forward $POD_NAME 9090
+    ```
+1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090)
+
+1. Type `sm_http_metric_handler_requests_total` in the expression box and hit the `Execute` button
