@@ -1,0 +1,101 @@
+---
+title: Installing and Configuring KSM Using Helm (Lab Environment)
+owner: Platform Engineering (KSM Team)
+---
+<strong><%= modified_date %></strong>
+
+This topic describes how to install and configure
+<%= vars.product_full %> (<%= vars.product_short %>) for Lab experience, using Helm.
+
+<p class="note"><strong>Note:</strong> VMWare does not recommend this installation for <strong>PRODUCTION</strong>strong> 
+mode. For production installation see <a href="installing-helm.html">Installing and Configuring KSM Using Helm</a>.
+</p>
+
+## <a id="prereq"></a>Prerequisites
+
+Before you install <%= vars.product_short %> you must install and configure:
+      
+1. Docker: For installation instructions, see the [Docker documentation](https://docs.docker.com/get-docker/).
+
+1. kubectl CLI: For installation instructions, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+   
+1. A Kubernetes cluster: You must use Kubernetes v1.14 or later. 
+   
+1. The Helm CLI: For installation instructions, see the [Helm documentation](https://helm.sh/docs/intro/install/).
+   
+1. A private image registry: VMware recommends that you keep the Kubernetes Operator image private even if your registry is publicly accessible. 
+   If you do not have access to a private image registry, email the team at 
+   [<%= vars.product_full %> (<%= vars.product_short %>) Feedback](mailto:ksm-feedback@pivotal.io for help.
+
+## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+
+To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
+
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/).
+
+1. Download the sm-single-installer-<current-version>.tgz file to a local folder.
+
+1. Uncompress the file by using the following command: 
+
+   `tar xzf sm-single-installer-<version>.tgz`
+   
+1. The package should provide the following list of files:
+
+    | File      |      Description      | 
+    |----------:|-------------|
+    |broker.tgz | <%= vars.product_short %> service broker Docker image |
+    |chartmuseum.tgz | Chartmuseum Docker image |
+    |daemon.tgz | <%= vars.product_short %> service daemon Docker image |
+    |install.sh | Installation script |
+    |ksm-<version>.tgz | <%= vars.product_short %> Helm Chart |
+    |ksm-<version>.darwin | <%= vars.product_short %> cli for MacOS|
+    |ksm-<version>.linux | <%= vars.product_short %> cli for Linux|
+    |minio.tgz | MinIO Docker image|
+    |postgresql.tgz | Postgres Docker image|
+
+1. Login to your private image registry
+
+    Before proceeding the installation, login to your private image registry with Docker cli:
+
+    ```bash
+    docker login <private-image-registry-endpoint>
+    ``` 
+
+1. Validate you can connect to your Kubernetes cluster:
+
+    ```bash
+    kubectl get all -A
+    ```
+
+1. Install the <%= vars.product_short %> product: 
+
+    ```bash
+    ./install.sh <private-image-registry-endpoint>
+    ```
+   
+1. A new file `setSmEnv.sh` was created by install process. Load this file to your environment by calling the following command: 
+   
+   ```bash
+   source ./setSmEnv.sh
+   ```
+
+1. (MacOS) If you're in MacOs, you will probably have to unblock the <%= vars.product_short %> cli before using it. 
+   See [Apple Documentation](https://support.apple.com/en-us/HT202491)
+
+## What install.sh does:
+
+The `install.sh` script automates a series of steps in the installation as following:
+    
+    - It verifies some pre requirements as if the helm, docker and kubectl CLIs are installed
+    - Loads the docker images to your current Docker
+    - Tags the docker images in your current Docker to point to your private image registry
+    - Creates a config file containing your system current values, as your private image registry
+    - Installs the <%= vars.product_short %> to your cluster, including Postgres and MinIO as storage
+    - Installs the <%= vars.product_short %> CLI to /var/local/bin/<%= vars.product_short %>
+
+## Next Steps:
+
+[Managing Kubernetes Clusters for <%= vars.product_short %>](managing-clusters.html)
+
+[Using <%= vars.product_short %>](using.html)
