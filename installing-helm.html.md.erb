@@ -10,7 +10,7 @@ This topic describes how to install and configure
 
 ## <a id="overview"></a> Overview
 
-Helm is a Kubernetes open source package manager. 
+Helm is a Kubernetes open source package manager.
 You can use a Helm chart to install and configure <%= vars.product_short %>.
 
 To install and configure <%= vars.product_short %> using Helm:
@@ -32,21 +32,40 @@ To install and configure <%= vars.product_short %> using Helm:
 
 Before you install <%= vars.product_short %> using Helm:
 
-- **If you are using Ingress, install the Ingress controller on the cluster where you want to install
-<%= vars.product_short %>:** You must also reserve a subdomain for <%= vars.product_short %>
-in your DNS.
-For information about Ingress, see the
-[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+* **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %> CLI, see
+[Install the <%= vars.product_short %> CLI](./installing-helm.html#ksm) .
 
-- **Verify that a default StorageClass exists on the cluster where you want to install
+* **Helm 3 CLI:** For information about installing the Helm CLI,
+see the [Helm documentation](https://helm.sh/docs/intro/).
+
+* **Docker CLI:** For information about installing Docker, see [Docker](https://www.docker.com/).
+
+* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
+
+* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
+about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+
+* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
+For more information, see [Configuring External Storage](./storage.html).
+
+* **Private Container Registry:** You need this to manage container images
+in air-gapped environments.
+  VMware recommends using a private container registry in production deployments.
+  You can use a private container registry such as
+  [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+
+* **Verify that a default StorageClass exists on the cluster where you want to install
 <%= vars.product_short %>:**
 If you are using Tanzu Kubernetes Grid Integrated Edition, see
 [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
 For more information about Storage Classes, see
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 
-- **Configure an external storage solution:** For more information, see
-[Configuring External Storage](./storage.html#storage).
+* **(Optional) If you are using Ingress, install the Ingress controller on the cluster where you want to install
+<%= vars.product_short %>:** You must also reserve a subdomain for <%= vars.product_short %>
+in your DNS.
+For information about Ingress, see the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
 
 ## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
@@ -60,7 +79,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
-    commands for the **broker**, **daemon**, and **chartmuseum**.
+    commands for the **broker**, **daemon**, **chartmuseum**, and **postgresql**.
     + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
 
@@ -73,15 +92,20 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 1. Make the <%= vars.product_short %> binary act as an executable file by running:
 
-    ```
-    chmod +x ksm
-    ```
+   ```bash
+   chmod +x ksm
+   ```
 
 1. Move the binary file into your `PATH` by running:
 
-    ```
-    mv ksm /usr/local/bin/ksm
-    ```
+   ```bash
+   mv ksm /usr/local/bin/ksm
+   ```
+
+1. Ensure <%= vars.product_short %> CLI is working properly:
+   ```bash
+   ksm version
+   ```
 
 ## <a id='move-images'></a> Move <%= vars.product_short %> Images
 
@@ -92,33 +116,39 @@ To move your <%= vars.product_short %> images to a private container image regis
 
 1. Tag the images for your registry by running these commands:
 
-    ```
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
-      REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+   ```bash
+   docker tag registry.pivotal.io/container-services-manager/broker:VERSION-NUMBER \
+     REGISTRY/container-services-manager/broker:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/broker:VERSION-NUMBER \
-      REGISTRY/container-services-manager/broker:VERSION-NUMBER
+   docker tag registry.pivotal.io/container-services-manager/daemon:VERSION-NUMBER \
+     REGISTRY/container-services-manager/daemon:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION-NUMBER \
-      REGISTRY/container-services-manager/daemon:VERSION-NUMBER
-    ```
+   docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
+     REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+
+   docker tag registry.pivotal.io/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER \
+     REGISTRY/container-services-manager/daemon:POSTGRESQL-VERSION-NUMBER
+   ```
 
     Where:
-    + `CHARTMUSEUM-VERSION-NUMBER` is the ChartMuseum version number.
-      This value is in the `docker pull` command that you recorded in
-      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
     + `VERSION-NUMBER` is the <%= vars.product_short %> release version number.
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
     + `REGISTRY` is the private container image registry you configured for <%= vars.product_short %>.
+    + `CHARTMUSEUM-VERSION-NUMBER` is the ChartMuseum version number.
+      This value is in the `docker pull` command that you recorded in
+      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
+    + `POSTGRESQL-VERSION-NUMBER` is the PostgreSQL version number.
+      This value is in the `docker pull` command that you recorded in
+      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
 1. Push the images to your registry by running these commands:
 
-    ```
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
-    ```
+   ```bash
+   docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+   docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
+   docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
+  ```
 
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
@@ -127,14 +157,14 @@ To configure the <%= vars.product_short %> Helm chart:
 
 1. Unzip the downloaded <%= vars.product_short %> Helm chart by running:
 
-    ```
-    tar zxvf ksm-VERSION-NUMBER.tgz
-    ```
-    The above command creates a new directory named `ksm`.
+   ```bash
+   tar zxvf ksm-VERSION-NUMBER.tgz
+   ```
+   The above command creates a new directory named `ksm`.
 
 1.  In the `ksm/values.yaml` file, add the credentials for your S3 compatible bucket using the template below:
 
-    ```
+    ```yaml
     chartmuseum:
       env:
         open:
@@ -144,6 +174,7 @@ To configure the <%= vars.product_short %> Helm chart:
           AWS_ACCESS_KEY_ID: ACCESS-KEY
           AWS_SECRET_ACCESS_KEY: SECRET
     ```
+
    Where:
    + `BUCKET-NAME` is your S3 bucket name.
    + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform (GCP) it is `storage.googleapis.com`.
@@ -158,76 +189,78 @@ To configure the <%= vars.product_short %> Helm chart:
 1. Edit your `ksm/values.yaml` file to enable service access.
     <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
    + **If you want your service to be accessed directly using a load balancer,** add:
-
-           ```
-        broker:
-          service:
-            type: LoadBalancer
-        daemon:
-          service:
-            type: LoadBalancer
-           ```
+   ```yaml
+   broker:
+     service:
+       type: LoadBalancer
+   daemon:
+     service:
+       type: LoadBalancer
+   ```
    + **If want your service to be accessed using Ingress,** add:
-
-           ```
-        ingress:
-          enabled: true
-          hosts:
-            - INGRESS-DOMAIN
-          annotations:
-            ANNOTATION-KEY: ANNOTATION-VALUE
-           ```
-           Where:
-         + `INGRESS-DOMAIN` is the name of your provisioned domain.
-         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
-            These values depend on the Ingress controller you use.
-            For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
+   ```yaml
+   ingress:
+     enabled: true
+     hosts:
+     - INGRESS-DOMAIN
+     annotations:
+       ANNOTATION-KEY: ANNOTATION-VALUE
+   ```
+   Where:
+ + `INGRESS-DOMAIN` is the name of your provisioned domain.
+ + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
+    These values depend on the Ingress controller you use.
+    For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
 
 1. Define a secure password to authenticate your services by adding:
 
-     ```
-     broker:
-       password: BROKER-PASSWORD
-     daemon:
-       password: DAEMON-PASSWORD
-     chartmuseum:
-       env:
-         open:
-           BASIC_AUTH_PASS: CHARTMUSEUM-PASSWORD
-     ```
+   ```yaml
+   broker:
+     password: BROKER-PASSWORD
+   daemon:
+     password: DAEMON-PASSWORD
+   chartmuseum:
+     env:
+       open:
+         BASIC_AUTH_PASS: CHARTMUSEUM-PASSWORD
+   postgresql:
+     postgresqlPassword: POSTGRESQL-PASSWORD
+     encryptionKey: POSTGRESQL-ENCRYPTION-KEY
+    ```
 
      Where:
      + `BROKER_PASSWORD` is a secure password for the <%= vars.product_short %> broker.
      + `DAEMON_PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
-     + `CHARTMUSEUM_PASSWORD` is a secure password for the ChartMuseum.
-
+     + `CHARTMUSEUM_PASSWORD` is a secure password for ChartMuseum.
+     + `POSTGRESQL-PASSWORD` is a secure password for PostgreSQL.
+     + `POSTGRESQL-ENCRYPTION-KEY` is an encryption key that is at least 12 characters.
 1. Define values for your registry by adding:
 
-      ```
-      broker:
-        image:
-          repository: REGISTRY/container-services-manager/broker
-          tag: VERSION-NUMBER
-      daemon:
-        image:
-          repository: REGISTRY/container-services-manager/daemon
-          tag: VERSION-NUMBER
-      chartmuseum:
-        image:
-          repository: REGISTRY/container-services-manager/chartmuseum
-          tag: CHARTMUSEUM-VERSION-NUMBER
-      ```
-     Where `REGISTRY` is your private container image registry.
+   ```yaml
+   broker:
+     image:
+       repository: REGISTRY/container-services-manager/broker
+   daemon:
+     image:
+       repository: REGISTRY/container-services-manager/daemon
+   chartmuseum:
+     image:
+       repository: REGISTRY/container-services-manager/chartmuseum
+   postgresql:
+     image:
+       registry: REGISTRY
+   ```
+  Where `REGISTRY` is your private container image registry.
 
 1. Add the credentials for your registry by adding:
 
-    ```
-    imageCredentials:
-      registry: REGISTRY
-      username: REGISTRY-USERNAME
-      password: REGISTRY-PASSWORD
-    ```
-    Where:
+   ```yaml
+   imageCredentials:
+     registry: REGISTRY
+     username: REGISTRY-USERNAME
+     password: REGISTRY-PASSWORD
+   ```
+   Where:
     + `REGISTRY` is the registry you configured to offer images.
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
@@ -249,14 +282,14 @@ To configure the <%= vars.product_short %> Helm chart:
 
 1. If you are using Ingress, you must add your Cloud Foundry environment by adding:
 
-    ```
-    cf:
-      apiAddress: http://api.SYSTEM-DOMAIN
-      username: CF-USERNAME
-      password: CF-PASSWORD
-      brokerName: ksm
-      brokerUrl: http://broker.INGRESS-DOMAIN
-    ```
+   ```yaml
+   cf:
+     apiAddress: http://api.SYSTEM-DOMAIN
+     username: CF-USERNAME
+     password: CF-PASSWORD
+     brokerName: ksm
+     brokerUrl: http://broker.INGRESS-DOMAIN
+   ```
    Where:
    + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
    + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
@@ -270,7 +303,7 @@ To install the Helm chart:
 
 1. From the root level of the chart, install the Helm chart by running these commands:
 
-    ```
+    ```bash
     helm repo add stable https://kubernetes-charts.storage.googleapis.com/
     helm repo add bitnami https://charts.bitnami.com/bitnami
     helm dependency build
@@ -284,31 +317,37 @@ To install the Helm chart:
 1. If are using a load balancer:
    1. Retrieve the broker IP address by running:
 
-         ```
-         export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-         ```
+      ```bash
+      export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+      ```
    1. Upgrade your Helm release by running:
 
-         ```
-        helm upgrade RELEASE-NAME . --reuse-values \
-          --set cf.brokerUrl="http://${BROKER_IP}" \
-          --set cf.brokerName=ksm \
-          --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-          --set cf.username=CF-USERNAME \
-          --set cf.password=CF-PASSWORD \
-          -n KSM-NAMESPACE
-         ```
-         Where:
-         + `RELEASE-NAME` is the name of the release.
-         + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-         + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
-         + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-         + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+      ```bash
+      helm upgrade RELEASE-NAME . --reuse-values \
+        --set cf.brokerUrl="http://${BROKER_IP}" \
+        --set cf.brokerName=ksm \
+        --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
+        --set cf.username=CF-USERNAME \
+        --set cf.password=CF-PASSWORD \
+        -n KSM-NAMESPACE
+      ```
+      Where:
+      + `RELEASE-NAME` is the name of the release.
+      + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+      + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
+      + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
+      + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
-         The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
+      The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
+
+## <a id="next-steps"></a> Next Steps:
+
+* [Using <%= vars.product_short %>](using.html)
+
+* [Managing Kubernetes Clusters for <%= vars.product_short %>](managing-clusters.html)
 
 
-## <a id="security"></a> Configure Security
+## <a id="security"></a> (Recommended) Configure Security
 
 To configure security on your Kubernetes cluster for <%= vars.product_short %>:
 
@@ -324,7 +363,7 @@ For example, you can secure traffic using a service mesh such as [Linkerd](https
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
 
 
-### <a id="service-mesh"></a> Configure Service Mesh
+### <a id="service-mesh"></a> (Recommended) Configure Service Mesh
 
 To configure a Linkerd service mesh:
 
@@ -335,37 +374,37 @@ To configure a Linkerd service mesh:
 [Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd documentation.
 1. Add the following annotations in the <%= vars.product_short %> Helm chart `values.yaml` file:
 
-    ```
-    broker:
+   ```yaml
+  broker:
+    annotations:
+      linkerd.io/inject: enabled
+  daemon:
+    annotations:
+      linkerd.io/inject: enabled
+  chartmuseum:
+    replica:
       annotations:
         linkerd.io/inject: enabled
-    daemon:
-      annotations:
-        linkerd.io/inject: enabled
-    chartmuseum:
-      replica:
-        annotations:
-          linkerd.io/inject: enabled
-    ```
+  ```
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
     following the procedures in the
     [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
 1. Verify that <%= vars.product_short %> is added to the mesh by running:
 
-    ```
-    linkerd stat deployments -n KSM-NAMESPACE
-    ```
-    Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
+   ```bash
+   linkerd stat deployments -n KSM-NAMESPACE
+   ```
+   Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
 
 1. Verify that TLS is working on the deployment by running:
 
-    ```
-    linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
-    ```
+   ```bash
+   linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
+   ```
    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
 
 
-### <a id="prometheus"></a> (OPTIONAL) Install / Use Prometheus
+### <a id="prometheus"></a> (Optional) Install/Use Prometheus
 
 You can see the product metrics if you have a prometheus running in the cluster or if you want to install it.
 
@@ -373,16 +412,17 @@ Here is an example of how to install Prometheus to your cluster:
 
 1. Install prometheus helm chart
 
-    ```bash
-        helm install prometheus stable/prometheus -n prometheus
-    ```
+   ```bash
+   kubectl create ns prometheus
+   helm install prometheus stable/prometheus -n prometheus
+   ```
 
 1. Create a kubernetes port forward to your local host
 
-    ```bash
-    export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-    kubectl --namespace prometheus port-forward $POD_NAME 9090
-    ```
+   ```bash
+   export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+   kubectl --namespace prometheus port-forward $POD_NAME 9090
+  ```
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090)
 
 1. Type `{app_kubernetes_io_name="ksm"}` in the expression box and hit the `Execute` button
