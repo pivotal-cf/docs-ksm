@@ -346,6 +346,16 @@ To configure a Linkerd service mesh:
       replica:
         annotations:
           linkerd.io/inject: enabled
+    postgresql:
+      master:
+        podAnnotations:
+          linkerd.io/inject: enabled
+      slave:
+        podAnnotations:
+          linkerd.io/inject: enabled
+    minio:
+      podAnnotations:
+        linkerd.io/inject: enabled
     ```
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
     following the procedures in the
