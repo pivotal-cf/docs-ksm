@@ -280,7 +280,7 @@ To configure the <%= vars.product_short %> Helm chart:
       <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Kubernetes documentation</a>.
     </p>
 
-1. If you are using Ingress, you must add your Cloud Foundry environment by adding:
+1. Add your Cloud Foundry environment by adding:
 
    ```yaml
    cf:
@@ -296,6 +296,52 @@ To configure the <%= vars.product_short %> Helm chart:
    + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
    + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
+1. Specify which Postgres database to use: 
+
+    Internal Configuration (not for production)
+
+    ```
+    postgresql:
+      enabled: true
+      image:
+        registry: REGISTRY
+        repository: container-services-manager/postgresql
+        tag: latest
+      serviceAccount:
+        enabled: true
+      postgresqlUsername: USERNAME
+      postgresqlPassword: PASSWORD
+      postgresqlDatabase: DATABASE
+      encryptionKey: ENCRYPTION_KEY
+    ``` 
+
+    External Configuration (production)
+
+    ```
+    postgresql:
+      enabled: false
+      postgresqlUsername: USERNAME
+      postgresqlPassword: PASSWORD
+      postgresqlDatabase: DATABASE
+      encryptionKey: ENCRYPTION_KEY
+      host: HOST
+      dbSkipSSL: 'false'
+      caCert: |
+        -----BEGIN CERTIFICATE-----
+        ... 
+    ``` 
+
+   Where:
+   + `enabled` is the specifier for internal vs external. 'true' enables installation of the PostgreSQL helm chart
+   + `registry` is the registry where the <%= vars.app_runtime_abbr %> image resides
+   + `postgresqlUsername` is the PostgresSQL username  
+   + `postgresqlPassword` is the PostgresSQL password
+   + `postgresqlDatabase` is the schema within PostgresSQL where KSM's tables reside
+   + `encryptionKey` is used to symmetrically encrypt sensitive data before we save it in PostgresSQL
+   + `host` is the domain/ip for the database
+   + `dbSkipSSL` is ok to set to true when an internal database is used since SSL/TLS should be done via service mesh
+   + `caCert` is the SSL/TLS certificate authority cert for the PostgresSQL database connection: Required when dbSkipSSL is false
+
 
 ## <a id='install'></a> Install the Helm Chart
 
@@ -308,7 +354,7 @@ To install the Helm chart:
     helm repo add bitnami https://charts.bitnami.com/bitnami
     helm dependency build
     kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME . -n <%= vars.product_short %>-NAMESPACE
+    helm install RELEASE-NAME . -n <%= vars.product_short %>-NAMESPACE --wait
     ```
     Where:
     + `RELEASE-NAME` is a name you choose for the release.
@@ -385,7 +431,24 @@ To configure a Linkerd service mesh:
     replica:
       annotations:
         linkerd.io/inject: enabled
-  ```
+    daemon:
+      annotations:
+        linkerd.io/inject: enabled
+    chartmuseum:
+      replica:
+        annotations:
+          linkerd.io/inject: enabled
+    postgresql:
+      master:
+        podAnnotations:
+          linkerd.io/inject: enabled
+      slave:
+        podAnnotations:
+          linkerd.io/inject: enabled
+    minio:
+      podAnnotations:
+        linkerd.io/inject: enabled
+    ```
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
     following the procedures in the
     [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
