@@ -48,11 +48,10 @@ about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://d
 * **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
 
-* **Private Container Registry:** You need this to manage container images
+* **Private Container Image Registry:** You need this to manage container images
 in air-gapped environments.
-  VMware recommends using a private container registry in production deployments.
-  You can use a private container registry such as
-  [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+  VMware recommends using a registry in production deployments.
+  You can use a registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
 
 * **Verify that a default StorageClass exists on the cluster where you want to install
 <%= vars.product_short %>:**
@@ -340,7 +339,7 @@ To configure the <%= vars.product_short %> Helm chart:
    + `encryptionKey` is used to symmetrically encrypt sensitive data before we save it in PostgresSQL
    + `host` is the domain/ip for the database
    + `dbSkipSSL` is ok to set to true when an internal database is used since SSL/TLS should be done via service mesh
-   + `caCert` is the SSL/TLS certificate authority cert for the PostgresSQL database connection: Required when dbSkipSSL is false
+   + `caCert` is the SSL/TLS certificate authority certificate for the PostgresSQL database connection: Required when dbSkipSSL is false
 
 
 ## <a id='install'></a> Install the Helm Chart
@@ -403,7 +402,8 @@ To configure security on your Kubernetes cluster for <%= vars.product_short %>:
 1. Enable network policies on the cluster to secure traffic between services.
     See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
     in the Kubernetes documentation.
-    Also see your cloud specific documentation. For example, in GKE, network policies are not enabled by default.
+    Some settings can vary between clouds. For example, in GKE, network policies are not enabled by default.
+    For more information, see your cloud-specific documentation.
 1. Secure traffic between <%= vars.product_short %> components.
 For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
