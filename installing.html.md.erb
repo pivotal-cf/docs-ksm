@@ -454,19 +454,20 @@ To configure a Linkerd service mesh:
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
     following the procedures in the
     [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
+
 1. Verify that <%= vars.product_short %> is added to the mesh by running:
 
-   ```bash
-   linkerd stat deployments -n KSM-NAMESPACE
-   ```
-   Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
+  ```bash
+  linkerd stat deployments -n KSM-NAMESPACE
+  ```
+  Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
 
 1. Verify that TLS is working on the deployment by running:
 
-   ```bash
-   linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
-   ```
-   Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
+  ```bash
+  linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
+  ```
+  Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
 
 
 ### <a id="prometheus"></a> (Optional) Install/Use Prometheus
@@ -477,17 +478,17 @@ Here is an example of how to install Prometheus to your cluster:
 
 1. Install the Prometheus helm chart by running:
 
-   ```bash
-   kubectl create ns prometheus
-   helm install prometheus stable/prometheus -n prometheus
-   ```
+  ```bash
+  kubectl create ns prometheus
+  helm install prometheus stable/prometheus -n prometheus
+  ```
 
 1. Create a kubernetes port forward to your local host by running:
 
-   ```bash
-   export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-   kubectl --namespace prometheus port-forward $POD_NAME 9090
-   ```
+  ```bash
+  export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace prometheus port-forward $POD_NAME 9090
+  ```
 
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090)
 
