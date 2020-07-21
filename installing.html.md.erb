@@ -418,10 +418,18 @@ To configure a Linkerd service mesh:
       [Getting Started](https://linkerd.io/2/getting-started/) in the Linkerd documentation.
       + Install the service mesh using a Helm chart by following the procedures in
 [Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd documentation.
+
 1. Add the following annotations in the <%= vars.product_short %> Helm chart `values.yaml` file:
 
-   ```yaml
-   broker:
+  ```yaml
+  broker:
+   annotations:
+     linkerd.io/inject: enabled
+  daemon:
+   annotations:
+     linkerd.io/inject: enabled
+  chartmuseum:
+   replica:
      annotations:
        linkerd.io/inject: enabled
    daemon:
@@ -431,24 +439,17 @@ To configure a Linkerd service mesh:
      replica:
        annotations:
          linkerd.io/inject: enabled
-     daemon:
-       annotations:
-         linkerd.io/inject: enabled
-     chartmuseum:
-       replica:
-         annotations:
-           linkerd.io/inject: enabled
-     postgresql:
-       master:
-         podAnnotations:
-           linkerd.io/inject: enabled
-       slave:
-         podAnnotations:
-           linkerd.io/inject: enabled
-     minio:
+   postgresql:
+     master:
        podAnnotations:
          linkerd.io/inject: enabled
-    ```
+     slave:
+       podAnnotations:
+         linkerd.io/inject: enabled
+   minio:
+     podAnnotations:
+       linkerd.io/inject: enabled
+  ```
 
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
     following the procedures in the
