@@ -1,5 +1,5 @@
 ---
-title: Installing and Configuring KSM Using Helm
+title: Installing and Configuring KSM
 owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
@@ -33,7 +33,7 @@ To install and configure <%= vars.product_short %> using Helm:
 Before you install <%= vars.product_short %> using Helm:
 
 * **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %> CLI, see
-[Install the <%= vars.product_short %> CLI](./installing-helm.html#ksm) .
+[Install the <%= vars.product_short %> CLI](./installing.html#cli) .
 
 * **Helm 3 CLI:** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/).
@@ -296,7 +296,7 @@ To configure the <%= vars.product_short %> Helm chart:
    + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
    + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
-1. Specify which Postgres database to use: 
+1. Specify which Postgres database to use:
 
     Internal Configuration (not for production)
 
@@ -313,7 +313,7 @@ To configure the <%= vars.product_short %> Helm chart:
       postgresqlPassword: PASSWORD
       postgresqlDatabase: DATABASE
       encryptionKey: ENCRYPTION_KEY
-    ``` 
+    ```
 
     External Configuration (production)
 
@@ -328,13 +328,13 @@ To configure the <%= vars.product_short %> Helm chart:
       dbSkipSSL: 'false'
       caCert: |
         -----BEGIN CERTIFICATE-----
-        ... 
-    ``` 
+        ...
+    ```
 
    Where:
    + `enabled` is the specifier for internal vs external. 'true' enables installation of the PostgreSQL helm chart
    + `registry` is the registry where the <%= vars.app_runtime_abbr %> image resides
-   + `postgresqlUsername` is the PostgresSQL username  
+   + `postgresqlUsername` is the PostgresSQL username
    + `postgresqlPassword` is the PostgresSQL password
    + `postgresqlDatabase` is the schema within PostgresSQL where KSM's tables reside
    + `encryptionKey` is used to symmetrically encrypt sensitive data before we save it in PostgresSQL
