@@ -421,34 +421,35 @@ To configure a Linkerd service mesh:
 1. Add the following annotations in the <%= vars.product_short %> Helm chart `values.yaml` file:
 
    ```yaml
-  broker:
-    annotations:
-      linkerd.io/inject: enabled
-  daemon:
-    annotations:
-      linkerd.io/inject: enabled
-  chartmuseum:
-    replica:
-      annotations:
-        linkerd.io/inject: enabled
-    daemon:
-      annotations:
-        linkerd.io/inject: enabled
-    chartmuseum:
-      replica:
-        annotations:
-          linkerd.io/inject: enabled
-    postgresql:
-      master:
-        podAnnotations:
-          linkerd.io/inject: enabled
-      slave:
-        podAnnotations:
-          linkerd.io/inject: enabled
-    minio:
-      podAnnotations:
-        linkerd.io/inject: enabled
+   broker:
+     annotations:
+       linkerd.io/inject: enabled
+   daemon:
+     annotations:
+       linkerd.io/inject: enabled
+   chartmuseum:
+     replica:
+       annotations:
+         linkerd.io/inject: enabled
+     daemon:
+       annotations:
+         linkerd.io/inject: enabled
+     chartmuseum:
+       replica:
+         annotations:
+           linkerd.io/inject: enabled
+     postgresql:
+       master:
+         podAnnotations:
+           linkerd.io/inject: enabled
+       slave:
+         podAnnotations:
+           linkerd.io/inject: enabled
+     minio:
+       podAnnotations:
+         linkerd.io/inject: enabled
     ```
+
 1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
     following the procedures in the
     [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
@@ -473,19 +474,20 @@ You can see the product metrics if you have a prometheus running in the cluster 
 
 Here is an example of how to install Prometheus to your cluster:
 
-1. Install prometheus helm chart
+1. Install the Prometheus helm chart by running:
 
    ```bash
    kubectl create ns prometheus
    helm install prometheus stable/prometheus -n prometheus
    ```
 
-1. Create a kubernetes port forward to your local host
+1. Create a kubernetes port forward to your local host by running:
 
    ```bash
    export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
    kubectl --namespace prometheus port-forward $POD_NAME 9090
-  ```
+   ```
+
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090)
 
 1. Type `{app_kubernetes_io_name="ksm"}` in the expression box and hit the `Execute` button
