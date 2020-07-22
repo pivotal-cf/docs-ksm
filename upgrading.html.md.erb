@@ -5,12 +5,13 @@ owner: Platform Engineering (KSM Team)
 
 <%# The below uses the local product variable and math so we do not need to update this page
 with every release %>
+<%
+current_version = product_info['local_product_version']
 
-<% previous_version = product_info["local_product_version"].to_s.split(".")
+previous_version = current_version.to_s.split(".")
 previous_version[1] = (previous_version[1].to_i - 1).to_s
 previous_version = previous_version.join(".")
-
-current_version = product_info['local_product_version'] %>
+%>
 
 <strong><%= modified_date %></strong>
 
