@@ -482,26 +482,28 @@ To configure a Linkerd service mesh:
     Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
 
 
-### <a id="prometheus"></a> (Optional) Install/Use Prometheus
+### <a id="prometheus"></a> (Optional) Install Prometheus
 
-You can see the product metrics if you have a prometheus running in the cluster or if you want to install it.
+You can view metrics for <%= vars.product_short %> if you have Prometheus running in the cluster.
 
-Here is an example of how to install Prometheus to your cluster:
+To install Prometheus to your cluster:
 
-1. Install the Prometheus helm chart by running:
+1. Install the Prometheus helm chart by running these commands:
 
     ```bash
     kubectl create ns prometheus
+
     helm install prometheus stable/prometheus -n prometheus
     ```
 
-1. Create a kubernetes port forward to your local host by running:
+1. Create a Kubernetes port forward to your local host by running these commands:
 
-    ```bash
+    ```
     export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+
     kubectl --namespace prometheus port-forward $POD_NAME 9090
     ```
 
-1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090)
+1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
-1. Type `{app_kubernetes_io_name="ksm"}` in the expression box and hit the `Execute` button
+1. Type `{app_kubernetes_io_name="ksm"}` in the expression box and click `Execute`.
