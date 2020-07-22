@@ -191,32 +191,32 @@ To configure the <%= vars.product_short %> Helm chart:
 
 1. Edit your `ksm/values.yaml` file to enable service access.
     <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
-  + **If you want your service to be accessed directly using a load balancer,** add:
+    + **If you want your service to be accessed directly using a load balancer,** add:
 
-      ```yaml
-      broker:
-       service:
-        type: LoadBalancer
-      daemon:
-       service:
-        type: LoadBalancer
-      ```
-  + **If want your service to be accessed using Ingress,** add:
+        ```yaml
+        broker:
+         service:
+          type: LoadBalancer
+        daemon:
+         service:
+          type: LoadBalancer
+        ```
+    + **If want your service to be accessed using Ingress,** add:
 
-      ```yaml
-      ingress:
-       enabled: true
-       hosts:
-       - INGRESS-DOMAIN
-       annotations:
-         ANNOTATION-KEY: ANNOTATION-VALUE
-      ```
+        ```yaml
+        ingress:
+         enabled: true
+         hosts:
+         - INGRESS-DOMAIN
+         annotations:
+           ANNOTATION-KEY: ANNOTATION-VALUE
+        ```
+        Where:
+        + `INGRESS-DOMAIN` is the name of your provisioned domain.
+        + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
 
-      Where:
-      + `INGRESS-DOMAIN` is the name of your provisioned domain.
-      + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
-      These values depend on the Ingress controller you use.
-      For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
+    These values depend on the Ingress controller you use.
+    For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
 
 1. Define a secure password to authenticate your services by adding:
 
