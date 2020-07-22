@@ -273,7 +273,7 @@ To configure the <%= vars.product_short %> Helm chart:
       deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
       point to images in the registry.</li>
     </ul>
-    <p class="note"><strong>Note:</strong> While this configuration is optional, VMware recommends using a private container
+    <p class="note"><strong>Note:</strong> Although this configuration is optional, VMware recommends using a private container
       registry in production.
       If you choose not to configure this, you must configure a <code>dockerconfigjson</code> pull secret with the
       credentials for your registry. For more information, see the
@@ -363,28 +363,29 @@ To install the Helm chart:
 1. If are using a load balancer:
    1. Retrieve the broker IP address by running:
 
-    ```bash
-    export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-    ```
+      ```bash
+      export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+      ```
+
    1. Upgrade your Helm release by running:
 
-    ```bash
-    helm upgrade RELEASE-NAME . --reuse-values \
-      --set cf.brokerUrl="http://${BROKER_IP}" \
-      --set cf.brokerName=ksm \
-      --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-      --set cf.username=CF-USERNAME \
-      --set cf.password=CF-PASSWORD \
-      -n KSM-NAMESPACE
-    ```
-    Where:
-    + `RELEASE-NAME` is the name of the release.
-    + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-    + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
-    + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+      ```bash
+      helm upgrade RELEASE-NAME . --reuse-values \
+        --set cf.brokerUrl="http://${BROKER_IP}" \
+        --set cf.brokerName=ksm \
+        --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
+        --set cf.username=CF-USERNAME \
+        --set cf.password=CF-PASSWORD \
+        -n KSM-NAMESPACE
+      ```
+      Where:
+      + `RELEASE-NAME` is the name of the release.
+      + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+      + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
+      + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
+      + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
-    The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
+      The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
 ## <a id="next-steps"></a> Next Steps:
 
