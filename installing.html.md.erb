@@ -397,16 +397,20 @@ To install the Helm chart:
 
       The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
-## <a id="next-steps"></a> Next Steps:
+## <a id="next-steps"></a> Next Steps
+
+After installing and configuring <%= vars.product_short %>, see the following next steps:
 
 * [Using <%= vars.product_short %>](using.html)
 
 * [Managing Kubernetes Clusters for <%= vars.product_short %>](managing-clusters.html)
 
 
-## <a id="security"></a> (Recommended) Configure Security
+## <a id="security"></a> Configure Security
 
-To configure security on your Kubernetes cluster for <%= vars.product_short %>:
+VMware recommends configuring security onn your Kubernetes cluster for <%= vars.product_short %>.
+
+To configure security :
 
 1. Secure <%= vars.product_short %> secrets by using a secret provider.
     See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
@@ -421,7 +425,7 @@ For example, you can secure traffic using a service mesh such as [Linkerd](https
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
 
 
-### <a id="service-mesh"></a> (Recommended) Configure Service Mesh
+### <a id="service-mesh"></a> Configure Service Mesh
 
 To configure a Linkerd service mesh:
 
