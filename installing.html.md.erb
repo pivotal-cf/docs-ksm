@@ -341,15 +341,15 @@ To configure the <%= vars.product_short %> Helm chart:
     ```
 
     Where:
-    + `enabled` is the specifier for internal vs external. 'true' enables installation of the PostgreSQL helm chart
+    + `enabled` is the specifier for internal vs external. `true` enables installation of the PostgreSQL Helm chart
     + `registry` is the registry where the <%= vars.app_runtime_abbr %> image resides
     + `postgresqlUsername` is the PostgresSQL username
     + `postgresqlPassword` is the PostgresSQL password
     + `postgresqlDatabase` is the schema within PostgresSQL where KSM's tables reside
-    + `encryptionKey` is used to symmetrically encrypt sensitive data before we save it in PostgresSQL
-    + `host` is the domain/ip for the database
-    + `dbSkipSSL` is ok to set to true when an internal database is used since SSL/TLS should be done via service mesh
-    + `caCert` is the SSL/TLS certificate authority certificate for the PostgresSQL database connection: Required when dbSkipSSL is false
+    + `encryptionKey` is used to symmetrically encrypt sensitive data before you save it in PostgresSQL
+    + `host` is the domain for the database
+    + `dbSkipSSL` can be set to `true` when an internal database is used because SSL or TLS should be used through service mesh
+    + `caCert` is the SSL or TLS certificate authority (CA) certificate for the PostgresSQL database connection and is required when `dbSkipSSL` is `false`
 
 
 ## <a id='install'></a> Install the Helm Chart
@@ -488,7 +488,7 @@ You can view metrics for <%= vars.product_short %> if you have Prometheus runnin
 
 To install Prometheus to your cluster:
 
-1. Install the Prometheus helm chart by running these commands:
+1. Install the Prometheus Helm chart by running these commands:
 
     ```bash
     kubectl create ns prometheus
