@@ -192,19 +192,17 @@ To configure the <%= vars.product_short %> Helm chart:
 1. Edit your `ksm/values.yaml` file to enable service access.
     <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
 
-    + **If you want your service to be accessed directly using a load balancer,** add:
-
+  + **If you want your service to be accessed directly using a load balancer,** add:
       ```yaml
       broker:
        service:
-         type: LoadBalancer
+        type: LoadBalancer
       daemon:
        service:
-         type: LoadBalancer
+        type: LoadBalancer
       ```
 
-    + **If want your service to be accessed using Ingress,** add:
-
+  + **If want your service to be accessed using Ingress,** add:
       ```yaml
       ingress:
        enabled: true
