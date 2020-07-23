@@ -505,8 +505,9 @@ To configure a Linkerd service mesh:
 ### <a id="prometheus"></a> (Optional) Install Prometheus
 
 You can view metrics for <%= vars.product_short %> if you have Prometheus running in the cluster.
+You must install Prometheus in each cluster you want to view metrics for.
 
-To install Prometheus to your cluster:
+To install Prometheus to a cluster:
 
 1. Install the Prometheus Helm chart by running these commands:
 
@@ -526,4 +527,4 @@ To install Prometheus to your cluster:
 
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
-1. Type `{app_kubernetes_io_name="ksm"}` in the expression box and click `Execute`.
+1. To view metrics for KSM, type `{app_kubernetes_io_name="ksm"}` in the expression box and click **Execute**.
