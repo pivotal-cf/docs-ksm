@@ -259,23 +259,40 @@ To configure the <%= vars.product_short %> Helm chart:
     ```
     Where `REGISTRY` is your private container image registry.
 
-1. Add the credentials for your registry by adding:
+1. Add the credentials for the registry where the <%= vars.product_short %> images are by adding:
 
     ```yaml
-    imageCredentials:
+    imageCredentialsForKSMImages:
      registry: REGISTRY
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
     ```
     Where:
-    + `REGISTRY` is the registry you configured to offer images.
+    + `REGISTRY` is the registry you configured for installation images.
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
-
+    
     <p><%= vars.product_short %> is using this registry for:</p>
     <ul>
       <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
       <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
+    </ul>
+    
+1. Add the credentials for the registry where the service instance images will come from:
+
+    ```yaml
+    imageCredentialsForServiceInstances:
+     registry: REGISTRY-INSTANCES
+     username: REGISTRY-INSTANCES-USERNAME
+     password: REGISTRY-INSTANCES-PASSWORD
+    ```
+    Where:
+    + `REGISTRY-INSTANCES` is the registry you configured to offer images.
+    + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
+    + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
+    
+    <p><%= vars.product_short %> is using this registry for:</p>
+    <ul>
       <li><strong>The backing registry for the services that <%= vars.product_short %>
       deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
       point to images in the registry.</li>
@@ -283,10 +300,6 @@ To configure the <%= vars.product_short %> Helm chart:
     <p class="note">
       <strong>Note:</strong> Although this configuration is optional, VMware recommends using a
       private container registry in production.
-      If you choose not to configure this, you must configure a <code>dockerconfigjson</code> pull
-      secret with the credentials for your registry.
-      For more information, see the
-      <a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials">Kubernetes documentation</a>.
     </p>
 
 1. Add your Cloud Foundry environment by adding:
