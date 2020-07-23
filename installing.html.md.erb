@@ -81,6 +81,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
     commands for the **broker**, **daemon**, **chartmuseum**, and **postgresql**.
+    Or, alternatively, download the image tgz files from the Images folder.
     + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
 
@@ -115,6 +116,11 @@ To move your <%= vars.product_short %> images to a private container image regis
 
 1. Move the images to your local system by running the `docker pull` commands you recorded in
     [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
+
+    <p class="note">
+      <strong>Alternative:</strong>If you downloaded the tgz files rather than the `docker pull` commands, 
+      load those images to your local system by using the `docker load -i <file>` command.
+    </p>
 
 1. Tag the images for your registry by running these commands:
 
