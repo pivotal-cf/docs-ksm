@@ -306,49 +306,47 @@ To configure the <%= vars.product_short %> Helm chart:
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
 1. Specify which Postgres database to use:
+    + **Internal Postgres Configuration:** VMware does not recommend internally
+      configuring Postgres for production environments.
 
-+ **Internal Postgres Configuration:** VMware does not recommend internally
-  configuring Postgres for production environments.
+        ```
+        postgresql:
+          enabled: true
+          image:
+            registry: REGISTRY
+            repository: container-services-manager/postgresql
+            tag: latest
+          serviceAccount:
+            enabled: true
+          postgresqlUsername: USERNAME
+          postgresqlPassword: PASSWORD
+          postgresqlDatabase: DATABASE
+          encryptionKey: ENCRYPTION-KEY
+        ```
+    + **External Postgres configuration:**
 
-    ```
-    postgresql:
-      enabled: true
-      image:
-        registry: REGISTRY
-        repository: container-services-manager/postgresql
-        tag: latest
-      serviceAccount:
-        enabled: true
-      postgresqlUsername: USERNAME
-      postgresqlPassword: PASSWORD
-      postgresqlDatabase: DATABASE
-      encryptionKey: ENCRYPTION-KEY
-    ```
-
-+ **External Postgres configuration:**
-
-    ```
-    postgresql:
-      enabled: false
-      postgresqlUsername: USERNAME
-      postgresqlPassword: PASSWORD
-      postgresqlDatabase: DATABASE
-      encryptionKey: ENCRYPTION-KEY
-      host: HOST
-      dbSkipSSL: DB-SKIP-SSL
-      caCert: |
-        CA-CERT
-      ```
-  Where:
-
-  + `REGISTRY` is the registry location for the <%= vars.app_runtime_abbr %> image
-  + `USERNAME` is the PostgresSQL username
-  + `PASSWORD` is the PostgresSQL password
-  + `DATABASE` is the schema within PostgresSQL where KSM's tables reside
-  + `ENCRYPTION-KEY` is used to symmetrically encrypt sensitive data before you save it in PostgresSQL
-  + `HOST` is the domain for the database
-  + `DP-SKIP-SSL` can be set to `true` when an internal database is used. SSL or TLS should be used through service mesh.
-  + `CA-CERT` is the SSL or TLS certificate authority (CA) certificate for the PostgresSQL database connection and is required when `dbSkipSSL` is `false`
+        ```
+        postgresql:
+          enabled: false
+          postgresqlUsername: USERNAME
+          postgresqlPassword: PASSWORD
+          postgresqlDatabase: DATABASE
+          encryptionKey: ENCRYPTION-KEY
+          host: HOST
+          dbSkipSSL: DB-SKIP-SSL
+          caCert: |
+            CA-CERT
+        ```
+        Where:
+        + `REGISTRY` is the registry location for the <%= vars.app_runtime_abbr %> image.
+        + `USERNAME` is the PostgresSQL username.
+        + `PASSWORD` is the PostgresSQL password.
+        + `DATABASE` is the schema within PostgresSQL where the tables for <%= vars.product_short %> are located.
+        + `ENCRYPTION-KEY` is used to symmetrically encrypt sensitive data before you save it in PostgresSQL.
+        + `HOST` is the domain for the database.
+        + `DP-SKIP-SSL` can be set to `true` when an internal database is used. SSL or TLS should be used through service mesh.
+        + `CA-CERT` is the SSL or TLS certificate authority (CA) certificate for
+        the PostgresSQL database connection. This certificate is required when `dbSkipSSL` is `false`.
 
 
 ## <a id='install'></a> Install the Helm Chart
