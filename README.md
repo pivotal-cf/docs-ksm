@@ -11,14 +11,15 @@ https://github.com/pivotal-cf/docs-book-ksm
 **Note**: Provide instructions in your PRs to indicate which branches you want Docs to apply your commits to.
 
 | Branch name | Use for… |
-|-------------| ------|
+|-------------| ---------|
 | master      | upcoming releases http://docs-pcf-staging.cfapps.io/ksm/0-n/ - If your PR is not version-specific, please use this branch |
-| 0.9       | v0.9.x  http://docs.pivotal.io/ksm/0-9/ |
-| 0.8       | v0.8.x  http://docs.pivotal.io/ksm/0-8/ |
-| 0.7       | v0.7.x  http://docs.pivotal.io/ksm/0-7/ |
-| 0.6       | v0.6.x  http://docs.pivotal.io/ksm/0-6/ |
-| 0.5       | v0.5.x  http://docs.pivotal.io/ksm/0-5/ |
-| 0.4       | NOT IN USE docs have been removed http://docs.pivotal.io/ksm/0-4/ |
+| 0.10       | v0.10.x  http://docs.pivotal.io/ksm/0-10/ |
+| 0.9        | v0.9.x  http://docs.pivotal.io/ksm/0-9/   |
+| 0.8        | v0.8.x  http://docs.pivotal.io/ksm/0-8/   |
+| 0.7        | v0.7.x  http://docs.pivotal.io/ksm/0-7/   |
+| 0.6        | v0.6.x  http://docs.pivotal.io/ksm/0-6/   |
+| 0.5        | v0.5.x  http://docs.pivotal.io/ksm/0-5/   |
+| 0.4        | NOT IN USE docs have been removed http://docs.pivotal.io/ksm/0-4/ |
 
 ## Steps for local development
 ```
