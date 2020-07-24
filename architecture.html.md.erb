@@ -33,11 +33,11 @@ in more detail for clarity/accessibility reasons. %>
 
 The <%= vars.product_short %> daemon provides the API that the
 <%= vars.product_short %> Command Line Interface (CLI) communicates with.
-When a platform operator adds a service offering using the <%= vars.product_short %> 
+When a platform operator adds a service offering using the <%= vars.product_short %>
 CLI command `ksm offer save`:
 
 * The daemon validates the offer.
-* The daemon stores the helm charts in ChartMuseum. ChartMuseum uses S3.
+* The daemon stores the helm charts in ChartMuseum. ChartMuseum uses S3 Storage.
 * The daemon stores the offer in PostgreSQL.
 * The broker updates the Cloud Foundry catalog.
 
@@ -50,14 +50,14 @@ see the [chartmuseum](https://github.com/helm/chartmuseum) repository on GitHub.
 The <%= vars.product_short %> broker is an Open Service Broker that creates
 on-demand service instances on a Kubernetes cluster.
 
-When a <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) developer 
-runs `cf create-service`::
+When a <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) developer
+runs `cf create-service`:
 
 * Cloud Controller sends that request to the broker.
 * The broker deploys the Helm chart needed for the service.
 
 For more information about Open Service Brokers,
-see [Open Service Broker](https://www.openservicebrokerapi.org/).
+see [Open Service Broker API](https://www.openservicebrokerapi.org/).
 
 For more
 information about the `cf create-service` command,
@@ -79,7 +79,7 @@ for <%= vars.product_short %>, see [Configuring External Storage](./storage.html
 
 ### <a id='postgresql'></a> PostgreSQL
 
-<%= vars.product_short %> uses an external PostgreSQL to store the state of the offers, 
+<%= vars.product_short %> uses an external PostgreSQL to store the state of the offers,
 instances, and clusters.
 
 ### <a id='clusters'></a> Kubernetes Clusters
@@ -108,19 +108,19 @@ in the Cloud Foundry documentation.
 When a <%= vars.app_runtime_abbr %>  developer runs `cf create-service`, <%= vars.product_short %>
 deploys Helm charts into the Kubernetes cluster.
 
-If your service offering has multiple charts, <%= vars.product_short %> loops through the list of 
+If your service offering has multiple charts, <%= vars.product_short %> loops through the list of
 charts and does the following for each chart:
 
-1. Checks the scope of the chart. A chart can have either a `cluster` or `namespace` scope. See 
+1. Checks the scope of the chart. A chart can have either a `cluster` or `namespace` scope. See
 [Cluster and Namespace Scopes](#cluster-namespace) below.
 
-1. Gets the Kubernetes cluster defined in the specific plan. If no cluster is defined, 
+1. Gets the Kubernetes cluster defined in the specific plan. If no cluster is defined,
 <%= vars.product_short %> uses the default cluster.
 
-1. Deploys the chart into the Kubernetes cluster. The chart is deployed in a namespace defined 
+1. Deploys the chart into the Kubernetes cluster. The chart is deployed in a namespace defined
 by the chart scope.
 
-1. Waits for the deployment to succeed. <%= vars.product_short %> does not deploy subsequent 
+1. Waits for the deployment to succeed. <%= vars.product_short %> does not deploy subsequent
 charts until the previous chart is fully installed.
 
 1. Stores state about the instance in PostgreSQL.
