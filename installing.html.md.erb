@@ -375,9 +375,6 @@ To install the Helm chart:
 1. From the root level of the chart, install the Helm chart by running these commands:
 
     ```bash
-    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm dependency build
     kubectl create ns <%= vars.product_short %>-NAMESPACE
     helm install RELEASE-NAME . -n <%= vars.product_short %>-NAMESPACE --wait
     ```
