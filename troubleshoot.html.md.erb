@@ -201,44 +201,27 @@ To view the metadata file:
 ### <a id='view-logs'></a> View <%= vars.product_short %> Logs
 
 You can view <%= vars.product_short %> server logs to troubleshoot <%= vars.product_short %> by running
-the `ksm logs` command.
-The command lists log entires for the ChartMuseum, <%= vars.product_short %> broker, and
-<%= vars.product_short %> daemon components. By default, the command returns the last 250 log entries.
+the `kubectl logs` command.
 
-Log entires use the following format:
+To do that, start by listing the <%= vars.product_short %> services by typing the command `kubectl get services --namespace <YOUR-NAMESPACE>`, eg.:
 
+```bash
+$ kubectl get services --namespace ksm-test
+NAME                                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
+ksm-test-release-chartmuseum           ClusterIP      XXX.XXX.5.87     <none>          8080/TCP       49m
+ksm-test-release-ksm-broker            LoadBalancer   XXX.XXX.0.197    XXX.XXX.16.30    80:30837/TCP   47m
+ksm-test-release-ksm-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m
 ```
-TIMESTAMP  INSTANCE.COMPONENT.LOG  LEVEL  MESSAGE   PAYLOAD
+
+Run the `kubectl logs --namespace <YOUR-NAMESPACE> service/<SERVICE-TO-VERIFY> --all-containers` command using the service name you want to verify, eg.:
+
+```bash
+$ kubectl logs --namespace ksm-test service/ksm-test-release-chartmuseum --all-containers
+{"L":"INFO","T":"2020-07-23T16:19:48.640Z","M":"Starting ChartMuseum","port":8080}
+{"L":"INFO","T":"2020-07-23T16:21:16.740Z","M":"[19] Request served","path":"/api/charts","comment":"","latency":"4.530608ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"1c38d89c-63bc-4c90-bb18-89edeb780ac1"}
+{"L":"INFO","T":"2020-07-23T16:21:16.785Z","M":"[20] Request served","path":"/api/charts","comment":"","latency":"34.642387ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"d0c77f8d-6485-486f-8232-9dfe9a425c61"}
+{"L":"INFO","T":"2020-07-23T16:21:18.097Z","M":"[21] Request served","path":"/api/charts/minio/5.0.11","comment":"","latency":"8.332745ms","clientIP":"XXX.XXX.1.26","method":"GET","statusCode":200,"reqID":"6965f38a-06d3-4746-9327-57c2ca3190e6"}
+{"L":"INFO","T":"2020-07-23T16:21:18.106Z","M":"[22] Request served","path":"/charts/minio-5.0.11.tgz","comment":"","latency":"6.144315ms","clientIP":"XXX.XXX.1.26","method":"GET","statusCode":200,"reqID":"92e9af1a-a9ca-40db-bfb0-3f069deda036"}
+{"L":"INFO","T":"2020-07-23T16:23:18.323Z","M":"[47] Request served","path":"/api/charts","comment":"","latency":"29.234962ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"711b9b4e-c626-4366-8861-e4e8443dc715"}
+{"L":"INFO","T":"2020-07-23T16:23:18.367Z","M":"[48] Request served","path":"/api/charts","comment":"","latency":"18.952619ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"b4465eca-4ac0-4fa8-ae8a-bdd91792c428"}
 ```
-
-For example:
-
-<pre class="terminal">2020-05-13T01:30:08  ksm1.chartmuseum.err   info   Starting ChartMuseum   {"port": 8080}</pre>
-
-In the above output, `ksm1.chartmuseum.err` indicates that the source of the log entry is
-from the error log of the ChartMuseum in the `ksm1` service instance.
-
-To view logs for <%= vars.product_short %>:
-
-1. Output <%= vars.product_short %> logs by running:
-
-    ```
-    ksm logs
-    ```
-
-    You can optionally add the `-n` flag to the above command to set the number of returned
-    log entries. <br>
-
-    For example:
-
-    <pre class=terminal>$ ksm logs -n 8
-
-    TIMESTAMP               TAG                 	LEVEL	MESSAGE                                                                                         	PAYLOAD
-    2020-05-13T01:30:07     ksm0.broker.out     	info 	Brokering offerings:
-    2020-05-13T01:30:07     ksm1.broker.out     	info 	Offer: [mymysql]
-    2020-05-13T01:30:07     ksm0.broker.out     	info 	Offer: [prometheus-operator]
-    2020-05-13T01:30:07     ksm1.broker.out     	info 	Offer: [rabbitmq]
-    2020-05-13T01:30:07     ksm1.broker.out     	info 	Listening on 9017
-    2020-05-13T01:30:08     ksm1.chartmuseum.err	info 	Starting ChartMuseum                                                                            	{"port": 8080}
-    2020-05-13T18:45:04     ksm0.ksmd.out       	debug	Cache version [DEVELOPMENT] does not match current config version [0.9.85], returning empty list
-    2020-05-13T18:45:04     ksm1.ksmd.out       	debug	Offers cache is length 0, building chart list</pre>
