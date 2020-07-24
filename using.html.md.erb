@@ -30,42 +30,6 @@ Before you deploy a service offering, you must configure your Helm chart and ser
 See [Configuring a Helm Chart](./configure-helm.html) and [Preparing a Service Offering](./prepare-offer.html).
 
 
-## <a id="credentials"></a> Retrieve Credentials for <%= vars.product_short %>
-
-To use the <%= vars.product_short %> CLI, you need to retrieve your KSM API credentials.
-
-To retrieve your <%= vars.product_short %> API Credentials:
-
-1. Navigate to the **<%= vars.ops_manager %> Installation Dashboard** >
-**<%= vars.product_full %> (<%= vars.product_short %>)** > **Credentials**.
-
-1. Retrieve your **<%= vars.product_short %> API Credentials** by clicking **Link to Credentials**.
-
-1. Configure environment variables by running the following commands:
-
-    ```
-    export KSM_TARGET=http://ksm.SYSTEM-DOMAIN
-    export KSM_USER=USERNAME
-    export KSM_PASSWORD=PASSWORD
-    export KSM_INSECURE=true
-    ```
-    Where:
-    + `SYSTEM-DOMAIN` is your <%= vars.app_runtime_full %> system domain URL.
-    + `USERNAME` is the value of `identity` you recorded in the above step.
-    + `PASSWORD` is the value of `password` you recorded in the above step.
-
-    <p class="note"><strong>Note:</strong> <%= vars.product_short %> uses the above environment
-    variables to set credentials and target your deployment.
-    <code>KSM_INSECURE=true</code> enables <%= vars.product_short %> to ignore
-     certificate validation.
-     </p>
-
-1. Validate the credentials for <%= vars.product_short %> by running:
-
-    ```
-    ksm offer list
-    ```
-
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
 You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers
