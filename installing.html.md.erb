@@ -27,6 +27,8 @@ To install and configure <%= vars.product_short %> using Helm:
 
 1. [Configure Security](#security)
 
+1. [(Optional) Install Prometheus](#prometheus)
+
 
 ## <a id="prereq"></a>Prerequisites
 
@@ -386,47 +388,36 @@ To install the Helm chart:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
 1. If are using a load balancer:
+    1. Retrieve the broker IP address by running:
 
-   1. Retrieve the broker IP address by running:
+        ```bash
+        export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+        ```
+    1. Upgrade your Helm release by running:
 
-      ```bash
-      export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-      ```
+        ```bash
+        helm upgrade RELEASE-NAME . --reuse-values \
+          --set cf.brokerUrl="http://${BROKER_IP}" \
+          --set cf.brokerName=ksm \
+          --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
+          --set cf.username=CF-USERNAME \
+          --set cf.password=CF-PASSWORD \
+          -n KSM-NAMESPACE
+        ```
+        Where:
+        + `RELEASE-NAME` is the name of the release.
+        + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+        + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
+        + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
+        + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
-   1. Upgrade your Helm release by running:
-
-      ```bash
-      helm upgrade RELEASE-NAME . --reuse-values \
-        --set cf.brokerUrl="http://${BROKER_IP}" \
-        --set cf.brokerName=ksm \
-        --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-        --set cf.username=CF-USERNAME \
-        --set cf.password=CF-PASSWORD \
-        -n KSM-NAMESPACE
-      ```
-      Where:
-      + `RELEASE-NAME` is the name of the release.
-      + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-      + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
-      + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-      + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
-
-      The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
-
-## <a id="next-steps"></a> Next Steps
-
-After installing and configuring <%= vars.product_short %>, follow the procedures below:
-
-* [Using <%= vars.product_short %>](using.html)
-
-* [Managing Kubernetes Clusters for <%= vars.product_short %>](managing-clusters.html)
-
+        The above commands adds your Cloud Foundry environment to <%= vars.product_short %>.
 
 ## <a id="security"></a> Configure Security
 
 VMware recommends configuring security on your Kubernetes cluster for <%= vars.product_short %>.
 
-To configure security :
+To configure security:
 
 1. Secure <%= vars.product_short %> secrets by using a secret provider.
     See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
@@ -502,7 +493,7 @@ To configure a Linkerd service mesh:
     Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
 
 
-### <a id="prometheus"></a> (Optional) Install Prometheus
+## <a id="prometheus"></a> (Optional) Install Prometheus
 
 You can view metrics for <%= vars.product_short %> if you have Prometheus running in the cluster.
 You must install Prometheus in each cluster you want to view metrics for.
@@ -528,3 +519,12 @@ To install Prometheus to a cluster:
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
 1. To view metrics for KSM, type `{app_kubernetes_io_name="ksm"}` in the expression box and click **Execute**.
+
+
+## <a id="next-steps"></a> Next Steps
+
+After installing and configuring <%= vars.product_short %>, follow the procedures below:
+
+* [Using <%= vars.product_short %>](using.html)
+
+* [Managing Kubernetes Clusters for <%= vars.product_short %>](managing-clusters.html)
