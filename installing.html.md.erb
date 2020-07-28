@@ -357,14 +357,14 @@ To configure the <%= vars.product_short %> Helm chart:
         ```
         Where:
         + `REGISTRY` is the registry location for the <%= vars.app_runtime_abbr %> image.
-        + `USERNAME` is the PostgresSQL username.
-        + `PASSWORD` is the PostgresSQL password.
-        + `DATABASE` is the schema within PostgresSQL where the tables for <%= vars.product_short %> are located.
-        + `ENCRYPTION-KEY` is used to symmetrically encrypt sensitive data before you save it in PostgresSQL.
+        + `USERNAME` is the PostgreSQL username.
+        + `PASSWORD` is the PostgreSQL password.
+        + `DATABASE` is the schema within PostgreSQL where the tables for <%= vars.product_short %> are located.
+        + `ENCRYPTION-KEY` is used to symmetrically encrypt sensitive data before you save it in PostgreSQL.
         + `HOST` is the domain for the database.
         + `DP-SKIP-SSL` can be set to `true` when an internal database is used. SSL or TLS should be used through service mesh.
         + `CA-CERT` is the SSL or TLS certificate authority (CA) certificate for
-        the PostgresSQL database connection. This certificate is required when `dbSkipSSL` is `false`.
+        the PostgreSQL database connection. This certificate is required when `dbSkipSSL` is `false`.
 
 
 ## <a id='install'></a> Install the Helm Chart
