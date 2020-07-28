@@ -388,7 +388,7 @@ To install the Helm chart:
     1. Retrieve the broker IP address by running:
 
         ```bash
-        export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+        export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
         ```
     1. Upgrade your Helm release by running:
 
