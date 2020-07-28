@@ -132,7 +132,7 @@ To move your <%= vars.product_short %> images to a private container image regis
      REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
 
     docker tag registry.pivotal.io/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER \
-     REGISTRY/container-services-manager/daemon:POSTGRESQL-VERSION-NUMBER
+     REGISTRY/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER
     ```
 
     Where:
@@ -150,9 +150,10 @@ To move your <%= vars.product_short %> images to a private container image regis
 1. Push the images to your registry by running these commands:
 
     ```bash
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
     docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
+    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+    docker push REGISTRY/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER
     ```
 
 
