@@ -206,7 +206,7 @@ the `kubectl logs` command.
 To view the <%= vars.product_short %> server logs:
 
 <ol>
-<li>To record the service you want to verify, view your services by running:<pre>kubectl get services --namespace YOUR-NAMESPACE</pre>
+<li>To record the service you want to verify, view your <%= vars.product_short %> services by running:<pre><code>kubectl get services --namespace YOUR-NAMESPACE</code></pre>
     For example:<pre class="terminal">
 $ kubectl get services --namespace ksm-test
 
@@ -215,8 +215,8 @@ ksm-test-release-chartmuseum           ClusterIP      XXX.XXX.5.87     <none>   
 ksm-test-release-ksm-broker            LoadBalancer   XXX.XXX.0.197    XXX.XXX.16.30    80:30837/TCP   47m
 ksm-test-release-ksm-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m</pre></li>
 
-<li>View <%= vars.product_short %> server logs by running: <pre>kubectl logs --namespace YOUR-NAMESPACE \
-service/SERVICE-TO-VERIFY --all-containers</pre>For example:
+<li>View <%= vars.product_short %> server logs by running: <pre><code>kubectl logs --namespace YOUR-NAMESPACE \
+service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
     <pre class="terminal">$ kubectl logs --namespace ksm-test service/ksm-test-release-chartmuseum --all-containers
 
 {"L":"INFO","T":"2020-07-23T16:19:48.640Z","M":"Starting ChartMuseum","port":8080}
