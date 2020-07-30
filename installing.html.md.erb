@@ -81,7 +81,7 @@ For information about Ingress, see the
 To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
 
 1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
+[<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager).
 
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
@@ -387,7 +387,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
 
 To install the <%= vars.product_short %> Helm chart:
 
-1. From the root level of the chart, install the Helm chart by running these commands:
+1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
@@ -414,6 +414,7 @@ To install the <%= vars.product_short %> Helm chart:
           --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
           --set cf.username=CF-USERNAME \
           --set cf.password=CF-PASSWORD \
+          --set cf.skipSslValidation=true \
           -n <%= vars.product_short %>-NAMESPACE
         ```
         Where:

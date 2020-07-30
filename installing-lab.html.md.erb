@@ -7,6 +7,11 @@ owner: Platform Engineering (KSM Team)
 This topic describes how to install and configure 
 <%= vars.product_full %> (<%= vars.product_short %>) for lab using Helm.
 
+<p class="note">
+   This lab document is target to quick install for KSM with the purpose of testing or learning. 
+  This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production install see 
+  <a href="installing.html">Installing and Configuring KSM</a>
+</p>
 
 ## <a id="overview"></a> Overview
 
@@ -19,12 +24,9 @@ To install and configure <%= vars.product_short %> using Helm:
 
 1. [Install the <%= vars.product_short %> CLI](#cli)
 
-1. [Move <%= vars.product_short %> Images](#move-images)
-
 1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
 
 1. [Install the Helm Chart](#install)
-
 
 ## <a id="prereq"></a>Prerequisites
 
@@ -33,7 +35,7 @@ Before you install <%= vars.product_short %> using Helm:
 * **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %> CLI, see
 [Install the <%= vars.product_short %> CLI](./installing.html#cli) .
 
-* **Helm 3 CLI:** For information about installing the Helm CLI,
+* **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/).
 
 * **Docker CLI:** For information about installing Docker, see [Docker](https://www.docker.com/).
@@ -48,17 +50,14 @@ about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://d
 To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
 
 1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/).
+[<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager).
 
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
-    + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
-    commands for the **broker**, **daemon**, **chartmuseum**, **postgresql** and **minio**.  
-    **Alternatively**, download the image tgz files from the Images section.
-    + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
+    + **<%= vars.product_short %> Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
-
+    + **values-lab.yaml file:** download the values-lab.yaml override configuration file.
 
 ## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
@@ -84,354 +83,97 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
     ksm version
     ```
 
-## <a id='move-images'></a> Move <%= vars.product_short %> Images
-
-To move your <%= vars.product_short %> images to a private container image registry:
-
-1. Move the images to your local system by running the `docker pull` commands you recorded in
-    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-
-    <p class="note">
-      <strong>Alternative:</strong>If you downloaded the tgz files rather than the `docker pull` commands, 
-      load those images to your local system by using the `docker load -i &lt;file>`, replacing `&lt;file>` for each
-      downloaded file name.
-    </p>
-
-1. Tag the images for your registry by running these commands:
-
-    ```bash
-    docker tag registry.pivotal.io/container-services-manager/broker:VERSION-NUMBER \
-     REGISTRY/container-services-manager/broker:VERSION-NUMBER
-
-    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION-NUMBER \
-     REGISTRY/container-services-manager/daemon:VERSION-NUMBER
-
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
-     REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
-
-    docker tag registry.pivotal.io/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER \
-     REGISTRY/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER
-
-    docker tag registry.pivotal.io/container-services-manager/minio:MINIO-VERSION-NUMBER \
-     REGISTRY/container-services-manager/minio:MINIO-VERSION-NUMBER
-
-    ```
-
-    Where:
-    + `VERSION-NUMBER` is the <%= vars.product_short %> release version number.
-      This value is in the `docker pull` command that you recorded in
-      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-    + `REGISTRY` is the private container image registry path.
-    + `CHARTMUSEUM-VERSION-NUMBER` is the ChartMuseum version number.
-    + `POSTGRESQL-VERSION-NUMBER` is the PostgreSQL version number.
-    + `MINIO-VERSION-NUMBER` is the MinIO version number.
-    
-      You can find the versions values in the `docker pull` command that you recorded in
-           [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above, for example, 
-           if the command is `docker pull registry.pivotal.io/container-services-manager/broker:0.10.89`, 
-           the version is 0.10.89. 
-      
-    ##### **Example**   
-    ```bash       
-    docker tag registry.pivotal.io/container-services-manager/broker:0.10.89 privateregistry.domain.com/container-services-manager/broker:0.10.89
-    ```
-          
-    <p class="note"><strong>Alternative:</strong> If you downloaded the tgz files, you can verify the versions
-     by running the `docker images` command and looking at the `TAG` column for each referred image.:
-    </p>
-    
-    ##### **Example** 
-    ```bash
-    $ docker images |grep -E "minio|postgresql|chartmuseum|daemon|broker"   
-    REPOSITORY                                                  TAG                    IMAGE ID      CREATED      SIZE
-    registry.pivotal.io/container-services-manager/daemon       0.10.89                06e6804f6c3d  6 days ago   70.7MB
-    registry.pivotal.io/container-services-manager/broker       0.10.89                2c04bda5f16f  6 days ago   81MB
-    registry.pivotal.io/container-services-manager/postgresql   12.3-1.pgdg18.04_1     5a5199db88b4  9 days ago   285MB
-    registry.pivotal.io/container-services-manager/chartmuseum  v0.12.0                0693539ccd38  9 days ago   72.9MB
-    registry.pivotal.io/container-services-manager/minio        2020.7.2-debian-10-r5  687f1a767684  9 days ago   186MB
-   ```
-
-1. Push the images to your registry by running these commands:
-
-    ```bash
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/posgresql:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/minio:VERSION-NUMBER
-    ```         
-   
-   Where:
-   + `REGISTRY` is the private container image registry path. 
-   
-   ##### **Example** 
-   ```bash   
-   docker push privateregistry.domain.com/container-services-manager/broker:0.10.89
-   ```
-
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
-To configure the <%= vars.product_short %> Helm chart:
+To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
 
-1. Unzip the downloaded <%= vars.product_short %> Helm chart by running:
-
-    ```bash
-    tar zxvf ksm-VERSION-NUMBER.tgz
-    ```
-   The above command creates a new directory named `ksm`.
-
-1. Copy the ksm/values-lab.yaml.template to ksm/values-lab.yaml
-    ```bash
-    cp ksm/values-lab.yaml.template ksm/values-lab.yaml
-    ```
-   
-1. Add the credentials for the private registry where the <%= vars.product_short %> images were push or 
-   just the credentials for registry.pivotal.io (Tanzu Network Credentials):
+1. Add the credentials for the Tanzu Network registry:
 
     ```yaml
     imageCredentialsForKSMImages:
-     registry: REGISTRY
+     registry: registry.pivotal.io
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
     ```
     Where:
-    + `REGISTRY` is the registry you configured for installation images (or leave the default value `registry.pivotal.io`
-    if you want to use the own Tanzu Network registry.
-    + `REGISTRY-USERNAME` is the username for the registry.
-    + `REGISTRY-PASSWORD` is the password for the registry.
+    + `REGISTRY-USERNAME` is your Tanzu Network username.
+    + `REGISTRY-PASSWORD` is your Tanzu Network password.
     
-    <p><%= vars.product_short %> is using this registry for:</p>
-    <ul>
-      <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
-      <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
-    </ul>
+ 1. (Recommended) Set unique passwords:
+ 
+    The `values-lab.yaml` is pre configured with default passwords, but we recommend they be changed
+    to unique passwords in these sections:
     
-1. Define values for your registry by adding:
-
     ```yaml
     broker:
-     image:
-       repository: REGISTRY/container-services-manager/broker
+      password: LabPassword
+    ```
+
+    ```yaml
     daemon:
-     image:
-       repository: REGISTRY/container-services-manager/daemon
+      password: LabPassword
+    ```
+
+    ```yaml
     chartmuseum:
-     image:
-       repository: REGISTRY/container-services-manager/chartmuseum
+      env:
+        open:
+          BASIC_AUTH_PASS: "chartpass"
     ```
-    Where `REGISTRY` is your private container image registry.
-
-
-    
-1. Add the credentials for the registry where the service instance images will come from:
 
     ```yaml
-    imageCredentialsForServiceInstances:
-     registry: REGISTRY-INSTANCES
-     username: REGISTRY-INSTANCES-USERNAME
-     password: REGISTRY-INSTANCES-PASSWORD
+    postgresql:
+      postgresqlPassword: password
+      encryptionKey: LabEncriptionKey
+    ```
+
+## <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
+
+To install the <%= vars.product_short %> Helm chart:
+
+1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
+
+    ```bash
+    kubectl create ns <%= vars.product_short %>-NAMESPACE
+    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-lab.yaml
     ```
     Where:
-    + `REGISTRY-INSTANCES` is the registry you configured to offer images.
-    + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
-    + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
-    
-    <p><%= vars.product_short %> is using this registry for:</p>
-    <ul>
-      <li><strong>The backing registry for the services that <%= vars.product_short %>
-      deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
-      point to images in the registry.</li>
-    </ul>
-    <p class="note">
-      <strong>Note:</strong> Although this configuration is optional, VMware recommends using a
-      private container registry in production.
-    </p>
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `RELEASE-NAME` is a name you choose for the release.
+    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
 
-1. Add your Cloud Foundry environment by adding:
+## <a id='install'></a> Configure  <%= vars.product_short %> for cf
 
-    ```yaml
-    cf:
-     apiAddress: http://api.SYSTEM-DOMAIN
-     username: CF-USERNAME
-     password: CF-PASSWORD
-     brokerName: ksm
-     brokerUrl: http://broker.INGRESS-DOMAIN
+1. Retrieve the broker IP address by running:
+
+    ```bash
+    export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+    ```
+   
+1. Upgrade your <%= vars.product_short %> Helm release by running:
+
+    ```bash
+    helm upgrade RELEASE-NAME . --reuse-values \
+      --set cf.brokerUrl="http://${BROKER_IP}" \
+      --set cf.brokerName=ksm \
+      --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
+      --set cf.username=CF-USERNAME \
+      --set cf.password=CF-PASSWORD \
+      --set cf.skipSslValidation=true \
+      -n <%= vars.product_short %>-NAMESPACE
     ```
     Where:
+    + `RELEASE-NAME` is the name of the release.
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
     + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
     + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-    + `INGRESS-DOMAIN` is the name of your provisioned domain.
-
-1. Specify the Postgres database details:
-        ```
-        postgresql:
-          postgresqlUsername: USERNAME
-          postgresqlPassword: PASSWORD
-          postgresqlDatabase: DATABASE
-          encryptionKey: ENCRYPTION-KEY
-          host: HOST
-          dbSkipSSL: DB-SKIP-SSL
-          caCert: |
-            CA-CERT
-        ```
-        Where:
-        + `REGISTRY` is the registry location for the <%= vars.app_runtime_abbr %> image.
-        + `USERNAME` is the PostgresSQL username.
-        + `PASSWORD` is the PostgresSQL password.
-        + `DATABASE` is the schema within PostgresSQL where the tables for <%= vars.product_short %> are located.
-        + `ENCRYPTION-KEY` is used to symmetrically encrypt sensitive data before you save it in PostgresSQL.
-        + `HOST` is the domain for the database.
-        + `DP-SKIP-SSL` can be set to `true` when an internal database is used. SSL or TLS should be used through service mesh.
-        + `CA-CERT` is the SSL or TLS certificate authority (CA) certificate for
-        the PostgresSQL database connection. This certificate is required when `dbSkipSSL` is `false`.
-
-
-## <a id='install'></a> Install the Helm Chart
-
-To install the Helm chart:
-
-1. From the root level of the chart, install the Helm chart by running these commands:
-
-    ```bash
-    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm dependency build
-    kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME . -n <%= vars.product_short %>-NAMESPACE --wait
-    ```
-    Where:
-    + `RELEASE-NAME` is a name you choose for the release.
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
-
-1. If are using a load balancer:
-    1. Retrieve the broker IP address by running:
-
-        ```bash
-        export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-        ```
-    1. Upgrade your Helm release by running:
-
-        ```bash
-        helm upgrade RELEASE-NAME . --reuse-values \
-          --set cf.brokerUrl="http://${BROKER_IP}" \
-          --set cf.brokerName=ksm \
-          --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-          --set cf.username=CF-USERNAME \
-          --set cf.password=CF-PASSWORD \
-          -n KSM-NAMESPACE
-        ```
-        Where:
-        + `RELEASE-NAME` is the name of the release.
-        + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-        + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
-        + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-        + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
-
-        The above commands add your Cloud Foundry environment to <%= vars.product_short %>.
-
-## <a id="security"></a> Configure Security
-
-VMware recommends configuring security on your Kubernetes cluster for <%= vars.product_short %>.
-
-To configure security:
-
-1. Secure <%= vars.product_short %> secrets by using a secret provider.
-    See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
-    in the Kubernetes documentation.
-1. Enable network policies on the cluster to secure traffic between services.
-    See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
-    in the Kubernetes documentation.
-    Some settings can vary between clouds. For example, in GKE, network policies are not enabled by default.
-    For more information, see your cloud-specific documentation.
-1. Secure traffic between <%= vars.product_short %> components.
-For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
-For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
-
-
-### <a id="service-mesh"></a> Configure Service Mesh
-
-To configure a Linkerd service mesh:
-
-1. Install Linkerd on your Kubernetes cluster using one of the following methods:
-      + Install the service mesh using the Linkerd CLI by following the procedures in
-      [Getting Started](https://linkerd.io/2/getting-started/) in the Linkerd documentation.
-      + Install the service mesh using a Helm chart by following the procedures in
-[Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd documentation.
-
-1. Add the following annotations in the <%= vars.product_short %> Helm chart `values-production.yaml` file:
-
-    ```yaml
-    broker:
-     annotations:
-       linkerd.io/inject: enabled
-    daemon:
-     annotations:
-       linkerd.io/inject: enabled
-    chartmuseum:
-     replica:
-       annotations:
-         linkerd.io/inject: enabled
-     daemon:
-       annotations:
-         linkerd.io/inject: enabled
-     chartmuseum:
-       replica:
-         annotations:
-           linkerd.io/inject: enabled
-    ```
-
-1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
-    following the procedures in the
-    [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
-
-1. Verify that <%= vars.product_short %> is added to the mesh by running:
-
-    ```bash
-    linkerd stat deployments -n KSM-NAMESPACE
-    ```
-    Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
-
-1. Verify that TLS is working on the deployment by running:
-
-    ```bash
-    linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
-    ```
-    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
-
-
-## <a id="prometheus"></a> (Optional) Install Prometheus
-
-You can view metrics for <%= vars.product_short %> if you have Prometheus running in the cluster.
-You must install Prometheus in each cluster you want to view metrics for.
-
-To install Prometheus to a cluster:
-
-1. Install the Prometheus Helm chart by running these commands:
-
-    ```bash
-    kubectl create ns prometheus
-
-    helm install prometheus stable/prometheus -n prometheus
-    ```
-
-1. Create a Kubernetes port forward to your local host by running these commands:
-
-    ```
-    export POD_NAME=$(kubectl get pods --namespace prometheus -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-
-    kubectl --namespace prometheus port-forward $POD_NAME 9090
-    ```
-
-1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
-
-1. To view metrics for KSM, type `{app_kubernetes_io_name="ksm"}` in the expression box and click **Execute**.
-
-
+    
+    **Tips:** 
+    + You can verify the cf apiAddress by typing the `cf target` command
+    
 ## <a id="next-steps"></a> Next Steps
 
 After installing and configuring <%= vars.product_short %>, follow the procedures below:
 
 * [Using <%= vars.product_short %>](using.html)
-
-* [Managing Kubernetes Clusters for <%= vars.product_short %>](managing-clusters.html)
