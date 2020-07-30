@@ -19,15 +19,19 @@ To install and configure <%= vars.product_short %> using Helm:
 
 1. [Install the <%= vars.product_short %> CLI](#cli)
 
-1. [Move <%= vars.product_short %> Images](#move-images)
+1. [Replicate <%= vars.product_short %> Images](#replicate-images)
 
 1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
 
-1. [Install the Helm Chart](#install)
+1. [Install the <%= vars.product_short %> Helm Chart](#install)
 
-1. [Configure Security](#security)
+1. [(Recommended) Configure Security](#security)
+
+1. [(Recommended) Configure Service Mesh](#service-mesh)
 
 1. [(Optional) Install Prometheus](#prometheus)
+
+1. [Next Steps](#next-steps)
 
 
 ## <a id="prereq"></a>Prerequisites
@@ -114,7 +118,7 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
     ksm version
     ```
 
-## <a id='move-images'></a> Replicate <%= vars.product_short %> Images
+## <a id='replicate-images'></a> Replicate <%= vars.product_short %> Images
 
 To replicate your <%= vars.product_short %> images to a private container image registry:
 
@@ -175,7 +179,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
    docker push privateregistry.domain.com/container-services-manager/broker:0.10.89
    ```
 
-## <a id='configure'></a> Configure the <%= vars.product_short %> 
+## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
 To configure the <%= vars.product_short %>, edit the `values-production.yaml` file:
 
