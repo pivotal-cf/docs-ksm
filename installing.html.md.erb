@@ -194,20 +194,20 @@ To configure the <%= vars.product_short %> Helm chart:
       <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
     </p>
 
-1. Edit your `ksm/values.yaml` file to enable service access.
-    <%= vars.product_short %> supports LoadBalancer and Ingress for accessing services.
-    + **If you want your service to be accessed directly using a load balancer,** add:
-
-        ```yaml
-        broker:
-         service:
-          type: LoadBalancer
-        daemon:
-         service:
-          type: LoadBalancer
-        ```
-    + **If want your service to be accessed using Ingress,** add:
-
+1. Edit your `ksm/values.yaml` file to enable Ingress service access.
+    + If you are using your own TLS certificates:
+        + Create secrets with TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
+            ```
+            kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
+            kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
+            ```
+          Where:
+          + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed
+    
+    + If you are using an automated certificate management provider, such as [cert-manager](https://cert-manager.io/), follow the
+      procedures to install and configure the prerequisites. 
+    
+    + Add the following to your values file:
         ```yaml
         ingress:
          enabled: true
@@ -215,13 +215,25 @@ To configure the <%= vars.product_short %> Helm chart:
          - INGRESS-DOMAIN
          annotations:
            ANNOTATION-KEY: ANNOTATION-VALUE
+         tls:
+         - secretName: daemon-cert
+           hosts:
+             - daemon.INGRESS-DOMAIN
+         - secretName: broker-cert
+           hosts:
+             - broker.INGRESS-DOMAIN
         ```
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
 
-    These values depend on the Ingress controller you use.
-    For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
+            These values depend on the Ingress controller and certificate management option you use. For example, annotations for 
+            [nginx Ingress controller](https://kubernetes.github.io/ingress-nginx/) and cert-manager would be:
+            ```
+            annotations:
+                kubernetes.io/ingress.class: nginx
+                cert-manager.io/issuer: "letsencrypt-prod"
+            ```
 
 1. Define a secure password to authenticate your services by adding:
 
