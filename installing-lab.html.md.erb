@@ -1,0 +1,195 @@
+---
+title: Installing and Configuring KSM for Lab purpose
+owner: Platform Engineering (KSM Team)
+---
+<strong><%= modified_date %></strong>
+
+This topic describes how to install and configure 
+<%= vars.product_full %> (<%= vars.product_short %>) for lab using Helm.
+
+<p class="note">
+   This lab document is target to quick install for KSM with the purpose of testing or learning. 
+  This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production install see 
+  <a href="installing.html">Installing and Configuring KSM</a>
+</p>
+
+## <a id="overview"></a> Overview
+
+Helm is a Kubernetes open source package manager.
+You can use a Helm chart to install and configure <%= vars.product_short %>.
+
+To install and configure <%= vars.product_short %> using Helm:
+
+1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get)
+
+1. [Install the <%= vars.product_short %> CLI](#cli)
+
+1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
+
+1. [Install the Helm Chart](#install)
+
+## <a id="prereq"></a>Prerequisites
+
+### For <%= vars.product_short %> installation
+
+Before you install <%= vars.product_short %> using Helm:
+
+* **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
+see the [Helm documentation](https://helm.sh/docs/intro/install/).
+
+* **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
+
+* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
+about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+
+* **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+### For usage with <%= vars.app_runtime_abbr %>
+
+A complete experience allows you to create cf services from <%= vars.product_short %> offers. For that you will 
+also need to have:
+
+* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
+
+* **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
+
+## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+
+To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
+
+1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+[<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager).
+
+1. Get the following resources:
+    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+    the CLI for your operating system.
+    + **<%= vars.product_short %> Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
+    for <%= vars.product_short %>.
+    + **values-lab.yaml file:** download the values-lab.yaml override configuration file.
+
+## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
+
+To install the <%= vars.product_short %> Command Line Interface (CLI):
+
+1. Rename the downloaded <%= vars.product_short %> CLI file as `ksm`.
+
+1. Make the <%= vars.product_short %> binary act as an executable file by running:
+
+    ```bash
+    chmod +x ksm
+    ```
+
+1. Move the binary file into your `PATH` by running:
+
+    ```bash
+    mv ksm /usr/local/bin/ksm
+    ```
+
+1. Ensure <%= vars.product_short %> CLI is properly working:
+
+    ```bash
+    ksm version
+    ```
+
+## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+
+To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
+
+1. Add the credentials for the Tanzu Network registry:
+
+    ```yaml
+    imageCredentialsForKSMImages:
+     registry: registry.pivotal.io
+     username: REGISTRY-USERNAME
+     password: REGISTRY-PASSWORD
+    ```
+    Where:
+    + `REGISTRY-USERNAME` is your Tanzu Network username.
+    + `REGISTRY-PASSWORD` is your Tanzu Network password.
+    
+ 1. (Recommended) Set unique passwords:
+ 
+    The `values-lab.yaml` is pre configured with default passwords, but we recommend they be changed
+    to unique passwords in these sections:
+    
+    ```yaml
+    broker:
+      password: LabPassword
+    ```
+
+    ```yaml
+    daemon:
+      password: LabPassword
+    ```
+
+    ```yaml
+    chartmuseum:
+      env:
+        open:
+          BASIC_AUTH_PASS: "chartpass"
+    ```
+
+    ```yaml
+    postgresql:
+      postgresqlPassword: password
+      encryptionKey: LabEncriptionKey
+    ```
+    
+    ```yaml
+    minio:
+      accessKey:
+        password: LabPassword
+      secretKey:
+        password: LabPassword
+    ```
+
+## <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
+
+To install the <%= vars.product_short %> Helm chart:
+
+1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
+
+    ```bash
+    kubectl create ns <%= vars.product_short %>-NAMESPACE
+    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-lab.yaml
+    ```
+    Where:
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `RELEASE-NAME` is a name you choose for the release.
+    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
+
+## <a id='install'></a> Configure  <%= vars.product_short %> for cf
+
+1. Retrieve the broker IP address by running:
+
+    ```bash
+    export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+    ```
+   
+1. Upgrade your <%= vars.product_short %> Helm release by running:
+
+    ```bash
+    helm upgrade RELEASE-NAME ksm-VERSION-NUMBER.tgz --reuse-values \
+      --set cf.brokerUrl="http://${BROKER_IP}" \
+      --set cf.brokerName=ksm \
+      --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
+      --set cf.username=CF-USERNAME \
+      --set cf.password=CF-PASSWORD \
+      --set cf.skipSslValidation=true \
+      -n <%= vars.product_short %>-NAMESPACE
+    ```
+    Where:
+    + `RELEASE-NAME` is the name of the release.
+    + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+    + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
+    + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    
+    **Tips:** 
+    + You can verify the cf apiAddress by typing the `cf target` command
+    
+## <a id="next-steps"></a> Next Steps
+
+After installing and configuring <%= vars.product_short %>, follow the procedures below:
+
+* [Using <%= vars.product_short %>](using.html)
