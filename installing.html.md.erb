@@ -36,20 +36,19 @@ To install and configure <%= vars.product_short %> using Helm:
 
 ## <a id="prereq"></a>Prerequisites
 
+### For <%= vars.product_short %> installation
+
 Before you install <%= vars.product_short %> using Helm:
 
-* **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %> CLI, see
-[Install the <%= vars.product_short %> CLI](./installing.html#cli) .
-
 * **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
-see the [Helm documentation](https://helm.sh/docs/intro/).
+see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
-* **Docker CLI:** For information about installing Docker, see [Docker](https://www.docker.com/).
-
-* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
+* **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
 
 * **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
 about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+
+* **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 * **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
@@ -75,6 +74,11 @@ in your DNS.
 For information about Ingress, see the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
+### For usage with <%= vars.app_runtime_abbr %>
+
+* **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
+
+* **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
 
 ## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
 
