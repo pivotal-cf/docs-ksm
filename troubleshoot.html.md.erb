@@ -203,20 +203,22 @@ To view the metadata file:
 You can view <%= vars.product_short %> server logs to troubleshoot <%= vars.product_short %> by running
 the `kubectl logs` command.
 
-To do that, start by listing the <%= vars.product_short %> services by typing the command `kubectl get services --namespace <YOUR-NAMESPACE>`, eg.:
+To view the <%= vars.product_short %> server logs:
 
-```bash
+<ol>
+<li>To record the service you want to verify, view your <%= vars.product_short %> services by running:<pre><code>kubectl get services --namespace YOUR-NAMESPACE</code></pre>
+    For example:<pre class="terminal">
 $ kubectl get services --namespace ksm-test
+
 NAME                                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
 ksm-test-release-chartmuseum           ClusterIP      XXX.XXX.5.87     <none>          8080/TCP       49m
 ksm-test-release-ksm-broker            LoadBalancer   XXX.XXX.0.197    XXX.XXX.16.30    80:30837/TCP   47m
-ksm-test-release-ksm-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m
-```
+ksm-test-release-ksm-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m</pre></li>
 
-Run the `kubectl logs --namespace <YOUR-NAMESPACE> service/<SERVICE-TO-VERIFY> --all-containers` command using the service name you want to verify, eg.:
+<li>View <%= vars.product_short %> server logs by running: <pre><code>kubectl logs --namespace YOUR-NAMESPACE \
+service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
+    <pre class="terminal">$ kubectl logs --namespace ksm-test service/ksm-test-release-chartmuseum --all-containers
 
-```bash
-$ kubectl logs --namespace ksm-test service/ksm-test-release-chartmuseum --all-containers
 {"L":"INFO","T":"2020-07-23T16:19:48.640Z","M":"Starting ChartMuseum","port":8080}
 {"L":"INFO","T":"2020-07-23T16:21:16.740Z","M":"[19] Request served","path":"/api/charts","comment":"","latency":"4.530608ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"1c38d89c-63bc-4c90-bb18-89edeb780ac1"}
 {"L":"INFO","T":"2020-07-23T16:21:16.785Z","M":"[20] Request served","path":"/api/charts","comment":"","latency":"34.642387ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"d0c77f8d-6485-486f-8232-9dfe9a425c61"}
@@ -224,4 +226,5 @@ $ kubectl logs --namespace ksm-test service/ksm-test-release-chartmuseum --all-c
 {"L":"INFO","T":"2020-07-23T16:21:18.106Z","M":"[22] Request served","path":"/charts/minio-5.0.11.tgz","comment":"","latency":"6.144315ms","clientIP":"XXX.XXX.1.26","method":"GET","statusCode":200,"reqID":"92e9af1a-a9ca-40db-bfb0-3f069deda036"}
 {"L":"INFO","T":"2020-07-23T16:23:18.323Z","M":"[47] Request served","path":"/api/charts","comment":"","latency":"29.234962ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"711b9b4e-c626-4366-8861-e4e8443dc715"}
 {"L":"INFO","T":"2020-07-23T16:23:18.367Z","M":"[48] Request served","path":"/api/charts","comment":"","latency":"18.952619ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"b4465eca-4ac0-4fa8-ae8a-bdd91792c428"}
-```
+    </pre></li>
+</ul>

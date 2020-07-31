@@ -92,8 +92,8 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
     commands for the **broker**, **daemon** and **chartmuseum**.  
-    **Alternatively**, download the image tgz files from the Images section.
-    + **<%= vars.product_short %> Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
+    You can alternatively download the image `tgz` files from the `images` directory.
+    + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
     + **values-production.yaml file:** download the values-production.yaml override configuration file.
 
@@ -127,13 +127,9 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 To replicate your <%= vars.product_short %> images to a private container image registry:
 
 1. Pull the images to your local system by running the `docker pull` commands you recorded in
-    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-
-    <p class="note">
-      <strong>Alternative:</strong> If you downloaded the tgz files rather than the `docker pull` commands, 
-      load those images to your local system by using the `docker load -i &lt;file>`, replacing `&lt;file>` for each
-      downloaded file name.
-    </p>
+    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.<br><br>If
+    you downloaded the `tgz` files instead of using the `docker pull` commands,
+    load those images to your local system by running `docker load -i FILE-PATH`.
 
 1. Tag the images for your registry by running these commands:
 
@@ -170,9 +166,9 @@ To replicate your <%= vars.product_short %> images to a private container image 
 1. Push the images to your registry by running these commands:
 
     ```bash
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
     docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
+    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
 
    Where:
@@ -268,17 +264,13 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      + `CHARTMUSEUM_PASSWORD` is a secure password for ChartMuseum.
 
 1. Configure the Cloud Foundry environment details:
-
-    + **If you are using LoadBalancer, skip this configuration for now**
-    
-    + **If you are using ingress, configure cf section**
     ```yaml
     cf:
      apiAddress: http://api.SYSTEM-DOMAIN
      username: CF-USERNAME
      password: CF-PASSWORD
      brokerName: ksm
-     brokerUrl: http://broker.INGRESS-DOMAIN
+     brokerUrl: https://broker.INGRESS-DOMAIN
     ```
     Where:
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
@@ -289,30 +281,21 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     **Tips:** 
     + You can verify the cf apiAddress by typing the `cf target` command
  
-1. Enable service access: 
+1. Enable Ingress service access:
 
-    <%= vars.product_short %> supports LoadBalancer or Ingress for accessing services.
+    + If you are using your own TLS certificates:
+        + Create secrets with TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
+            ```
+            kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
+            kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
+            ```
+          Where:
+          + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed
     
-    + **If you want your service to be accessed directly using a load balancer,** configure the broker and daemon 
-    sections adding the service type `LoadBalancer`:
-
-        ```yaml
-        broker:
-         service:
-          type: LoadBalancer
-        daemon:
-         service:
-          type: LoadBalancer
-        ```
-        
-        and disable the ingress by:
-        
-        ```yaml
-        ingress:
-          enabled: false  
-        ```
-    + **If want your service to be accessed using Ingress,** add the following configuration:
-
+    + If you are using an automated certificate management provider, such as [cert-manager](https://cert-manager.io/), follow the
+      procedures to install and configure the prerequisites. 
+    
+    + Add the following to your values file:
         ```yaml
         ingress:
          enabled: true
@@ -320,14 +303,25 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
          - INGRESS-DOMAIN
          annotations:
            ANNOTATION-KEY: ANNOTATION-VALUE
+         tls:
+         - secretName: daemon-cert
+           hosts:
+             - daemon.INGRESS-DOMAIN
+         - secretName: broker-cert
+           hosts:
+             - broker.INGRESS-DOMAIN
         ```
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
 
-    These values depend on the Ingress controller you use.
-    For example, `kubernetes.io/ingress.class: nginx ` or `kubernetes.io/tls-acme: 'true'`
-   
+            These values depend on the Ingress controller and certificate management option you use. For example, annotations for 
+            [nginx Ingress controller](https://kubernetes.github.io/ingress-nginx/) and cert-manager would be:
+            ```
+            annotations:
+                kubernetes.io/ingress.class: nginx
+                cert-manager.io/issuer: "letsencrypt-prod"
+  
 1.  Add the credentials for your S3-compatible bucket using the template below:
 
     ```yaml
@@ -401,44 +395,6 @@ To install the <%= vars.product_short %> Helm chart:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
     + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
-
-1. If are using a load balancer:
-    1. Retrieve the broker IP address by running:
-
-        ```bash
-        export BROKER_IP=$(kubectl get service ksm-ksm-broker -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-        ```
-       
-    1. Upgrade your <%= vars.product_short %> Helm release by running:
-
-        ```bash
-        helm upgrade RELEASE-NAME . --reuse-values \
-          --set cf.brokerUrl="http://${BROKER_IP}" \
-          --set cf.brokerName=ksm \
-          --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-          --set cf.username=CF-USERNAME \
-          --set cf.password=CF-PASSWORD \
-          --set cf.skipSslValidation=true \
-          -n <%= vars.product_short %>-NAMESPACE
-        ```
-        Where:
-        + `RELEASE-NAME` is the name of the release.
-        + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-        + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %>.
-        + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
-        + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
-        
-        **Tips:** 
-        + You can verify the cf apiAddress by typing the `cf target` command
-
-        The above commands add your Cloud Foundry environment to <%= vars.product_short %>.
-    
-    <p class="note">
-      <strong>Note:</strong> Your KSM environment should be working at this point, but you will find some additional 
-      configurations below to improve security and monitoring. 
-      
-      If you want to use KSM right away, go to [Next Steps](#next-steps) section.
-    </p>
 
 
 ## <a id="security"></a> (Recommended) Configure Security
