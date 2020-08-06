@@ -48,7 +48,12 @@ To create a cluster credentials file:
     ```
 
 1. To create a dedicated service account for <%= vars.product_short %>
-with the `cluster-admin` role:
+with the `cluster-admin` role in a dedicated namespace:
+    1. Create the namespace
+
+        ```
+        kubectl create ns ksm-system
+        ```
 
     1. Create a YAML file for the <%= vars.product_short %> service account
     and `ClusterRoleBinding` using the following YAML:
@@ -59,7 +64,7 @@ with the `cluster-admin` role:
         kind: ServiceAccount
         metadata:
           name: ksm-admin
-          namespace: kube-system
+          namespace: ksm-system
         ---
         apiVersion: rbac.authorization.k8s.io/v1beta1
         kind: ClusterRoleBinding
@@ -72,7 +77,7 @@ with the `cluster-admin` role:
         subjects:
           - kind: ServiceAccount
             name: ksm-admin
-            namespace: kube-system
+            namespace: ksm-system
         ```
 
         For information about service accounts,
@@ -94,9 +99,9 @@ with the `cluster-admin` role:
 
     ```
     secret_name=$(kubectl get serviceaccount ksm-admin \
-     --namespace=kube-system -o jsonpath='{.secrets[0].name}')
+     --namespace=ksm-system -o jsonpath='{.secrets[0].name}')
 
-    secret_val=$(kubectl --namespace=kube-system get secret $secret_name \
+    secret_val=$(kubectl --namespace=ksm-system get secret $secret_name \
      -o jsonpath='{.data.token}')
 
     secret_val=$(echo ${secret_val} | base64 --decode)
