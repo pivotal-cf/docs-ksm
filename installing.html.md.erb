@@ -53,9 +53,6 @@ about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://d
 * **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
 
-* **PostgreSQL database:** <%= vars.product_short %> requires a PostgreSQL metadata. The connection details will be 
- required during the installation.
-
 * **Private Container Image Registry:** You need this to manage container images
 in air-gapped environments.
   VMware recommends using a registry in production deployments.
@@ -359,28 +356,6 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
       For more information about configurations, see
       <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
     </p>
-
-1. Specify the PostgreSQL database details:
-        ```
-        postgresql:
-          postgresqlUsername: USERNAME
-          postgresqlPassword: PASSWORD
-          postgresqlDatabase: DATABASE
-          encryptionKey: ENCRYPTION-KEY
-          host: HOST
-          dbSkipSSL: DB-SKIP-SSL
-          caCert: |
-            CA-CERT
-        ```
-        Where:
-        + `USERNAME` is the PostgresSQL username.
-        + `PASSWORD` is the PostgresSQL password.
-        + `DATABASE` is the schema within PostgresSQL where the tables for <%= vars.product_short %> are located.
-        + `ENCRYPTION-KEY` is used to symmetrically encrypt sensitive data before you save it in PostgresSQL.
-        + `HOST` is the domain for the database.
-        + `DB-SKIP-SSL` can be set to `true` when an internal database is used. SSL or TLS should be used through service mesh.
-        + `CA-CERT` is the SSL or TLS certificate authority (CA) certificate for
-        the PostgresSQL database connection. This certificate is required when `dbSkipSSL` is `false`.
 
 1. Save the `values-production.yaml` file.
 
