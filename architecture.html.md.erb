@@ -38,7 +38,7 @@ CLI command `ksm offer save`:
 
 * The daemon validates the offer.
 * The daemon stores the Helm charts in ChartMuseum. ChartMuseum uses S3 Storage.
-* The daemon stores the offer in PostgreSQL.
+* The daemon stores the offer in the Kubernetes cluster where <%= vars.product_short %> is installed.
 * The broker updates the Cloud Foundry catalog.
 
 For more information about ChartMuseum,
@@ -68,7 +68,6 @@ in the Cloud Foundry documentation.
 <%= vars.product_short %> uses the following external resources:
 
 * [S3-Compatible Bucket](#bucket)
-* [PostgreSQL](#postgresql)
 * [Kubernetes Clusters](#clusters)
 
 ### <a id='bucket'></a> S3-Compatible Bucket
@@ -76,11 +75,6 @@ in the Cloud Foundry documentation.
 <%= vars.product_short %> uses an external S3-compatible bucket to store the state of
 ChartMuseum. For instructions for configuring an external S3-compatible bucket
 for <%= vars.product_short %>, see [Configuring External Storage](./storage.html).
-
-### <a id='postgresql'></a> PostgreSQL
-
-<%= vars.product_short %> uses an external PostgreSQL to store the state of the offers,
-instances, and clusters.
 
 ### <a id='clusters'></a> Kubernetes Clusters
 <%= vars.product_short %> is backed by at least one default Kubernetes cluster.
@@ -123,7 +117,8 @@ by the chart scope.
 1. Waits for the deployment to succeed. <%= vars.product_short %> does not deploy subsequent
 charts until the previous chart is fully installed.
 
-1. Stores state about the instance in PostgreSQL.
+1. Stores state about the instance in custom resources in the Kubernetes cluster 
+where <%= vars.product_short %> is installed.
 
 For instructions about offering multiple charts in a single offering, see
 [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts). <br><br>
