@@ -210,6 +210,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      username: REGISTRY-INSTANCES-USERNAME
      password: REGISTRY-INSTANCES-PASSWORD
     ```
+   
     Where:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images. (**eg.:** anotherregistry.domain.com/<project>)
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
@@ -239,6 +240,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      image:
        repository: REGISTRY/container-services-manager/chartmuseum
     ```
+   
     Where:
     + `REGISTRY` is your private container image registry.  (**eg.:** privateregistry.domain.com)
 
@@ -261,6 +263,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      + `CHARTMUSEUM_PASSWORD` is a secure password for ChartMuseum.
 
 1. Configure the Cloud Foundry environment details:
+
     ```yaml
     cf:
      apiAddress: http://api.SYSTEM-DOMAIN
@@ -269,6 +272,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      brokerName: ksm
      brokerUrl: https://broker.INGRESS-DOMAIN
     ```
+   
     Where:
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
     + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %> with `cloud_controller.admin` permissions.
@@ -309,6 +313,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
            hosts:
              - broker.INGRESS-DOMAIN
         ```
+       
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.

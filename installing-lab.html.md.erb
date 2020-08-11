@@ -103,6 +103,7 @@ To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
     ```
+
     Where:
     + `REGISTRY-USERNAME` is your Tanzu Network username.
     + `REGISTRY-PASSWORD` is your Tanzu Network password.
@@ -147,6 +148,7 @@ To install the <%= vars.product_short %> Helm chart:
     kubectl create ns <%= vars.product_short %>-NAMESPACE
     helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-lab.yaml
     ```
+
     Where:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
@@ -159,6 +161,14 @@ To install the <%= vars.product_short %> Helm chart:
     ```bash
     export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
     ```
+
+   <p class="note">
+   Other Kubernetes providers may be host based (for example, Amazon's EKS) rather than IP based:
+   </p>
+   
+   ```bash
+   export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
+   ```
    
 1. Upgrade your <%= vars.product_short %> Helm release by running:
 
@@ -172,6 +182,7 @@ To install the <%= vars.product_short %> Helm chart:
       --set cf.skipSslValidation=true \
       -n <%= vars.product_short %>-NAMESPACE
     ```
+
     Where:
     + `RELEASE-NAME` is the name of the release.
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
