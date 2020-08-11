@@ -158,7 +158,14 @@ To install the <%= vars.product_short %> Helm chart:
 
     ```bash
     export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-    ```
+   ```
+   <p class="note">
+   Other Kubernetes providers may be host based (for example, Amazon's EKS) rather than IP based:
+   </p>
+   
+   ```bash
+   export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
+   ```
    
 1. Upgrade your <%= vars.product_short %> Helm release by running:
 
