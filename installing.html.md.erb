@@ -115,8 +115,8 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 To move your <%= vars.product_short %> images to a private container image registry:
 
 1. Move the images to your local system by running the `docker pull` commands you recorded in
-    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.<br><br>If 
-    you downloaded the `tgz` files instead of using the `docker pull` commands, 
+    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.<br><br>If
+    you downloaded the `tgz` files instead of using the `docker pull` commands,
     load those images to your local system by running `docker load -i FILE-PATH`.
 
 1. Tag the images for your registry by running these commands:
@@ -147,7 +147,7 @@ To move your <%= vars.product_short %> images to a private container image regis
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
-1. Create the `container-services-manager` project in your registry
+1. Create the `container-services-manager` project in your registry.
 
 1. Push the images to your registry by running these commands:
 
@@ -210,7 +210,7 @@ To configure the <%= vars.product_short %> Helm chart:
       <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
       To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
     2. Add the following to your values file:
-        
+
         ```yaml
         ingress:
          enabled: true
@@ -230,9 +230,9 @@ To configure the <%= vars.product_short %> Helm chart:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
 
-            These values depend on the Ingress controller and certificate management option you use. 
+            These values depend on the Ingress controller and certificate management option you use.
             For example, see the annotations for nginx Ingress Controller and cert-manager:
-            
+
             ```
             annotations:
                 kubernetes.io/ingress.class: nginx
@@ -292,13 +292,13 @@ To configure the <%= vars.product_short %> Helm chart:
     + `REGISTRY` is the registry you configured for installation images.
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
-    
+
     <p><%= vars.product_short %> is using this registry for:</p>
     <ul>
       <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
       <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
     </ul>
-    
+
 1. Add the credentials for the registry where the service instance images will come from:
 
     ```yaml
@@ -311,7 +311,7 @@ To configure the <%= vars.product_short %> Helm chart:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images.
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
-    
+
     <p><%= vars.product_short %> is using this registry for:</p>
     <ul>
       <li><strong>The backing registry for the services that <%= vars.product_short %>
