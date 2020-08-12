@@ -37,6 +37,8 @@ Before you install <%= vars.product_short %> using Helm:
 * **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
+* **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
+
 * **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
 about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
@@ -51,7 +53,53 @@ also need to have:
 
 * **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
 
-## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+## Two Installation Options
+
+You can install the <%= vars.product_short %> environment in two ways:
+
+1. Using `install-lab.sh` script:
+    The `install-lab.sh` script automates the installation steps. Using this option you will only be required
+    to download files and provide private registry endpoint, username and password.
+1. Install manually:
+    This option will require more interactivity from you, but you can have a more comprehensive understanding of 
+    what is happening.
+    
+## Installing Using Install-lab.sh Script
+
+1. Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+   
+   To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
+   
+   1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+   [<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager)
+   and download the following resources:
+       + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+       the CLI for your operating system.
+       + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and 
+       download the Helm chart TGZ file.
+       + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
+       + **install-lab.sh script**: Click **KSM Lab Environment Installer** and download the install-lab.sh file.
+1. You need to provide the registry endpoint, username and password during the installation. To do that you alternatively can:
+    + execute the `./install.sh` command and answer the registry details questions, or
+    + create a registry.yaml file containing the needed information in the following format, and execute the `install.sh registry.yaml` command
+    
+    #### registry.yaml template
+    ```yaml
+    registry: <my-registry-endpoint>/<project>/<repository>
+    username: <username>
+    password: <password>
+    ```
+1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
+1. Once the External IP is available for the daemon, you can configure the KSM environment variables by running the
+  `source ./setSmEnv.sh` command.
+1. Once the External IP is available for the broker, you can configure the cf cli following the 
+  [Configure  <%= vars.product_short %> for cf](#configure-cf) step
+1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
+1. You're done here! Jump to [Next Steps](#next-steps)
+
+## Installing Manually
+
+### <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
 
 To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
 
@@ -65,7 +113,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     for <%= vars.product_short %>.
     + **values-lab.yaml file:** download the values-lab.yaml override configuration file.
 
-## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
+### <a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
 To install the <%= vars.product_short %> Command Line Interface (CLI):
 
@@ -89,7 +137,7 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
     ksm version
     ```
 
-## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
 To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
 
@@ -136,7 +184,7 @@ To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
         password: LabPassword
     ```
 
-## <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
+### <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
 
 To install the <%= vars.product_short %> Helm chart:
 
@@ -152,7 +200,7 @@ To install the <%= vars.product_short %> Helm chart:
     + `RELEASE-NAME` is a name you choose for the release.
     + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
 
-## <a id='install'></a> Configure  <%= vars.product_short %> for cf
+### <a id='configure-cf'></a> Configure  <%= vars.product_short %> for cf
 
 1. Retrieve the broker IP address by running:
 
@@ -193,6 +241,6 @@ To install the <%= vars.product_short %> Helm chart:
     
 ## <a id="next-steps"></a> Next Steps
 
-After installing and configuring <%= vars.product_short %>, follow the procedures below:
+After installing and configuring <%= vars.product_short %> see:
 
 * [Using <%= vars.product_short %>](using.html)
