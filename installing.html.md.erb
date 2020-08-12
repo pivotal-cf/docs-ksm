@@ -4,7 +4,7 @@ owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
 
-This topic describes how to install and configure 
+This topic describes how to install and configure
 <%= vars.product_full %> (<%= vars.product_short %>) for production using Helm.
 
 
@@ -88,7 +88,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
-    commands for the **broker**, **daemon** and **chartmuseum**.  
+    commands for the **broker**, **daemon** and **chartmuseum**.
     You can alternatively download the image `tgz` files from the `images` directory.
     + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
@@ -151,16 +151,16 @@ To replicate your <%= vars.product_short %> images to a private container image 
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
-    ##### **Example**   
-    ```bash       
+    ##### **Example**
+    ```bash
     docker tag registry.pivotal.io/container-services-manager/broker:0.10.89 privateregistry.domain.com/container-services-manager/broker:0.10.89
     ```
-          
+
     <p class="note"><strong>Alternative:</strong> If you downloaded the tgz files, you can verify the versions
      by running the `docker images` command and looking at the `TAG` column for each referred image.:
     </p>
 
-1. Create the `container-services-manager` project in your registry
+1. Create the `container-services-manager` project in your registry.
 
 1. Push the images to your registry by running these commands:
 
@@ -171,10 +171,10 @@ To replicate your <%= vars.product_short %> images to a private container image 
     ```
 
    Where:
-   + `REGISTRY` is the private container image registry path. 
-   
-   ##### **Example** 
-   ```bash   
+   + `REGISTRY` is the private container image registry path.
+
+   ##### **Example**
+   ```bash
    docker push privateregistry.domain.com/container-services-manager/broker:0.10.89
    ```
 
@@ -194,16 +194,16 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     + `REGISTRY` is the registry you configured for installation images. (**eg.:** privateregistry.domain.com/container-services-manager)
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
-    
+
     <p><%= vars.product_short %> is using this registry for:</p>
     <ul>
       <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
       <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
     </ul>
-    
+
 1. Add the credentials for the registry where the service instance images will come from:
- 
-   (**note:** service instance refers to the helm chart files that <%= vars.product_short %> will manage as services, 
+
+   (**note:** service instance refers to the helm chart files that <%= vars.product_short %> will manage as services,
    eg.: mysql, postgresql, etc-operator, etc.):
 
     ```yaml
@@ -212,12 +212,12 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      username: REGISTRY-INSTANCES-USERNAME
      password: REGISTRY-INSTANCES-PASSWORD
     ```
-   
+
     Where:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images. (**eg.:** anotherregistry.domain.com/<project>)
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
-    
+
     <p><%= vars.product_short %> is using this registry for:</p>
     <ul>
       <li><strong>The backing registry for the services that <%= vars.product_short %>
@@ -242,7 +242,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      image:
        repository: REGISTRY/container-services-manager/chartmuseum
     ```
-   
+
     Where:
     + `REGISTRY` is your private container image registry.  (**eg.:** privateregistry.domain.com)
 
@@ -274,21 +274,21 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      brokerName: ksm
      brokerUrl: https://broker.INGRESS-DOMAIN
     ```
-   
+
     Where:
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
     + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %> with `cloud_controller.admin` permissions.
     + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
-    **Tips:** 
+    **Tips:**
     + You can verify the cf apiAddress by typing the `cf target` command
- 
+
 1. Enable Ingress service access:
     1. Get the annotation information required by your Ingress controller.
-        + **If you are using your own TLS certificates:** Create secrets with 
+        + **If you are using your own TLS certificates:** Create secrets with
         TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
-            
+
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
             kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
@@ -299,7 +299,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
       <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
       To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
     2. Add the following to your values file:
-        
+
         ```yaml
         ingress:
          enabled: true
@@ -315,20 +315,20 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
            hosts:
              - broker.INGRESS-DOMAIN
         ```
-       
+
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
 
-            These values depend on the Ingress controller and certificate management option you use. 
+            These values depend on the Ingress controller and certificate management option you use.
             For example, see the annotations for nginx Ingress Controller and cert-manager:
-            
+
             ```
             annotations:
                 kubernetes.io/ingress.class: nginx
                 cert-manager.io/issuer: "letsencrypt-prod"
             ```
-    
+
 1.  Add the credentials for your S3-compatible bucket using the template below:
 
     ```yaml
@@ -350,7 +350,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     <p class="note">
       <strong>Note:</strong> The above credentials are for AWS.
       Depending on your IaaS, the credentials might not be a comprehensive list of the keys you need.
-      For example, you might need to add the STORAGE_AMAZON_REGION, if you are not using using the default region, 
+      For example, you might need to add the STORAGE_AMAZON_REGION, if you are not using using the default region,
       <strong>eg.:</strong>
     </p>
       <pre>
@@ -358,7 +358,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
         env:
           open:
             STORAGE_AMAZON_REGION: us-east-1</pre>
-    
+
     <p class="note">
       For more information about configurations, see
       <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
@@ -481,7 +481,7 @@ To install Prometheus to a cluster:
 
 
 ## <a id="next-steps"></a> Next Steps
-    
+
     After installing and configuring <%= vars.product_short %>, follow the procedures below:
-    
+
     * [Using <%= vars.product_short %>](using.html)
