@@ -197,9 +197,10 @@ To configure the <%= vars.product_short %> Helm chart:
       <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
     </p>
 
-1. Edit your `ksm/values.yaml` file to enable Ingress service access.
-    + If you are using your own TLS certificates:
-        + Create secrets with TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
+1. Enable Ingress service access:
+    1. Get the annotation information required by your Ingress controller.
+        + **If you are using your own TLS certificates:** Create secrets with
+        TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
 
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
@@ -210,7 +211,7 @@ To configure the <%= vars.product_short %> Helm chart:
       procedures to install and configure the prerequisites for the certificate management provider you are using.
       <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
       To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
-    2. Add the following to your values file:
+    2. Add the following to your `ksm/values.yaml` file:
 
         ```yaml
         ingress:
@@ -227,6 +228,7 @@ To configure the <%= vars.product_short %> Helm chart:
            hosts:
              - broker.INGRESS-DOMAIN
         ```
+
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
