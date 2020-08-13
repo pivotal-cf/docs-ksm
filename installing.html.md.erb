@@ -200,6 +200,7 @@ To configure the <%= vars.product_short %> Helm chart:
 1. Edit your `ksm/values.yaml` file to enable Ingress service access.
     + If you are using your own TLS certificates:
         + Create secrets with TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
+
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
             kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
