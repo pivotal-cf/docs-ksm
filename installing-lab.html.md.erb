@@ -206,7 +206,7 @@ To install the <%= vars.product_short %> Helm chart:
     + `RELEASE-NAME` is a name you choose for the release.
     + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
 
-### <a id='configure-cf'></a> Configure  <%= vars.product_short %> for cf
+### <a id='configure-for-cf'></a> Configure  <%= vars.product_short %> for cf
 
 1. Retrieve the broker IP address by running:
 
@@ -238,8 +238,9 @@ To install the <%= vars.product_short %> Helm chart:
     Where:
     + `RELEASE-NAME` is the name of the release.
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-    + `CF-USERNAME` is your username for <%= vars.app_runtime_abbr %> with `cloud_controller.admin` permissions.
-    + `CF-PASSWORD` is your password for <%= vars.app_runtime_abbr %>.
+    + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
+       with `cloud_controller.admin` permissions.
+    + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
     
     **Tips:** 
