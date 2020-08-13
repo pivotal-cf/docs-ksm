@@ -78,7 +78,8 @@ You can install the <%= vars.product_short %> environment in two ways:
        + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and 
        download the Helm chart TGZ file.
        + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
-       + **install-lab.sh script**: Click **KSM Lab Environment Installer** and download the install-lab.sh file.
+       + **install-lab.sh script**: Click **KSM Lab Environment Installer** and download the install-lab.sh file
+1. Make the install-lab.sh file executable by executing the `chmod +x install-lab.sh` command
 1. You need to provide the registry endpoint, username and password during the installation. To do that you alternatively can:
     + execute the `./install.sh` command and answer the registry details questions, or
     + create a registry.yaml file containing the needed information in the following format, and execute the `install.sh registry.yaml` command
@@ -91,7 +92,7 @@ You can install the <%= vars.product_short %> environment in two ways:
     ```
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
 1. Once the External IP is available for the daemon, you can configure the KSM environment variables by running the
-  `source ./setSmEnv.sh` command.
+  `source ./setSmEnv.sh` command
 1. Once the External IP is available for the broker, you can configure the cf cli following the 
   [Configure  <%= vars.product_short %> for cf](#configure-cf) step
 1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
