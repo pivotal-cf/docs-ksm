@@ -44,6 +44,13 @@ about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://d
 
 * **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
+* **Verify that a default StorageClass exists on the cluster where you want to install
+<%= vars.product_short %>:**
+If you are using Tanzu Kubernetes Grid Integrated Edition, see
+[Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
+For more information about Storage Classes, see
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
+
 ### For usage with <%= vars.app_runtime_abbr %>
 
 A complete experience allows you to create cf services from <%= vars.product_short %> offers. For that you will 
