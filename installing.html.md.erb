@@ -302,7 +302,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
       procedures to install and configure the prerequisites for the certificate management provider you are using.
       <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
       To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
-    2. Add the following to your values file:
+    2. Add the following to your `ksm/values.yml` file:
 
         ```yaml
         ingress:
