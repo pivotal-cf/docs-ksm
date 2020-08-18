@@ -36,19 +36,20 @@ To install and configure <%= vars.product_short %> using Helm:
 
 ## <a id="prereq"></a>Prerequisites
 
-### For <%= vars.product_short %> installation
+Before you install <%= vars.product_short %> using Helm, you must have:
 
-Before you install <%= vars.product_short %> using Helm:
-
-* **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
+* **Helm 3 CLI (v3.2.4 or later):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
-* **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
+* **Docker CLI:** For information about installing Docker,
+  see the [Docker documentation](https://docs.docker.com/get-docker/).
 
-* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
-about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+* **Kubernetes Cluster:** A running Kubernetes cluster.
+  <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters.
+  For information about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
-* **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* **Kubernetes CLI:** For information about installing kubectl,
+  see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
 * **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
@@ -71,11 +72,13 @@ in your DNS.
 For information about Ingress, see the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
-### For usage with <%= vars.app_runtime_abbr %>
+Additionally, if you are planning to use <%= vars.product_short %> with <%= vars.app_runtime_full %>
+(<%= vars.app_runtime_abbr %>), you must have:
 
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
 
 * **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
+  in GitHub.
 
 ## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
 
@@ -88,11 +91,11 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
-    commands for the **broker**, **daemon** and **chartmuseum**.
+    commands for the **broker**, **daemon**, and **chartmuseum**.
     You can alternatively download the image `tgz` files from the `images` directory.
     + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
-    + **values-production.yaml file:** download the values-production.yaml override configuration file.
+    + **values-production.yaml file:** Download the `values-production.yaml` override configuration file.
 
 
 ## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
@@ -151,14 +154,15 @@ To replicate your <%= vars.product_short %> images to a private container image 
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
-    ##### **Example**
-    ```bash
-    docker tag registry.pivotal.io/container-services-manager/broker:0.10.89 privateregistry.domain.com/container-services-manager/broker:0.10.89
-    ```
+    For example:
 
-    <p class="note"><strong>Alternative:</strong> If you downloaded the tgz files, you can verify the versions
-     by running the `docker images` command and looking at the `TAG` column for each referred image.:
-    </p>
+    <pre class="terminal">
+    docker tag registry.pivotal.io/container-services-manager/broker:0.10.89 \
+    privateregistry.domain.com/container-services-manager/broker:0.10.89
+    </pre>
+
+    Alternatively, if you downloaded the TGZ files, you can verify the versions
+     by running the `docker images` command and looking at the `TAG` column for each referred image.
 
 1. Create the `container-services-manager` project in your registry.
 
@@ -170,13 +174,12 @@ To replicate your <%= vars.product_short %> images to a private container image 
     docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
 
-   Where:
-   + `REGISTRY` is the private container image registry path.
+    Where `REGISTRY` is the private container image registry path.
 
-   ##### **Example**
-   ```bash
-   docker push privateregistry.domain.com/container-services-manager/broker:0.10.89
-   ```
+    For example:
+
+    <pre class="terminal">
+    docker push privateregistry.domain.com/container-services-manager/broker:0.10.89</pre>
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
@@ -195,16 +198,15 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
 
-    <p><%= vars.product_short %> is using this registry for:</p>
-    <ul>
-      <li><strong><%= vars.product_short %> installation docker images:</strong> a new secret named
-      <code>registrySecretName</code> of type <code>dockerconfigjson</code> is created with these credentials.</li>
-    </ul>
+    <%= vars.product_short %> uses this registry for
+    <%= vars.product_short %> installation docker images.
+     A new secret named <code>registrySecretName</code> of type <code>dockerconfigjson</code>
+     is created with these credentials.
 
-1. Add the credentials for the registry where the service instance images will come from:
+1. Add the credentials for the registry where the service instance images will come from.
 
-   (**note:** service instance refers to the helm chart files that <%= vars.product_short %> will manage as services,
-   eg.: mysql, postgresql, etc-operator, etc.):
+    Service instance refers to the helm chart files that <%= vars.product_short %> will manage as services,
+    such as mysql, postgresql, and etc-operator.
 
     ```yaml
     imageCredentialsForServiceInstances:
@@ -214,14 +216,15 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     ```
 
     Where:
-    + `REGISTRY-INSTANCES` is the registry you configured to offer images. (**eg.:** anotherregistry.domain.com/<project>)
+    + `REGISTRY-INSTANCES` is the registry you configured to offer images,
+       for example, `anotherregistry.domain.com/project`
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
 
-    <p><%= vars.product_short %> is using this registry for:</p>
-    <ul>
-      <li><strong>The backing registry for the services that <%= vars.product_short %>
-      deploys:</strong> <%= vars.product_short %> modifies the Helm charts that you offer to
+    <%= vars.product_short %> uses this registry as
+      the backing registry for the services that <%= vars.product_short %>
+      deploys.
+      <%= vars.product_short %> modifies the Helm charts that you offer to
       point to images in the registry.</li>
     </ul>
     <p class="note">
@@ -243,8 +246,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
        repository: REGISTRY/container-services-manager/chartmuseum
     ```
 
-    Where:
-    + `REGISTRY` is your private container image registry.  (**eg.:** privateregistry.domain.com)
+    Where `REGISTRY` is your private container image registry, for example, `privateregistry.domain.com`.
 
 1. Define a secure password to authenticate your services by configuring the password attributes:
 
@@ -282,8 +284,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
-    **Tips:**
-    + You can verify the cf apiAddress by typing the `cf target` command
+    You can verify the cf apiAddress by typing the `cf target` command.
 
 1. Enable Ingress service access:
     1. Get the annotation information required by your Ingress controller.
@@ -351,22 +352,18 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     + `ACCESS-KEY` is your S3 access key ID.
     + `SECRET` is your S3 secret access key.
 
-    <p class="note">
-      <strong>Note:</strong> The above credentials are for AWS.
+     The above credentials are for AWS.
       Depending on your IaaS, the credentials might not be a comprehensive list of the keys you need.
-      For example, you might need to add the STORAGE_AMAZON_REGION, if you are not using using the default region,
-      <strong>eg.:</strong>
-    </p>
+      For example, if you are not using using the default region,
+      you might need to add the STORAGE_AMAZON_REGION:
       <pre>
       chartmuseum:
         env:
           open:
             STORAGE_AMAZON_REGION: us-east-1</pre>
 
-    <p class="note">
       For more information about configurations, see
       <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
-    </p>
 
 1. Save the `values-production.yaml` file.
 
@@ -486,6 +483,5 @@ To install Prometheus to a cluster:
 
 ## <a id="next-steps"></a> Next Steps
 
-After installing and configuring <%= vars.product_short %>, follow the procedures below:
-
-* [Using <%= vars.product_short %>](using.html)
+After installing and configuring <%= vars.product_short %>, you can start using <%= vars.product_short %>.
+For information, see [Using <%= vars.product_short %>](using.html).
