@@ -266,22 +266,39 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      + `DAEMON_PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
      + `CHARTMUSEUM_PASSWORD` is a secure password for ChartMuseum.
 
+1. Create a [UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) client 
+   that <%= vars.product_short %> will use to register the broker and populate the catalog:
+   (Use the uaac cli from the OpsMan VM for convenience)
+   ```bash
+   uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
+   uaac token client get admin -s UAA-ADMIN-CLIENT-SECRET
+   uaac client add CLIENT-ID -s CLIENT-SECRET \
+     --authorized_grant_types client_credentials,refresh_token \
+     --scope cloud_controller.read,cloud_controller.write \
+     --authorities cloud_controller.admin
+   ```
+     Where:
+     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+     + `UAA-ADMIN-CLIENT-SECRET` is the UAA Admin Client Credentials for <%= vars.app_runtime_abbr %>. 
+     + `CLIENT-ID` is the name of the client.
+     + `CLIENT-SECRET` is the secret of the client.
+
 1. Configure the Cloud Foundry environment details:
 
     ```yaml
     cf:
      apiAddress: http://api.SYSTEM-DOMAIN
-     username: CF-USERNAME
-     password: CF-PASSWORD
+     client: CLIENT-ID
+     clientSecret: CLIENT-SECRET
      brokerName: ksm
      brokerUrl: https://broker.INGRESS-DOMAIN
     ```
 
     Where:
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-    + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
+    + `CLIENT-ID` is an existing client ID for a <%= vars.app_runtime_abbr %> account
        with `cloud_controller.admin` permissions.
-    + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
+    + `CLIENT-SECRET` is the client secret for the <%= vars.app_runtime_abbr %> account.
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
     You can verify the cf apiAddress by typing the `cf target` command.
