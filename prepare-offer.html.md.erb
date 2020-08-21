@@ -434,39 +434,18 @@ For example, if you use Harbor, follow the instructions in
 in GitHub.
 
 
-1. Confirm that your `values.yaml` file uses `image`, `images`, or `global.imageRegistry` keys.
-   If you use the keys above, <%= vars.product_short %> always
-   uses the private registry configured during installation to fetch your images.
+1. Confirm that your Helm chart supports the value `global.imageRegistry`. You can look
+   in the chart's `values.yaml` file to confirm this.
+   If this `global.imageRegistry` is unset in the Chart's `values.yaml` and you've set
+   `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart `values.yaml` file,
+   <%= vars.product_short %> will transform the Helm chart's images and pull them from the private registry.
 
     For example:
-    * If you use a chart with a single image:
-
-        ```yaml
-        ---
-        image: "my-image"
-        imageTag: "5.7.14"
-        ```
-    * If you use a chart with multiple images:
-
-        ```yaml
-        ---
-        images:
-          component1:
-            image: "my-first-image"
-            imageTag: "5.7.14"
-          component2:
-            image: "my-second-image"
-            imageTag: "1.2.3"
-        ```
-    * If you use a chart with a global.imageRegistry key:
+    * If you use a chart with an empty global.imageRegistry key: (The chart must support this pattern.)
 
         ```yaml
         ---
         global:
-          imageRegistry: docker.example.com/image-registry
+          imageRegistry: 
         ```
-
-
-    If the Helm chart uses a key other than an `image`, `images` or `global.imageRegistry` key,
-    then <%= vars.product_short %> does not change
-    the image reference used to pull from the private container registry.
+      The private registry configured at `imageCredentialsForServiceInstances.registry` will be used.
