@@ -126,7 +126,7 @@ For instructions about offering multiple charts in a single offering, see
 If <%= vars.product_short %> is configured with a private container registry,
 when <%= vars.product_short %> deploys a chart, it also does the following:
 
-1. Changes the image reference in the chart to pull from your configured private container registry.
+1. Changes the `global.imageRegistry` reference in the chart to pull from your configured private container registry.
 1. Adds a secret containing the private container registry credentials to the namespace.
 This secret enables <%= vars.product_short %> to pull the image.
 
