@@ -108,7 +108,7 @@ skip to <a href="#install-manually">Installing Manually</a> section
 1. Once the External IP is available for the broker, you can configure the cf cli following the
   [Configure  <%= vars.product_short %> for cf](#configure-cf) step
 1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
-1. You're done here! Jump to [Next Steps](#next-steps)
+1. You're done here! Jump to [Configure  <%= vars.product_short %> for cf](#configure-for-cf)
 
 ## <a id='install-manually'></a>Installing Manually
 
@@ -236,8 +236,8 @@ To install the <%= vars.product_short %> Helm chart:
       --set cf.brokerUrl="http://${BROKER_IP}" \
       --set cf.brokerName=ksm \
       --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-      --set cf.username=CF-USERNAME \
-      --set cf.password=CF-PASSWORD \
+      --set cf.client=CF-USERNAME \
+      --set cf.clientSecret=CF-PASSWORD \
       --set cf.skipSslValidation=true \
       -n <%= vars.product_short %>-NAMESPACE
     ```

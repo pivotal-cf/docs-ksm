@@ -269,6 +269,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
 1. Create a [UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) client 
    that <%= vars.product_short %> will use to register the broker and populate the catalog:
    (Use the uaac cli from the OpsMan VM for convenience)
+   
    ```bash
    uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
    uaac token client get admin -s UAA-ADMIN-CLIENT-SECRET
@@ -277,6 +278,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      --scope cloud_controller.read,cloud_controller.write \
      --authorities cloud_controller.admin
    ```
+   
      Where:
      + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
      + `UAA-ADMIN-CLIENT-SECRET` is the UAA Admin Client Credentials for <%= vars.app_runtime_abbr %>. 
