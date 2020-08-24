@@ -110,8 +110,17 @@ so start by verifying and taking not of your private registry endpoint, username
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
 1. Once the External IP is available for the daemon, you can configure the KSM environment variables by running the
   `source ./setSmEnv.sh` command
-1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf following the
-  [Configure  <%= vars.product_short %> for cf](#configure-cf) step
+1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
+  
+    ```bash
+    ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-client> <cf-api-client-secret>
+     where:
+        <broker-name>     - is a name you will provide to your broker to be identified in cf
+        <cf-api-endpoint> - is the cf endpoint. You can verify that by executing the "cf target" command
+        <cf-api-endpoint> - is the cf client
+        <cf-api-endpoint> - is the cf client secret
+    ```
+   
 1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
 1. You're done here! Jump to [Next Steps](#next-steps)
 
