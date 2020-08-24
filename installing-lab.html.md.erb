@@ -78,21 +78,25 @@ If you want to install manually instead of using the install-lab.sh script,
 skip to <a href="#install-manually">Installing Manually</a> section
 </p>
 
-1. Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+1. This approach requires a image private registry that will be used to upload the docker installation images, 
+so start by verifying and taking not of your private registry endpoint, username and password.
 
-   To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
+1. Get <%= vars.product_short %> Resources From <%= vars.product_network %>:
 
-   1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-   [<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager)
-   and download the following resources:
+    * Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+       [<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager)
+       and download the following resources:
+   
        + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
        the CLI for your operating system.
        + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and
        download the Helm chart TGZ file.
        + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
        + **install-lab.sh script**: Click **KSM Lab Environment Installer** and download the install-lab.sh file
+       
 1. Make the install-lab.sh file executable by executing the `chmod +x install-lab.sh` command
 1. You need to provide the registry endpoint, username and password during the installation. To do that you can either:
+  
   + execute the `./install-lab.sh` command and answer the registry details questions, or
   + create a registry.yaml file containing the needed information in the following format, and execute the `install-lab.sh registry.yaml` command
 
@@ -102,13 +106,23 @@ skip to <a href="#install-manually">Installing Manually</a> section
     username: <username>
     password: <password>
     ```
+    
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
 1. Once the External IP is available for the daemon, you can configure the KSM environment variables by running the
   `source ./setSmEnv.sh` command
-1. Once the External IP is available for the broker, you can configure the cf cli following the
-  [Configure  <%= vars.product_short %> for cf](#configure-cf) step
+1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
+  
+    ```bash
+    ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-client> <cf-api-client-secret>
+     where:
+        <broker-name>     - is a name you will provide to your broker to be identified in cf
+        <cf-api-endpoint> - is the cf endpoint. You can verify that by executing the "cf target" command
+        <cf-api-endpoint> - is the cf client
+        <cf-api-endpoint> - is the cf client secret
+    ```
+   
 1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
-1. You're done here! Jump to [Configure  <%= vars.product_short %> for cf](#configure-for-cf)
+1. You're done here! Jump to [Next Steps](#next-steps)
 
 ## <a id='install-manually'></a>Installing Manually
 
