@@ -183,7 +183,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
-To configure the <%= vars.product_short %>, edit the `values-production.yaml` file:
+To configure the <%= vars.product_short %> Helm chart, edit the `values-production.yaml` file:
 
 1. Add the credentials for the registry where you replicated the <%= vars.product_short %> images:
 
@@ -194,7 +194,8 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      password: REGISTRY-PASSWORD
     ```
     Where:
-    + `REGISTRY` is the registry you configured for installation images. (**eg.:** privateregistry.domain.com/container-services-manager)
+    + `REGISTRY` is the registry you configured for installation images,
+    for example, `privateregistry.domain.com/container-services-manager`.
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
 
@@ -205,7 +206,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
 
 1. Add the credentials for the registry where the service instance images will come from.
 
-    Service instance refers to the helm chart files that <%= vars.product_short %> will manage as services,
+    Service instance refers to the Helm chart files that <%= vars.product_short %> will manage as services,
     such as mysql, postgresql, and etc-operator.
 
     ```yaml
@@ -217,7 +218,7 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
 
     Where:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images,
-       for example, `anotherregistry.domain.com/project`
+       for example, `anotherregistry.domain.com/project`.
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
 
@@ -262,14 +263,14 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
     ```
 
      Where:
-     + `BROKER_PASSWORD` is a secure password for the <%= vars.product_short %> broker.
-     + `DAEMON_PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
-     + `CHARTMUSEUM_PASSWORD` is a secure password for ChartMuseum.
+     + `BROKER-PASSWORD` is a secure password for the <%= vars.product_short %> broker.
+     + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
+     + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
-1. Create a [UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) client 
+1. Create a [UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) client
    that <%= vars.product_short %> will use to register the broker and populate the catalog:
    (Use the uaac cli from the OpsMan VM for convenience)
-   
+
    ```bash
    uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
    uaac token client get admin -s UAA-ADMIN-CLIENT-SECRET
@@ -278,10 +279,10 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      --scope cloud_controller.read,cloud_controller.write \
      --authorities cloud_controller.admin
    ```
-   
+
      Where:
      + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-     + `UAA-ADMIN-CLIENT-SECRET` is the UAA Admin Client Credentials for <%= vars.app_runtime_abbr %>. 
+     + `UAA-ADMIN-CLIENT-SECRET` is the UAA Admin Client Credentials for <%= vars.app_runtime_abbr %>.
      + `CLIENT-ID` is the name of the client.
      + `CLIENT-SECRET` is the secret of the client.
 
@@ -374,13 +375,14 @@ To configure the <%= vars.product_short %>, edit the `values-production.yaml` fi
      The above credentials are for AWS.
       Depending on your IaaS, the credentials might not be a comprehensive list of the keys you need.
       For example, if you are not using using the default region,
-      you might need to add the STORAGE_AMAZON_REGION:
-      <pre>
+      you might need to add the `STORAGE_AMAZON_REGION`:
+
+      ```
       chartmuseum:
         env:
           open:
-            STORAGE_AMAZON_REGION: us-east-1</pre>
-
+            STORAGE_AMAZON_REGION: us-east-1
+      ```
       For more information about configurations, see
       <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
 
@@ -399,7 +401,7 @@ To install the <%= vars.product_short %> Helm chart:
     Where:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
-    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
+    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file you downloaded earlier.
 
 
 ## <a id="security"></a> (Recommended) Configure Security
