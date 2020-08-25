@@ -1,6 +1,6 @@
 ---
-title: Upgrading KSM
-owner: Platform Engineering (KSM Team)
+title: Upgrading <%= vars.product_full %>
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 
 <%# The below uses the local product variable and math so we do not need to update this page
@@ -15,42 +15,42 @@ previous_version = previous_version.join(".")
 
 <strong><%= modified_date %></strong>
 
-This topic explains how to upgrade <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
+This topic explains how to upgrade <%= vars.product_full %> using Helm.
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
 ## <a id="overview"></a>Overview
 
-<%= partial vars.path_to_partials + "/ksm/incompatible" %>
+<%= partial vars.path_to_partials + "/<%= vars.product_short %>/incompatible" %>
 
-To upgrade from <%= vars.product_short %> v<%= previous_version %>:
+To upgrade from <%= vars.product_full %> v<%= previous_version %>:
 
-1. Uninstall <%= vars.product_short %> v<%= previous_version %>.
-   See [Uninstall <%= vars.product_short %>](#uninstall) below.
+1. Uninstall <%= vars.product_full %> v<%= previous_version %>.
+   See [Uninstall <%= vars.product_full %>](#uninstall) below.
 
-1. Install  <%= vars.product_short %> v<%= current_version %>.
-   See [Installing and Configuring <%= vars.product_short %>](./installing.html).
+1. Install  <%= vars.product_full %> v<%= current_version %>.
+   See [Installing and Configuring <%= vars.product_full %>](./installing.html).
 
-1. Add and enable access to your service offerings. See [Add a Service Offering to <%= vars.product_short %>](./using.html#add)
+1. Add and enable access to your service offerings. See [Add a Service Offering to <%= vars.product_full %>](./using.html#add)
    and [Enable Service Offering Access](./using.html#enable).
 
-## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
+## <a id="uninstall"></a> Uninstall <%= vars.product_full %>
 
-To uninstall <%= vars.product_short %>:
+To uninstall <%= vars.product_full %>:
 
 1. View all of your installed releases across all namespaces by running:
 
     ```
     helm list --all --all-namespaces
     ```
-    Record the name of the <%= vars.product_short %> release that you
+    Record the name of the <%= vars.product_full %> release that you
     want to uninstall.
-1. Uninstall <%= vars.product_short %> by running:
+1. Uninstall <%= vars.product_full %> by running:
 
     ```
     helm uninstall RELEASE-NAME
     ```
-    Where `RELEASE-NAME` is the name of the <%= vars.product_short %>
+    Where `RELEASE-NAME` is the name of the <%= vars.product_full %>
     release that you recorded in the previous step.
     <br><br>
     For example:

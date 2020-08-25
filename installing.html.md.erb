@@ -1,29 +1,29 @@
 ---
-title: Installing and Configuring KSM
-owner: Platform Engineering (KSM Team)
+title: Installing and Configuring <%= vars.product_full %>
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 <strong><%= modified_date %></strong>
 
 This topic describes how to install and configure
-<%= vars.product_full %> (<%= vars.product_short %>) for production using Helm.
+<%= vars.product_full %> for production using Helm.
 
 
 ## <a id="overview"></a> Overview
 
 Helm is a Kubernetes open source package manager.
-You can use a Helm chart to install and configure <%= vars.product_short %>.
+You can use a Helm chart to install and configure <%= vars.product_full %>.
 
-To install and configure <%= vars.product_short %> using Helm:
+To install and configure <%= vars.product_full %> using Helm:
 
-1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get)
+1. [Get <%= vars.product_full %> Resources From <%= vars.product_network %>](#get)
 
-1. [Install the <%= vars.product_short %> CLI](#cli)
+1. [Install the <%= vars.product_full %> CLI](#cli)
 
-1. [Replicate <%= vars.product_short %> Images](#replicate-images)
+1. [Replicate <%= vars.product_full %> Images](#replicate-images)
 
-1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
+1. [Configure the <%= vars.product_full %> Helm Chart](#configure)
 
-1. [Install the <%= vars.product_short %> Helm Chart](#install)
+1. [Install the <%= vars.product_full %> Helm Chart](#install)
 
 1. [(Recommended) Configure Security](#security)
 
@@ -36,7 +36,7 @@ To install and configure <%= vars.product_short %> using Helm:
 
 ## <a id="prereq"></a>Prerequisites
 
-Before you install <%= vars.product_short %> using Helm, you must have:
+Before you install <%= vars.product_full %> using Helm, you must have:
 
 * **Helm 3 CLI (v3.2.4 or later):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/install/).
@@ -45,13 +45,13 @@ see the [Helm documentation](https://helm.sh/docs/intro/install/).
   see the [Docker documentation](https://docs.docker.com/get-docker/).
 
 * **Kubernetes Cluster:** A running Kubernetes cluster.
-  <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters.
+  <%= vars.product_full %> supports <%= vars.k8s_runtime_full %> clusters.
   For information about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
 * **Kubernetes CLI:** For information about installing kubectl,
   see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
+* **S3 Compatible Storage:** <%= vars.product_full %> requires a S3-compatible bucket to store offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
 
 * **Private Container Image Registry:** You need this to manage container images
@@ -60,19 +60,19 @@ in air-gapped environments.
   You can use a registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
 
 * **Verify that a default StorageClass exists on the cluster where you want to install
-<%= vars.product_short %>:**
+<%= vars.product_full %>:**
 If you are using Tanzu Kubernetes Grid Integrated Edition, see
 [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
 For more information about Storage Classes, see
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 
 * **Install the Ingress controller on the cluster where you want to install
-<%= vars.product_short %>:** You must also reserve a subdomain for <%= vars.product_short %>
+<%= vars.product_full %>:** You must also reserve a subdomain for <%= vars.product_full %>
 in your DNS.
 For information about Ingress, see the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
-Additionally, if you are planning to use <%= vars.product_short %> with <%= vars.app_runtime_full %>
+Additionally, if you are planning to use <%= vars.product_full %> with <%= vars.app_runtime_full %>
 (<%= vars.app_runtime_abbr %>), you must have:
 
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
@@ -80,54 +80,54 @@ Additionally, if you are planning to use <%= vars.product_short %> with <%= vars
 * **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
   in GitHub.
 
-## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+## <a id='get'></a> Get <%= vars.product_full %> Resources From <%= vars.product_network %>
 
-To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
+To get the resources needed from <%= vars.product_network %> to install <%= vars.product_full %>:
 
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+1. Log in and navigate to **<%= vars.product_full %>** in
 [<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager).
 
 1. Get the following resources:
-    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+    + **The <%= vars.product_full %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
     commands for the **broker**, **daemon**, and **chartmuseum**.
     You can alternatively download the image `tgz` files from the `images` directory.
-    + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
-    for <%= vars.product_short %>.
+    + **Helm chart TGZ file:** Click **<%= vars.product_short %>-VERSION-NUMBER.tgz** and download the Helm chart
+    for <%= vars.product_full %>.
     + **values-production.yaml file:** Download the `values-production.yaml` override configuration file.
 
 
-## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
+## <a id='cli'></a>  Install the <%= vars.product_full %> CLI
 
-To install the <%= vars.product_short %> Command Line Interface (CLI):
+To install the <%= vars.product_full %> Command Line Interface (CLI):
 
-1. Rename the downloaded <%= vars.product_short %> CLI file as `ksm`.
+1. Rename the downloaded <%= vars.product_full %> CLI file as `<%= vars.product_short %>`.
 
 1. Make the <%= vars.product_short %> binary act as an executable file by running:
 
     ```bash
-    chmod +x ksm
+    chmod +x <%= vars.product_short %>
     ```
 
 1. Move the binary file into your `PATH` by running:
 
     ```bash
-    mv ksm /usr/local/bin/ksm
+    mv <%= vars.product_short %> /usr/local/bin/<%= vars.product_short %>
     ```
 
 1. Ensure <%= vars.product_short %> CLI is properly working:
 
     ```bash
-    ksm version
+    <%= vars.product_short %> version
     ```
 
-## <a id='replicate-images'></a> Replicate <%= vars.product_short %> Images
+## <a id='replicate-images'></a> Replicate <%= vars.product_full %> Images
 
-To replicate your <%= vars.product_short %> images to a private container image registry:
+To replicate your <%= vars.product_full %> images to a private container image registry:
 
 1. Pull the images to your local system by running the `docker pull` commands you recorded in
-    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.<br><br>If
+    [Get <%= vars.product_full %> Resources From <%= vars.product_network %>](#get) above.<br><br>If
     you downloaded the `tgz` files instead of using the `docker pull` commands,
     load those images to your local system by running `docker load -i FILE-PATH`.
 
@@ -146,13 +146,13 @@ To replicate your <%= vars.product_short %> images to a private container image 
     ```
 
     Where:
-    + `VERSION-NUMBER` is the <%= vars.product_short %> release version number.
+    + `VERSION-NUMBER` is the <%= vars.product_full %> release version number.
       This value is in the `docker pull` command that you recorded in
-      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
-    + `REGISTRY` is the private container image registry you configured for <%= vars.product_short %>.
+      [Get <%= vars.product_full %> Resources From <%= vars.product_network %>](#get) above.
+    + `REGISTRY` is the private container image registry you configured for <%= vars.product_full %>.
     + `CHARTMUSEUM-VERSION-NUMBER` is the ChartMuseum version number.
       This value is in the `docker pull` command that you recorded in
-      [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
+      [Get <%= vars.product_full %> Resources From <%= vars.product_network %>](#get) above.
 
     For example:
 
@@ -181,14 +181,14 @@ To replicate your <%= vars.product_short %> images to a private container image 
     <pre class="terminal">
     docker push privateregistry.domain.com/container-services-manager/broker:0.10.89</pre>
 
-## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+## <a id='configure'></a> Configure the <%= vars.product_full %> Helm Chart
 
-To configure the <%= vars.product_short %> Helm chart, edit the `values-production.yaml` file:
+To configure the <%= vars.product_full %> Helm chart, edit the `values-production.yaml` file:
 
-1. Add the credentials for the registry where you replicated the <%= vars.product_short %> images:
+1. Add the credentials for the registry where you replicated the <%= vars.product_full %> images:
 
     ```yaml
-    imageCredentialsForKSMImages:
+    imageCredentialsFor<%= vars.product_short %>Images:
      registry: REGISTRY
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
@@ -199,14 +199,14 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
 
-    <%= vars.product_short %> uses this registry for
-    <%= vars.product_short %> installation docker images.
+    <%= vars.product_full %> uses this registry for
+    <%= vars.product_full %> installation docker images.
      A new secret named <code>registrySecretName</code> of type <code>dockerconfigjson</code>
      is created with these credentials.
 
 1. Add the credentials for the registry where the service instance images will come from.
 
-    Service instance refers to the Helm chart files that <%= vars.product_short %> will manage as services,
+    Service instance refers to the Helm chart files that <%= vars.product_full %> will manage as services,
     such as mysql, postgresql, and etc-operator.
 
     ```yaml
@@ -222,10 +222,10 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
 
-    <%= vars.product_short %> uses this registry as
-      the backing registry for the services that <%= vars.product_short %>
+    <%= vars.product_full %> uses this registry as
+      the backing registry for the services that <%= vars.product_full %>
       deploys.
-      <%= vars.product_short %> modifies the Helm charts that you offer to
+      <%= vars.product_full %> modifies the Helm charts that you offer to
       point to images in the registry.</li>
     </ul>
     <p class="note">
@@ -263,12 +263,12 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     ```
 
      Where:
-     + `BROKER-PASSWORD` is a secure password for the <%= vars.product_short %> broker.
-     + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
+     + `BROKER-PASSWORD` is a secure password for the <%= vars.product_full %> broker.
+     + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_full %> daemon.
      + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
 1. Create a [UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) client
-   that <%= vars.product_short %> will use to register the broker and populate the catalog:
+   that <%= vars.product_full %> will use to register the broker and populate the catalog:
    (Use the uaac cli from the OpsMan VM for convenience)
 
    ```bash
@@ -293,7 +293,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      apiAddress: http://api.SYSTEM-DOMAIN
      client: CLIENT-ID
      clientSecret: CLIENT-SECRET
-     brokerName: ksm
+     brokerName: <%= vars.product_short %>
      brokerUrl: https://broker.INGRESS-DOMAIN
     ```
 
@@ -309,7 +309,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 1. Enable Ingress service access:
     1. Get the annotation information required by your Ingress controller.
         + **If you are using your own TLS certificates:** Create secrets with
-        TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
+        TLS certificate data in the same namespace where <%= vars.product_full %> will be installed:
 
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
@@ -323,7 +323,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
       procedures to install and configure the prerequisites for the certificate management provider you are using.
       <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
       To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
-    2. Add the following to your `ksm/values.yml` file:
+    2. Add the following to your `<%= vars.product_short %>/values.yml` file:
 
         ```yaml
         ingress:
@@ -388,29 +388,29 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 
 1. Save the `values-production.yaml` file.
 
-## <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
+## <a id='install'></a> Install the <%= vars.product_full %> Helm Chart
 
-To install the <%= vars.product_short %> Helm chart:
+To install the <%= vars.product_full %> Helm chart:
 
-1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
+1. From the root level of the chart, install the <%= vars.product_full %> Helm chart by running these commands:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-production.yaml
+    helm install RELEASE-NAME <%= vars.product_short %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-production.yaml
     ```
     Where:
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_full %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
-    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file you downloaded earlier.
+    + `<%= vars.product_short %>-VERSION-NUMBER.tgz` is the <%= vars.product_full %> Helm chart file you downloaded earlier.
 
 
 ## <a id="security"></a> (Recommended) Configure Security
 
-VMware recommends configuring security on your Kubernetes cluster for <%= vars.product_short %>.
+VMware recommends configuring security on your Kubernetes cluster for <%= vars.product_full %>.
 
 To configure security:
 
-1. Secure <%= vars.product_short %> secrets by using a secret provider.
+1. Secure <%= vars.product_full %> secrets by using a secret provider.
     See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
     in the Kubernetes documentation.
 1. Enable network policies on the cluster to secure traffic between services.
@@ -418,7 +418,7 @@ To configure security:
     in the Kubernetes documentation.
     Some settings can vary between clouds. For example, in GKE, network policies are not enabled by default.
     For more information, see your cloud-specific documentation.
-1. Secure traffic between <%= vars.product_short %> components.
+1. Secure traffic between <%= vars.product_full %> components.
 For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
 
@@ -433,7 +433,7 @@ To configure a Linkerd service mesh:
       + Install the service mesh using a Helm chart by following the procedures in
 [Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd documentation.
 
-1. Add the following annotations in the <%= vars.product_short %> Helm chart `values-production.yaml` file:
+1. Add the following annotations in the <%= vars.product_full %> Helm chart `values-production.yaml` file:
 
     ```yaml
     broker:
@@ -459,24 +459,24 @@ To configure a Linkerd service mesh:
     following the procedures in the
     [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
 
-1. Verify that <%= vars.product_short %> is added to the mesh by running:
+1. Verify that <%= vars.product_full %> is added to the mesh by running:
 
     ```bash
-    linkerd stat deployments -n KSM-NAMESPACE
+    linkerd stat deployments -n <%= vars.product_short %>-NAMESPACE
     ```
-    Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
+    Where `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_full %> is running.
 
 1. Verify that TLS is working on the deployment by running:
 
     ```bash
-    linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
+    linkerd -n <%= vars.product_short %>-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
     ```
-    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
+    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-<%= vars.product_short %>-daemon`.
 
 
 ## <a id="prometheus"></a> (Optional) Install Prometheus
 
-You can view metrics for <%= vars.product_short %> if you have Prometheus running in the cluster.
+You can view metrics for <%= vars.product_full %> if you have Prometheus running in the cluster.
 You must install Prometheus in each cluster you want to view metrics for.
 
 To install Prometheus to a cluster:
@@ -499,10 +499,10 @@ To install Prometheus to a cluster:
 
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
-1. To view metrics for KSM, type `{app_kubernetes_io_name="ksm"}` in the expression box and click **Execute**.
+1. To view metrics for <%= vars.product_full %>, type `{app_kubernetes_io_name="<%= vars.product_short %>"}` in the expression box and click **Execute**.
 
 
 ## <a id="next-steps"></a> Next Steps
 
-After installing and configuring <%= vars.product_short %>, you can start using <%= vars.product_short %>.
-For information, see [Using <%= vars.product_short %>](using.html).
+After installing and configuring <%= vars.product_full %>, you can start using <%= vars.product_full %>.
+For information, see [Using <%= vars.product_full %>](using.html).

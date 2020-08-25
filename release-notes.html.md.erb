@@ -1,6 +1,6 @@
 ---
 title: Release Notes
-owner: Platform Engineering (KSM Team)
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 
 <%# The below uses the local product variable and math so we do not need to update this page
@@ -15,11 +15,11 @@ previous_version = previous_version.join(".")
 
 <strong><%= modified_date %></strong>
 
-These are release notes for <%= vars.product_full %> (<%= vars.product_short %>).
+These are release notes for <%= vars.product_full %>.
 
 <%= partial vars.path_to_partials + "/upgrade-planner" %>
 
-<%= partial vars.path_to_partials + "/ksm/incompatible" %>
+<%= partial vars.path_to_partials + "/<%= vars.product_short %>/incompatible" %>
 
 ##<a id="0-11-XX"></a> v0.11.XX
 
@@ -34,4 +34,4 @@ New features and changes in this release:
 
 This release has the following issue:
 
-<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+<%= partial vars.path_to_partials + "/<%= vars.product_short %>/custom-resources" %>

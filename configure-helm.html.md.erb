@@ -1,20 +1,20 @@
 ---
 title: Configuring a Helm Chart
-owner: Platform Engineering (KSM Team)
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure a Helm Chart for <%= vars.product_full %> (<%= vars.product_short %>).
+This topic describes how to configure a Helm Chart for <%= vars.product_full %>.
 
 ##<a id='using'></a> Overview
 
-<%= vars.product_short %> enables platform operators to offer Helm charts as
+<%= vars.product_full %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
 Before you add a service offering to `cf marketplace`,
-you must configure your Helm charts to be compatible with <%=  vars.product_short %>.
-For examples of <%= vars.product_short %>-compatible charts,
+you must configure your Helm charts to be compatible with <%=  vars.product_full %>.
+For examples of <%= vars.product_full %>-compatible charts,
 see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
 To configure a Helm chart:
@@ -46,7 +46,7 @@ see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/).
 
 
 ##<a id='override'></a> Override Chart Values
-To ensure that your chart is compatible with <%= vars.product_short %>,
+To ensure that your chart is compatible with <%= vars.product_full %>,
 you might need to override specific values in <code>values.yaml</code>.
 
 You must follow the procedure in this section if your chart uses any of the following properties:
@@ -59,7 +59,7 @@ You can optionally override other properties defined the chart `values.yaml` by
 adding those properties to an `OVERRIDE-FILE.yaml` file.
 
 <p class="note warning"><strong>Warning:</strong> You cannot change the chart name or
-   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_short %>.
+   resize a PersistentVolumeClaim after you add the service offering to <%= vars.product_full %>.
 </p>
 
 To override chart values:
@@ -84,7 +84,7 @@ For more information, see [Configuring and Using PersistentVolumes](https://docs
     ```
 
 1. Edit your override file to enable service access.
-<%= vars.product_short %> supports using a load balancer, Ingress, or ExternalDNS to access services.
+<%= vars.product_full %> supports using a load balancer, Ingress, or ExternalDNS to access services.
     + **If want your service to be accessed directly using a load balancer,** set
     `services.type:` to `LoadBalancer`. For example:
 
@@ -117,7 +117,7 @@ For more information, see [Configuring and Using PersistentVolumes](https://docs
       For information about
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
-1. Edit the `ksm.yaml` file to use the override file you created in step 1.<br><br>
+1. Edit the `<%= vars.product_short %>.yaml` file to use the override file you created in step 1.<br><br>
 For example:
 
     ```yaml
@@ -129,14 +129,14 @@ For example:
         scope: SCOPE-VALUE
         overrideValuesFile: OVERRIDE-FILE
     ```
-    For information about the properties used in `ksm.yaml`,
+    For information about the properties used in `<%= vars.product_short %>.yaml`,
     see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
 ## <a id='crd'></a> Define Custom Resource Definitions
 
-<%= vars.product_short %> supports charts that use the Helm 2 and Helm 3 CLIs.
+<%= vars.product_full %> supports charts that use the Helm 2 and Helm 3 CLIs.
 Helm 2 and Helm 3 use different methods to install CRDs.
- <%= vars.product_short %> requires Helm 3, while Helm 2 is optional.
+<%= vars.product_full %> requires Helm 3, while Helm 2 is optional.
 
 If you are using a Helm 2 chart, use both the Helm 2 and Helm 3 CLIs methods:
 

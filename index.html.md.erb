@@ -1,15 +1,15 @@
 ---
-title: Container Services Manager for VMware Tanzu (Beta)
-owner: Platform Engineering (KSM Team)
+title: <%= vars.product_full %> (Beta)
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic is an overview of <%= vars.product_full %> (<%= vars.product_short %>).
+This topic is an overview of <%= vars.product_full %>.
 
 ## <a id='overview'></a>Overview
 
- <%= vars.product_short %> enables operators
+ <%= vars.product_full %> enables operators
 to provide app developers with access to services through the `cf marketplace`.
 These services run on Kubernetes clusters such as those created with <%= vars.k8s_runtime_full %>
 for consumption by <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) apps.
@@ -19,18 +19,18 @@ see [Developer Guide](https://docs.pivotal.io/pivotalcf/2-5/devguide/index.html)
 For more information about <%= vars.k8s_runtime_abbr %>,
 see [<%= vars.k8s_runtime_full %>](https://pivotal.io/platform/pivotal-container-service).
 
-<%= vars.product_short %> enables platform operators to:
+<%= vars.product_full %> enables platform operators to:
 
 * Offer ISV and open source Helm charts as on-demand services to <%= vars.app_runtime_abbr %> developers.
 
-<%= vars.product_short %> enables app developers to:
+<%= vars.product_full %> enables app developers to:
 
 * Provision dedicated service instances onto a Kubernetes cluster through the `cf marketplace`.
 * Consume services running on <%= vars.k8s_runtime_abbr %> in apps running on <%= vars.app_runtime_abbr %>.
 
 ## <a id='features'></a> Key Features
 
-<%= vars.product_short %> includes the following key features:
+<%= vars.product_full %> includes the following key features:
 
 * A service broker that provisions dedicated service instances into a
 Kubernetes cluster and binds service instances to <%= vars.app_runtime_abbr %> apps.
@@ -39,13 +39,13 @@ Kubernetes cluster and binds service instances to <%= vars.app_runtime_abbr %> a
 
 ## <a id="snapshot"></a>Product Snapshot
 
-The following table provides version and version-support information about <%= vars.product_short %>:
+The following table provides version and version-support information about <%= vars.product_full %>:
 
 <table class="nice">
     <th>Element</th>
     <th>Details</th>
     <tr>
-        <td><%= vars.product_short %> version</td>
+        <td><%= vars.product_full %> version</td>
         <td>0.11.XX</td>
     </tr>
     <tr>
@@ -72,17 +72,17 @@ The following table provides version and version-support information about <%= v
 
 ## <a id="reqs"></a>Requirements
 
-<%= vars.product_short %> requires:
+<%= vars.product_full %> requires:
 
-* **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %> CLI, see
-[Install the <%= vars.product_short %> CLI](./installing.html#cli) .
+* **<%= vars.product_full %> CLI:** For information about installing the <%= vars.product_full %> CLI, see
+[Install the <%= vars.product_full %> CLI](./installing.html#cli) .
 * **Helm 3 CLI:** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/).
 * **Docker CLI:** For information about installing Docker, see [Docker](https://www.docker.com/).
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
-* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
+* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_full %> supports <%= vars.k8s_runtime_full %> clusters. For information
 about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
-* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
+* **S3 Compatible Storage:** <%= vars.product_full %> requires a S3-compatible bucket to store offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
 * **Private Container Registry:** You need this to manage container images
 in air-gapped environments.
@@ -92,14 +92,14 @@ in air-gapped environments.
 
 ## <a id="limitations"></a>Limitations
 
-Dedicated service instances created by <%= vars.product_short %> either provision
+Dedicated service instances created by <%= vars.product_full %> either provision
 an IaaS load balancer or use an ingress controller for ingress into each service instance.
 You cannot use ClusterIP for ingress.
 
 ## <a id="feedback"></a>Feedback
 
 If you have a feature request, questions or information about an issue,
-send an email to [<%= vars.product_full %> (<%= vars.product_short %>) Feedback](mailto:ksm-feedback@pivotal.io).
+send an email to [<%= vars.product_full %> Feedback](mailto:ksm-feedback@pivotal.io).
 
 ## <a id='license'></a>License
 

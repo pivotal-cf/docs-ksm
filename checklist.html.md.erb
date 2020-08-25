@@ -1,34 +1,34 @@
 ---
 title: Getting Started Checklist
-owner: Platform Engineering (KSM Team)
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 
 <strong><%= modified_date %></strong>
 
 This topic describes how to minimally configure <%= vars.product_full %>
-(<%= vars.product_short %>) for evaluation or testing purposes.
+for evaluation or testing purposes.
 This topic does not include procedures for adding custom service offerings.
 
 
 ## <a id="overview"></a> Overview
 
-To get started with <%= vars.product_short %>:
+To get started with <%= vars.product_full %>:
 
 1. **Install and configure a Kubernetes cluster:**
-  <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information about
+  <%= vars.product_full %> supports <%= vars.k8s_runtime_full %> clusters. For information about
   <%= vars.k8s_runtime_abbr %>,
   see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
-1. **Install and configure <%= vars.product_short %>:**
-  See [Installing and Configuring <%= vars.product_short %>](./installing.html).
-1. **Configure the <%= vars.product_short %> CLI:**
-  See [Retrieve Credentials for KSM](./using.html#credentials).
-1. **Register your Kubernetes cluster with <%= vars.product_short %>:**
+1. **Install and configure <%= vars.product_full %>:**
+  See [Installing and Configuring <%= vars.product_full %>](./installing.html).
+1. **Configure the <%= vars.product_full %> CLI:**
+  See [Retrieve Credentials for <%= vars.product_full %>](./using.html#credentials).
+1. **Register your Kubernetes cluster with <%= vars.product_full %>:**
     You can register clusters individually or set a default one.
     See [Register a Kubernetes Cluster](./managing-clusters.html#registering)
     or [Set a Default Kubernetes Cluster](./managing-clusters.html#set-default).
 1. **Add an example service offering:**
   For evaluation or testing purposes,
-  you can add the Bitnami MySQL chart to <%= vars.product_short %>.
+  you can add the Bitnami MySQL chart to <%= vars.product_full %>.
   To add the Bitnami MySQL chart:
       1. Clone the `bitnami/charts` repo by running:
 
@@ -36,7 +36,7 @@ To get started with <%= vars.product_short %>:
           git clone https://github.com/bitnami/charts.git
           ```
       1. Add the MySQL service offering by following the procedure in
-          [Add a Service Offering to KSM](./using.html#add).
+          [Add a Service Offering to <%= vars.product_full %>](./using.html#add).
 1. **Enable developer access to the service offering:**
   See [Enable Service Offering Access](.//using.html#enable).
 

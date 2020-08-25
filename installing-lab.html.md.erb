@@ -1,51 +1,51 @@
 ---
-title: Installing and Configuring KSM for Lab purpose
-owner: Platform Engineering (KSM Team)
+title: Installing and Configuring <%= vars.product_full %> for Lab purpose
+owner: Platform Engineering (<%= vars.product_full %> Team)
 ---
 <strong><%= modified_date %></strong>
 
 This topic describes how to install and configure
-<%= vars.product_full %> (<%= vars.product_short %>) for lab using Helm.
+<%= vars.product_full %> for lab using Helm.
 
 <p class="note">
-   This lab document is target to quick install for KSM with the purpose of testing or learning.
+  This lab document is target to quick install for <%= vars.product_full %> with the purpose of testing or learning.
   This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production install see
-  <a href="installing.html">Installing and Configuring KSM</a>
+  <a href="installing.html">Installing and Configuring <%= vars.product_full %></a>
 </p>
 
 ## <a id="overview"></a> Overview
 
 Helm is a Kubernetes open source package manager.
-You can use a Helm chart to install and configure <%= vars.product_short %>.
+You can use a Helm chart to install and configure <%= vars.product_full %>.
 
-To install and configure <%= vars.product_short %> using Helm:
+To install and configure <%= vars.product_full %> using Helm:
 
-1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get)
+1. [Get <%= vars.product_full %> Resources From <%= vars.product_network %>](#get)
 
-1. [Install the <%= vars.product_short %> CLI](#cli)
+1. [Install the <%= vars.product_full %> CLI](#cli)
 
-1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
+1. [Configure the <%= vars.product_full %> Helm Chart](#configure)
 
 1. [Install the Helm Chart](#install)
 
 ## <a id="prereq"></a>Prerequisites
 
-### For <%= vars.product_short %> installation
+### For <%= vars.product_full %> installation
 
-Before you install <%= vars.product_short %> using Helm:
+Before you install <%= vars.product_full %> using Helm:
 
 * **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
 * **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
 
-* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
+* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_full %> supports <%= vars.k8s_runtime_full %> clusters. For information
 about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
 * **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 * **Verify that a default StorageClass exists on the cluster where you want to install
-<%= vars.product_short %>:**
+<%= vars.product_full %>:**
 If you are using Tanzu Kubernetes Grid Integrated Edition, see
 [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
 For more information about Storage Classes, see
@@ -53,7 +53,7 @@ For more information about Storage Classes, see
 
 ### For usage with <%= vars.app_runtime_abbr %>
 
-A complete experience allows you to create cf services from <%= vars.product_short %> offers. For that you will
+A complete experience allows you to create cf services from <%= vars.product_full %> offers. For that you will
 also need to have:
 
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
@@ -62,7 +62,7 @@ also need to have:
 
 ## Two Installation Options
 
-You can install the <%= vars.product_short %> environment in two ways:
+You can install the <%= vars.product_full %> environment in two ways:
 
 1. Using `install-lab.sh` script:
     The `install-lab.sh` script automates the installation steps. Using this option you will only be required
@@ -81,18 +81,18 @@ skip to <a href="#install-manually">Installing Manually</a> section
 1. This approach requires a image private registry that will be used to upload the docker installation images, 
 so start by verifying and taking not of your private registry endpoint, username and password.
 
-1. Get <%= vars.product_short %> Resources From <%= vars.product_network %>:
+1. Get <%= vars.product_full %> Resources From <%= vars.product_network %>:
 
-    * Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+    * Log in and navigate to **<%= vars.product_full %>** in
        [<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager)
        and download the following resources:
    
-       + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+       + **The <%= vars.product_full %> Command Line Interface (CLI):** Click **CLIs** and download
        the CLI for your operating system.
-       + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and
+       + **<%= vars.product_full %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_full %>** and
        download the Helm chart TGZ file.
        + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
-       + **install-lab.sh script**: Click **KSM Lab Environment Installer** and download the install-lab.sh file
+       + **install-lab.sh script**: Click **<%= vars.product_full %> Lab Environment Installer** and download the install-lab.sh file
        
 1. Make the install-lab.sh file executable by executing the `chmod +x install-lab.sh` command
 1. You need to provide the registry endpoint, username and password during the installation. To do that you can either:
@@ -108,9 +108,9 @@ so start by verifying and taking not of your private registry endpoint, username
     ```
     
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
-1. Once the External IP is available for the daemon, you can configure the KSM environment variables by running the
+1. Once the External IP is available for the daemon, you can configure the <%= vars.product_full %> environment variables by running the
   `source ./setSmEnv.sh` command
-1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
+1. Once the External IP is available for the broker, you can configure <%= vars.product_full %> for cf by running the following script: 
   
     ```bash
     ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-client> <cf-api-client-secret>
@@ -121,57 +121,57 @@ so start by verifying and taking not of your private registry endpoint, username
         <cf-api-endpoint> - is the cf client secret
     ```
    
-1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
+1. Test the <%= vars.product_full %> by calling `<%= vars.product_short %> version` or `<%= vars.product_short %> offer list` commands
 1. You're done here! Jump to [Next Steps](#next-steps)
 
 ## <a id='install-manually'></a>Installing Manually
 
-### <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
+### <a id='get'></a> Get <%= vars.product_full %> Resources From <%= vars.product_network %>
 
-To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
+To get the resources needed from <%= vars.product_network %> to install <%= vars.product_full %>:
 
-1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
+1. Log in and navigate to **<%= vars.product_full %>** in
 [<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager).
 
 1. Get the following resources:
-    + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+    + **The <%= vars.product_full %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
-    + **<%= vars.product_short %> Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
-    for <%= vars.product_short %>.
+    + **<%= vars.product_full %> Helm chart TGZ file:** Click **<%= vars.product_short %>-VERSION-NUMBER.tgz** and download the Helm chart
+    for <%= vars.product_full %>.
     + **values-lab.yaml file:** download the values-lab.yaml override configuration file.
 
-### <a id='cli'></a>  Install the <%= vars.product_short %> CLI
+### <a id='cli'></a>  Install the <%= vars.product_full %> CLI
 
-To install the <%= vars.product_short %> Command Line Interface (CLI):
+To install the <%= vars.product_full %> Command Line Interface (CLI):
 
-1. Rename the downloaded <%= vars.product_short %> CLI file as `ksm`.
+1. Rename the downloaded <%= vars.product_full %> CLI file as `<%= vars.product_short %>`.
 
-1. Make the <%= vars.product_short %> binary act as an executable file by running:
+1. Make the <%= vars.product_full %> binary act as an executable file by running:
 
     ```bash
-    chmod +x ksm
+    chmod +x <%= vars.product_short %>
     ```
 
 1. Move the binary file into your `PATH` by running:
 
     ```bash
-    mv ksm /usr/local/bin/ksm
+    mv <%= vars.product_short %> /usr/local/bin/<%= vars.product_short %>
     ```
 
-1. Ensure <%= vars.product_short %> CLI is properly working:
+1. Ensure <%= vars.product_full %> CLI is properly working:
 
     ```bash
-    ksm version
+    <%= vars.product_short %> version
     ```
 
-### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+### <a id='configure'></a> Configure the <%= vars.product_full %> Helm Chart
 
-To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
+To configure the <%= vars.product_full %>, edit the `values-lab.yaml` file:
 
 1. Add the credentials for the Tanzu Network registry:
 
     ```yaml
-    imageCredentialsForKSMImages:
+    imageCredentialsFor<%= vars.product_short %>Images:
      registry: registry.pivotal.io
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
@@ -211,28 +211,28 @@ To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
         password: LabPassword
     ```
 
-### <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
+### <a id='install'></a> Install the <%= vars.product_full %> Helm Chart
 
-To install the <%= vars.product_short %> Helm chart:
+To install the <%= vars.product_full %> Helm chart:
 
-1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
+1. From the root level of the chart, install the <%= vars.product_full %> Helm chart by running these commands:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-lab.yaml
+    helm install RELEASE-NAME <%= vars.product_short %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-lab.yaml
     ```
 
     Where:
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_full %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
-    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
+    + `<%= vars.product_short %>-VERSION-NUMBER.tgz` is the <%= vars.product_full %> Helm Chart file you downloaded earlier.
 
-### <a id='configure-for-cf'></a> Configure  <%= vars.product_short %> for cf
+### <a id='configure-for-cf'></a> Configure  <%= vars.product_full %> for cf
 
 1. Retrieve the broker IP address by running:
 
     ```bash
-    export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+    export BROKER_IP=$(kubectl get service <%= vars.product_short %>-<%= vars.product_short %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
     ```
 
    <p class="note">
@@ -240,15 +240,15 @@ To install the <%= vars.product_short %> Helm chart:
    </p>
 
    ```bash
-   export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
+   export BROKER_IP=$(kubectl get service <%= vars.product_short %>-<%= vars.product_short %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
    ```
 
-1. Upgrade your <%= vars.product_short %> Helm release by running:
+1. Upgrade your <%= vars.product_full %> Helm release by running:
 
     ```bash
-    helm upgrade RELEASE-NAME ksm-VERSION-NUMBER.tgz --reuse-values \
+    helm upgrade RELEASE-NAME <%= vars.product_short %>-VERSION-NUMBER.tgz --reuse-values \
       --set cf.brokerUrl="http://${BROKER_IP}" \
-      --set cf.brokerName=ksm \
+      --set cf.brokerName=<%= vars.product_short %> \
       --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
       --set cf.client=CF-USERNAME \
       --set cf.clientSecret=CF-PASSWORD \
@@ -262,13 +262,13 @@ To install the <%= vars.product_short %> Helm chart:
     + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
        with `cloud_controller.admin` permissions.
     + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_full %> dedicated namespace.
 
     **Tips:**
     + You can verify the cf apiAddress by typing the `cf target` command
 
 ## <a id="next-steps"></a> Next Steps
 
-After installing and configuring <%= vars.product_short %> see:
+After installing and configuring <%= vars.product_full %> see:
 
-* [Using <%= vars.product_short %>](using.html)
+* [Using <%= vars.product_full %>](using.html)
