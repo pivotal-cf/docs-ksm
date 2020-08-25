@@ -267,18 +267,16 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
      + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
-1. Create a [UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) client
-   that <%= vars.product_short %> will use to register the broker and populate the catalog:
-   (Use the uaac cli from the OpsMan VM for convenience)
+1. Create a UAA client that <%= vars.product_short %> will use to register the broker and populate the catalog:
 
-   ```bash
-   uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
-   uaac token client get admin -s UAA-ADMIN-CLIENT-SECRET
-   uaac client add CLIENT-ID -s CLIENT-SECRET \
-     --authorized_grant_types client_credentials,refresh_token \
-     --scope cloud_controller.read,cloud_controller.write \
-     --authorities cloud_controller.admin
-   ```
+    ```bash
+    uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
+    uaac token client get admin -s UAA-ADMIN-CLIENT-SECRET
+    uaac client add CLIENT-ID -s CLIENT-SECRET \
+      --authorized_grant_types client_credentials,refresh_token \
+      --scope cloud_controller.read,cloud_controller.write \
+      --authorities cloud_controller.admin
+    ```
 
      Where:
      + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
@@ -286,6 +284,9 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      + `CLIENT-ID` is the name of the client.
      + `CLIENT-SECRET` is the secret of the client.
 
+    For information about UAA clients,
+    see [User Account and Authentication (UAA) Server](https://docs.cloudfoundry.org/concepts/architecture/uaa.html)
+    in the Cloud Foundry documentation.
 1. Configure the Cloud Foundry environment details:
 
     ```yaml
