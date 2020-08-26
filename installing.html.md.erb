@@ -267,7 +267,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
      + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
-1. Create a UAA client that <%= vars.product_short %> will use to register the broker and populate the catalog:
+1. Create a User Account and Authentication (UAA) client that <%= vars.product_short %> will use to register the broker and populate the catalog:
 
     ```bash
     uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
