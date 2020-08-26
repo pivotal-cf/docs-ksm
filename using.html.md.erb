@@ -226,7 +226,7 @@ To upgrade service instances:
     For example:
      <pre class="terminal">$ cf services
      name             service   plan    bound apps     last operation     broker                       upgrade available
-     mysql-instance   mysql     small   spring-music   create succeeded   container-services-manager   true</pre>
+     mysql-instance   mysql     small   spring-music   create succeeded   tsmgr                        true</pre>
 
      Service instances that are available for upgrade have `true` under the `upgrade available` column.
 
@@ -244,8 +244,8 @@ To upgrade service instances:
   <pre class="terminal">$ watch cf services
    Getting services in org my-org / space my-space as user...
    OK
-   name             service   plan    bound apps     last operation     broker                       upgrade available
-   mysql-instance   mysql     small   spring-music   upgrade succeeded  container-services-manager
+   name             service   plan    bound apps     last operation     broker   upgrade available
+   mysql-instance   mysql     small   spring-music   upgrade succeeded  tsmgr    false
  </pre>
    Service instances are upgraded asynchronously.
    Wait for the `last operation` for your instance to show as `create succeeded`.
