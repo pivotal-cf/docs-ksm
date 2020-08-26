@@ -122,14 +122,14 @@ To move your <%= vars.product_short %> images to a private container image regis
 1. Tag the images for your registry by running these commands:
 
     ```bash
-    docker tag registry.pivotal.io/container-services-manager/broker:VERSION-NUMBER \
-     REGISTRY/container-services-manager/broker:VERSION-NUMBER
+    docker tag registry.pivotal.io/tanzu-service-manager/broker:VERSION-NUMBER \
+     REGISTRY/tanzu-service-manager/broker:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION-NUMBER \
-     REGISTRY/container-services-manager/daemon:VERSION-NUMBER
+    docker tag registry.pivotal.io/tanzu-service-manager/daemon:VERSION-NUMBER \
+     REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
-     REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+    docker tag registry.pivotal.io/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
+     REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
 
     docker tag registry.pivotal.io/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER \
      REGISTRY/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER
@@ -147,15 +147,15 @@ To move your <%= vars.product_short %> images to a private container image regis
       This value is in the `docker pull` command that you recorded in
       [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.
 
-1. Create the `container-services-manager` project in your registry.
+1. Create the `tanzu-service-manager` project in your registry.
 
 1. Push the images to your registry by running these commands:
 
     ```bash
-    docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/postgresql:POSTGRESQL-VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/broker:VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/postgresql:POSTGRESQL-VERSION-NUMBER
     ```
 
 
