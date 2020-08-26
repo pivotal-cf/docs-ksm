@@ -1,14 +1,14 @@
 ---
-title: Installing and Configuring KSM for Lab purpose
+title: Installing and Configuring KSM for Dev purpose
 owner: Platform Engineering (KSM Team)
 ---
 <strong><%= modified_date %></strong>
 
 This topic describes how to install and configure
-<%= vars.product_full %> (<%= vars.product_short %>) for lab using Helm.
+<%= vars.product_full %> (<%= vars.product_short %>) for dev using Helm.
 
 <p class="note">
-   This lab document is target to quick install for KSM with the purpose of testing or learning.
+   This dev document is target to quick install for KSM with the purpose of testing or learning.
   This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production install see
   <a href="installing.html">Installing and Configuring KSM</a>
 </p>
@@ -64,17 +64,17 @@ also need to have:
 
 You can install the <%= vars.product_short %> environment in two ways:
 
-1. Using `install-lab.sh` script:
-    The `install-lab.sh` script automates the installation steps. Using this option you will only be required
+1. Using `install-dev.sh` script:
+    The `install-dev.sh` script automates the installation steps. Using this option you will only be required
     to download files and provide private registry endpoint, username and password.
 1. Install manually:
     This option will require more interactivity from you, but you can have a more comprehensive understanding of
     what is happening.
 
-## Installing Using Install-lab.sh Script
+## Installing Using install-dev.sh Script
 
 <p class="note">
-If you want to install manually instead of using the install-lab.sh script,
+If you want to install manually instead of using the install-dev.sh script,
 skip to <a href="#install-manually">Installing Manually</a> section
 </p>
 
@@ -92,13 +92,13 @@ so start by verifying and taking not of your private registry endpoint, username
        + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and
        download the Helm chart TGZ file.
        + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
-       + **install-lab.sh script**: Click **KSM Lab Environment Installer** and download the install-lab.sh file
+       + **install-dev.sh script**: Click **KSM Dev Environment Installer** and download the install-dev.sh file
        
-1. Make the install-lab.sh file executable by executing the `chmod +x install-lab.sh` command
+1. Make the install-dev.sh file executable by executing the `chmod +x install-dev.sh` command
 1. You need to provide the registry endpoint, username and password during the installation. To do that you can either:
   
-  + execute the `./install-lab.sh` command and answer the registry details questions, or
-  + create a registry.yaml file containing the needed information in the following format, and execute the `install-lab.sh registry.yaml` command
+  + execute the `./install-dev.sh` command and answer the registry details questions, or
+  + create a registry.yaml file containing the needed information in the following format, and execute the `install-dev.sh registry.yaml` command
 
     #### registry.yaml template
     ```yaml
@@ -138,7 +138,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     the CLI for your operating system.
     + **<%= vars.product_short %> Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
-    + **values-lab.yaml file:** download the values-lab.yaml override configuration file.
+    + **values-dev.yaml file:** download the values-dev.yaml override configuration file.
 
 ### <a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
@@ -166,7 +166,7 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 ### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
-To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
+To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
 
 1. Add the credentials for the Tanzu Network registry:
 
@@ -183,17 +183,17 @@ To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
 
  1. (Recommended) Set unique passwords:
 
-    The `values-lab.yaml` is pre configured with default passwords, but we recommend they be changed
+    The `values-dev.yaml` is pre configured with default passwords, but we recommend they be changed
     to unique passwords in these sections:
 
     ```yaml
     broker:
-      password: LabPassword
+      password: DevPassword
     ```
 
     ```yaml
     daemon:
-      password: LabPassword
+      password: DevPassword
     ```
 
     ```yaml
@@ -206,9 +206,9 @@ To configure the <%= vars.product_short %>, edit the `values-lab.yaml` file:
     ```yaml
     minio:
       accessKey:
-        password: LabPassword
+        password: DevPassword
       secretKey:
-        password: LabPassword
+        password: DevPassword
     ```
 
 ### <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
@@ -219,7 +219,7 @@ To install the <%= vars.product_short %> Helm chart:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-lab.yaml
+    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-dev.yaml
     ```
 
     Where:
