@@ -1,7 +1,7 @@
 docs-ksm
 ==========
 
-Docs for [Container Services Manager for VMware Tanzu](https://network.pivotal.io/products/container-services-manager/)(Beta)
+Docs for [Container Services Manager for VMware Tanzu](https://network.pivotal.io/products/tanzu-service-manager/)(Beta)
 
 ## Where is the book repository?
 https://github.com/pivotal-cf/docs-book-ksm
