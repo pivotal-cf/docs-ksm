@@ -85,7 +85,7 @@ Additionally, if you are planning to use <%= vars.product_short %> with <%= vars
 To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
 
 1. Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-[<%= vars.product_network %>](https://network.pivotal.io/products/container-services-manager).
+[<%= vars.product_network %>](https://network.pivotal.io/products/tanzu-service-manager).
 
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
@@ -134,14 +134,14 @@ To replicate your <%= vars.product_short %> images to a private container image 
 1. Tag the images for your registry by running these commands:
 
     ```bash
-    docker tag registry.pivotal.io/container-services-manager/broker:VERSION-NUMBER \
-     REGISTRY/container-services-manager/broker:VERSION-NUMBER
+    docker tag registry.pivotal.io/tanzu-service-manager/broker:VERSION-NUMBER \
+     REGISTRY/tanzu-service-manager/broker:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/daemon:VERSION-NUMBER \
-     REGISTRY/container-services-manager/daemon:VERSION-NUMBER
+    docker tag registry.pivotal.io/tanzu-service-manager/daemon:VERSION-NUMBER \
+     REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
 
-    docker tag registry.pivotal.io/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
-     REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+    docker tag registry.pivotal.io/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
+     REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
 
     ```
 
@@ -157,21 +157,21 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-    docker tag registry.pivotal.io/container-services-manager/broker:0.10.89 \
-    privateregistry.domain.com/container-services-manager/broker:0.10.89
+    docker tag registry.pivotal.io/tanzu-service-manager/broker:0.10.89 \
+    privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
     </pre>
 
     Alternatively, if you downloaded the TGZ files, you can verify the versions
      by running the `docker images` command and looking at the `TAG` column for each referred image.
 
-1. Create the `container-services-manager` project in your registry.
+1. Create the `tanzu-service-manager` project in your registry.
 
 1. Push the images to your registry by running these commands:
 
     ```bash
-    docker push REGISTRY/container-services-manager/broker:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/daemon:VERSION-NUMBER
-    docker push REGISTRY/container-services-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/broker:VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
+    docker push REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
 
     Where `REGISTRY` is the private container image registry path.
@@ -179,7 +179,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-    docker push privateregistry.domain.com/container-services-manager/broker:0.10.89</pre>
+    docker push privateregistry.domain.com/tanzu-service-manager/broker:0.10.89</pre>
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
@@ -195,7 +195,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     ```
     Where:
     + `REGISTRY` is the registry you configured for installation images,
-    for example, `privateregistry.domain.com/container-services-manager`.
+    for example, `privateregistry.domain.com/tanzu-service-manager`.
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
 
@@ -238,13 +238,13 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     ```yaml
     broker:
      image:
-       repository: REGISTRY/container-services-manager/broker
+       repository: REGISTRY/tanzu-service-manager/broker
     daemon:
      image:
-       repository: REGISTRY/container-services-manager/daemon
+       repository: REGISTRY/tanzu-service-manager/daemon
     chartmuseum:
      image:
-       repository: REGISTRY/container-services-manager/chartmuseum
+       repository: REGISTRY/tanzu-service-manager/chartmuseum
     ```
 
     Where `REGISTRY` is your private container image registry, for example, `privateregistry.domain.com`.
