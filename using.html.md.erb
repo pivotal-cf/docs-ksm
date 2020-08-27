@@ -1,6 +1,6 @@
 ---
-title: Using KSM
-owner: Platform Engineering (KSM Team)
+title: Using <%= vars.product_short %>
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 
 <strong><%= modified_date %></strong>
@@ -55,20 +55,20 @@ by doing one of the following:
     + **If you are adding a single chart,** run:
 
         ```
-        ksm offer save /PATH-TO-YOUR-CHART.tgz
+        <%= vars.product_cli %> offer save /PATH-TO-YOUR-CHART.tgz
         ```
         Where `PATH-TO-YOUR-CHART.tgz` is the path to the packaged chart you created in the above step.<br><br>
     + **If you are adding multiple charts,** run:
 
         ```
-        ksm offer save /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
+        <%= vars.product_cli %> offer save /PATH-TO-<%= vars.product_short %>-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
 
-        + `PATH-TO-KSM-DIRECTORY/` is the path to the `ksm` directory that includes the `ksm.yaml`
+        + `PATH-TO-<%= vars.product_short %>-DIRECTORY/` is the path to the `<%= vars.product_cli %>` directory that includes the `<%= vars.product_cli %>.yaml`
             file for your service offering.
-        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
-        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
 
         <p class="note"><strong>Note:</strong>
           If you have already added a packaged chart to <%= vars.product_short %>,
@@ -79,7 +79,7 @@ by doing one of the following:
         see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
     <p class="note"><strong>Note:</strong>
-      If the Helm chart version specified in <code>ksm.yaml</code>
+      If the Helm chart version specified in <code><%= vars.product_cli %>.yaml</code>
       and <code>Chart.yaml</code> do not match, <%= vars.product_short %>
       returns a error message similar to the following:
       <code>Error: The offer yaml version [2.3.0] for chart [mysql] does not match the version [1.3.0] in chart</code>
@@ -87,7 +87,7 @@ by doing one of the following:
 1. Ensure your offering has been saved to <%= vars.product_short %> by running:
 
     ```
-    ksm offer list
+    <%= vars.product_cli %> offer list
     ```
 
 ## <a id="enable"></a> Enable Service Offering Access
@@ -136,9 +136,9 @@ To update a service offering in  <%= vars.product_short %>:
 
 1. For each chart you are updating, after you edit your Helm chart,
   increment the chart version in `Chart.yaml`.
-1. If you have a `ksm.yaml` file for your service offering,
-  update the chart versions in `ksm.yaml` to match the the version in `Chart.yaml`.
-  For more information about multiple charts and `ksm.yaml`,
+1. If you have a `<%= vars.product_cli %>.yaml` file for your service offering,
+  update the chart versions in `<%= vars.product_cli %>.yaml` to match the the version in `Chart.yaml`.
+  For more information about multiple charts and `<%= vars.product_cli %>.yaml`,
     see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 1. If any of your charts include modified Custom Resource Definitions (CRDs),
   for each CRD manifest, manually apply the changes to the cluster by running:
@@ -175,19 +175,19 @@ To update a service offering in  <%= vars.product_short %>:
     + **If you are adding a single chart,** run:
 
         ```
-        ksm offer save /PATH-TO-YOUR-CHART.tgz --update
+        <%= vars.product_cli %> offer save /PATH-TO-YOUR-CHART.tgz --update
         ```
         Where `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete. <br><br>
     + **If you are adding a multiple charts,** run:
 
         ```
-        ksm offer save /PATH-TO-KSM-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
+        <%= vars.product_cli %> offer save /PATH-TO-<%= vars.product_short %>-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
         ```
         Where:
-        + `PATH-TO-KSM-DIRECTORY/` is the path to the `ksm` directory that includes
-            the `ksm.yaml` file for your service offering.
-        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
-        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `ksm.yaml` file.
+        + `PATH-TO-<%= vars.product_short %>-DIRECTORY/` is the path to the `<%= vars.product_cli %>` directory that includes
+            the `<%= vars.product_cli %>.yaml` file for your service offering.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
 
 ## <a id="list-instance"></a> List Service Instances
 You can list existing service instances and filter by marketplace name or cluster name.
@@ -198,14 +198,14 @@ options:
 - **Filter by marketplace name by running:**
 
     ```
-    ksm instance list MARKETPLACE-NAME
+    <%= vars.product_cli %> instance list MARKETPLACE-NAME
     ```
     Where `MARKETPLACE-NAME` is the name of the offer.
 
 - **Filter by cluster by running:**
 
     ```
-    ksm instance list --cluster-name CLUSTER-NAME
+    <%= vars.product_cli %> instance list --cluster-name CLUSTER-NAME
     ```
     Where `CLUSTER-NAME` is the name of the cluster.
 
@@ -271,7 +271,7 @@ delete the instance by running:
 1. Delete a service offering by running:
 
     ```
-    ksm offer delete YOUR-CHART
+    <%= vars.product_cli %> offer delete YOUR-CHART
     ```
     Where `YOUR-CHART` is the name of the service offering you want to delete.
 

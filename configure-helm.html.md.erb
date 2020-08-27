@@ -1,6 +1,6 @@
 ---
 title: Configuring a Helm Chart
-owner: Platform Engineering (KSM Team)
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 
 <strong><%= modified_date %></strong>
@@ -15,7 +15,7 @@ on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_r
 Before you add a service offering to `cf marketplace`,
 you must configure your Helm charts to be compatible with <%=  vars.product_short %>.
 For examples of <%= vars.product_short %>-compatible charts,
-see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
+see [<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/ksm-sample) on GitHub.
 
 To configure a Helm chart:
 
@@ -117,7 +117,7 @@ For more information, see [Configuring and Using PersistentVolumes](https://docs
       For information about
       ExternalDNS, see <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
-1. Edit the `ksm.yaml` file to use the override file you created in step 1.<br><br>
+1. Edit the `<%= vars.product_cli %>.yaml` file to use the override file you created in step 1.<br><br>
 For example:
 
     ```yaml
@@ -129,7 +129,7 @@ For example:
         scope: SCOPE-VALUE
         overrideValuesFile: OVERRIDE-FILE
     ```
-    For information about the properties used in `ksm.yaml`,
+    For information about the properties used in `<%= vars.product_cli %>.yaml`,
     see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
 ## <a id='crd'></a> Define Custom Resource Definitions

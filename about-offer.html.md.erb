@@ -1,6 +1,6 @@
 ---
 title: About Service Offerings
-owner: Platform Engineering (KSM Team)
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 
 <strong><%= modified_date %></strong>
@@ -27,7 +27,7 @@ The following code snippet shows an example of a service offering directory stru
 ```yaml
 service-name/
    bind.yaml
-   ksm.yaml
+   <%= vars.product_cli %>.yaml
    plans.yaml
    overrides/
      override-values.yaml
@@ -70,7 +70,7 @@ Reference the following table to determine which files you must include in your
 
   <tr>
     <td>Add a custom <code>cf marketplace</code> name</td>
-    <td rowspan="4"><code>ksm.yaml</code></td>
+    <td rowspan="4"><code><%= vars.product_cli %>.yaml</code></td>
     <td><a href="#cf-marketplace">Service Offerings in CF Marketplace</a></td>
   </tr>
   <tr>
@@ -112,12 +112,12 @@ Reference the following table to determine which files you must include in your
 
 ##<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
 
-Uploading a Helm chart to <%= vars.product_short %> with either a `ksm.yaml` or `plans.yaml` file
+Uploading a Helm chart to <%= vars.product_short %> with either a `<%= vars.product_cli %>.yaml` or `plans.yaml` file
 overrides the default values for the service offering name, description, and plan names.
 These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
 
 The following table describes the values that <%= vars.product_short %> uses when you upload a Helm chart either
-without additional configurations, with a `ksm.yaml` file, or with a `plans.yaml` file:
+without additional configurations, with a `<%= vars.product_cli %>.yaml` file, or with a `plans.yaml` file:
 
 <table>
   <tr>
@@ -135,8 +135,8 @@ without additional configurations, with a `ksm.yaml` file, or with a `plans.yaml
   </tr>
 
   <tr>
-    <td><strong><code>ksm.yaml</code></strong></td>
-    <td><code>marketplace-name</code> value in <code>ksm.yaml</code></td>
+    <td><strong><code><%= vars.product_cli %>.yaml</code></strong></td>
+    <td><code>marketplace-name</code> value in <code><%= vars.product_cli %>.yaml</code></td>
     <td>No effect</td>
     <td>No effect</td>
   </tr>

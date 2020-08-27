@@ -1,10 +1,10 @@
-docs-ksm
+docs-<%= vars.product_cli %>
 ==========
 
-Docs for [Container Services Manager for VMware Tanzu](https://network.pivotal.io/products/tanzu-service-manager/)(Beta)
+Docs for [<%= vars.product_full %>](https://network.pivotal.io/products/tanzu-service-manager/)(Beta)
 
 ## Where is the book repository?
-https://github.com/pivotal-cf/docs-book-ksm
+https://github.com/pivotal-cf/docs-book-<%= vars.product_cli %>
 
 ## Which branch to use?
 
@@ -36,12 +36,12 @@ $ open http://127.0.0.1:XXXX/ksm/<branch>
 
 ## Style Guide
 
-This is a word list for terminology and word usage specific to the KSM for docs.
+This is a word list for terminology and word usage specific to the <%= vars.product_short %> for docs.
 
 | Word | Explanation |
 |------|-------------|
-| KSM |Acronym for Container Services Manager|
-| KSM CLI | CLI component for KSM. Unless you are referring to what it is called on VMware Network, Container Services Manager CLIs or [OPERATIING-SYSTEM] for KSM, use KSM CLI.|
+| <%= vars.product_short %> |Acronym for <%= vars.product_full %>|
+| <%= vars.product_short %> CLI | CLI component for <%= vars.product_short %>. Unless you are referring to what it is called on VMware Network, <%= vars.product_full %> CLIs or [OPERATIING-SYSTEM] for <%= vars.product_short %>, use <%= vars.product_short %> CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
 |private container image registry| Container registries can be public or private. VMware recommends using **private** conatiner registries. |
 |public container image registry| If you mean "public container registry" or "private container registry" say so, at least on first use in the paragraph. Don't assume that the reader/learner knows which you mean. Don't shorten to "public registry" or "private registry". |

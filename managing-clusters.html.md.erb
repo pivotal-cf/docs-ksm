@@ -1,6 +1,6 @@
 ---
-title: Managing Kubernetes Clusters for KSM
-owner: Platform Engineering (KSM Team)
+title: Managing Kubernetes Clusters for <%= vars.product_short %>
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 
 <strong><%= modified_date %></strong>
@@ -52,7 +52,7 @@ with the `cluster-admin` role in a dedicated namespace:
     1. Create the namespace by running:
 
         ```
-        kubectl create ns ksm-system
+        kubectl create ns <%= vars.product_cli %>-system
         ```
 
     1. Create a YAML file for the <%= vars.product_short %> service account
@@ -63,21 +63,21 @@ with the `cluster-admin` role in a dedicated namespace:
         apiVersion: v1
         kind: ServiceAccount
         metadata:
-          name: ksm-admin
-          namespace: ksm-system
+          name: <%= vars.product_cli %>-admin
+          namespace: <%= vars.product_cli %>-system
         ---
         apiVersion: rbac.authorization.k8s.io/v1beta1
         kind: ClusterRoleBinding
         metadata:
-          name: ksm-cluster-admin
+          name: <%= vars.product_cli %>-cluster-admin
         roleRef:
           apiGroup: rbac.authorization.k8s.io
           kind: ClusterRole
           name: cluster-admin
         subjects:
           - kind: ServiceAccount
-            name: ksm-admin
-            namespace: ksm-system
+            name: <%= vars.product_cli %>-admin
+            namespace: <%= vars.product_cli %>-system
         ```
 
         For information about service accounts,
@@ -98,10 +98,10 @@ with the `cluster-admin` role in a dedicated namespace:
 1. Get your service account token by running:
 
     ```
-    secret_name=$(kubectl get serviceaccount ksm-admin \
-     --namespace=ksm-system -o jsonpath='{.secrets[0].name}')
+    secret_name=$(kubectl get serviceaccount <%= vars.product_cli %>-admin \
+     --namespace=<%= vars.product_cli %>-system -o jsonpath='{.secrets[0].name}')
 
-    secret_val=$(kubectl --namespace=ksm-system get secret $secret_name \
+    secret_val=$(kubectl --namespace=<%= vars.product_cli %>-system get secret $secret_name \
      -o jsonpath='{.data.token}')
 
     secret_val=$(echo ${secret_val} | base64 --decode)
@@ -148,7 +148,7 @@ See [Create a Cluster Credentials File](#create-cluster-file).
 1. Register the cluster with <%= vars.product_short %> by running:
 
     ```
-    ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML
+    <%= vars.product_cli %> cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML
     ```
     Where:
     + `CLUSTER-NAME` is the name of your cluster.
@@ -170,7 +170,7 @@ To set a default cluster:
 1. Set a default cluster by running:
 
     ```
-    ksm cluster set-default CLUSTER-NAME
+    <%= vars.product_cli %> cluster set-default CLUSTER-NAME
     ```
 
     Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
@@ -183,7 +183,7 @@ To see a list of registered Kubernetes clusters:
 1. List registered clusters by running:
 
     ```
-    ksm cluster list
+    <%= vars.product_cli %> cluster list
     ```
 
 ### <a id='deregistering'></a> Deregister a Kubernetes Cluster
@@ -196,7 +196,7 @@ To deregister a cluster:
 1. Deregister the cluster by running:
 
     ```
-    ksm cluster deregister CLUSTER-NAME
+    <%= vars.product_cli %> cluster deregister CLUSTER-NAME
     ```
 
     Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
@@ -213,7 +213,7 @@ with <%= vars.product_short %>:
 1. Update the Kubernetes cluster credentials by running:
 
     ```
-    ksm cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML --update
+    <%= vars.product_cli %> cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML --update
     ```
 
     Where:
