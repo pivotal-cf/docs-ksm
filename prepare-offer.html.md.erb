@@ -1,6 +1,6 @@
 ---
 title: Preparing a Service Offering
-owner: Platform Engineering (KSM Team)
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 
 <strong><%= modified_date %></strong>
@@ -49,7 +49,7 @@ When you create the service offering directory with the <%= vars.product_short %
 the directory includes the following sample files:
 
 + `SERVICE-NAME/bind.yaml`
-+ `SERVICE-NAME/ksm.yaml`
++ `SERVICE-NAME/<%= vars.product_cli %>.yaml`
 + `SERVICE-NAME/plans.yaml`
 + `SERVICE-NAME/plans/small.yaml`
 + `SERVICE-NAME/plans/medium.yaml`
@@ -60,12 +60,12 @@ To create a sample service offering directory:
 1. Create a directory for your service offering by running:
 
     ```
-    ksm offer init SERVICE-NAME
+    <%= vars.product_cli %> offer init SERVICE-NAME
     ```
     Where `SERVICE-NAME` is the name of the service offering.
 
     <p class="note"><strong>Note:</strong> If you do not include a <code>plans.yaml</code>,
-      a <code>ksm.yaml</code> file, or override files with your service offering, one plan is offered.
+      a <code><%= vars.product_cli %>.yaml</code> file, or override files with your service offering, one plan is offered.
     This plan uses the default values for the Helm chart.
     </p>
 
@@ -85,7 +85,7 @@ For Kubernetes services, each <%= vars.product_short %> plan represents a set of
 the default values in the Helm chart.
 These values are configured in `plans.yaml`.
 For examples of `plans.yaml` files,
-see [ksm-sample](https://github.com/cf-platform-eng/ksm-sample/tree/master) on GitHub.
+see [<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/ksm-sample/tree/master) on GitHub.
 
 If you want to override the default settings in `values.yaml` and offer custom plans:
 
@@ -185,11 +185,11 @@ You might want to offer multiple Helm charts in the following cases:
 * A service that uses multiple charts.
 For example, a service that uses a data service chart and a monitoring service chart.
 
-To offer a service with multiple Helm charts, you must edit the `ksm.yaml` file.
-The `charts` section in a `ksm.yaml` file is an ordered list of the charts that are included
+To offer a service with multiple Helm charts, you must edit the `<%= vars.product_cli %>.yaml` file.
+The `charts` section in a `<%= vars.product_cli %>.yaml` file is an ordered list of the charts that are included
 in the service offering.
 
-1. Edit the `ksm.yaml` file directory using the following as a template:
+1. Edit the `<%= vars.product_cli %>.yaml` file directory using the following as a template:
 
     ```yaml
     marketplace-name: SERVICE-NAME
@@ -212,7 +212,7 @@ in the service offering.
     + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
     + `SCOPE-VALUE` is set to either `cluster` or `namespace`. For more information, see the below table.
 
-The following table describes the Helm chart configurations in `ksm.yaml`:
+The following table describes the Helm chart configurations in `<%= vars.product_cli %>.yaml`:
 
 <table>
   <tr>
@@ -296,7 +296,7 @@ To edit and test the `bind.yaml` file:
 1. Test that `bind.yaml` is creating a valid JSON object by running:
 
     ```
-    ksm test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
+    <%= vars.product_cli %> test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
     ```
 
     Where
@@ -306,7 +306,7 @@ To edit and test the `bind.yaml` file:
     your chart is deployed.
     <br><br>
     For example:
-    <pre class="terminal">$ ksm test-bind-template cluster default bind.yaml
+    <pre class="terminal">$ <%= vars.product_cli %> test-bind-template cluster default bind.yaml
     Services, secrets, and ingress:
     {
         "secrets": [
@@ -322,7 +322,7 @@ To edit and test the `bind.yaml` file:
             {
                 "metadata": {
                     "name": "1-23456789-mysql",
-                    "namespace": "ksm-f5d531d5-7b07-4bc0-8114-8aba5e2bd706",
+                    "namespace": "<%= vars.product_cli %>-f5d531d5-7b07-4bc0-8114-8aba5e2bd706",
                     "uid": "9f2d94c1-4900-11ea-a03a-42010a800053",
                     "resourceVersion": "4943530",
                     "creationTimestamp": "2020-02-06T16:49:20Z",

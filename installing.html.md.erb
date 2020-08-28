@@ -1,6 +1,6 @@
 ---
-title: Installing and Configuring KSM
-owner: Platform Engineering (KSM Team)
+title: Installing and Configuring <%= vars.product_short %>
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 <strong><%= modified_date %></strong>
 
@@ -93,7 +93,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
     commands for the **broker**, **daemon**, and **chartmuseum**.
     You can alternatively download the image `tgz` files from the `images` directory.
-    + **Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
+    + **Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
     + **values-production.yaml file:** Download the `values-production.yaml` override configuration file.
 
@@ -102,24 +102,24 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
 
 To install the <%= vars.product_short %> Command Line Interface (CLI):
 
-1. Rename the downloaded <%= vars.product_short %> CLI file as `ksm`.
+1. Rename the downloaded <%= vars.product_short %> CLI file as `<%= vars.product_cli %>`.
 
 1. Make the <%= vars.product_short %> binary act as an executable file by running:
 
     ```bash
-    chmod +x ksm
+    chmod +x <%= vars.product_cli %>
     ```
 
 1. Move the binary file into your `PATH` by running:
 
     ```bash
-    mv ksm /usr/local/bin/ksm
+    mv <%= vars.product_cli %> /usr/local/bin/<%= vars.product_cli %>
     ```
 
 1. Ensure <%= vars.product_short %> CLI is properly working:
 
     ```bash
-    ksm version
+    <%= vars.product_cli %> version
     ```
 
 ## <a id='replicate-images'></a> Replicate <%= vars.product_short %> Images
@@ -188,7 +188,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 1. Add the credentials for the registry where you replicated the <%= vars.product_short %> images:
 
     ```yaml
-    imageCredentialsForKSMImages:
+    imageCredentialsFor<%= vars.product_short %>Images:
      registry: REGISTRY
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
@@ -294,7 +294,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      apiAddress: http://api.SYSTEM-DOMAIN
      client: CLIENT-ID
      clientSecret: CLIENT-SECRET
-     brokerName: ksm
+     brokerName: <%= vars.product_cli %>
      brokerUrl: https://broker.INGRESS-DOMAIN
     ```
 
@@ -324,7 +324,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
       procedures to install and configure the prerequisites for the certificate management provider you are using.
       <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
       To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
-    2. Add the following to your `ksm/values.yml` file:
+    2. Add the following to your `<%= vars.product_cli %>/values.yml` file:
 
         ```yaml
         ingress:
@@ -397,12 +397,12 @@ To install the <%= vars.product_short %> Helm chart:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-production.yaml
+    helm install RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-production.yaml
     ```
     Where:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
-    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file you downloaded earlier.
+    + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file you downloaded earlier.
 
 
 ## <a id="security"></a> (Recommended) Configure Security
@@ -463,16 +463,16 @@ To configure a Linkerd service mesh:
 1. Verify that <%= vars.product_short %> is added to the mesh by running:
 
     ```bash
-    linkerd stat deployments -n KSM-NAMESPACE
+    linkerd stat deployments -n <%= vars.product_short %>-NAMESPACE
     ```
-    Where `KSM-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
+    Where `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
 
 1. Verify that TLS is working on the deployment by running:
 
     ```bash
-    linkerd -n KSM-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
+    linkerd -n <%= vars.product_short %>-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
     ```
-    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-ksm-daemon`.
+    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-<%= vars.product_cli %>-daemon`.
 
 
 ## <a id="prometheus"></a> (Optional) Install Prometheus
@@ -500,7 +500,7 @@ To install Prometheus to a cluster:
 
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
-1. To view metrics for KSM, type `{app_kubernetes_io_name="ksm"}` in the expression box and click **Execute**.
+1. To view metrics for <%= vars.product_short %>, type `{app_kubernetes_io_name="<%= vars.product_cli %>"}` in the expression box and click **Execute**.
 
 
 ## <a id="next-steps"></a> Next Steps

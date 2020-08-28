@@ -1,6 +1,6 @@
 ---
-title: Installing and Configuring KSM for Dev purpose
-owner: Platform Engineering (KSM Team)
+title: Installing and Configuring <%= vars.product_short %> for Dev purpose
+owner: Platform Engineering (<%= vars.product_short %> Team)
 ---
 <strong><%= modified_date %></strong>
 
@@ -8,9 +8,9 @@ This topic describes how to install and configure
 <%= vars.product_full %> (<%= vars.product_short %>) for dev using Helm.
 
 <p class="note">
-   This dev document is target to quick install for KSM with the purpose of testing or learning.
+   This dev document is target to quick install for <%= vars.product_short %> with the purpose of testing or learning.
   This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production install see
-  <a href="installing.html">Installing and Configuring KSM</a>
+  <a href="installing.html">Installing and Configuring <%= vars.product_short %></a>
 </p>
 
 ## <a id="overview"></a> Overview
@@ -92,7 +92,7 @@ so start by verifying and recording your private registry endpoint, username and
        + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and
        download the Helm chart TGZ file.
        + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
-       + **install-dev.sh script**: Click **KSM Dev Environment Installer** and download the install-dev.sh file
+       + **install-dev.sh script**: Click **<%= vars.product_short %> Dev Environment Installer** and download the install-dev.sh file
        
 1. Make the install-dev.sh file executable by executing the `chmod +x install-dev.sh` command
 1. You need to provide the registry endpoint, username and password during the installation. To do that you can either:
@@ -108,7 +108,7 @@ so start by verifying and recording your private registry endpoint, username and
     ```
     
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
-1. Once the External IP is available for the daemon, you can configure the KSM environment variables by running the
+1. Once the External IP is available for the daemon, you can configure the <%= vars.product_short %> environment variables by running the
   `source ./setSmEnv.sh` command
 1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
   
@@ -121,7 +121,7 @@ so start by verifying and recording your private registry endpoint, username and
         <cf-api-endpoint> - is the cf client secret
     ```
    
-1. Test the <%= vars.product_short %> by calling `ksm version` or `ksm offer list` commands
+1. Test the <%= vars.product_short %> by calling `<%= vars.product_cli %> version` or `<%= vars.product_cli %> offer list` commands
 1. You're done here! Jump to [Next Steps](#next-steps)
 
 ## <a id='install-manually'></a>Installing Manually
@@ -136,7 +136,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
-    + **<%= vars.product_short %> Helm chart TGZ file:** Click **ksm-VERSION-NUMBER.tgz** and download the Helm chart
+    + **<%= vars.product_short %> Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the Helm chart
     for <%= vars.product_short %>.
     + **values-dev.yaml file:** download the values-dev.yaml override configuration file.
 
@@ -144,24 +144,24 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
 
 To install the <%= vars.product_short %> Command Line Interface (CLI):
 
-1. Rename the downloaded <%= vars.product_short %> CLI file as `ksm`.
+1. Rename the downloaded <%= vars.product_short %> CLI file as `<%= vars.product_cli %>`.
 
 1. Make the <%= vars.product_short %> binary act as an executable file by running:
 
     ```bash
-    chmod +x ksm
+    chmod +x <%= vars.product_cli %>
     ```
 
 1. Move the binary file into your `PATH` by running:
 
     ```bash
-    mv ksm /usr/local/bin/ksm
+    mv <%= vars.product_cli %> /usr/local/bin/<%= vars.product_cli %>
     ```
 
 1. Ensure <%= vars.product_short %> CLI is properly working:
 
     ```bash
-    ksm version
+    <%= vars.product_cli %> version
     ```
 
 ### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
@@ -171,7 +171,7 @@ To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
 1. Add the credentials for the Tanzu Network registry:
 
     ```yaml
-    imageCredentialsForKSMImages:
+    imageCredentialsFor<%= vars.product_short %>Images:
      registry: registry.pivotal.io
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
@@ -219,20 +219,20 @@ To install the <%= vars.product_short %> Helm chart:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
-    helm install RELEASE-NAME ksm-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-dev.yaml
+    helm install RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-dev.yaml
     ```
 
     Where:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
-    + `ksm-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
+    + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
 
 ### <a id='configure-for-cf'></a> Configure  <%= vars.product_short %> for cf
 
 1. Retrieve the broker IP address by running:
 
     ```bash
-    export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+    export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
     ```
 
    <p class="note">
@@ -240,15 +240,15 @@ To install the <%= vars.product_short %> Helm chart:
    </p>
 
    ```bash
-   export BROKER_IP=$(kubectl get service ksm-ksm-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
+   export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
    ```
 
 1. Upgrade your <%= vars.product_short %> Helm release by running:
 
     ```bash
-    helm upgrade RELEASE-NAME ksm-VERSION-NUMBER.tgz --reuse-values \
+    helm upgrade RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz --reuse-values \
       --set cf.brokerUrl="http://${BROKER_IP}" \
-      --set cf.brokerName=ksm \
+      --set cf.brokerName=<%= vars.product_cli %> \
       --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
       --set cf.client=CF-USERNAME \
       --set cf.clientSecret=CF-PASSWORD \
