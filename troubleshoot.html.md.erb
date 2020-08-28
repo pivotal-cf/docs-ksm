@@ -18,7 +18,7 @@ This section describes solutions for specific troubleshooting errors.
 <%= partial vars.path_to_partials + "/troubleshoot-template", locals: {
     id: 'helm-versions',
     description: 'Incompatible Helm CLI Versions' ,
-    symptom: 'When you run <code><%= vars.product_cli %> offer save</code>, you see an error similar to the following:
+    symptom: 'When you run <code>tsmgr offer save</code>, you see an error similar to the following:
     <pre class="terminal"> helm.sh/hook: crd-install found in [Chart1, Chart2....] but no Helm /crds dir; this looks like a Helm 2 only chart </pre>',
     cause:  vars.product_short  + ' supports charts that use the Helm 2 and Helm 3 CLIs.
     However, Helm 2 and Helm 3 use different methods to install Custom Resource Definitions (CRDs).
