@@ -259,15 +259,15 @@ Libraries such as Spring Cloud
 Cloud Foundry Connector automatically support services if their credentials in
 `VCAP_SERVICES` are formatted in a valid JSON object.
 
-For an example of the requirements for using Spring Cloud
+For an example of the requirements for using Spring Cloud -
 Cloud Foundry Connector with a MySQL service, see the
-[Spring Cloud Cloud Foundry Connector documentation](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql).
+[Spring Cloud - Cloud Foundry Connector documentation](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql).
 
 Chart authors can edit the `bind.yaml` file to enable the broker to
 return a valid JSON object containing service credentials.
 This `bind.yaml` file contains a Jsonnet template.
 When a developer binds the service instance to their app,
-service credentials are delivered to `VCAP_SERVICES` for app consumption.
+the service credentials are delivered to `VCAP_SERVICES` for app consumption.
 
 For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org).
 
@@ -293,20 +293,44 @@ To edit and test the `bind.yaml` file:
     and <code>$.ingresses</code> are from the namespace where the chart is deployed.
       </p>
 
-1. Test that `bind.yaml` is creating a valid JSON object by running:
+1. You can test if the `bind.yaml` template is creating the expected JSON object by doing the following steps:
+    
+    - Be sure you have registered a default cluster before moving forward. See [Managing Clusters](./managing-clusters.html).
+    
+    - You should be using the above cluster as your local configuration as well (your kubectl should be pointing to the same
+    cluster you just registered).
+    
+    - Install the given helm chart. Wait for the service to be ready, and the public ip address to be available: 
+    
+    ```bash
+    helm install RELEASE-NAME HELM-CHART.tgz -n NAMESPACE --set service.type=LoadBalancer --wait
+    ``` 
+   
+    Where:
+    + `RELEASE-NAME` is the name of the release instance you're creating.
+    + `HELM-CHART` is the helm chart file name.
+    + `NAMESPACE` is the name of the namespace in which you are installing your helm chart.
+   
+    **For example:**
+      
+    ```bash
+    kubectl create namespace mysql-ns
+    helm install mysql mysql-0.1.4.tgz -n mysql-ns --set service.type=LoadBalancer --wait
+    ``` 
 
+    - Execute the test-bind-template by running the following command:
+    
     ```
     <%= vars.product_cli %> test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
     ```
 
-    Where
+    Where:
      + `CLUSTER-NAME` is the name of the <%= vars.product_short %>-registered cluster
-       where your chart is deployed.
-     + `NAMESPACE` is the name of the namespace in your cluster where
-    your chart is deployed.
+       where your chart is installed.
+     + `NAMESPACE` is the name of the namespace in which you installed your helm chart.
     <br><br>
-    For example:
-    <pre class="terminal">$ <%= vars.product_cli %> test-bind-template cluster default bind.yaml
+    **For example:**
+    <pre class="terminal"> $ <%= vars.product_cli %> test-bind-template my-cluster mysql-ns ./bind.yaml
     Services, secrets, and ingress:
     {
         "secrets": [
@@ -373,6 +397,8 @@ To edit and test the `bind.yaml` file:
        "username": "root"
     }</pre>
 
+    The output first shows the available secrets and services information, and the `Rendered template` at the end 
+    shows the result of how the `bind.yaml` template rendered the data.
 
 ###<a id='values-templating'></a> (Optional) Template Values
 
