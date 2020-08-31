@@ -300,7 +300,7 @@ To edit and test the `bind.yaml` file:
     
     2. Use the registered default cluster as your local configuration.<br><br>
 
-    3. Ensure that ensure that your kubectl points to the registered default cluster.<br><br>
+    3. Ensure that your kubectl points to the registered default cluster.<br><br>
 
     4. Install the helm chart that you are including in the service offering.
        Wait for the service to be ready and for the public IP address to be available: 
@@ -315,10 +315,10 @@ To edit and test the `bind.yaml` file:
         + `NAMESPACE` is the name of the namespace in which you are installing your helm chart.
    
         For example:
-        ```bash
+        <pre class="terminal">
         kubectl create namespace mysql-ns
         helm install mysql mysql-0.1.4.tgz -n mysql-ns --set service.type=LoadBalancer --wait
-        ``` <br><br>
+        </pre>
 
     5. Execute the test-bind-template by running the following command:
     
