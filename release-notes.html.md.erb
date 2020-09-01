@@ -21,33 +21,29 @@ These are release notes for <%= vars.product_full %> (<%= vars.product_short %>)
 
 <%= partial vars.path_to_partials + "/ksm/incompatible" %>
 
-<<<<<<< HEAD
-##<a id="0-11-0"></a> v0.11.0
-
-**Release Date:** September X, 2020
-=======
 ##<a id="0-11-8"></a> v0.11.8
 
 **Release Date:** September 1, 2020
->>>>>>> 3680399... Create SA in dedicated namespace
 
 ### Features
 
 New features and changes in this release:
+
 * Renamed product Container Services Manager (KSM) to <%= vars.product_full %> (<%= vars.product_short %>).
-* State is moved to CRDs in cluster
-    - PostgreSQL is no longer required
-* Surface a Helm chart's JSON schema when present. Apps Manager will use this during provision to render a UI for service creation.
-* Added automated installer for dev environments
-* Helm chart changes
-    - Added a debug flag
-    - Split private registry into two settings (one for <%= vars.product_short %>'s own containers and one for provisioned services)
-    - Added the ability to use a TAS UAA Client in addition a TAS existing user
+* State is moved to CRDs in cluster.
+  PostgreSQL is no longer required.
+* Surface a Helm chart's JSON schema when present.
+  Apps Manager uses this during provisioning to render a UI for service creation.
+* Added automated installer for dev environments.
+* Helm chart changes:
+    - Added a debug flag.
+    - Split private registry into two settings (one for <%= vars.product_short %>'s own containers and one for provisioned services).
+    - Added the ability to use a VMware Tanzu Application Service (TAS) UAA Client in addition a TAS existing user.
     - If using a `values.yaml` defined for a previous release, fully evaluate against the current version.
-* Added labels and additional metadata to containers
-* Readiness and liveness probes
-* Service provisions will succeed even if the broker is restarted while in progress
-* Improved error logging
+* Added labels and additional metadata to containers.
+* Readiness and liveness probes.
+* Service provisions succeed even if the broker is restarted while in progress.
+* Improved error logging.
 * Reduced permission set that <%= vars.product_full %> uses in the Platform cluster.
 
 ### Known Issue
