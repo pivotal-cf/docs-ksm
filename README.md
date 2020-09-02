@@ -41,6 +41,8 @@ This is a word list for terminology and word usage specific to the TSMGR for doc
 
 | Word | Explanation |
 |------|-------------|
+| platform cluster | The Kubernetes cluster that the Tanzu Service Manager is installed on. |
+| workload cluster |  The cluster in which Tanzu Service Manager provisions services |
 | TSMGR |Acronym for Tanzu Service Manager|
 | tsmgr CLI | CLI component for TSMGR. Unless you are referring to what it is called on VMware Network, Tanzu Service Manager CLIs or [OPERATIING-SYSTEM] for TSMGR, use tsmgr CLI.|
 |cf marketplace| Generally, the Services Marketplace, or the Marketplace, should not be referred to in this doc. App developers do not interact with the Marketplace. They interact with `cf marketplace`.|
