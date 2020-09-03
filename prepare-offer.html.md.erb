@@ -5,9 +5,11 @@ owner: Platform Engineering (TSMGR Team)
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to prepare an offered service for <%= vars.product_full %> (<%= vars.product_short %>).
+This topic describes how to prepare an offered service for <%= vars.product_full %>
+(<%= vars.product_short %>).
 
-##<a id='using'></a> Overview
+
+## <a id='using'></a> Overview
 
 <%= vars.product_short %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
@@ -25,7 +27,7 @@ To prepare a service offering:
 1. [Load Container Images into a Private Container Registry](#images)
 
 
-##<a id='prereq'></a> Prerequisites
+## <a id='prereq'></a> Prerequisites
 
 Before you add your service offering to <%= vars.product_short %>, you must:
 
@@ -42,7 +44,8 @@ For example, if your Helm chart requires an Ingress controller to enable service
     about Ingress, see [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
     in the Kubernetes documentation.
 
-##<a id='offer-init'></a> Create a Sample Service Offering Directory
+
+## <a id='offer-init'></a> Create a Sample Service Offering Directory
 
 You can use the <%= vars.product_short %> CLI to create a directory structure for your service offering.
 When you create the service offering directory with the <%= vars.product_short %> CLI,
@@ -69,7 +72,8 @@ To create a sample service offering directory:
     This plan uses the default values for the Helm chart.
     </p>
 
-##<a id='plans'></a> (Optional) Define Plans Configuration
+
+## <a id='plans'></a> (Optional) Define Plans Configuration
 
 <p class="note"><strong>Note:</strong> The properties in <code>plans.yaml</code> and
   <code>PLAN-FILE.yaml</code> files override configurations in
@@ -136,18 +140,17 @@ If you want to override the default settings in `values.yaml` and offer custom p
       clusterName: CLUSTER-NAME
       resourceQuotaPath: RESOURCE-QUOTA-FILE
     ```
-
     Where:
-    * `PLAN-NAME` is the name of the plan that developers see when they run `cf marketplace`
+    * `PLAN-NAME` is the name of the plan that developers see when they run `cf marketplace`.
         The plan name is listed under `plans`.
        Ensure that the plan name is lowercase only and contains no special characters.
-    * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run `cf marketplace`.
-        The plan description is listed under `description`.
+    * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run
+    `cf marketplace`. The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
     * (Optional) `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
-    For more information, see [Register a Kubernetes Cluster](managing-clusters.html#registering). If omitted,
-    service instances are provisioned to the default cluster.
-    For more infomation, see [Set a Default Cluster](managing-clusters.html#registering).
+    For more information, see [Register a Kubernetes Cluster](managing-clusters.html#registering).
+    If omitted, service instances are provisioned to the default cluster.
+    For more information, see [Set a Default Cluster](managing-clusters.html#registering).
     * (Optional) `RESOURCE-QUOTA-FILE` is name of the resource quota file for the plan.
 
     For example:
@@ -163,19 +166,18 @@ If you want to override the default settings in `values.yaml` and offer custom p
       clusterName: "medium-cluster"
     ```
 
-<p class="note"><strong>Note:</strong> Developers can override plan and Helm chart values
-  using the <code>-c</code> flag when they provision or update a service instance with the cf CLI.
+<p class="note">
+  <strong>Note:</strong> Developers can override plan and Helm chart values using the <code>-c</code>
+  flag when they provision or update a service instance with the cf CLI.
   They can use the <code>-c</code> flag to provide service-specific configuration parameters. <br><br>
-  When developers provide these configuration parameters,
-  the JSON configurations are mapped directly onto the chart
-  values and take precedence over any chart default and plan values.
-  For information about service-specific configuration parameters,
-  see <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">
-  Arbitrary Parameters</a>.
+  When developers provide these configuration parameters, the JSON configurations are mapped directly
+  on to the chart values and take precedence over any chart default and plan values.
+  For information about service-specific configuration parameters, see
+  <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
 </p>
 
 
-##<a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
+## <a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering
 
 <%= vars.product_short %> enables you to offer multiple Helm charts in a single service offering.
 You might want to offer multiple Helm charts in the following cases:
@@ -195,20 +197,19 @@ in the service offering.
     marketplace-name: SERVICE-NAME
     charts:
       - chart: CHART-NAME
-        version: CHART-VERSION
+        version: CHART-VERSION-NUMBER
         offered: OFFERED-VALUE
         scope: SCOPE-VALUE
       - chart: CHART-NAME
-        version: CHART-VERSION
+        version: CHART-VERSION-NUMBER
         offered: OFFERED-VALUE
         scope: SCOPE-VALUE
     ```
-
     Where:
     + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`.
         The service name is listed under `service`.
     + `CHART-NAME` is the name of a chart that you are including in the service offering.
-    + `CHART-VERSION` is the version of the chart that you are including in the service offering.
+    + `CHART-VERSION-NUMBER` is the version of the chart that you are including in the service offering.
     + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
     + `SCOPE-VALUE` is set to either `cluster` or `namespace`. For more information, see the below table.
 
@@ -251,7 +252,7 @@ The following table describes the Helm chart configurations in `<%= vars.product
 
 </table>
 
-##<a id='env'></a> (Optional) Create Binding Template for App Consumption
+## <a id='env'></a> (Optional) Create Binding Template for App Consumption
 
 Apps running in <%= vars.app_runtime_abbr %> gain access to bound service instances through an environment
 variable credentials hash called `VCAP_SERVICES`.
@@ -289,130 +290,130 @@ To edit and test the `bind.yaml` file:
         username: "root"
       }
     ```
-    <p class="note"><strong>Note:</strong> The values of <code>$.services</code>, <code>$.secrets</code>
-    and <code>$.ingresses</code> are from the namespace where the chart is deployed.
-      </p>
+    <p class="note">
+      <strong>Note:</strong> The values of <code>$.services</code>, <code>$.secrets</code>
+      and <code>$.ingresses</code> are from the namespace where the chart is deployed.
+    </p>
 
 1. Test if the `bind.yaml` template is creating the expected JSON object:
 
-    1. Ensure that you have registered a default cluster.
-       See [Managing Clusters](./managing-clusters.html).<br><br>
+  1. Ensure that you have registered a default cluster.
+     See [Managing Clusters](./managing-clusters.html).<br><br>
 
-    2. Use the registered default cluster as your local configuration.<br><br>
+  1. Use the registered default cluster as your local configuration.<br><br>
 
-    3. Ensure that your kubectl points to the registered default cluster.<br><br>
+  1. Ensure that your kubectl points to the registered default cluster.<br><br>
 
-    4. Install the helm chart that you are including in the service offering.
-       Wait for the service to be ready and for the public IP address to be available:
+  1. Install the Helm chart that you are including in the service offering.
+     Wait for the service to be ready and for the public IP address to be available:
 
-        ```bash
-    helm install RELEASE-NAME HELM-CHART.tgz -n NAMESPACE --set service.type=LoadBalancer --wait
-    ```
+      ```bash
+      helm install RELEASE-NAME HELM-CHART.tgz -n NAMESPACE --set service.type=LoadBalancer --wait
+      ```
+      Where:
+      + `RELEASE-NAME` is the name of the release instance you are creating.
+      + `HELM-CHART` is the Helm chart filename.
+      + `NAMESPACE` is the name of the namespace in which you are installing your Helm chart.
 
-        Where:
-        + `RELEASE-NAME` is the name of the release instance you're creating.
-        + `HELM-CHART` is the helm chart file name.
-        + `NAMESPACE` is the name of the namespace in which you are installing your helm chart.
+      For example:
+      <pre class="terminal">
+      kubectl create namespace mysql-ns
+      helm install mysql mysql-0.1.4.tgz -n mysql-ns --set service.type=LoadBalancer --wait
+      </pre>
 
-        For example:
-        <pre class="terminal">
-        kubectl create namespace mysql-ns
-        helm install mysql mysql-0.1.4.tgz -n mysql-ns --set service.type=LoadBalancer --wait
-        </pre>
+  1. Execute the test-bind-template by running:
 
-    5. Execute the test-bind-template by running the following command:
-
-        ```
-    <%= vars.product_cli %> test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
-    ```
-
-        Where:
-     + `CLUSTER-NAME` is the name of the <%= vars.product_short %>-registered cluster
+      ```
+      <%= vars.product_cli %> test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
+      ```
+      Where:
+      + `CLUSTER-NAME` is the name of the <%= vars.product_short %>-registered cluster
        where your chart is installed.
-     + `NAMESPACE` is the name of the namespace in which you installed your helm chart.
+       + `NAMESPACE` is the name of the namespace in which you installed your Helm chart.
     <br><br>
     For example:
-    <pre class="terminal"> $ <%= vars.product_cli %> test-bind-template my-cluster mysql-ns ./bind.yaml
-    Services, secrets, and ingress:
-    {
-        "secrets": [
-            {
-                "data": {
-                    "mysql-password": "aBcDefG1HIJ",
-                    "mysql-root-password": "kLmNoP2qrSt3"
-                },
-                "name": "1-23456789-mysql"
-            },
-        ],
-        "services": [
-            {
-                "metadata": {
-                    "name": "1-23456789-mysql",
-                    "namespace": "<%= vars.product_cli %>-f5d531d5-7b07-4bc0-8114-8aba5e2bd706",
-                    "uid": "9f2d94c1-4900-11ea-a03a-42010a800053",
-                    "resourceVersion": "4943530",
-                    "creationTimestamp": "2020-02-06T16:49:20Z",
-                    "labels": {
-                        "app": "1-23456789-mysql",
-                        "heritage": "Helm",
-                        "release": "1-23456789"
-                    }
-                },
-                "name": "1-23456789-mysql",
-                "spec": {
-                    "ports": [
-                        {
-                            "name": "mysql",
-                            "protocol": "TCP",
-                            "port": 3306,
-                            "targetPort": "mysql",
-                            "nodePort": 32257
-                        }
-                    ],
-                    "selector": {
-                        "app": "1-23456789-mysql"
-                    },
-                    "clusterIP": "10.24.2.216",
-                    "type": "LoadBalancer",
-                    "sessionAffinity": "None",
-                    "externalTrafficPolicy": "Cluster"
-                },
-                "status": {
-                    "loadBalancer": {
-                        "ingress": [
-                            {
-                                "ip": "33.44.55.66"
-                            }
-                        ]
-                    }
-                }
-            }
-        ]
-    }
-    Rendered template {
-       "hostname": "33.44.55.66",
-       "jdbcUrl": "jdbc&#58;mysql&#58;//33.44.55.66/my&#95;db?user=root&password=kLmNoP2qrSt3&useSSL=false",
-       "name": "1-23456789-mysql",
-       "password": "kLmNoP2qrSt3",
-       "port": 3306,
-       "uri": "mysql&#58;//root&#58;kLmNoP2qrSt3&#64;33.44.55.66:3306/my_db?reconnect=true",
-       "username": "root"
-    }</pre>
+    <pre class="terminal">
+      $ <%= vars.product_cli %> test-bind-template my-cluster mysql-ns ./bind.yaml
+      Services, secrets, and ingress:
+      {
+          "secrets": [
+              {
+                  "data": {
+                      "mysql-password": "aBcDefG1HIJ",
+                      "mysql-root-password": "kLmNoP2qrSt3"
+                  },
+                  "name": "1-23456789-mysql"
+              },
+          ],
+          "services": [
+              {
+                  "metadata": {
+                      "name": "1-23456789-mysql",
+                      "namespace": "<%= vars.product_cli %>-f5d531d5-7b07-4bc0-8114-8aba5e2bd706",
+                      "uid": "9f2d94c1-4900-11ea-a03a-42010a800053",
+                      "resourceVersion": "4943530",
+                      "creationTimestamp": "2020-02-06T16:49:20Z",
+                      "labels": {
+                          "app": "1-23456789-mysql",
+                          "heritage": "Helm",
+                          "release": "1-23456789"
+                      }
+                  },
+                  "name": "1-23456789-mysql",
+                  "spec": {
+                      "ports": [
+                          {
+                              "name": "mysql",
+                              "protocol": "TCP",
+                              "port": 3306,
+                              "targetPort": "mysql",
+                              "nodePort": 32257
+                          }
+                      ],
+                      "selector": {
+                          "app": "1-23456789-mysql"
+                      },
+                      "clusterIP": "10.24.2.216",
+                      "type": "LoadBalancer",
+                      "sessionAffinity": "None",
+                      "externalTrafficPolicy": "Cluster"
+                  },
+                  "status": {
+                      "loadBalancer": {
+                          "ingress": [
+                              {
+                                  "ip": "33.44.55.66"
+                              }
+                          ]
+                      }
+                  }
+              }
+          ]
+      }
+      Rendered template {
+         "hostname": "33.44.55.66",
+         "jdbcUrl": "jdbc&#58;mysql&#58;//33.44.55.66/my&#95;db?user=root&password=kLmNoP2qrSt3&useSSL=false",
+         "name": "1-23456789-mysql",
+         "password": "kLmNoP2qrSt3",
+         "port": 3306,
+         "uri": "mysql&#58;//root&#58;kLmNoP2qrSt3&#64;33.44.55.66:3306/my_db?reconnect=true",
+         "username": "root"
+      }
+    </pre>
 
-    6. Examine the output.
+  1. Examine the output.
+  The first part shows the available secrets and services information.
+  The `Rendered template` section shows how the `bind.yaml` template rendered the data.
 
-        The first part shows the available secrets and services information.
-        The `Rendered template` section shows how the `bind.yaml` template rendered the data.
 
-###<a id='values-templating'></a> (Optional) Template Values
+### <a id='values-templating'></a> (Optional) Template Values
 
-Helm uses the literal contents of the `values.yaml` file
-as the concrete set of substitutions when creating a release.
+Helm uses the literal contents of the `values.yaml` file as the concrete set of substitutions when
+creating a release.
 However, <%= vars.product_short %> uses `values.yaml` as a template for multiple releases.
 
-This difference can create cases where `values.yaml`
-needs to go through the Helm templating engine before
-any template files in the `/templates` directory are rendered with those values.
+This difference can create cases where `values.yaml` needs to go through the Helm templating engine
+before any template files in the `/templates` directory are rendered with those values.
 
 `values.yaml` might need to go through the Helm templating engine in the following cases:
 
@@ -422,8 +423,7 @@ in the Kubernetes documentation.
 * When there is a unique name, in addition to the release name, required in a chart.
 
 <%= vars.product_short %> runs the values through the Helm templating engine.
-For example, in a chart with ingress hosts,
-you can edit `values.yaml` to use the release name as
+For example, in a chart with ingress hosts, you can edit `values.yaml` to use the release name as
 the unique subdomain discriminator in the ingress definition:
 
 ```yaml
@@ -437,7 +437,8 @@ ingress:
 
 The plan-specific values files also go through the Helm templating engine.
 
-##<a id='images'></a> Load Container Images into a Private Container Registry
+
+## <a id='images'></a> Load Container Images into a Private Container Registry
 
 VMware recommends using a private container registry in production.
 <%= vars.product_short %> can then modify your Helm charts to point to images in the private
@@ -449,13 +450,13 @@ container registry:
 + Your environment is air-gapped and cannot connect to public container registries such as
 Docker Hub or Quay.
 For information about commonly used public container registries,
-see [Docker Hub](https://hub.docker.com/), [Harbor](https://goharbor.io/), and [Quay](https://quay.io/).
+see [Docker Hub](https://hub.docker.com/), [Harbor](https://goharbor.io/), and
+[Quay](https://quay.io/).
 + The images referenced in the Helm chart are not public.
 
 
-If you do not load your container images in to a private container registry,
-a developer cannot create a service instance
-offered on <%= vars.product_short %>.
+If you do not load your container images in to a private container registry, a developer cannot
+create a service instance offered on <%= vars.product_short %>.
 
 To load your container images:
 
@@ -470,15 +471,15 @@ in GitHub.
    If this `global.imageRegistry` is unset in the chart's `values.yaml`
    and you have set `imageCredentialsForServiceInstances.registry`
    in the <%= vars.product_short %> Helm chart `values.yaml` file,
-   then <%= vars.product_short %> will transform the Helm chart's images and
+   then <%= vars.product_short %> transforms the Helm chart's images and
    pull them from the private registry.
 
-    For example, if you use a chart with an empty global.imageRegistry key and
-      the chart supports this pattern:
+   For example, if you use a chart with an empty global.imageRegistry key and the chart supports this
+   pattern:
 
-        ```yaml
-        ---
-        global:
-          imageRegistry:
-        ```
-      The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
+    ```yaml
+    ---
+    global:
+      imageRegistry:
+    ```
+    The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
