@@ -25,11 +25,11 @@ To configure a Helm chart:
 1. If you are using Helm 2 charts, define Custom Resource Definitions (CRDs) using Helm 2 and Helm 3
 methods. See [Define Custom Resource Definitions](#crd) below.
 
-<p class="note">
-  <strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
-  For information about best practices for using CRDs, see the
-  <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
-</p>
+  <p class="note">
+    <strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
+    For information about best practices for using CRDs, see the
+    <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
+  </p>
 
 1. Prevent secret regeneration for Helm charts with secret pattern definitions.
 See [Prevent Secret Regeneration](#secret-regeneration) below.
@@ -90,25 +90,25 @@ For more information, see
     + **If want your service to be accessed directly using a load balancer,** set
     `services.type:` to `LoadBalancer`. For example:
 
-      ```yaml
-      ...
-      service:
-        type: LoadBalancer
-        port: 3306
-      ...
-      ```
+        ```yaml
+        ...
+        service:
+          type: LoadBalancer
+          port: 3306
+        ...
+        ```
     + **If want your service to be accessed using Ingress or ExternalDNS:**
     Edit the value of the `hosts.name` to include a templatized value for uniqueness.
     For example:
 
-      ```yaml
-      ...
-      ingress:
-        enabled: true
-        hosts:
-        - name: "{{ .Release.Name }}.example.com"
-      ...
-      ```
+        ```yaml
+        ...
+        ingress:
+          enabled: true
+          hosts:
+          - name: "{{ .Release.Name }}.example.com"
+        ...
+        ```
 
     For more information, see [(Optional) Template Values](./prepare-offer.html#values-templating).
 
@@ -120,6 +120,7 @@ For more information, see
       For information about ExternalDNS, see
       <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
+
 1. Edit the `<%= vars.product_cli %>.yaml` file to use the override file you created in step 1.
 <br><br>
 For example:
