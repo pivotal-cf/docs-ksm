@@ -281,7 +281,7 @@ To edit and test the `bind.yaml` file:
 For example, the following `bind.yaml` enables the broker to return MySQL credentials in a valid JSON
 object:
 
-    ```yaml
+    ```
     template: |
       {
         hostname: $.services[0].status.loadBalancer.ingress[0].ip,
@@ -298,17 +298,17 @@ object:
       and <code>$.ingresses</code> are from the namespace where the chart is deployed.
     </p>
 
-1. Test if the `bind.yaml` template is creating the expected JSON object:
+1. Test if the `bind.yaml` template creates the expected JSON object:
 
-  1. Ensure that you have registered a default cluster.
-     See [Managing Clusters](./managing-clusters.html).<br><br>
+    1. Ensure that you have registered a default cluster.
+       See [Managing Clusters](./managing-clusters.html).<br><br>
 
-  1. Use the registered default cluster as your local configuration.<br><br>
+    1. Use the registered default cluster as your local configuration.<br><br>
 
-  1. Ensure that your kubectl points to the registered default cluster.<br><br>
+    1. Ensure that your kubectl points to the registered default cluster.<br><br>
 
-  1. Install the Helm chart that you are including in the service offering.
-     Wait for the service to be ready and for the public IP address to be available:
+    1. Install the Helm chart that you are including in the service offering.
+       Wait for the service to be ready and for the public IP address to be available:
 
         ```bash
         helm install RELEASE-NAME HELM-CHART.tgz -n NAMESPACE --set service.type=LoadBalancer --wait
@@ -324,7 +324,7 @@ object:
         helm install mysql mysql-0.1.4.tgz -n mysql-ns --set service.type=LoadBalancer --wait
         </pre>
 
-  1. Execute the test-bind-template by running:
+    1. Execute the `test-bind-template` by running:
 
         ```
         <%= vars.product_cli %> test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
@@ -333,7 +333,7 @@ object:
         + `CLUSTER-NAME` is the name of the <%= vars.product_short %>-registered cluster
          where your chart is installed.
         + `NAMESPACE` is the name of the namespace in which you installed your Helm chart.
-        <br><br>
+
         For example:
         <pre class="terminal">
           $ <%= vars.product_cli %> test-bind-template my-cluster mysql-ns ./bind.yaml
@@ -404,9 +404,9 @@ object:
           }
         </pre>
 
-  1. Examine the output.
-  The first part shows the available secrets and services information.
-  The `Rendered template` section shows how the `bind.yaml` template rendered the data.
+    1. Examine the output.
+    The first part shows the available secrets and services information.
+    The `Rendered template` section shows how the `bind.yaml` template rendered the data.
 
 
 ### <a id='values-templating'></a> (Optional) Template Values

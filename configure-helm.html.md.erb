@@ -37,9 +37,9 @@ See [Prevent Secret Regeneration](#secret-regeneration) below.
 VMware recommends that you read the following resources when creating your Helm chart:
 
 + For information about creating your first Helm chart,
-see [this topic in the Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
+see [Create Your First Helm Chart](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/) in the Bitnami documentation.
 + For information about best practices for creating production-ready Helm charts,
-see [this topic in the Bitnami documentation](https://docs.bitnami.com/tutorials/production-ready-charts/).
+see [Best Practices for Creating Production-Ready Helm charts](https://docs.bitnami.com/tutorials/production-ready-charts/) in the Bitnami documentation.
 + For more information about best practices,
 see the [Helm documentation](https://helm.sh/docs/topics/chart_best_practices/).
 
@@ -51,9 +51,9 @@ you might need to override specific values in <code>values.yaml</code>.
 
 You must follow the procedure in this section if your chart uses any of the following properties:
 
-+ StorageClass
-+ services.type
-+ hosts.name
++ `storageClass`
++ `services.type`
++ `hosts.name`
 
 You can choose to override other properties defined in the chart `values.yaml` by adding those
 properties to an `OVERRIDE-FILE.yaml` file.
