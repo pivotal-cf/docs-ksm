@@ -29,6 +29,19 @@ See [Enable Service Offering Access](#enable) below.
 Before you deploy a service offering, you must configure your Helm chart and service offering.
 See [Configuring a Helm Chart](./configure-helm.html) and [Preparing a Service Offering](./prepare-offer.html).
 
+## <a id="credentials"></a> Retrieve Credentials for <%= vars.product_short %>
+
+To use the <%= vars.product_full %> CLI, you need to retrieve the API credentials and export the environment variables.
+
+1  Run the status command to output the needed variables and values.
+
+    ```
+    helm status RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE
+    ```
+
+    Where:
+    + `RELEASE-NAME` is a name you choose for the <%= vars.product_full %> release during installation.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
