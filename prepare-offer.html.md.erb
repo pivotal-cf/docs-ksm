@@ -85,7 +85,7 @@ For Kubernetes services, each <%= vars.product_short %> plan represents a set of
 the default values in the Helm chart.
 These values are configured in `plans.yaml`.
 For examples of `plans.yaml` files,
-see [<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/ksm-sample/tree/master) on GitHub.
+see [<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/tsmgr-samples) on GitHub.
 
 If you want to override the default settings in `values.yaml` and offer custom plans:
 
@@ -294,26 +294,26 @@ To edit and test the `bind.yaml` file:
       </p>
 
 1. Test if the `bind.yaml` template is creating the expected JSON object:
-    
+
     1. Ensure that you have registered a default cluster.
        See [Managing Clusters](./managing-clusters.html).<br><br>
-    
+
     2. Use the registered default cluster as your local configuration.<br><br>
 
     3. Ensure that your kubectl points to the registered default cluster.<br><br>
 
     4. Install the helm chart that you are including in the service offering.
-       Wait for the service to be ready and for the public IP address to be available: 
-    
+       Wait for the service to be ready and for the public IP address to be available:
+
         ```bash
     helm install RELEASE-NAME HELM-CHART.tgz -n NAMESPACE --set service.type=LoadBalancer --wait
-    ``` 
-   
+    ```
+
         Where:
         + `RELEASE-NAME` is the name of the release instance you're creating.
         + `HELM-CHART` is the helm chart file name.
         + `NAMESPACE` is the name of the namespace in which you are installing your helm chart.
-   
+
         For example:
         <pre class="terminal">
         kubectl create namespace mysql-ns
@@ -321,7 +321,7 @@ To edit and test the `bind.yaml` file:
         </pre>
 
     5. Execute the test-bind-template by running the following command:
-    
+
         ```
     <%= vars.product_cli %> test-bind-template CLUSTER-NAME NAMESPACE bind.yaml
     ```
@@ -479,6 +479,6 @@ in GitHub.
         ```yaml
         ---
         global:
-          imageRegistry: 
+          imageRegistry:
         ```
       The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
