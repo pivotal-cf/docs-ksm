@@ -51,4 +51,255 @@ New features and changes in this release:
 
 This release has the following issue:
 
+<%= partial vars.path_to_partials + "/ksm/custom-resources-tsmgr" %>
+##<a id="0-10-89"></a> v0.10.89
+
+**Release Date:** July 23, 2020
+
+### Features
+
+New features and changes in this release:
+
+* Container Services Manager (KSM) is now offered as a Helm chart.
+  You can use this chart to deploy KSM on Kubernetes.
+  For more information, see [Installing and Configuring KSM](https://docs.pivotal.io/ksm/0-10/installing.html).
+
+### Known Issue
+
+This release has the following issue:
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+
+##<a id="0-9-93"></a> v0.9.93
+
+**Release Date:** June 8, 2020
+
+### Features
+
+New features and changes in this release:
+
++ **Operators and developers can view KSM server logs using the KSM CLI:**
+  You can use these logs to troubleshoot KSM.
+  For more information, see [View <%= vars.product_short %> Logs](./troubleshoot.html#view-logs).
++ **Operators now register and set a default Kubernetes cluster using the KSM CLI:**
+  Previously, operators could only do this by configuring the tile.
++ **Operators can list existing service instances using the KSM CLI:**
+   You can filter the list by marketplace name or cluser name.
+
+### Known Issue
+
+This release has the following issue:
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+
+##<a id="0-8-43"></a> v0.8.43
+
+**Release Date:** April 16, 2020
+
+<p class="note breaking"><strong>Breaking Change:</strong>
+  This release is incompatible with the v0.7 beta release of KSM.
+  Before you install KSM v0.8, you must uninstall
+  KSM v0.7 from <%= vars.ops_manager %>.
+  After you install KSM v0.8, you must re-add your service offerings.
+  </p>
+
+### Features
+
+New features and changes in this release:
+
++ Developers can upgrade service instances with `cf update-service SERVICE-INSTANCE-NAME -u`.
++ Operators can set environment variables for KSM  credentials and the <%= vars.app_runtime_full %>
+  system domain. KSM uses these environment variables for KSM
+  Command Line Interface (CLI) commands without requiring flags.
++ Operators can override values in `values.yaml` in the Helm chart.
++ Operators can view service instance metadata for KSM service instances.
+  The metadata includes the Cloud Foundry instance name, org, and space.
++ When all service instances are deleted from KSM,
+  cluster-scoped charts and resources are also removed from the Kubernetes cluster.
+
+
+### Resolved Issues
+
+This release has the following fix:
+
++ Improved KSM stability around BOSH process monitoring and restarting.
+
+### Known Issue
+
+This release has the following issue:
+
++ If your chart uses custom resources, KSM might incorrectly report that a service instance
+was created successfully before the custom resources are created.
+This is because Kubernetes does not have a generic method to detect resource readiness.
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>
+In the unlikely event that this happens, wait until the custom resources are created before binding
+a service instances to an app.
+This mitigates any issues with missing details in the bind response.
+
+
+##<a id="0-7-92"></a> v0.7.92
+
+**Release Date:** March 10, 2020
+
+### Features
+
+New features and changes in this release:
+
++ Adds additional logging when the broker fails to reload its catalog.
+
+### Known Issue
+
+This release has the following issue:
+
+ <%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+
++ Decreased KSM stability around BOSH process monitoring and restarting.
+
+##<a id="0-7-88"></a> v0.7.88
+
+**Release Date:** March 6, 2020
+
+<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.6
+  beta release of KSM.
+  Before you install KSM v0.7, you must uninstall
+  KSM v0.6 from <%= vars.ops_manager_full %>. After you install KSM v0.7,
+  you must re-add your service offerings.
+  </p>
+
+### Features
+
+New features and changes in this release:
+
+* Upgrades from Helm 2 to [Helm 3](https://helm.sh/docs/faq/#changes-since-helm-2).
+This means that KSM no longer installs Tiller onto the Kubernetes cluster.
+Charts offered in KSM must be compatible with Helm 3.
+
+* Moved KSM specific customizations out of the Helm chart and into their own directory.
+This includes the plans, bind template, and cluster configuration.
+This means that users needing to customize their service offering no longer need to repackage the Helm chart.
+
+### Known Issue
+
+This release has the following issue:
+
++ If your chart uses custom resources, KSM might incorrectly report that a service instance
+was created successfully before the custom resources are created.
+This is because Kubernetes does not have a generic method to detect resource readiness.
+Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>
+In the unlikely event that this happens, wait until the custom resources are created before binding
+a service instances to an app.
+This mitigates any issues with missing details in the bind response.
+
++ Decreased KSM stability around BOSH process monitoring and restarting.
+
+##<a id="0-6-42"></a> v0.6.42
+
+**Release Date:** February 4, 2020
+
+### Features
+
+New features and changes in this release:
+
++ Updated CredHub to v2.6.2.
+
+### Known Issue
+
+This release has the following issue:
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+
+##<a id="0-6-36"></a> v0.6.36
+
+**Release Date:** January 21, 2020
+
+<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.5
+  beta release of KSM.
+  Before you install KSM v0.6, you must uninstall
+  KSM v0.5 from <%= vars.ops_manager_full %>. After you install
+  KSM v0.6,
+  you must re-add your service offerings.
+  </p>
+
+### Features
+
+New features and changes in this release:
+
+* Adds the `ksm version` command. This command shows the KSM tile
+  and KSM CLI versions you are using.
+* Adds support for the `global.imageRegistry` key for fetching images from a private registry.
+* Adds improvements to the `ksm offer save` command:
+    * You can now update a service offering with an `--update` flag.
+      Previously, the `--update-manifest` flag was used to update service offerings.
+    * If you have already added a packaged chart to KSM,
+      you do not need to provide the path to the same chart when you
+      subsequently add service offerings.
+    * When you add or update a service offering,
+    KSM validates that the Helm chart version specified in `ksm.yaml`
+    and `Chart.yaml` match. KSM validates Helm charts
+    that are provided with the command and that are uploaded to ChartMuseum.
+
+### Known Issue
+
+This release has the following issue:
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+
+##<a id="0-5-0"></a> v0.5.1
+
+**Release Date:** October 28, 2019
+
+### Resolved Issue
+
+This release has the following fix:
+
+* KSM now automatically trusts the Runtime Credhub for storing binding credentials.
+This fixes an issue where users could not store binding credentials with CredHub if the
+**Include  <%= vars.ops_manager_full %> Root CA in Trusted Certs** checkbox was not selected in Ops Manager.
+
+### Known Issue
+
+This release has the following issue:
+
++ Binding credentials for service instances brokered by KSM are not consistently unique.
+If more than one app is bound to the same service instance,
+all of the apps use the same credentials to connect to the service instance. If your binding credentials
+are compromised, you must rotate the binding credential for all the apps that use the credential.
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
+
+##<a id="0-5-0"></a> v0.5.0
+
+**Release Date:** October 4, 2019
+
+<p class="note breaking"><strong>Breaking Change:</strong> This release is incompatible with the v0.4
+  beta release of KSM.
+  Before you install KSM v0.5, you must uninstall
+  KSM v0.4 from <%= vars.ops_manager %>.
+  After you install KSM v0.5,
+  you must re-add your service offerings.
+  </p>
+
+### Features
+
+New features and changes in this release:
+
+* Platform operators can offer services that have multiple Helm charts.
+* The KSM CLI replaces the Bazaar CLI.
+* Binding credentials are automatically stored in runtime CredHub.
+This requires KSM to be installed on a <%= vars.pas_short %> deployment
+with CredHub enabled. For instructions about enabling CredHub,
+see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-10/opsguide/secure-si-creds.html).
+
+### Known Issues
+
+This release has the following issues:
+
++ Binding credentials for service instances brokered by KSM are not consistently unique.
+If more than one app is bound to the same service instance,
+all of the apps use the same credentials to connect to the service instance. If your binding credentials
+are compromised, you must rotate the binding credential for all the apps that use the credential.
+
++ Users cannot store binding credentials with CredHub
+if the **Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
+
 <%= partial vars.path_to_partials + "/ksm/custom-resources" %>
