@@ -90,7 +90,7 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
-    + **Docker `pull` commands:** Click **Image References** and record the `docker pull`
+    + **Docker `pull` commands:** Click **Artifact References** and record the `docker pull`
     commands for the **broker**, **daemon**, and **chartmuseum**.
     You can alternatively download the image `tgz` files from the `images` directory.
     + **Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the Helm chart
@@ -130,6 +130,8 @@ To replicate your <%= vars.product_short %> images to a private container image 
     [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.<br><br>If
     you downloaded the `tgz` files instead of using the `docker pull` commands,
     load those images to your local system by running `docker load -i FILE-PATH`.
+
+   * The registry credentials are the same as those used to log in to Tanzu Network.
 
 1. Tag the images for your registry by running these commands:
 
