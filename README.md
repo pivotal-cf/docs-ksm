@@ -20,7 +20,7 @@ https://github.com/pivotal-cf/docs-book-ksm
 | 0.7        | v0.7.x  NOT IN USE no longer published   |
 | 0.6        | v0.6.x  NOT IN USE no longer published   |
 | 0.5        | v0.5.x  NOT IN USE no longer published   |
-| 0.4        | NOT IN USE docs have been removed http://docs.pivotal.io/ksm/0-4/ |
+| 0.4        | v0.4.x  NOT IN USE no longer published |
 
 ## Steps for local development
 ```
