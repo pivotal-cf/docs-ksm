@@ -289,25 +289,6 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     For information about UAA clients,
     see [User Account and Authentication (UAA) Server](https://docs.cloudfoundry.org/concepts/architecture/uaa.html)
     in the Cloud Foundry documentation.
-1. Configure the Cloud Foundry environment details:
-
-    ```yaml
-    cf:
-     apiAddress: http://api.SYSTEM-DOMAIN
-     client: CLIENT-ID
-     clientSecret: CLIENT-SECRET
-     brokerName: <%= vars.product_cli %>
-     brokerUrl: https://broker.INGRESS-DOMAIN
-    ```
-
-    Where:
-    + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-    + `CLIENT-ID` is an existing client ID for a <%= vars.app_runtime_abbr %> account
-       with `cloud_controller.admin` permissions.
-    + `CLIENT-SECRET` is the client secret for the <%= vars.app_runtime_abbr %> account.
-    + `INGRESS-DOMAIN` is the name of your provisioned domain.
-
-    You can verify the cf apiAddress by typing the `cf target` command.
 
 1. Enable Ingress service access:
     1. Get the annotation information required by your Ingress controller.
@@ -357,6 +338,26 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
                 cert-manager.io/issuer: "letsencrypt-prod"
             ```
 
+1. Configure the Cloud Foundry environment details:
+
+    ```yaml
+    cf:
+     apiAddress: http://api.SYSTEM-DOMAIN
+     client: CLIENT-ID
+     clientSecret: CLIENT-SECRET
+     brokerName: <%= vars.product_cli %>
+     brokerUrl: https://broker.INGRESS-DOMAIN
+    ```
+
+    Where:
+    + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+    + `CLIENT-ID` is an existing client ID for a <%= vars.app_runtime_abbr %> account
+       with `cloud_controller.admin` permissions.
+    + `CLIENT-SECRET` is the client secret for the <%= vars.app_runtime_abbr %> account.
+    + `INGRESS-DOMAIN` is the name of your provisioned domain.
+
+    You can verify the cf apiAddress by typing the `cf target` command.
+    
 1.  Add the credentials for your S3-compatible bucket using the template below:
 
     ```yaml
