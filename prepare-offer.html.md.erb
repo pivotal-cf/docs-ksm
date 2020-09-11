@@ -21,6 +21,8 @@ You can also configure the package to enable additional features.
 To prepare a service offering:
 
 1. [Create a Sample Service Offering Directory](#offer-init)
+1. [(Optional) Create <%= vars.product_cli %>.yaml](#yaml)
+1. [(Optional) Override Chart Values](#override)
 1. [(Optional) Define Plans Configuration](#plans)
 1. [(Optional) Offer Multiple Charts in a Single Offering](#multiple-charts)
 1. [(Optional) Create Binding Template for App Consumption](#env)
@@ -75,6 +77,82 @@ To create a sample service offering directory:
       one plan is offered. This plan uses the default values for the Helm chart.
     </p>
 
+## <a id='yaml'></a> (Optional) Create <%= vars.product_cli %>.yaml
+
+The <%= vars.product_cli %>.yaml is required to either offer multiple charts or
+specify a file overriding a chart's default values.
+
+1. Edit the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a template:
+
+    ```yaml
+    marketplace-name: SERVICE-NAME
+    charts:
+      - chart: CHART-NAME
+        version: CHART-VERSION-NUMBER
+        offered: OFFERED-VALUE
+        scope: SCOPE-VALUE
+        overrideValuesFile: OVERRIDE-FILE.yaml
+    ```
+
+    Where:
+    + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`.
+        The service name is listed under `service`.
+    + `CHART-NAME` is the name of a chart that you are including in the service offering.
+    + `CHART-VERSION-NUMBER` is the version of the chart that you are including in the service offering.
+    + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
+    + `SCOPE-VALUE` is set to either `cluster` or `namespace`. For more information, see the below table.
+    + `OVERRIDE-FILE.yaml` (optional) is the name of a file in the overrides directory that overrides the chart's default `values.yaml` file.
+
+The following table describes the Helm chart configurations in `<%= vars.product_cli %>.yaml`:
+
+<table>
+  <tr>
+    <th width=14%>Key</th>
+    <th width=21% >Values</th>
+    <th>Description</th>
+  </tr>
+
+  <tr>
+    <td><strong><code>scope</code></strong></td>
+    <td><code>cluster</code></td>
+    <td>If you use this value, the chart is only deployed once on a cluster.
+    Subsequent service instances created on the same Kubernetes cluster
+    do not cause a cluster-scoped chart to be deployed additional times.<br><br>
+    You can use this scope for operators and controllers that manage multiple
+    instances from a single deployment.</td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><code>namespace</code></td>
+    <td>If you use this value, the chart is deployed on the cluster every time
+      the service is created.</td>
+  </tr>
+
+  <tr>
+    <td><strong><code>offered</code></strong></td>
+    <td><code>true</code> | <code>false</code></td>
+    <td>Only a single chart can have <code>offered</code> to <code>true</code>.
+      The chart that is set to <code>true</code> must also have
+      <code>scope</code> set to <code>namespace</code>. <br><br>
+      The offered chart represents the service the user binds to.
+      However, you can expose more resources with <code>cf bind-service</code>.</td>
+
+  </tr>
+</table>
+
+## <a id='override'></a> (Optional) Override Chart Values
+
+Any values that should different from a Chart's default `values.yaml`, but should remain constant
+across all plans, can be specified in an `OVERRIDE-FILE.yaml` file.
+
+To override chart values:
+
+1. Create an `overrides` directory and an `overrides/OVERRIDE-FILE.yaml` file. <br><br>
+    Ensure that the properties you add to `OVERRIDE-FILE.yaml` match the properties
+    in `values.yaml`.
+
+See <a href="./configure-helm.html#override">Override Chart Values</a> for some common scenarios.
 
 ## <a id='plans'></a> (Optional) Define Plans Configuration
 
@@ -195,65 +273,7 @@ To offer a service with multiple Helm charts, you must edit the `<%= vars.produc
 The `charts` section in a `<%= vars.product_cli %>.yaml` file is an ordered list of the charts that
 are included in the service offering.
 
-1. Edit the `<%= vars.product_cli %>.yaml` file directory using the following as a template:
-
-    ```yaml
-    marketplace-name: SERVICE-NAME
-    charts:
-      - chart: CHART-NAME
-        version: CHART-VERSION-NUMBER
-        offered: OFFERED-VALUE
-        scope: SCOPE-VALUE
-      - chart: CHART-NAME
-        version: CHART-VERSION-NUMBER
-        offered: OFFERED-VALUE
-        scope: SCOPE-VALUE
-    ```
-    Where:
-    + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`.
-        The service name is listed under `service`.
-    + `CHART-NAME` is the name of a chart that you are including in the service offering.
-    + `CHART-VERSION-NUMBER` is the version of the chart that you are including in the service offering.
-    + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
-    + `SCOPE-VALUE` is set to either `cluster` or `namespace`. For more information, see the below table.
-
-The following table describes the Helm chart configurations in `<%= vars.product_cli %>.yaml`:
-
-<table>
-  <tr>
-    <th width=14%>Key</th>
-    <th width=21% >Values</th>
-    <th>Description</th>
-  </tr>
-
-  <tr>
-    <td><strong><code>scope</code></strong></td>
-    <td><code>cluster</code></td>
-    <td>If you use this value, the chart is only deployed once on a cluster.
-    Subsequent service instances created on the same Kubernetes cluster
-    do not cause a cluster-scoped chart to be deployed additional times.<br><br>
-    You can use this scope for operators and controllers that manage multiple
-    instances from a single deployment.</td>
-  </tr>
-
-  <tr>
-    <td></td>
-    <td><code>namespace</code></td>
-    <td>If you use this value, the chart is deployed on the cluster every time
-      the service is created.</td>
-  </tr>
-
-  <tr>
-    <td><strong><code>offered</code></strong></td>
-    <td><code>true</code> | <code>false</code></td>
-    <td>Only a single chart can have <code>offered</code> to <code>true</code>.
-      The chart that is set to <code>true</code> must also have
-      <code>scope</code> set to <code>namespace</code>. <br><br>
-      The offered chart represents the service the user binds to.
-      However, you can expose more resources with <code>cf bind-service</code>.</td>
-
-  </tr>
-</table>
+See [(Optional) Create <%= vars.product_cli %>.yaml](#yaml) for the full details of this file.
 
 ## <a id='env'></a> (Optional) Create Binding Template for App Consumption
 
@@ -409,38 +429,6 @@ object:
     The `Rendered template` section shows how the `bind.yaml` template rendered the data.
 
 
-### <a id='values-templating'></a> (Optional) Template Values
-
-Helm uses the literal contents of the `values.yaml` file as the concrete set of substitutions when
-creating a release.
-However, <%= vars.product_short %> uses `values.yaml` as a template for multiple releases.
-
-This difference can create cases where `values.yaml` needs to go through the Helm templating engine
-before any template files in the `/templates` directory are rendered with those values.
-
-`values.yaml` might need to go through the Helm templating engine in the following cases:
-
-* When a chart uses Ingress controller. For information, see
-[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-in the Kubernetes documentation.
-* When there is a unique name, in addition to the release name, required in a chart.
-
-<%= vars.product_short %> runs the values through the Helm templating engine.
-For example, in a chart with ingress hosts, you can edit `values.yaml` to use the release name as
-the unique subdomain discriminator in the ingress definition:
-
-```yaml
-...
-ingress:
-  enabled: true
-  hosts:
-  - name: "{{ .Release.Name }}.example.com"
-...
-```
-
-The plan-specific values files also go through the Helm templating engine.
-
-
 ## <a id='images'></a> Load Container Images into a Private Container Registry
 
 VMware recommends using a private container registry in production.
@@ -481,3 +469,28 @@ pattern:
       imageRegistry:
     ```
     The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
+
+1. For charts that don't support the `global.imageRegistry` pattern, the each image path must
+be individually specified using the value that the chart author chose. Charts also often
+contain multiple images. For example, given the following chart values excerpt:
+
+    ```
+    ...
+    image: "mysql"
+    imageTag: "5.7.30"
+    ...
+    metrics:
+      enabled: false
+      image: prom/mysqld-exporter
+      imageTag: v0.10.0
+      imagePullPolicy: IfNotPresent
+    ```
+
+    Both of these images should be individually transformed. For example, if the registry path is `registry.example.com/my-project`,
+    the overrides file would contain
+
+    ```
+    image: "registry.example.com/my-project/mysql"
+    metrics:
+      image: registry.example.com/my-project/prom/mysqld-exporter
+    ```
