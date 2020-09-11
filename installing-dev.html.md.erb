@@ -220,10 +220,11 @@ To install the <%= vars.product_short %> Helm chart:
     ```
 
     Where:
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
-    + `RELEASE-NAME` is a name you choose for the release. Helm release names must consist of 
-      lower case alphanumeric characters or '-', start with an alphabetic character, 
-      and end with an alphanumeric character.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose
+      for the <%= vars.product_short %> dedicated namespace.
+    + `RELEASE-NAME` is a name you choose for the release.
+       Helm release names must begin and end with lowercase alphanumeric characters
+       and can only contain lowercase alphanumeric characters and hyphens.
     + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
 
 ### <a id='configure-for-cf'></a> Configure  <%= vars.product_short %> for cf
@@ -268,6 +269,5 @@ To install the <%= vars.product_short %> Helm chart:
 
 ## <a id="next-steps"></a> Next Steps
 
-After installing and configuring <%= vars.product_short %> see:
-
-* [Using <%= vars.product_full %>](using.html)
+After installing and configuring <%= vars.product_short %>,
+see [Using <%= vars.product_full %>](using.html).
