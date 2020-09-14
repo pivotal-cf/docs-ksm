@@ -272,7 +272,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 1. Create a User Account and Authentication (UAA) client that <%= vars.product_short %> will use to register the broker and populate the catalog:
 
     ```bash
-    uaac target uaa.SYSTEM-DOMAIN --skip-ssl-validation
+    uaac target uaa.SYSTEM-DOMAIN
     uaac token client get admin -s UAA-ADMIN-CLIENT-SECRET
     uaac client add CLIENT-ID -s CLIENT-SECRET \
       --authorized_grant_types client_credentials,refresh_token \
