@@ -43,10 +43,11 @@ New features and changes in this release:
 * **Name Change:** Renamed product Container Services Manager (KSM) to <%= vars.product_full %>
 (<%= vars.product_short %>).
 * **State Change:** State is moved to CRDs in cluster. PostgreSQL is no longer required.
-* **Helm Chart Surfacing:** Surface a Helm chart's JSON schema is surfaced when present.
+* **Helm Chart Surfacing:** Helm chart's JSON schema is surfaced when present.
   Apps Manager uses this during provisioning to render a UI for service creation.
-* **Automated Developer Environment Installation:** Added automated installer for dev environments.
-* **Helm chart changes:**
+* **Automated Developer Environment Installation:** Added automated installer for developer
+environments.
+* **Helm Chart Changes:**
     - Added a debug flag.
     - Split private registry into two settings (one for <%= vars.product_short %>'s own containers
     and one for provisioned services).
