@@ -110,13 +110,16 @@ so start by verifying and recording your private registry endpoint, username and
 1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
   
     ```bash
-    ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-client> <cf-api-client-secret>
-     where:
-        <broker-name>     - is a name you will provide to your broker to be identified in cf
-        <cf-api-endpoint> - is the cf endpoint. You can verify that by executing the "cf target" command
-        <cf-api-endpoint> - is the cf client
-        <cf-api-endpoint> - is the cf client secret
+    ./setCfDetails.sh BROKERN-NAME CF-API-ENDPOINT CF-USERNAME CF-PASSWORD
     ```
+   
+    Where:
+    + `BROKER-NAME` is a name you will provide to your broker to be identified in cf
+    + `CF-API-ENDPOINT` is the cf endpoint. You can verify that by executing the "cf target" command
+    + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
+      with `cloud_controller.admin` permissions, eg. the .uaa.admin_credentials.
+    + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
+
    
 1. Test the <%= vars.product_short %> by calling `<%= vars.product_cli %> version` or `<%= vars.product_cli %> offer list` commands
 1. You're done here! Jump to [Next Steps](#next-steps)
@@ -260,7 +263,7 @@ To install the <%= vars.product_short %> Helm chart:
     + `RELEASE-NAME` is the name of the release.
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
     + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
-       with `cloud_controller.admin` permissions.
+       with `cloud_controller.admin` permissions, eg. the .uaa.admin_credentials.
     + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
 
