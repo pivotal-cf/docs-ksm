@@ -110,12 +110,12 @@ so start by verifying and recording your private registry endpoint, username and
 1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
   
     ```bash
-    ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-client> <cf-api-client-secret>
+    usage: ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-username> <cf-api-password>
      where:
         <broker-name>     - is a name you will provide to your broker to be identified in cf
         <cf-api-endpoint> - is the cf endpoint. You can verify that by executing the "cf target" command
-        <cf-api-endpoint> - is the cf client
-        <cf-api-endpoint> - is the cf client secret
+        <cf-api-username> - is the cf username. (UAA Admin Credentials: .uaa.admin_credentials)
+        <cf-api-password> - is the cf password. (UAA Admin Credentials: .uaa.admin_credentials)
     ```
    
 1. Test the <%= vars.product_short %> by calling `<%= vars.product_cli %> version` or `<%= vars.product_cli %> offer list` commands
