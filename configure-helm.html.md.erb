@@ -63,12 +63,7 @@ properties to an `OVERRIDE-FILE.yaml` file.
   you add the service offering to <%= vars.product_short %>.
 </p>
 
-To override chart values:
-
-1. Create an `overrides` directory and an `overrides/OVERRIDE-FILE.yaml` file. <br><br>
-    Ensure that the properties you add to `OVERRIDE-FILE.yaml` match the properties
-    in `values.yaml`.
-    Do not change the names of the properties.
+Below are some common scenarios where overriding chart values would be required.
 
 1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
 the StorageClass name for your configured <%= vars.k8s_runtime_full %> cluster.
@@ -135,7 +130,7 @@ For example:
         overrideValuesFile: OVERRIDE-FILE
     ```
     For information about the properties used in `<%= vars.product_cli %>.yaml`,
-    see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
+    see [(Optional) Create [<%= vars.product_cli %>.yaml]](./prepare-offer.html#yaml).
 
 
 ## <a id='crd'></a> Define Custom Resource Definitions
@@ -181,3 +176,32 @@ To prevent secret regeneration:
 
 For more information about this issue, see
 [Random passwords change on upgrade](https://github.com/helm/charts/issues/5167) in GitHub.
+
+## <a id='values-templating'></a> (Optional) Template Values
+
+Helm uses the literal contents of a `values.yaml` file (in <%= vars.product_short %> context, the
+plan and override file contents) as the concrete set of substitutions when creating a release.
+However, <%= vars.product_short %> uses these values as a template for multiple releases.
+
+This difference can create cases where values needs to go through the Helm templating engine
+before any template files in the `/templates` directory are rendered with those values.
+
+Plan and override file contents might need to go through the Helm templating engine in the following cases:
+
+* When a chart uses Ingress controller. For information, see
+[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+in the Kubernetes documentation.
+* When there is a unique name, in addition to the release name, required in a chart.
+
+<%= vars.product_short %> runs these values through the Helm templating engine.
+For example, in a chart with ingress hosts, you can edit the plan or override file to use the release name as
+the unique subdomain discriminator in the ingress definition:
+
+```yaml
+...
+ingress:
+  enabled: true
+  hosts:
+  - name: "{{ .Release.Name }}.example.com"
+...
+```
