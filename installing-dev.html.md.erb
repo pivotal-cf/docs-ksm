@@ -250,8 +250,8 @@ To install the <%= vars.product_short %> Helm chart:
       --set cf.brokerUrl="http://${BROKER_IP}" \
       --set cf.brokerName=<%= vars.product_cli %> \
       --set cf.apiAddress=http://api.SYSTEM-DOMAIN \
-      --set cf.client=CF-USERNAME \
-      --set cf.clientSecret=CF-PASSWORD \
+      --set cf.username=CF-USERNAME \
+      --set cf.password=CF-PASSWORD \
       --set cf.skipSslValidation=true \
       -n <%= vars.product_short %>-NAMESPACE
     ```
