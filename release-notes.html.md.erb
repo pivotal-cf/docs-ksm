@@ -29,8 +29,8 @@ These are release notes for <%= vars.product_full %> (<%= vars.product_short %>)
 
 New features and changes in this release:
 
-* Increase debug and info logging
-* Improve custom resource definitions (add validation, grouping, and custom print columns)
+* **More logging:** Increased debug and information logging
+* **New custom resource definitions:** Adds validation, grouping, and custom print columns
 
 ##<a id="0-11-8"></a> v0.11.8
 
@@ -40,23 +40,27 @@ New features and changes in this release:
 
 New features and changes in this release:
 
-* Renamed product Container Services Manager (KSM) to <%= vars.product_full %> (<%= vars.product_short %>).
-* State is moved to CRDs in cluster.
-  PostgreSQL is no longer required.
-* Surface a Helm chart's JSON schema when present.
+* **Name Change:** Renamed product Container Services Manager (KSM) to <%= vars.product_full %>
+(<%= vars.product_short %>).
+* **State Change:** State is moved to CRDs in cluster. PostgreSQL is no longer required.
+* **Helm Chart Surfacing:** Surface a Helm chart's JSON schema is surfaced when present.
   Apps Manager uses this during provisioning to render a UI for service creation.
-* Added automated installer for dev environments.
-* Helm chart changes:
+* **Automated Developer Environment Installation:** Added automated installer for dev environments.
+* **Helm chart changes:**
     - Added a debug flag.
-    - Split private registry into two settings (one for <%= vars.product_short %>'s own containers and one for provisioned services).
-    - Added the ability to use a VMware Tanzu Application Service (TAS) UAA Client in addition a TAS existing user.
-    - If using a `values.yaml` defined for a previous release, fully evaluate against the current version.
-* Added labels and additional metadata to containers.
-* Readiness and liveness probes.
-* Service provisions succeed even if the broker is restarted while in progress.
-* Improved error logging.
-* Reduced permission set that <%= vars.product_short %> uses in the Kubernetes cluster
-  that it is installed on.
+    - Split private registry into two settings (one for <%= vars.product_short %>'s own containers
+    and one for provisioned services).
+    - Added the ability to use a <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) UAA
+    Client in addition a <%= vars.app_runtime_abbr %> existing user.
+    - If using a `values.yaml` defined for a previous release, fully evaluate against the current
+    version.
+* **New Container Labels and Metadata:** Added labels and additional metadata to containers.
+* **New Probes:** Adds readiness and liveness probes.
+* **More Resilient Service Provisions:** Service provisions succeed even if the broker is restarted
+while in progress.
+* **Improved Error Logging:** Error logging is improved.
+* **Reduced Permissions:** Reduced permission set that <%= vars.product_short %> uses in the
+Kubernetes cluster that it is installed on.
 
 ### Known Issue
 
@@ -71,9 +75,10 @@ This release has the following issue:
 
 New features and changes in this release:
 
-* Container Services Manager (KSM) is now offered as a Helm chart.
-  You can use this chart to deploy KSM on Kubernetes.
-  For more information, see [Installing and Configuring KSM](https://docs.pivotal.io/ksm/0-10/installing.html).
+* **Helm Chart:** Container Services Manager (KSM) is now offered as a Helm chart.
+You can use this chart to deploy KSM on Kubernetes.
+For more information, see
+[Installing and Configuring KSM](https://docs.pivotal.io/ksm/0-10/installing.html).
 
 ### Known Issue
 
@@ -95,7 +100,7 @@ New features and changes in this release:
 + **Operators now register and set a default Kubernetes cluster using the KSM CLI:**
   Previously, operators could only do this by configuring the tile.
 + **Operators can list existing service instances using the KSM CLI:**
-   You can filter the list by marketplace name or cluser name.
+   You can filter the list by Marketplace name or cluster name.
 
 ### Known Issue
 
@@ -142,7 +147,8 @@ This release has the following issue:
 + If your chart uses custom resources, KSM might incorrectly report that a service instance
 was created successfully before the custom resources are created.
 This is because Kubernetes does not have a generic method to detect resource readiness.
-Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>
+Kubernetes primitives have known patterns for detecting readiness, but the author defines custom
+resource readiness. <br><br>
 In the unlikely event that this happens, wait until the custom resources are created before binding
 a service instances to an app.
 This mitigates any issues with missing details in the bind response.
@@ -196,7 +202,8 @@ This release has the following issue:
 + If your chart uses custom resources, KSM might incorrectly report that a service instance
 was created successfully before the custom resources are created.
 This is because Kubernetes does not have a generic method to detect resource readiness.
-Kubernetes primitives have known patterns for detecting readiness, but custom resource readiness is defined by its author. <br><br>
+Kubernetes primitives have known patterns for detecting readiness, but the author defines the custom
+resource readiness. <br><br>
 In the unlikely event that this happens, wait until the custom resources are created before binding
 a service instances to an app.
 This mitigates any issues with missing details in the bind response.
@@ -263,9 +270,10 @@ This release has the following issue:
 
 This release has the following fix:
 
-* KSM now automatically trusts the Runtime Credhub for storing binding credentials.
+* KSM now automatically trusts the Runtime CredHub for storing binding credentials.
 This fixes an issue where users could not store binding credentials with CredHub if the
-**Include  <%= vars.ops_manager_full %> Root CA in Trusted Certs** checkbox was not selected in Ops Manager.
+**Include  <%= vars.ops_manager_full %> Root CA in Trusted Certs** checkbox was not selected in
+<%= vars.ops_manager %>.
 
 ### Known Issue
 
@@ -298,8 +306,8 @@ New features and changes in this release:
 * The KSM CLI replaces the Bazaar CLI.
 * Binding credentials are automatically stored in runtime CredHub.
 This requires KSM to be installed on a <%= vars.pas_short %> deployment
-with CredHub enabled. For instructions about enabling CredHub,
-see [Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-10/opsguide/secure-si-creds.html).
+with CredHub enabled. For instructions about enabling CredHub, see
+[Securing Services Instance Credentials with Runtime CredHub](https://docs.pivotal.io/pivotalcf/2-10/opsguide/secure-si-creds.html).
 
 ### Known Issues
 
@@ -307,10 +315,11 @@ This release has the following issues:
 
 + Binding credentials for service instances brokered by KSM are not consistently unique.
 If more than one app is bound to the same service instance,
-all of the apps use the same credentials to connect to the service instance. If your binding credentials
-are compromised, you must rotate the binding credential for all the apps that use the credential.
+all of the apps use the same credentials to connect to the service instance.
+If your binding credentials are compromised, you must rotate the binding credential for all the apps
+that use the credential.
 
-+ Users cannot store binding credentials with CredHub
-if the **Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
++ Users cannot store binding credentials with CredHub if the
+**Include OpsManager Root CA in Trusted Certs** checkbox is not selected in BOSH Director.
 
 <%= partial vars.path_to_partials + "/ksm/custom-resources" %>
