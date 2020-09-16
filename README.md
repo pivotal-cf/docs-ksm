@@ -12,9 +12,9 @@ https://github.com/pivotal-cf/docs-book-ksm
 
 | Branch name | Use for… |
 |-------------| ---------|
-| master      | upcoming releases http://docs-pcf-staging.cfapps.io/ksm/0-n/ - If your PR is not version-specific, please use this branch |
-| 0.11       | v0.11.x  http://docs.pivotal.io/ksm/0-11/ |
-| 0.10       | v0.10.x  http://docs.pivotal.io/ksm/0-10/ |
+| master      | upcoming releases http://docs-pcf-staging.cfapps.io/tanzu-service-manager/1-n/ - If your PR is not version-specific, please use this branch |
+| 0.11       | v0.11.x  http://docs.pivotal.io/tanzu-service-manager/0-11/ |
+| 0.10       | v0.10.x  http://docs.pivotal.io/tanzu-service-manager/0-10/ |
 | 0.9        | v0.9.x  NOT IN USE no longer published   |
 | 0.8        | v0.8.x  NOT IN USE no longer published   |
 | 0.7        | v0.7.x  NOT IN USE no longer published   |
@@ -31,7 +31,7 @@ $ git clone git@github.com:pivotal-cf/docs-book-ksm
 $ cd docs-book-ksm
 $ bundle install
 $ bundle exec bookbinder watch
-$ open http://127.0.0.1:XXXX/ksm/<branch>
+$ open http://127.0.0.1:XXXX/tanzu-service-manager/<branch>
 ```
 
 
