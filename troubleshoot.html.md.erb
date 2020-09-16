@@ -246,8 +246,9 @@ service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
 ### <a id='timeouts'></a> Timeouts
 
 #### Provision Timeout
-When <%= vars.product_short %> provisions an offer, it will wait 20 minutes (by default) 
-for the Helm chart's kubernetes resources to become available.  After the 20 minutes, 
+When <%= vars.product_short %> provisions an offer, it will 
+20 minutes (by default) 
+for each Helm chart's kubernetes resources to become available.  After 20 minutes on any of the offer's charts, 
 <%= vars.product_short %> fails the provision.
 
 This timeout can be configured in the `values-production.yaml` file. 
