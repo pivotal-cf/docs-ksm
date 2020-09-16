@@ -131,7 +131,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
     you downloaded the `tgz` files instead of using the `docker pull` commands,
     load those images to your local system by running `docker load -i FILE-PATH`.
 
-    The registry credentials are the same as those used to log in to Tanzu Network.
+    The registry credentials are the same as those used to log in to <%= vars.product_network %>.
 
 1. Tag the images for your registry by running these commands:
 
@@ -357,7 +357,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
     You can verify the cf apiAddress by typing the `cf target` command.
-    
+
 1.  Add the credentials for your S3-compatible bucket using the template below:
 
     ```yaml
