@@ -126,10 +126,16 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 To replicate your <%= vars.product_short %> images to a private container image registry:
 
-1. Pull the images to your local system by running the `docker pull` commands you recorded in
-    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above.<br><br>If
-    you downloaded the `tgz` files instead of using the `docker pull` commands,
-    load those images to your local system by running `docker load -i FILE-PATH`.
+1. Relocate the images to your local machine:
+    * If you recorded the `docker pull` commands in
+    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above,
+    run the `docker_pull` commands to pull the images.
+    * If you downloaded the `tgz` files instead of the `docker pull` commands,
+    load those images by running:
+
+        ```
+        docker load -i FILE-PATH
+        ```
 
     The registry credentials are the same as those used to log in to <%= vars.product_network %>.
 
