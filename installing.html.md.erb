@@ -169,8 +169,8 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-      docker tag registry.pivotal.io/tanzu-service-manager/broker:0.10.89 \
-      privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
+    docker tag registry.pivotal.io/tanzu-service-manager/broker:0.10.89 \
+    privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
     </pre>
 
     Alternatively, if you downloaded the TGZ files, you can verify the versions
@@ -190,7 +190,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-      docker push privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
+    docker push privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
     </pre>
 
 
@@ -314,7 +314,7 @@ register the broker and populate the catalog:
         + **If you are using an automated certificate management provider such as cert-manager:**
         Follow the procedures to install and configure the prerequisites for the certificate
         management provider you are using.
-        <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
+        <br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
         cluster.
         To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
         the cert-manager documentation.
