@@ -46,18 +46,20 @@ see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
 * **Kubernetes Cluster:** A running Kubernetes cluster.
   <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters.
-  For information about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+  For information about <%= vars.k8s_runtime_abbr %>, see
+  [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
 * **Kubernetes CLI:** For information about installing kubectl,
   see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store offered charts and the chart cache.
+* **S3 Compatible Storage:** <%= vars.product_short %> requires a S3-compatible bucket to store
+offered charts and the chart cache.
 For more information, see [Configuring External Storage](./storage.html).
 
-* **Private Container Image Registry:** You need this to manage container images
-in air-gapped environments.
-  VMware recommends using a registry in production deployments.
-  You can use a registry such as [Harbor](https://network.pivotal.io/products/harbor-container-registry).
+* **Private Container Image Registry:** You need this to manage container images in air-gapped
+environments.
+VMware recommends using a registry in production deployments. You can use a registry such as
+[Harbor](https://network.pivotal.io/products/harbor-container-registry).
 
 * **Verify that a default StorageClass exists on the cluster where you want to install
 <%= vars.product_short %>:**
@@ -80,6 +82,7 @@ Additionally, if you are planning to use <%= vars.product_short %> with <%= vars
 * **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
   in GitHub.
 
+
 ## <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
 
 To get the resources needed from <%= vars.product_network %> to install <%= vars.product_short %>:
@@ -93,9 +96,11 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     + **Docker `pull` commands:** Click **Artifact References** and record the `docker pull`
     commands for the **broker**, **daemon**, and **chartmuseum**.
     You can alternatively download the image `tgz` files from the `images` directory.
-    + **Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the Helm chart
+    + **Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the
+    Helm chart
     for <%= vars.product_short %>.
-    + **values-production.yaml file:** Download the `values-production.yaml` override configuration file.
+    + **values-production.yaml file:** Download the `values-production.yaml` override configuration
+    file.
 
 
 ## <a id='cli'></a>  Install the <%= vars.product_short %> CLI
@@ -121,6 +126,7 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
     ```bash
     <%= vars.product_cli %> version
     ```
+
 
 ## <a id='replicate-images'></a> Replicate <%= vars.product_short %> Images
 
@@ -151,7 +157,6 @@ To replicate your <%= vars.product_short %> images to a private container image 
      REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
 
     ```
-
     Where:
     + `VERSION-NUMBER` is the <%= vars.product_short %> release version number.
       This value is in the `docker pull` command that you recorded in
@@ -164,8 +169,8 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-    docker tag registry.pivotal.io/tanzu-service-manager/broker:0.10.89 \
-    privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
+      docker tag registry.pivotal.io/tanzu-service-manager/broker:0.10.89 \
+      privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
     </pre>
 
     Alternatively, if you downloaded the TGZ files, you can verify the versions
@@ -180,13 +185,14 @@ To replicate your <%= vars.product_short %> images to a private container image 
     docker push REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
     docker push REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
-
     Where `REGISTRY` is the private container image registry path.
 
     For example:
 
     <pre class="terminal">
-    docker push privateregistry.domain.com/tanzu-service-manager/broker:0.10.89</pre>
+      docker push privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
+    </pre>
+
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
@@ -213,8 +219,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 
 1. Add the credentials for the registry where the service instance images will come from.
 
-    Service instance refers to the Helm chart files that <%= vars.product_short %> will manage as services,
-    such as mysql, postgresql, and etc-operator.
+    Service instance refers to the Helm chart files that <%= vars.product_short %> will manage as
+    services, such as mysql, postgresql, and etc-operator.
 
     ```yaml
     imageCredentialsForServiceInstances:
@@ -222,19 +228,17 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      username: REGISTRY-INSTANCES-USERNAME
      password: REGISTRY-INSTANCES-PASSWORD
     ```
-
     Where:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images,
        for example, `anotherregistry.domain.com/project`.
     + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
 
-    <%= vars.product_short %> uses this registry as
-      the backing registry for the services that <%= vars.product_short %>
-      deploys.
-      <%= vars.product_short %> modifies the Helm charts that you offer to
-      point to images in the registry.</li>
-    </ul>
+    <%= vars.product_short %> uses this registry as the backing registry for the services that
+    <%= vars.product_short %> deploys.
+    <%= vars.product_short %> modifies the Helm charts that you offer to point to images in the
+    registry.
+
     <p class="note">
       <strong>Note:</strong> Although this configuration is optional, VMware recommends using a
       private container registry in production.
@@ -253,8 +257,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      image:
        repository: REGISTRY/tanzu-service-manager/chartmuseum
     ```
-
-    Where `REGISTRY` is your private container image registry, for example, `privateregistry.domain.com`.
+    Where `REGISTRY` is your private container image registry, for example,
+    `privateregistry.domain.com`.
 
 1. Define a secure password to authenticate your services by configuring the password attributes:
 
@@ -268,13 +272,13 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
        open:
          BASIC_AUTH_PASS: CHARTMUSEUM-PASSWORD
     ```
+    Where:
+    + `BROKER-PASSWORD` is a secure password for the <%= vars.product_short %> broker.
+    + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
+    + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
-     Where:
-     + `BROKER-PASSWORD` is a secure password for the <%= vars.product_short %> broker.
-     + `DAEMON-PASSWORD` is a secure password for the <%= vars.product_short %> daemon.
-     + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
-
-1. Create a User Account and Authentication (UAA) client that <%= vars.product_short %> will use to register the broker and populate the catalog:
+1. Create a User Account and Authentication (UAA) client that <%= vars.product_short %> will use to
+register the broker and populate the catalog:
 
     ```bash
     uaac target uaa.SYSTEM-DOMAIN
@@ -284,35 +288,37 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
       --scope cloud_controller.read,cloud_controller.write \
       --authorities cloud_controller.admin
     ```
-
-     Where:
-     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-     + `UAA-ADMIN-CLIENT-SECRET` is the UAA Admin Client Credentials for <%= vars.app_runtime_abbr %>.
-     + `CLIENT-ID` is the name of the client.
-     + `CLIENT-SECRET` is the secret of the client.
+    Where:
+    + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
+    + `UAA-ADMIN-CLIENT-SECRET` is the UAA Admin Client Credentials for <%= vars.app_runtime_abbr %>.
+    + `CLIENT-ID` is the name of the client.
+    + `CLIENT-SECRET` is the secret of the client.
 
     For information about UAA clients,
     see [User Account and Authentication (UAA) Server](https://docs.cloudfoundry.org/concepts/architecture/uaa.html)
     in the Cloud Foundry documentation.
 
 1. Enable Ingress service access:
-    1. Get the annotation information required by your Ingress controller.
-        + **If you are using your own TLS certificates:** Create secrets with
-        TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
+  1. Get the annotation information required by your Ingress controller.
+      + **If you are using your own TLS certificates:** Create secrets with
+      TLS certificate data in the same namespace where <%= vars.product_short %> will be installed:
 
-            ```
-            kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
-            kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
-            ```
-          Where:
-          + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed.
-          + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
-          + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
-        + **If you are using an automated certificate management provider such as cert-manager:** Follow the
-      procedures to install and configure the prerequisites for the certificate management provider you are using.
-      <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the cluster.
-      To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in the cert-manager documentation.
-    2. Add the following to your `<%= vars.product_cli %>/values.yml` file:
+        ```
+        kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
+        kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
+        ```
+        Where:
+        + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed.
+        + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
+        + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
+        + **If you are using an automated certificate management provider such as cert-manager:**
+        Follow the procedures to install and configure the prerequisites for the certificate
+        management provider you are using.
+        <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
+        cluster.
+        To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
+        the cert-manager documentation.
+  1. Add the following to your `<%= vars.product_cli %>/values.yml` file:
 
         ```yaml
         ingress:
@@ -329,19 +335,19 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
            hosts:
              - broker.INGRESS-DOMAIN
         ```
-
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
-        + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress controller.
+        + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress
+        controller.
 
-            These values depend on the Ingress controller and certificate management option you use.
-            For example, see the annotations for nginx Ingress Controller and cert-manager:
+        These values depend on the Ingress controller and certificate management option you use.
+        For example, see the annotations for nginx Ingress Controller and cert-manager:
 
-            ```
-            annotations:
-                kubernetes.io/ingress.class: nginx
-                cert-manager.io/issuer: "letsencrypt-prod"
-            ```
+        ```
+        annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/issuer: "letsencrypt-prod"
+        ```
 
 1. Configure the Cloud Foundry environment details:
 
@@ -353,7 +359,6 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
      brokerName: <%= vars.product_cli %>
      brokerUrl: https://broker.INGRESS-DOMAIN
     ```
-
     Where:
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
     + `CLIENT-ID` is an existing client ID for a <%= vars.app_runtime_abbr %> account
@@ -377,42 +382,47 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     ```
     Where:
     + `BUCKET-NAME` is your S3 bucket name.
-    + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform (GCP) it is `storage.googleapis.com`.
+    + `ENDPOINT` is your S3 endpoint. For example, in Google Cloud Platform (GCP) it is
+    `storage.googleapis.com`.
     + `ACCESS-KEY` is your S3 access key ID.
     + `SECRET` is your S3 secret access key.
 
-     The above credentials are for AWS.
-      Depending on your IaaS, the credentials might not be a comprehensive list of the keys you need.
-      For example, if you are not using using the default region,
-      you might need to add the `STORAGE_AMAZON_REGION`:
+    The above credentials are for AWS.
+    Depending on your IaaS, the credentials might not be a comprehensive list of the keys you need.
+    For example, if you are not using using the default region, you might need to add the
+    `STORAGE_AMAZON_REGION`:
 
-      ```
-      chartmuseum:
-        env:
-          open:
-            STORAGE_AMAZON_REGION: us-east-1
-      ```
-      For more information about configurations, see
-      <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
+    ```
+    chartmuseum:
+      env:
+        open:
+          STORAGE_AMAZON_REGION: us-east-1
+    ```
+    For more information about configurations, see
+    <a href="https://github.com/helm/charts/tree/master/stable/chartmuseum">ChartMuseum Helm Chart</a> in GitHub.
 
 1. Save the `values-production.yaml` file.
+
 
 ## <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
 
 To install the <%= vars.product_short %> Helm chart:
 
-1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
+1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running
+these commands:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
     helm install RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-production.yaml
     ```
     Where:
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
+    dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
        Helm release names must begin and end with lowercase alphanumeric characters
        and can only contain lowercase alphanumeric characters and hyphens.
-    + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file you downloaded earlier.
+    + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file
+    you downloaded earlier.
 
 
 ## <a id="security"></a> (Recommended) Configure Security
@@ -421,16 +431,19 @@ VMware recommends configuring security on your Kubernetes cluster for <%= vars.p
 
 To configure security:
 
-1. Secure <%= vars.product_short %> secrets by using a secret provider.
-    See [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
-    in the Kubernetes documentation.
+1. Secure <%= vars.product_short %> secrets by using a secret provider. See
+[Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
+in the Kubernetes documentation.
 1. Enable network policies on the cluster to secure traffic between services.
-    See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
-    in the Kubernetes documentation.
-    Some settings can vary between clouds. For example, in GKE, network policies are not enabled by default.
-    For more information, see your cloud-specific documentation.
+See [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) in
+the Kubernetes documentation.
+Some settings can vary between clouds.
+For example, in GKE, network policies are not enabled by default.
+For more information, see your cloud-specific documentation.
+
 1. Secure traffic between <%= vars.product_short %> components.
-For example, you can secure traffic using a service mesh such as [Linkerd](https://linkerd.io/2/getting-started/).
+For example, you can secure traffic using a service mesh such as
+[Linkerd](https://linkerd.io/2/getting-started/).
 For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
 
 
@@ -442,9 +455,11 @@ To configure a Linkerd service mesh:
       + Install the service mesh using the Linkerd CLI by following the procedures in
       [Getting Started](https://linkerd.io/2/getting-started/) in the Linkerd documentation.
       + Install the service mesh using a Helm chart by following the procedures in
-[Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd documentation.
+      [Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd
+      documentation.
 
-1. Add the following annotations in the <%= vars.product_short %> Helm chart `values-production.yaml` file:
+1. Add the following annotations in the <%= vars.product_short %> Helm chart `values-production.yaml`
+file:
 
     ```yaml
     broker:
@@ -466,23 +481,26 @@ To configure a Linkerd service mesh:
            linkerd.io/inject: enabled
     ```
 
-1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by
-    following the procedures in the
-    [Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd documentation.
+1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by following the
+procedures in the
+[Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd
+documentation.
 
 1. Verify that <%= vars.product_short %> is added to the mesh by running:
 
     ```bash
     linkerd stat deployments -n <%= vars.product_short %>-NAMESPACE
     ```
-    Where `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> is running.
+    Where `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> is
+    running.
 
 1. Verify that TLS is working on the deployment by running:
 
     ```bash
     linkerd -n <%= vars.product_short %>-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
     ```
-    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon. For example, `RELEASE-NAME-<%= vars.product_cli %>-daemon`.
+    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon.
+    For example, `RELEASE-NAME-<%= vars.product_cli %>-daemon`.
 
 
 ## <a id="prometheus"></a> (Optional) Install Prometheus
@@ -510,10 +528,12 @@ To install Prometheus to a cluster:
 
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
-1. To view metrics for <%= vars.product_short %>, type `{app_kubernetes_io_name="<%= vars.product_cli %>"}` in the expression box and click **Execute**.
+1. To view metrics for <%= vars.product_short %>, type
+`{app_kubernetes_io_name="<%= vars.product_cli %>"}` in the expression box and click **Execute**.
 
 
 ## <a id="next-steps"></a> Next Steps
 
-After installing and configuring <%= vars.product_short %>, you can start using <%= vars.product_short %>.
+After installing and configuring <%= vars.product_short %>, you can start using
+<%= vars.product_short %>.
 For information, see [Using <%= vars.product_full %>](using.html).

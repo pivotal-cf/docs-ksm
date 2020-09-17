@@ -8,7 +8,8 @@ owner: Platform Engineering (TSMGR Team)
 This topic describes how to register, manage, and deregister Kubernetes clusters
 for use with <%= vars.product_full %> (<%= vars.product_short %>).
 
-##<a id='overview'></a> Overview
+
+## <a id='overview'></a> Overview
 
 Before offering a service with <%= vars.product_short %>, you must register the
 Kubernetes clusters that service instances use.
@@ -18,13 +19,14 @@ see [Kubernetes Cluster Registration](#registration-management) below.
 To register clusters, you must first create a cluster credentials file.
 See [Create a Cluster Credentials File](#create-cluster-file) below.
 
-After you have registered your clusters with <%= vars.product_short %>, you can provision each plan in
-your <%= vars.product_short %> service offering to a different cluster.
+After you have registered your clusters with <%= vars.product_short %>, you can provision each plan
+in your <%= vars.product_short %> service offering to a different cluster.
 Provisioning to different clusters allows you to require special cluster configurations.
-You can also set a default cluster to provision plans to. See [Set a Default Kubernetes Cluster](#set-default) below.
+You can also set a default cluster to provision plans to.
+See [Set a Default Kubernetes Cluster](#set-default) below.
 
 
-##<a id='create-cluster-file'></a> Create a Cluster Credentials File
+## <a id='create-cluster-file'></a> Create a Cluster Credentials File
 
 You need a cluster credential file to register and set default Kubernetes clusters.
 
@@ -48,14 +50,14 @@ To create a cluster credentials file:
 
 1. To create a dedicated service account for <%= vars.product_short %>
 with the `cluster-admin` role in a dedicated namespace:
-    1. Create the namespace by running:
+  1. Create the namespace by running:
 
         ```
         kubectl create ns <%= vars.product_cli %>-system
         ```
 
-    1. Create a YAML file for the <%= vars.product_short %> service account
-    and `ClusterRoleBinding` using the following YAML:
+  1. Create a YAML file for the <%= vars.product_short %> service account
+  and `ClusterRoleBinding` using the following YAML:
 
         ```
         ---
@@ -79,20 +81,19 @@ with the `cluster-admin` role in a dedicated namespace:
             namespace: <%= vars.product_cli %>-system
         ```
 
-        For information about service accounts,
-        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
-        in the Kubernetes documentation. <br>
+  For information about service accounts,
+  see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
+  in the Kubernetes documentation.<br>
 
-        For information about `ClusterRoleBinding`,
-        see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
-        in the Kubernetes documentation.  <br><br>
-    1. Create the service account and `ClusterRoleBinding` defined in your YAML file
-    by running:
+  For information about `ClusterRoleBinding`,
+  see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
+  in the Kubernetes documentation.<br><br>
+  1. Create the service account and `ClusterRoleBinding` defined in your YAML file by running:
 
         ```
         kubectl apply -f SERVICE-ACCOUNT.yml
         ```
-       Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step.
+        Where `SERVICE-ACCOUNT` is name of the YAML file you created in the previous step.
 
 1. Get your service account token by running:
 
@@ -116,10 +117,10 @@ with the `cluster-admin` role in a dedicated namespace:
     EOF
     ```
 
+
 ## <a id="registration-management"></a> Kubernetes Cluster Registration
 
-The following sections describe how to list, register, and deregister Kubernetes
-clusters.
+The following sections describe how to list, register, and deregister Kubernetes clusters.
 
 You can register individual clusters and set a default cluster.
 
@@ -156,6 +157,7 @@ See [Create a Cluster Credentials File](#create-cluster-file).
     + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
     that you created in [Create a Cluster Credentials File](#create-cluster-file) above.
 
+
 ### <a id='set-default'></a> Set a Default Kubernetes Cluster
 
 If you set a default cluster, you do not need to specify a cluster when you
@@ -171,7 +173,6 @@ To set a default cluster:
     ```
     <%= vars.product_cli %> cluster set-default CLUSTER-NAME
     ```
-
     Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
 
 
@@ -185,6 +186,7 @@ To see a list of registered Kubernetes clusters:
     <%= vars.product_cli %> cluster list
     ```
 
+
 ### <a id='deregistering'></a> Deregister a Kubernetes Cluster
 
 Before deregistering a cluster, ensure that it is not the default cluster, it
@@ -197,28 +199,28 @@ To deregister a cluster:
     ```
     <%= vars.product_cli %> cluster deregister CLUSTER-NAME
     ```
-
     Where `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
 
 
 ## <a id='updating'></a> Update Kubernetes Clusters
 
-To update the credentials for an existing cluster that you have already registered
-with <%= vars.product_short %>:
+To update the credentials for an existing cluster that you have already registered with
+<%= vars.product_short %>:
 
 1. Create a cluster credentials YAML file with server, token, and caData. See
-[Create a Cluster Credentials File](#create-cluster-file).
+[Create a Cluster Credentials File](#create-cluster-file) above.
 
 1. Update the Kubernetes cluster credentials by running:
 
     ```
     <%= vars.product_cli %> cluster register CLUSTER-NAME PATH-TO-CLUSTER-CREDS.YAML --update
     ```
-
     Where:
     + `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
     + `PATH-TO-CLUSTER-CREDS.YAML` is the path to your cluster credentials file
     that you created in the previous step.
 
-<p class="note"><strong>Note:</strong> If existing instances are running on the cluster,
+<p class="note">
+  <strong>Note:</strong> If existing instances are running on the cluster,
   use the <code>--force</code> flag.
+</p>
