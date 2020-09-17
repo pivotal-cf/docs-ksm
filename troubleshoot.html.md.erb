@@ -241,3 +241,42 @@ service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
 {"L":"INFO","T":"2020-07-23T16:23:18.367Z","M":"[48] Request served","path":"/api/charts","comment":"","latency":"18.952619ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"b4465eca-4ac0-4fa8-ae8a-bdd91792c428"}
     </pre></li>
 </ul>
+
+
+### <a id='timeouts'></a> Timeouts
+
+#### Provision Timeout
+When <%= vars.product_short %> provisions an offer, it will 
+20 minutes (by default) 
+for each Helm chart's kubernetes resources to become available.  After 20 minutes on any of the offer's charts, 
+<%= vars.product_short %> fails the provision.
+
+This timeout can be configured in the `values-production.yaml` file. 
+```
+broker:
+  serviceInstanceTimeout: 20m
+```
+Do a `helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml` to apply these changes.
+
+Where:
+  + `RELEASE-NAME` is the name of the release.
+  + `<%= vars.product_short %>-NAMESPACE` is the current namespace of the release.
+       
+       
+#### Cloud Foundry Broker Register Timeout
+
+When Service Manager starts it tries to register itself with cloud foundry. If it cannot successfully register
+it will retry for 20 seconds every 5 seconds. After the 20 seconds, if it is still failing, the pod crashes. 
+
+A reason this could fail is if kubernetes is not yet serving pod traffic. 
+This timeout can be configured in the `values-production.yaml` file. 
+```
+broker:
+  initialBrokerCFRegisterTimeout: 20s
+  initialBrokerCFRegisterInterval: 5s
+```
+Do a `helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml` to apply these changes.
+
+Where:
+  + `RELEASE-NAME` is the name of the release.
+  + `<%= vars.product_short %>-NAMESPACE` is the current namespace of the release.
