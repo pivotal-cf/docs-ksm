@@ -129,7 +129,7 @@ To enable access to your service offering:
     ```
     cf enable-service-access SERVICE-NAME
     ```
-    Where `SERVICE-NAME` is the name of the new service that you viewed in step 6 of
+    Where `SERVICE-NAME` is the name of the new service offering that you viewed in step 6 of
     [Add a Service Offering to <%= vars.product_short %>](#add) above.
 
 
@@ -204,17 +204,17 @@ To update a service offering in  <%= vars.product_short %>:
         + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
 
 ## <a id="list-instance"></a> List Service Instances
-You can list existing service instances and filter by marketplace name or cluster name.
+You can list existing service instances and filter by offer name or cluster name.
 
-To filter services instances by marketplace name or cluster name, choose one of the following
+To filter services instances by offer name or cluster name, choose one of the following
 options:
 
-- **Filter by marketplace name by running:**
+- **Filter by offer name by running:**
 
     ```
-    <%= vars.product_cli %> instance list MARKETPLACE-NAME
+    <%= vars.product_cli %> instance list OFFER-NAME
     ```
-    Where `MARKETPLACE-NAME` is the name of the offer.
+    Where `OFFER-NAME` is the name of the offer.
 
 - **Filter by cluster by running:**
 
@@ -279,15 +279,15 @@ To delete a service offering:
 delete the instance by running:
 
     ```
-    cf delete-service SERVICE-NAME
+    cf delete-service SERVICE-INSTANCE-NAME
     ```
 
 1. Delete a service offering by running:
 
     ```
-    <%= vars.product_cli %> offer delete YOUR-CHART
+    <%= vars.product_cli %> offer delete OFFER-NAME
     ```
-    Where `YOUR-CHART` is the name of the service offering you want to delete.
+    Where `OFFER-NAME` is the name of the service offering you want to delete.
 
     <p class="note"><strong>Note:</strong> If you only have one service offering in
       <%= vars.product_short %>, you cannot delete it.

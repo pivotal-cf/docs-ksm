@@ -25,7 +25,7 @@ customize your service offering. See [Preparing a Service Offering](./prepare-of
 The following code snippet shows an example of a service offering directory structure:
 
 ```yaml
-service-name/
+offer-name/
    bind.yaml
    <%= vars.product_cli %>.yaml
    plans.yaml
@@ -42,7 +42,7 @@ helm-chart.tgz
 
 In the above example:
 
-+  `service-name/` is the directory for the <%= vars.product_short %> package.
++  `offer-name/` is the directory for the <%= vars.product_short %> package.
 Depending on your customization, you must include some or all of the above
 YAML files and subdirectories in the <%= vars.product_short %> package.
 
@@ -136,7 +136,7 @@ without additional configurations, with a `<%= vars.product_cli %>.yaml` file, o
 
   <tr>
     <td><strong><code><%= vars.product_cli %>.yaml</code></strong></td>
-    <td><code>marketplace-name</code> value in <code><%= vars.product_cli %>.yaml</code></td>
+    <td><code>offer-name</code> value in <code><%= vars.product_cli %>.yaml</code></td>
     <td>No effect</td>
     <td>No effect</td>
   </tr>

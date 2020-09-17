@@ -55,21 +55,21 @@ offering.
 When you create the service offering directory with the <%= vars.product_short %> CLI, the directory
 includes the following sample files:
 
-+ `SERVICE-NAME/bind.yaml`
-+ `SERVICE-NAME/<%= vars.product_cli %>.yaml`
-+ `SERVICE-NAME/plans.yaml`
-+ `SERVICE-NAME/plans/small.yaml`
-+ `SERVICE-NAME/plans/medium.yaml`
-+ `SERVICE-NAME/overrides/override-values.yaml`
++ `OFFER-NAME/bind.yaml`
++ `OFFER-NAME/<%= vars.product_cli %>.yaml`
++ `OFFER-NAME/plans.yaml`
++ `OFFER-NAME/plans/small.yaml`
++ `OFFER-NAME/plans/medium.yaml`
++ `OFFER-NAME/overrides/override-values.yaml`
 
 To create a sample service offering directory:
 
 1. Create a directory for your service offering by running:
 
     ```
-    <%= vars.product_cli %> offer init SERVICE-NAME
+    <%= vars.product_cli %> offer init OFFER-NAME
     ```
-    Where `SERVICE-NAME` is the name of the service offering.
+    Where `OFFER-NAME` is the name of the service offering.
 
     <p class="note">
       <strong>Note:</strong> If you do not include a <code>plans.yaml</code>,
@@ -85,7 +85,7 @@ specify a file overriding a chart's default values.
 1. Edit the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a template:
 
     ```yaml
-    marketplace-name: SERVICE-NAME
+    offer-name: OFFER-NAME
     charts:
       - chart: CHART-NAME
         version: CHART-VERSION-NUMBER
@@ -95,7 +95,7 @@ specify a file overriding a chart's default values.
     ```
 
     Where:
-    + `SERVICE-NAME` is the name of the service that developers see when they run `cf marketplace`.
+    + `OFFER-NAME` is the name of the service offering that developers see when they run `cf marketplace`.
         The service name is listed under `service`.
     + `CHART-NAME` is the name of a chart that you are including in the service offering.
     + `CHART-VERSION-NUMBER` is the version of the chart that you are including in the service offering.
