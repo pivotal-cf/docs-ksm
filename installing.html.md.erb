@@ -300,8 +300,8 @@ register the broker and populate the catalog:
 
 1. Enable Ingress service access:
   1. Get the annotation information required by your Ingress controller.
-        + **If you are using your own TLS certificates:** Create secrets with TLS certificate data
-        in the same namespace where <%= vars.product_short %> will be installed:
+  + **If you are using your own TLS certificates:** Create secrets with TLS certificate data
+  in the same namespace where <%= vars.product_short %> will be installed:
 
         ```
         kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
@@ -310,14 +310,15 @@ register the broker and populate the catalog:
         Where:
         + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed.
         + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
-        + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.<br><br>
-        + **If you are using an automated certificate management provider such as cert-manager:**
-        Follow the procedures to install and configure the prerequisites for the certificate
-        management provider you are using.
-        <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
-        cluster.
-        To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
-        the cert-manager documentation.<br><br>
+        + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
+
+  + **If you are using an automated certificate management provider such as cert-manager:**
+  Follow the procedures to install and configure the prerequisites for the certificate
+  management provider you are using.
+  <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
+  cluster.
+  To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
+  the cert-manager documentation.<br><br>
   1. Add the following to your `<%= vars.product_cli %>/values.yml` file:
 
         ```yaml
