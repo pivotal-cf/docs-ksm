@@ -48,8 +48,8 @@ To create a cluster credentials file:
       |grep certificate|sed "s/ //g"|sed "s/.*://"`
     ```
 
-1. To create a dedicated service account for <%= vars.product_short %>
-with the `cluster-admin` role in a dedicated namespace:
+1. To create a dedicated service account for <%= vars.product_short %> with the `cluster-admin` role
+in a dedicated namespace:
     1. Create the namespace by running:
 
         ```
@@ -81,13 +81,12 @@ with the `cluster-admin` role in a dedicated namespace:
             namespace: <%= vars.product_cli %>-system
         ```
 
-    For information about service accounts,
-    see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
-    in the Kubernetes documentation.<br>
-
-    For information about `ClusterRoleBinding`,
-    see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
-    in the Kubernetes documentation.<br><br>
+        For information about service accounts,
+        see [Managing Service Accounts](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin)
+        in the Kubernetes documentation.<br>
+        For information about `ClusterRoleBinding`,
+        see [RoleBinding and ClusterRoleBinding](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
+        in the Kubernetes documentation.<br><br>
     1. Create the service account and `ClusterRoleBinding` defined in your YAML file by running:
 
         ```
