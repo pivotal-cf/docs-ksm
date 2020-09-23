@@ -9,18 +9,19 @@ This topic describes the structure of a <%= vars.product_full %> (<%= vars.produ
 service offering and how an offering displays in `cf marketplace`.
 
 
-##<a id='using'></a> Overview
+## <a id='using'></a> Overview
 
-A service offering includes the following:
+A service offering includes:
 
-+ **One or more Helm charts:** You must configure a Helm chart to be compatible with <%=  vars.product_short %>.
++ **One or more Helm charts:** You must configure a Helm chart to be compatible with
+<%=  vars.product_short %>.
 See [Configuring a Helm Chart](./configure-helm.html).
 + **A <%= vars.product_short %> package:**
 The <%= vars.product_short %> package contains YAML files that <%= vars.product_short %> uses to
 customize your service offering. See [Preparing a Service Offering](./prepare-offer.html).
 
-##<a id='directory'></a> Service Offering Directory
 
+## <a id='directory'></a> Service Offering Directory
 
 The following code snippet shows an example of a service offering directory structure:
 
@@ -43,13 +44,13 @@ helm-chart.tgz
 In the above example:
 
 +  `offer-name/` is the directory for the <%= vars.product_short %> package.
-Depending on your customization, you must include some or all of the above
-YAML files and subdirectories in the <%= vars.product_short %> package.
+Depending on your customization, you must include some or all of the above YAML files and
+subdirectories in the <%= vars.product_short %> package.
 
 + `helm-chart.tgz` is the Helm chart for the service offering.<br><br>
 
-Reference the following table to determine which files you must include in your
-<%= vars.product_short %> package:
+Reference the following table to learn which files you must include in your <%= vars.product_short %>
+package:
 
 <table>
   <tr>
@@ -109,15 +110,15 @@ Reference the following table to determine which files you must include in your
 </table>
 
 
+## <a id='cf-marketplace'></a> Service Offerings in Cloud Foundry Marketplace
 
-##<a id='cf-marketplace'></a> Service Offerings in CF Marketplace
+Uploading a Helm chart to <%= vars.product_short %> with either a `<%= vars.product_cli %>.yaml` or
+`plans.yaml` file overrides the default values for the service offering name, description, and plan
+names. These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
 
-Uploading a Helm chart to <%= vars.product_short %> with either a `<%= vars.product_cli %>.yaml` or `plans.yaml` file
-overrides the default values for the service offering name, description, and plan names.
-These values are displayed when a <%= vars.app_runtime_abbr %> developer runs `cf marketplace`.
-
-The following table describes the values that <%= vars.product_short %> uses when you upload a Helm chart either
-without additional configurations, with a `<%= vars.product_cli %>.yaml` file, or with a `plans.yaml` file:
+The following table describes the values that <%= vars.product_short %> uses when you upload a Helm
+chart either without additional configurations, with a `<%= vars.product_cli %>.yaml` file, or with
+a `plans.yaml` file:
 
 <table>
   <tr>
@@ -147,5 +148,4 @@ without additional configurations, with a `<%= vars.product_cli %>.yaml` file, o
     <td>For each plan, <code>description</code> value in <code>plans.yaml</code></td>
     <td>For each plan, <code>name</code> value in <code>plans.yaml</code></td>
   </tr>
-
 </table>
