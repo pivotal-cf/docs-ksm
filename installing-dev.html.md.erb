@@ -1,17 +1,19 @@
 ---
-title: Installing and Configuring Tanzu Service Manager in Dev Mode
+title: Installing and Configuring Tanzu Service Manager in Development Mode
 owner: Platform Engineering (TSMGR Team)
 ---
 <strong><%= modified_date %></strong>
 
-This topic describes how to install and configure
-<%= vars.product_full %> (<%= vars.product_short %>) for dev using Helm.
+This topic describes how to install and configure <%= vars.product_full %>
+(<%= vars.product_short %>) for development using Helm.
 
 <p class="note">
-   This dev document is target to quick install for <%= vars.product_short %> with the purpose of testing or learning.
-  This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production install see
-  <a href="installing.html">Installing and Configuring <%= vars.product_full %></a>
+  <strong>Note:</strong> This development document is target to quick install for
+  <%= vars.product_short %> with the purpose of testing or learning.
+  This is <strong>NOT SECURE FOR PRODUCTION</strong>. For production installation, see
+  <a href="installing.html">Installing and Configuring <%= vars.product_full %></a>.
 </p>
+
 
 ## <a id="overview"></a> Overview
 
@@ -28,103 +30,117 @@ To install and configure <%= vars.product_short %> using Helm:
 
 1. [Install the Helm Chart](#install)
 
-## <a id="prereq"></a>Prerequisites
 
-### For <%= vars.product_short %> installation
+## <a id="prereq"></a> Prerequisites
+
+
+### For <%= vars.product_short %> installation<%# Make this header an anchor unless the subnav is unusually long. %>
 
 Before you install <%= vars.product_short %> using Helm:
 
-* **Helm 3 CLI (version 3.2.4 or up):** For information about installing the Helm CLI,
+* **Helm CLI v3.2.4 or later:** For information about installing the Helm CLI,
 see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
-* **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
+* **Docker CLI:** For information about installing Docker, see the
+[Docker documentation](https://docs.docker.com/get-docker/).
 
-* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
-about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+* **A Kubernetes Cluster:** <%= vars.product_short %> supports
+<%= vars.k8s_runtime_full %> clusters. For information about <%= vars.k8s_runtime_abbr %>, see
+[<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
-* **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* **Kubernetes CLI:** For more information, see the
+[Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-* **Verify that a default StorageClass exists on the cluster where you want to install
-<%= vars.product_short %>:**
+* **A default StorageClass on the cluster where you want to install <%= vars.product_short %>:**
 If you are using Tanzu Kubernetes Grid Integrated Edition, see
 [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
-For more information about Storage Classes, see
+For more information about storage classes, see the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 
-### For usage with <%= vars.app_runtime_abbr %>
 
-A complete experience allows you to create cf services from <%= vars.product_short %> offers. For that you will
-also need to have:
+### For use with <%= vars.app_runtime_abbr %><%# Make this header an anchor unless the subnav is unusually long. %>
+
+A complete experience allows you to create Cloud Foundry services from <%= vars.product_short %>
+offers.
+For that you also need to have:
 
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
 
 * **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
+in GitHub.
 
-## Two Installation Options
+## Two Installation Options<%# Make this header an anchor unless the subnav is unusually long. %>
 
 You can install the <%= vars.product_short %> environment in two ways:
 
 1. Using `install-dev.sh` script:
-    The `install-dev.sh` script automates the installation steps. Using this option you will only be required
-    to download files and provide private registry endpoint, username and password.
+    The `install-dev.sh` script automates the installation steps. This option only requires you to
+    download files and provide private registry endpoint, username, and password.
 1. Install manually:
-    This option will require more interactivity from you, but you can have a more comprehensive understanding of
-    what is happening.
+    This option requires more interactivity from you, but you can have a more comprehensive
+    understanding of what is happening.
 
-## Installing Using install-dev.sh Script
+
+## Installing Using the install-dev.sh Script<%# Make this header an anchor unless the subnav is unusually long. %>
 
 <p class="note">
-If you want to install manually instead of using the install-dev.sh script,
-skip to <a href="#install-manually">Installing Manually</a> section
+  <strong>Note:</strong> To install manually instead of using the <code>install-dev.sh</code> script,
+  skip to the <a href="#install-manually">Installing Manually</a> section below.
 </p>
 
-1. This approach requires a image private registry that will be used to upload the docker installation images, 
-so start by verifying and recording your private registry endpoint, username and password.
+1. This approach requires a image private registry that uploads the docker installation images,
+so start by verifying and recording your private registry endpoint, username, and password.
 
-1. Get <%= vars.product_short %> Resources From <%= vars.product_network %>:
-   Log in and navigate to **<%= vars.product_full %> (<%= vars.product_short %>)** in
-       [<%= vars.product_network %>](https://network.pivotal.io/products/tanzu-service-manager)
-       and download the following resources:
-       + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
-       the CLI for your operating system.
-       + **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for <%= vars.product_short %>** and
-       download the Helm chart TGZ file.
-       + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
-       + **install-dev.sh script**: Click **<%= vars.product_short %> Dev Environment Installer** and download the install-dev.sh file
-       
-1. Make the install-dev.sh file executable by executing the `chmod +x install-dev.sh` command
-1. You need to provide the registry endpoint, username and password during the installation. To do that you can either:
-  + Execute the `./install-dev.sh` command and answer the registry details questions, or
-  + Create a registry.yaml file containing the needed information in the following format, and execute the `install-dev.sh registry.yaml` command
+1. Log in to [<%= vars.product_network %>](https://network.pivotal.io/).
 
-    #### registry.yaml template
-    ```yaml
-    registry: <my-registry-endpoint>/<project>/<repository>
-    username: <username>
-    password: <password>
-    ```
-    
-1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
-1. Once the External IP is available for the daemon, you can configure the <%= vars.product_short %> environment variables by running the
-  `source ./setSmEnv.sh` command
-1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
-  
+1. Navigate to **<%= vars.product_full %> (<%= vars.product_short %>)**.
+
+1. Download:
+    * **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
+    the CLI for your operating system.
+    * **<%= vars.product_short %> Helm chart TGZ file:** Click **Helm Chart for
+    <%= vars.product_short %>** and download the Helm chart TGZ file.
+    * **Images**: Click **Images** and download the daemon, broker, minio, and chartmuseum Docker
+    images.
+    * **install-dev.sh script**: Click **<%= vars.product_short %> Dev Environment Installer** and
+    download the `install-dev.sh` file.
+
+1. Run `chmod +x install-dev.sh` to make the `install-dev.sh` file executable.
+1. Provide the registry endpoint, username, and password during the installation by either:
+    * Running the `./install-dev.sh` command and answering the registry details questions, or
+    * Create a `registry.yaml` file containing the needed information in the following format, and
+    execute the `install-dev.sh registry.yaml` command. See an example `registry.yaml` template
+    below:
+
+        ```yaml
+        registry: MY-REGISTRY-ENDPOINT/PROJECT/REPOSITORY
+        username: USERNAME
+        password: PASSWORD
+        ```
+
+1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for
+daemon and broker services.
+1. After the External IP is available for the daemon, you can configure the <%= vars.product_short %>
+environment variables by running the `source ./setSmEnv.sh` command.
+1. After the External IP is available for the broker, you can configure <%= vars.product_short %>
+for Cloud Foundry by running the following script:
+
     ```bash
     ./setCfDetails.sh BROKERN-NAME CF-API-ENDPOINT CF-USERNAME CF-PASSWORD
     ```
-   
     Where:
-    + `BROKER-NAME` is a name you will provide to your broker to be identified in cf
-    + `CF-API-ENDPOINT` is the cf endpoint. You can verify that by executing the "cf target" command
-    + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
-      with `cloud_controller.admin` permissions, eg. the .uaa.admin_credentials.
+    + `BROKER-NAME` is a name you provide to your broker to be identified in Cloud Foundry
+    + `CF-API-ENDPOINT` is the Cloud Foundry endpoint. To verify that, run the `cf target` command.
+    + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account with
+    `cloud_controller.admin` permissions. For example: `.uaa.admin_credentials`.
     + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
 
-   
-1. Test the <%= vars.product_short %> by calling `<%= vars.product_cli %> version` or `<%= vars.product_cli %> offer list` commands
-1. You're done here! Jump to [Next Steps](#next-steps)
+1. Test the <%= vars.product_short %> by calling `<%= vars.product_cli %> version` or
+`<%= vars.product_cli %> offer list` commands.
 
-## <a id='install-manually'></a>Installing Manually
+
+## <a id='install-manually'></a> Install Manually
+
 
 ### <a id='get'></a> Get <%= vars.product_short %> Resources From <%= vars.product_network %>
 
@@ -136,9 +152,11 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
 1. Get the following resources:
     + **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
-    + **<%= vars.product_short %> Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the Helm chart
-    for <%= vars.product_short %>.
-    + **values-dev.yaml file:** download the values-dev.yaml override configuration file.
+    + **<%= vars.product_short %> Helm chart TGZ file:** Click
+    **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the Helm chart for
+    <%= vars.product_short %>.
+    + **values-dev.yaml file:** download the `values-dev.yaml` override configuration file.
+
 
 ### <a id='cli'></a>  Install the <%= vars.product_short %> CLI
 
@@ -164,11 +182,12 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
     <%= vars.product_cli %> version
     ```
 
+
 ### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
 To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
 
-1. Add the credentials for the Tanzu Network registry:
+1. Add the credentials for the <%= vars.product_network %> registry:
 
     ```yaml
     imageCredentialsFor<%= vars.product_short %>Images:
@@ -176,15 +195,14 @@ To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
      username: REGISTRY-USERNAME
      password: REGISTRY-PASSWORD
     ```
-
     Where:
-    + `REGISTRY-USERNAME` is your Tanzu Network username.
-    + `REGISTRY-PASSWORD` is your Tanzu Network password.
+    + `REGISTRY-USERNAME` is your <%= vars.product_network %> username.
+    + `REGISTRY-PASSWORD` is your <%= vars.product_network %> password.
 
- 1. (Recommended) Set unique passwords:
+1. (Recommended) Set unique passwords:
 
-    The `values-dev.yaml` is pre configured with default passwords, but we recommend they be changed
-    to unique passwords in these sections:
+    The `values-dev.yaml` is pre-configured with default passwords, but VMware recommends changing
+    them to unique passwords in these sections:
 
     ```yaml
     broker:
@@ -211,40 +229,48 @@ To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
         password: DevPassword
     ```
 
+
 ### <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
 
 To install the <%= vars.product_short %> Helm chart:
 
-1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running these commands:
+1. From the root level of the chart, install the <%= vars.product_short %> Helm chart by running:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
+    ```
+    ```
     helm install RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-dev.yaml
     ```
-
     Where:
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose
-      for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
+       dedicated namespace.
     + `RELEASE-NAME` is a name you choose for the release.
-       Helm release names must begin and end with lowercase alphanumeric characters
-       and can only contain lowercase alphanumeric characters and hyphens.
-    + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file you downloaded earlier.
+       Helm release names must begin and end with lowercase alphanumeric characters and can only
+       contain lowercase alphanumeric characters and hyphens.
+    + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm Chart file
+       you downloaded earlier.
 
-### <a id='configure-for-cf'></a> Configure  <%= vars.product_short %> for cf
 
-1. Retrieve the broker IP address by running:
+### <a id='configure-for-cf'></a> Configure <%= vars.product_short %> for Cloud Foundry
 
-    ```bash
-    export BROKER_IP=$(kubectl get service RELEASE-NAME-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
-    ```
+To configure <%= vars.product_short %> for Cloud Foundry:
 
-   <p class="note">
-   Other Kubernetes providers may be host based (for example, Amazon's EKS) rather than IP based:
-   </p>
+1. Retrieve the broker IP address:
 
-   ```bash
-   export BROKER_IP=$(kubectl get service RELEASE-NAME-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
-   ```
+    * **If the Kubernetes provider is not host-based, run:**
+
+        ```bash
+        export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n
+        <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+        ```
+
+    * **If the Kubernetes provider is host-based, such as Amazon's EKS, run:**
+
+        ```bash
+        export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n
+        <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
+        ```
 
 1. Upgrade your <%= vars.product_short %> Helm release by running:
 
@@ -258,19 +284,15 @@ To install the <%= vars.product_short %> Helm chart:
       --set cf.skipSslValidation=true \
       -n <%= vars.product_short %>-NAMESPACE
     ```
-
     Where:
     + `RELEASE-NAME` is the name of the release.
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
     + `CF-USERNAME` is the username for a <%= vars.app_runtime_abbr %> account
-       with `cloud_controller.admin` permissions, eg. the .uaa.admin_credentials.
+       with `cloud_controller.admin` permissions, such as the `.uaa.admin_credentials`.
     + `CF-PASSWORD` is the password for the <%= vars.app_runtime_abbr %> account.
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %> dedicated namespace.
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
+       dedicated namespace.
 
-    **Tips:**
-    + You can verify the cf apiAddress by typing the `cf target` command
-
-## <a id="next-steps"></a> Next Steps
-
-After installing and configuring <%= vars.product_short %>,
-see [Using <%= vars.product_full %>](using.html).
+<p class="note">
+  <strong>Note:</strong> You can verify `cf.apiAddress` by running the `cf target` command.
+</p>
