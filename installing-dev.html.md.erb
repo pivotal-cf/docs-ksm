@@ -235,7 +235,7 @@ To install the <%= vars.product_short %> Helm chart:
 1. Retrieve the broker IP address by running:
 
     ```bash
-    export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
+    export BROKER_IP=$(kubectl get service RELEASE-NAME-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
     ```
 
    <p class="note">
@@ -243,7 +243,7 @@ To install the <%= vars.product_short %> Helm chart:
    </p>
 
    ```bash
-   export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
+   export BROKER_IP=$(kubectl get service RELEASE-NAME-<%= vars.product_cli %>-broker -n <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
    ```
 
 1. Upgrade your <%= vars.product_short %> Helm release by running:
