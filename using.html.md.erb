@@ -292,3 +292,27 @@ delete the instance by running:
     <p class="note"><strong>Note:</strong> If you only have one service offering in
       <%= vars.product_short %>, you cannot delete it.
     </p>
+
+## <a id="authentication"></a> User authentication with <%= vars.product_short %>
+
+Users authenticate with <%= var.product_short %> CLI using a Kubernetes token.
+The steps described in [Configuring the <%= vars.product_short %> CLI](#credentials) above
+will instruct you to configure the CLI with a pre-created Kubernetes service account. This
+service account has been granted the appropriate permissions to work with <%= vars.product_short %>.
+
+If you would like to use a different token, then you must ensure that the
+Kubernetes actor (user, serviceaccount or group) has the correct [Kubernetes RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
+
+The RBAC permissions required within the `<%= vars.product_short %>-NAMESPACE` are:
+  ```
+  rules:
+  - apiGroups:
+    - services.tanzu.vmware.com
+    resources:
+    - "*"
+    verbs:
+    - "*"
+  ```
+
+For more information on how to setup a permissions [see the Kubernetes
+RBAC Documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
