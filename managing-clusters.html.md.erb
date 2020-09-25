@@ -41,10 +41,10 @@ To create a cluster credentials file:
 
     echo "Using cluster $cluster"
 
-    server=`grep -B 2 "name: $cluster" $kube_config \
+    server=`grep -B 2 "name: $cluster\$" $kube_config \
       |grep server|sed "s/ //g"|sed "s/^[^:]*://g"`
 
-    certificate=`grep -B 2 "name: $cluster" $kube_config \
+    certificate=`grep -B 2 "name: $cluster\$" $kube_config \
       |grep certificate|sed "s/ //g"|sed "s/.*://"`
     ```
 
