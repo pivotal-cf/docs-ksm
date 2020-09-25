@@ -196,6 +196,11 @@ To replicate your <%= vars.product_short %> images to a private container image 
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
+To see a detailed description of each value and its default, run:
+```bash
+helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz
+```
+
 To configure the <%= vars.product_short %> Helm chart, edit the `values-production.yaml` file:
 
 1. Add the credentials for the registry where you replicated the <%= vars.product_short %> images:

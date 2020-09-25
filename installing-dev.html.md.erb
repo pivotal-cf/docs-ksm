@@ -121,12 +121,12 @@ so start by verifying and recording your private registry endpoint, username, an
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for
 daemon and broker services.
 1. After the External IP is available for the daemon, you can configure the <%= vars.product_short %>
-environment variables by running the `source ./setSmEnv.sh` command.
+environment variables by running the `source ./set-sm-env.sh` command.
 1. After the External IP is available for the broker, you can configure <%= vars.product_short %>
 for Cloud Foundry by running the following script:
 
     ```bash
-    ./setCfDetails.sh BROKERN-NAME CF-API-ENDPOINT CF-USERNAME CF-PASSWORD
+    ./set-cf-details.sh BROKERN-NAME CF-API-ENDPOINT CF-USERNAME CF-PASSWORD
     ```
     Where:
     + `BROKER-NAME` is a name you provide to your broker to be identified in Cloud Foundry
@@ -184,6 +184,11 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 
 ### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+
+To see a detailed description of each value and its default, run:
+```bash
+helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz
+```
 
 To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
 
