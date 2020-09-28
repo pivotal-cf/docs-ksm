@@ -32,14 +32,14 @@ This section describes solutions for specific troubleshooting errors.
 
 This section describes techniques for troubleshooting.
 
-### <a id='versions'></a>Check <%= vars.product_short %> CLI and Server Versions
+### <a id='versions'></a>Check CLI and Server Versions
 
 If the version for the <%= vars.product_short %> CLI and server are not the same,
 errors can occur.
 
-To validate that the <%= vars.product_short %> CLI and server versions match:
+To verify that the <%= vars.product_short %> CLI and server versions match:
 
-1.  Check the <%= vars.product_short %> CLI and server versions by running:
+1.  Verify the <%= vars.product_short %> CLI and server versions by running:
 
     ```
     <%= vars.product_cli %> version -t http://<%= vars.product_cli %>.SYSTEM-DOMAIN
@@ -64,7 +64,7 @@ To validate that the <%= vars.product_short %> CLI and server versions match:
 
 ### <a id='helm'></a> Run Helm Commands
 
-Platform operators can use the `helm` and `kubectl` CLIs for advanced debugging.
+Platform operators can use the Helm and kubectl  CLIs for advanced debugging.
 
 To manually run `helm` commands:
 
@@ -137,7 +137,7 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
 A cleanup script automates the cleanup of a development
 Kubernetes cluster during the development process.
 
-To automate cleanup, do the following:
+To automate cleanup:
 
 <p class="note warning"><strong>Warning:</strong> Only run this cleanup script against a development cluster.
 The script deletes Helm releases and Kubernetes resources on the cluster.
@@ -164,7 +164,7 @@ Validate the targeted cluster by running <code>kubectl config current-context</c
 
 When a developer provisions a service instance onto a Kubernetes cluster,
  <%= vars.product_full %> creates a Custom Resource for the service instance in the cluster.
-Platform operators can use this Custom Resource to determine which <%= vars.app_runtime_abbr %> apps or
+Platform operators can use this Custom Resource to identify which <%= vars.app_runtime_abbr %> apps or
 services depend on a resource in the Kubernetes cluster.
 
 To view the Custom Resource:
@@ -226,7 +226,8 @@ $ kubectl get services --namespace <%= vars.product_cli %>-test
 NAME                                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
 <%= vars.product_cli %>-test-release-chartmuseum           ClusterIP      XXX.XXX.5.87     <none>          8080/TCP       49m
 <%= vars.product_cli %>-test-release-<%= vars.product_cli %>-broker            LoadBalancer   XXX.XXX.0.197    XXX.XXX.16.30    80:30837/TCP   47m
-<%= vars.product_cli %>-test-release-<%= vars.product_cli %>-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m</pre></li>
+<%= vars.product_cli %>-test-release-<%= vars.product_cli %>-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m</pre>
+</li>
 
 <li>View <%= vars.product_short %> server logs by running: <pre><code>kubectl logs --namespace YOUR-NAMESPACE \
 service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
@@ -239,44 +240,69 @@ service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
 {"L":"INFO","T":"2020-07-23T16:21:18.106Z","M":"[22] Request served","path":"/charts/minio-5.0.11.tgz","comment":"","latency":"6.144315ms","clientIP":"XXX.XXX.1.26","method":"GET","statusCode":200,"reqID":"92e9af1a-a9ca-40db-bfb0-3f069deda036"}
 {"L":"INFO","T":"2020-07-23T16:23:18.323Z","M":"[47] Request served","path":"/api/charts","comment":"","latency":"29.234962ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"711b9b4e-c626-4366-8861-e4e8443dc715"}
 {"L":"INFO","T":"2020-07-23T16:23:18.367Z","M":"[48] Request served","path":"/api/charts","comment":"","latency":"18.952619ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"b4465eca-4ac0-4fa8-ae8a-bdd91792c428"}
-    </pre></li>
-</ul>
+    </pre>
+  </li>
+</ol>
 
 
-### <a id='timeouts'></a> Timeouts
+### <a id="timeouts"></a> Timeouts
 
-#### Provision Timeout
-When <%= vars.product_short %> provisions an offer, it will 
-20 minutes (by default) 
-for each Helm chart's kubernetes resources to become available.  After 20 minutes on any of the offer's charts, 
-<%= vars.product_short %> fails the provision.
+<%# Would you say these are errors or techniques? %>
 
-This timeout can be configured in the `values-production.yaml` file. 
-```
-broker:
-  serviceInstanceTimeout: 20m
-```
-Do a `helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml` to apply these changes.
+#### <a id="provision-timeout"></a>Provision Timeout
 
-Where:
-  + `RELEASE-NAME` is the name of the release.
-  + `<%= vars.product_short %>-NAMESPACE` is the current namespace of the release.
-       
-       
-#### Cloud Foundry Broker Register Timeout
+When <%= vars.product_short %> provisions an offer, by default it allows 20 minutes
+for the Kubernetes resources for each Helm chart to become available.
+If any charts take longer than 20 minutes, <%= vars.product_short %> fails the provision.
 
-When Service Manager starts it tries to register itself with cloud foundry. If it cannot successfully register
-it will retry for 20 seconds every 5 seconds. After the 20 seconds, if it is still failing, the pod crashes. 
+You can configure the provision timeout in the `values-production.yaml` file as follows:
 
-A reason this could fail is if kubernetes is not yet serving pod traffic. 
-This timeout can be configured in the `values-production.yaml` file. 
-```
-broker:
-  initialBrokerCFRegisterTimeout: 20s
-  initialBrokerCFRegisterInterval: 5s
-```
-Do a `helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml` to apply these changes.
+1. Configure the `broker.serviceInstanceTimeout` property in the `values-production.yaml` file.
 
-Where:
-  + `RELEASE-NAME` is the name of the release.
-  + `<%= vars.product_short %>-NAMESPACE` is the current namespace of the release.
+    ```
+    broker:
+      serviceInstanceTimeout: TIMEOUT-IN-MINUTES
+    ```
+    Where `TIMEOUT-IN-MINUTES` is the timeout value, for example, `25m` <%# is this only minutes or can it be seconds etc? %>
+
+1. Apply the change to the timeout by running:
+
+    ```
+    helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml
+    ```
+    Where:
+    + `RELEASE-NAME` is the name of the release.
+    + `<%= vars.product_short %>-NAMESPACE` is the namespace of the release.
+
+
+#### <a id="cf-broker-register-timeout"></a>Cloud Foundry Broker Register Timeout
+
+When Service Manager <%# Should this be Tanzu Service Manager? %> starts it attempts to register with Cloud Foundry.
+If it cannot register successfully, it re-attempts to register for 20 seconds every 5 seconds.
+After the 20 seconds, if it is still failing, the Pod crashes. <%# how many times does it retry before crashing? %>
+
+A reason this could fail is if Kubernetes is not yet serving Pod traffic.
+
+You can configure the Cloud Foundry broker register timeout in the `values-production.yaml` file as follows:
+
+1. Configure the `broker.initialBrokerCFRegisterTimeout` and `broker.initialBrokerCFRegisterInterval`
+properties in the `values-production.yaml` file.
+
+    ```
+    broker:
+      initialBrokerCFRegisterTimeout: TIMEOUT-IN-SECONDS
+      initialBrokerCFRegisterInterval: INTERVAL-IN-SECONDS
+    ```
+    Where:
+    - `TIMEOUT-IN-SECONDS` is the timeout value, for example, `30s`. <%# is this only seconds or can it be minutes etc? %>
+    - `INTERVAL-IN-SECONDS` is the interval between attempts to register, for example, `10s`. <%# is this only seconds or can it be minutes etc? %>
+
+
+1. Apply the change to the timeout by running:
+
+    ```
+    helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml
+    ```
+    Where:
+    + `RELEASE-NAME` is the name of the release.
+    + `<%= vars.product_short %>-NAMESPACE` is the namespace of the release.
