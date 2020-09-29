@@ -329,7 +329,8 @@ register the broker and populate the catalog:
         ingress:
          enabled: true
          hosts:
-         - INGRESS-DOMAIN
+         - name: INGRESS-DOMAIN
+           path: INGERSS-PATH
          annotations:
            ANNOTATION-KEY: ANNOTATION-VALUE
          tls:
@@ -344,13 +345,14 @@ register the broker and populate the catalog:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress
         controller.
+        + `INGRESS-PATH` is the path expression to match all paths for your particular ingress controller. Istio Ingress Controller set to: `"/*"`. Nginx Ingress Controller set to: `"/"`. Contour Ingress Controller set to: `"/"`.
 
         These values depend on the Ingress controller and certificate management option you use.
-        For example, see the annotations for nginx Ingress Controller and cert-manager:
+        For example, see the annotations for Istio Ingress Controller and cert-manager:
 
         ```
         annotations:
-            kubernetes.io/ingress.class: nginx
+            kubernetes.io/ingress.class: istio
             cert-manager.io/issuer: "letsencrypt-prod"
         ```
 
