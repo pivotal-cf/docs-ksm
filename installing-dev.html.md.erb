@@ -266,14 +266,14 @@ To configure <%= vars.product_short %> for Cloud Foundry:
     * **If the Kubernetes provider is not host-based, run:**
 
         ```bash
-        export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n
+        export BROKER_IP=$(kubectl get service RELEASE-NAME-<%= vars.product_cli %>-broker -n
         <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].ip}')
         ```
 
     * **If the Kubernetes provider is host-based, such as Amazon's EKS, run:**
 
         ```bash
-        export BROKER_IP=$(kubectl get service <%= vars.product_cli %>-<%= vars.product_cli %>-broker -n
+        export BROKER_IP=$(kubectl get service RELEASE-NAME-<%= vars.product_cli %>-broker -n
         <%= vars.product_short %>-NAMESPACE -o=jsonpath='{@.status.loadBalancer.ingress[0].hostname}'
         ```
 
