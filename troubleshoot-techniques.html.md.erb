@@ -223,13 +223,20 @@ service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
 </ol>
 
 
-## <a id="provision-timeout"></a>Modify the Provision Timeout
+## <a id="timeouts"></a>Modify Timeouts
+
+You can modify the following timeouts:
+
+- [Modify the Provisioning Timeout](#provision-timeout)
+- [Modify the Cloud Foundry Broker Registration Timeout](#cf-broker-register-timeout)
+
+### <a id="provision-timeout"></a>Modify the Provisioning Timeout
 
 When <%= vars.product_short %> provisions an offer, by default it allows 20 minutes
 for the Kubernetes resources for each Helm chart to become available.
 If any charts take longer than 20 minutes, <%= vars.product_short %> fails the provision.
 
-To modify the provision timeout:
+To modify the provisioning timeout:
 
 1. Configure the `broker.serviceInstanceTimeout` property in the `values-production.yaml` file.
 
@@ -249,7 +256,7 @@ To modify the provision timeout:
     + `<%= vars.product_short %>-NAMESPACE` is the namespace of the release.
 
 
-## <a id="cf-broker-register-timeout"></a>Modify the Cloud Foundry Broker Registration Timeout
+### <a id="cf-broker-register-timeout"></a>Modify the Cloud Foundry Broker Registration Timeout
 
 When <%= vars.product_short %> starts it attempts to register with Cloud Foundry.
 If it cannot register, it re-attempts to register four times.
