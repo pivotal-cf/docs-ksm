@@ -34,8 +34,6 @@ To create a cluster credentials file:
 1. Get your server and certificate authority by running:
 
     ```
-    kube_config="PATH_TO_KUBE_CONFIG"
-
     cluster=`grep current $kube_config|sed "s/ //g"|cut -d ":" -f 2`
 
     echo "Using cluster $cluster"
