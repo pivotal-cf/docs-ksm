@@ -47,8 +47,6 @@ To create a cluster credentials file:
 1. Get your server and certificate authority by running:
 
     ```
-    kube_config="PATH_TO_KUBE_CONFIG"
-
     cluster=$(kubectl config view -o jsonpath="{.contexts[?(@.name == \"$(kubectl config current-context)\")].context.cluster}")
     server=$(kubectl config view -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.server}")
     certificate=$(kubectl config view --raw --flatten -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.certificate-authority-data}")
