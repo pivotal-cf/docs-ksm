@@ -245,25 +245,21 @@ service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
 </ol>
 
 
-### <a id="timeouts"></a> Timeouts
-
-<%# Would you say these are errors or techniques? %>
-
-#### <a id="provision-timeout"></a>Provision Timeout
+### <a id="provision-timeout"></a>Modify the Provision Timeout
 
 When <%= vars.product_short %> provisions an offer, by default it allows 20 minutes
 for the Kubernetes resources for each Helm chart to become available.
 If any charts take longer than 20 minutes, <%= vars.product_short %> fails the provision.
 
-You can configure the provision timeout in the `values-production.yaml` file as follows:
+To modify the provision timeout:
 
 1. Configure the `broker.serviceInstanceTimeout` property in the `values-production.yaml` file.
 
     ```
     broker:
-      serviceInstanceTimeout: TIMEOUT-IN-MINUTES
+      serviceInstanceTimeout: TIMEOUT
     ```
-    Where `TIMEOUT-IN-MINUTES` is the timeout value, for example, `25m` <%# is this only minutes or can it be seconds etc? %>
+    Where `TIMEOUT` is the length of the timeout including a unit for time, for example, `25m`
 
 1. Apply the change to the timeout by running:
 
@@ -275,27 +271,28 @@ You can configure the provision timeout in the `values-production.yaml` file as 
     + `<%= vars.product_short %>-NAMESPACE` is the namespace of the release.
 
 
-#### <a id="cf-broker-register-timeout"></a>Cloud Foundry Broker Register Timeout
+### <a id="cf-broker-register-timeout"></a>Modify the Cloud Foundry Broker Registration Timeout
 
-When Service Manager <%# Should this be Tanzu Service Manager? %> starts it attempts to register with Cloud Foundry.
-If it cannot register successfully, it re-attempts to register for 20 seconds every 5 seconds.
-After the 20 seconds, if it is still failing, the Pod crashes. <%# how many times does it retry before crashing? %>
+When <%= vars.product_short %> starts it attempts to register with Cloud Foundry.
+If it cannot register, it re-attempts to register four times.
+By default each attempt to register is 20 seconds with a 5 second interval between each attempt.
+After four attempts, if it is still failing, the Pod crashes.
 
-A reason this could fail is if Kubernetes is not yet serving Pod traffic.
+A reason Cloud Foundry registration can fail is if Kubernetes is not yet serving Pod traffic.
 
-You can configure the Cloud Foundry broker register timeout in the `values-production.yaml` file as follows:
+To modify the Cloud Foundry broker registration timeout:
 
 1. Configure the `broker.initialBrokerCFRegisterTimeout` and `broker.initialBrokerCFRegisterInterval`
 properties in the `values-production.yaml` file.
 
     ```
     broker:
-      initialBrokerCFRegisterTimeout: TIMEOUT-IN-SECONDS
-      initialBrokerCFRegisterInterval: INTERVAL-IN-SECONDS
+      initialBrokerCFRegisterTimeout: TIMEOUT
+      initialBrokerCFRegisterInterval: INTERVAL
     ```
     Where:
-    - `TIMEOUT-IN-SECONDS` is the timeout value, for example, `30s`. <%# is this only seconds or can it be minutes etc? %>
-    - `INTERVAL-IN-SECONDS` is the interval between attempts to register, for example, `10s`. <%# is this only seconds or can it be minutes etc? %>
+    - `TIMEOUT` is the length of the timeout including a unit for time, for example, `30s`.
+    - `INTERVAL` is the interval between attempts to register including a unit for time, for example, `10s`.
 
 
 1. Apply the change to the timeout by running:
