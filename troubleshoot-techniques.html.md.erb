@@ -1,0 +1,283 @@
+---
+title: Techniques for Troubleshooting
+owner: Platform Engineering (TSMGR Team)
+---
+
+<strong><%= modified_date %></strong>
+
+This topic provides platform operators with techniques for troubleshooting
+<%= vars.product_full %> (<%= vars.product_short %>).
+
+## <a id='versions'></a>Check CLI and Server Versions
+
+If the version for the <%= vars.product_short %> CLI and server are not the same,
+errors can occur.
+
+To verify that the <%= vars.product_short %> CLI and server versions match:
+
+1.  Verify the <%= vars.product_short %> CLI and server versions by running:
+
+    ```
+    <%= vars.product_cli %> version -t http://<%= vars.product_cli %>.SYSTEM-DOMAIN
+    ```
+    Where `SYSTEM-DOMAIN` is your <%=vars.app_runtime_full %> system domain URL.
+    <br><br>
+    For example:
+    <pre class="terminal">$ <%= vars.product_cli %> version -t http<span>:</span>//<%= vars.product_cli %>.my-env.com
+    Client Version [0.6.40]
+    Server Version [0.6.40]
+    </pre>
+
+    The value of `Client Version` is the <%= vars.product_short %> CLI version.<br>
+    The value of `Server Version` is the <%= vars.product_short %> server version.
+
+1. If the versions are not the same, do one of the following:
+    + **If you want to upgrade the <%= vars.product_short %> CLI,**
+      follow the procedure in [Install the <%= vars.product_short %> CLI](./installing.html#cli).
+    + **If you want to upgrade the <%= vars.product_short %> server,** follow
+      the procedure in [Upgrading <%= vars.product_full %>](./upgrading.html).
+
+
+## <a id='helm'></a> Run Helm Commands
+
+Platform operators can use the Helm and kubectl  CLIs for advanced debugging.
+
+To manually run `helm` commands:
+
+1. Target your Kubernetes cluster by following the procedure in
+[Retrieving Cluster Credentials and Configuration](https://docs.pivotal.io/pks/cluster-credentials.html).
+
+1. You can run `helm` commands against the cluster targeted in the previous step.
+For example:
+
+    ```
+    helm list --all-namespaces
+    ```
+
+    For more information about Helm commands, see [Helm](https://helm.sh/docs/helm/#helm)
+    in the Helm documentation.
+
+## <a id='issue-cleanup'></a> Clean Up a Service Instance
+
+<%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) gives an asynchronously
+provisioned service instance seven days to become healthy.
+In some failure modes, you might have to manually clean up services earlier.
+
+You can use the cf CLI to purge a service instance from <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+However, this can leave resources in the Kubernetes cluster.
+To fully clean up a service instance, you must delete any remaining namespaces.
+
+For information about purging a service instance,
+see [Purge a Service Instance](https://docs.cloudfoundry.org/services/managing-service-brokers.html#purge-a-service-instance)
+in the Cloud Foundry documentation.
+
+To delete Helm releases and namespaces in a Kubernetes cluster:
+
+1. Retrieve the names of the remaining namespaces by running:
+
+    ```
+    kubectl get namespaces
+    ```
+1. Record the namespaces that are used by the service instances deployed by <%= vars.product_short %>.<br><br>
+    The namespaces are named `<%= vars.product_cli %>-GUID`, where `GUID` is the `service-instance-guid` for the service instance.
+    You can view the `service-instance-guid` for a service instance by running `cf service INSTANCE-NAME --guid`.
+
+1. For each namespace, retrieve the Helm release names by running:
+
+    ```
+    helm ls --namespace=NAMESPACE
+    ```
+
+    Where `NAMESPACE` is the name of the namespace you are deleting.<br><br>
+    Record the value in the `NAME` column. This is the release name.
+    <p class="note"><strong>Note:</strong> If your service offering has multiple charts,
+      the above command might list multiple releases.
+    </p>
+
+1. For each namespace and associated Helm release, delete the Helm release by running:
+
+    ```
+    helm delete RELEASE --namespace=NAMESPACE
+    ```
+    Where:
+    + `NAMESPACE` is the name of the namespace for the Helm release you are deleting.
+    + `RELEASE` is the name of the Helm release you are deleting.
+1. For each namespace, delete the namespace by running:
+
+    ```
+    kubectl delete namespace NAMESPACE
+    ```
+    Where `NAMESPACE` is the name of the namespace you are deleting.
+
+
+### <a id='cleanup-script'></a> Cleanup Script
+
+A cleanup script automates the cleanup of a development
+Kubernetes cluster during the development process.
+
+To automate cleanup:
+
+<p class="note warning"><strong>Warning:</strong> Only run this cleanup script against a development cluster.
+The script deletes Helm releases and Kubernetes resources on the cluster.
+Validate the targeted cluster by running <code>kubectl config current-context</code> before running the cleanup script below</a>.
+</p>
+
+1. Automate cleanup by running in CI or manually:
+
+    ```
+    #!/usr/bin/env bash
+    set +e
+
+    helm ls -A | tail -n +2 | awk -F '\t' '{ print "helm uninstall " $1 " -n " $2 }' | xargs -I {} sh -c "{}"
+
+    kubectl get clusterrole        | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrole {}
+    kubectl get clusterrolebinding | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrolebinding {}
+    kubectl get namespace          | grep <%= vars.product_cli %>-    | cut -d " " -f 1 | xargs -I {} kubectl delete namespace {}
+    kubectl get podsecuritypolicies -A | grep <%= vars.product_cli %>-    | cut -d " " -f 1 | xargs -I {} kubectl delete podsecuritypolicy {}
+    kubectl get MutatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete MutatingWebhookConfiguration {}
+    kubectl get ValidatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete ValidatingWebhookConfiguration {}
+    ```
+
+## <a id='view-service-instance'></a> View Service Instance Metadata in Kubernetes
+
+When a developer provisions a service instance onto a Kubernetes cluster,
+ <%= vars.product_full %> creates a Custom Resource for the service instance in the cluster.
+Platform operators can use this Custom Resource to identify which <%= vars.app_runtime_abbr %> apps or
+services depend on a resource in the Kubernetes cluster.
+
+To view the Custom Resource:
+
+1. Retrieve the GUID for the service instance by running:
+
+    ```
+    cf service SERVICE-INSTANCE --guid
+    ```
+    Record the output.
+
+1. View the Custom Resource by running:
+    ```
+    kubectl get instance GUID -n <%= vars.product_short %>-GUID -o yaml
+    ```
+    Where `GUID` is the output you recorded above. <br><br>
+    For example:
+    <pre class="terminal">$ kubectl get instance GUID -n <%= vars.product_short %>-GUID -o yaml <br>
+      apiVersion: tsm.vmware.com/v1alpha1
+      kind: Instance
+      metadata:
+        generation: 1
+        labels:
+          clusterName: cluster-a
+          offerName: mysql
+          offerVersion: "1"
+        name: GUID
+        namespace: <%= vars.product_short %>-GUID
+      spec:
+        chartVersions:
+          mysql: 1.6.6
+        clusterName: cluster-a
+        configParams:
+          name: mydb
+          namespace: <%= vars.product_short %>-GUID
+        instanceID: GUID
+        instanceName: mydb
+        offerName: mysql
+        offerVersion: 1
+        orgID: "a12345b6-cf17-4109-aefb-0510d09d1374"
+        orgName: myorg
+        spaceID: "zyx9u8765-e6c2-4a52-861f-1b0663cf6524"
+        spaceName: myspace
+      </pre>
+
+
+## <a id='view-logs'></a> View <%= vars.product_short %> Logs
+
+You can view <%= vars.product_short %> server logs to troubleshoot <%= vars.product_short %> by running
+the `kubectl logs` command.
+
+To view the <%= vars.product_short %> server logs:
+
+<ol>
+<li>To record the service you want to verify, view your <%= vars.product_short %> services by running:<pre><code>kubectl get services --namespace YOUR-NAMESPACE</code></pre>
+    For example:<pre class="terminal">
+$ kubectl get services --namespace <%= vars.product_cli %>-test
+
+NAME                                   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
+<%= vars.product_cli %>-test-release-chartmuseum           ClusterIP      XXX.XXX.5.87     <none>          8080/TCP       49m
+<%= vars.product_cli %>-test-release-<%= vars.product_cli %>-broker            LoadBalancer   XXX.XXX.0.197    XXX.XXX.16.30    80:30837/TCP   47m
+<%= vars.product_cli %>-test-release-<%= vars.product_cli %>-daemon            LoadBalancer   XXX.XXX.10.29    XXX.XXX.23.47   80:31938/TCP   48m</pre>
+</li>
+
+<li>View <%= vars.product_short %> server logs by running: <pre><code>kubectl logs --namespace YOUR-NAMESPACE \
+service/SERVICE-TO-VERIFY --all-containers</code></pre>For example:
+    <pre class="terminal">$ kubectl logs --namespace <%= vars.product_cli %>-test service/<%= vars.product_cli %>-test-release-chartmuseum --all-containers
+
+{"L":"INFO","T":"2020-07-23T16:19:48.640Z","M":"Starting ChartMuseum","port":8080}
+{"L":"INFO","T":"2020-07-23T16:21:16.740Z","M":"[19] Request served","path":"/api/charts","comment":"","latency":"4.530608ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"1c38d89c-63bc-4c90-bb18-89edeb780ac1"}
+{"L":"INFO","T":"2020-07-23T16:21:16.785Z","M":"[20] Request served","path":"/api/charts","comment":"","latency":"34.642387ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"d0c77f8d-6485-486f-8232-9dfe9a425c61"}
+{"L":"INFO","T":"2020-07-23T16:21:18.097Z","M":"[21] Request served","path":"/api/charts/minio/5.0.11","comment":"","latency":"8.332745ms","clientIP":"XXX.XXX.1.26","method":"GET","statusCode":200,"reqID":"6965f38a-06d3-4746-9327-57c2ca3190e6"}
+{"L":"INFO","T":"2020-07-23T16:21:18.106Z","M":"[22] Request served","path":"/charts/minio-5.0.11.tgz","comment":"","latency":"6.144315ms","clientIP":"XXX.XXX.1.26","method":"GET","statusCode":200,"reqID":"92e9af1a-a9ca-40db-bfb0-3f069deda036"}
+{"L":"INFO","T":"2020-07-23T16:23:18.323Z","M":"[47] Request served","path":"/api/charts","comment":"","latency":"29.234962ms","clientIP":"XXX.XXX.2.73","method":"GET","statusCode":200,"reqID":"711b9b4e-c626-4366-8861-e4e8443dc715"}
+{"L":"INFO","T":"2020-07-23T16:23:18.367Z","M":"[48] Request served","path":"/api/charts","comment":"","latency":"18.952619ms","clientIP":"XXX.XXX.2.73","method":"POST","statusCode":201,"reqID":"b4465eca-4ac0-4fa8-ae8a-bdd91792c428"}
+    </pre>
+  </li>
+</ol>
+
+
+## <a id="provision-timeout"></a>Modify the Provision Timeout
+
+When <%= vars.product_short %> provisions an offer, by default it allows 20 minutes
+for the Kubernetes resources for each Helm chart to become available.
+If any charts take longer than 20 minutes, <%= vars.product_short %> fails the provision.
+
+To modify the provision timeout:
+
+1. Configure the `broker.serviceInstanceTimeout` property in the `values-production.yaml` file.
+
+    ```
+    broker:
+      serviceInstanceTimeout: TIMEOUT
+    ```
+    Where `TIMEOUT` is the length of the timeout including a unit for time, for example, `25m`
+
+1. Apply the change to the timeout by running:
+
+    ```
+    helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml
+    ```
+    Where:
+    + `RELEASE-NAME` is the name of the release.
+    + `<%= vars.product_short %>-NAMESPACE` is the namespace of the release.
+
+
+## <a id="cf-broker-register-timeout"></a>Modify the Cloud Foundry Broker Registration Timeout
+
+When <%= vars.product_short %> starts it attempts to register with Cloud Foundry.
+If it cannot register, it re-attempts to register four times.
+By default each attempt to register is 20 seconds with a 5 second interval between each attempt.
+After four attempts, if it is still failing, the Pod crashes.
+
+A reason Cloud Foundry registration can fail is if Kubernetes is not yet serving Pod traffic.
+
+To modify the Cloud Foundry broker registration timeout:
+
+1. Configure the `broker.initialBrokerCFRegisterTimeout` and `broker.initialBrokerCFRegisterInterval`
+properties in the `values-production.yaml` file.
+
+    ```
+    broker:
+      initialBrokerCFRegisterTimeout: TIMEOUT
+      initialBrokerCFRegisterInterval: INTERVAL
+    ```
+    Where:
+    - `TIMEOUT` is the length of the timeout including a unit for time, for example, `30s`.
+    - `INTERVAL` is the interval between attempts to register including a unit for time, for example, `10s`.
+
+
+1. Apply the change to the timeout by running:
+
+    ```
+    helm upgrade RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE -f values-production.yaml
+    ```
+    Where:
+    + `RELEASE-NAME` is the name of the release.
+    + `<%= vars.product_short %>-NAMESPACE` is the namespace of the release.
