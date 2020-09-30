@@ -32,15 +32,16 @@ You need a cluster credential file to register Kubernetes clusters with <%=
 vars.product_short %>. A valid Cluster Credentials File has the following
 structure:
 
-    ```yaml
-    token: TOKEN
-    server: SERVER
-    caData: CA-DATA
-    ```
-    Where:
-    + `TOKEN` is a valid Kubernetes auth token.
-    + `SERVER` is the server address of the Kubernetes cluster.
-    + `CA-DATA` is valid CA data for the Kubernetes cluster.
+```yaml
+token: TOKEN
+server: SERVER
+caData: CA-DATA
+```
+Where:
+
++ `TOKEN` is a valid Kubernetes auth token.
++ `SERVER` is the server address of the Kubernetes cluster.
++ `CA-DATA` is valid CA data for the Kubernetes cluster.
 
 To create a cluster credentials file:
 
