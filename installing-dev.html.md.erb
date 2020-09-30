@@ -42,7 +42,7 @@ see the [Helm documentation](https://helm.sh/docs/intro/install/).
 [Docker documentation](https://docs.docker.com/get-docker/).
 
 * **A Kubernetes Cluster:** <%= vars.product_short %> supports
-<%= vars.k8s_runtime_full %> clusters. 
+<%= vars.k8s_runtime_full %> clusters.
 For supported cluster versions see [Product Snapshot](index.html#snapshot).
 For information about <%= vars.k8s_runtime_abbr %>, see
 [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
@@ -60,7 +60,7 @@ To create Cloud Foundry services from <%= vars.product_short %> offers, you also
 
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
 
-* **Cloud Foundry CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
+* **Cloud Foundry CLI (cf CLI):** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
 in GitHub.
 
 
@@ -213,10 +213,10 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 ### <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
-<div class="note">
+<p class="note">
   <strong>Note:</strong> To see a detailed description of each value and its default, run:
   <code>helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz</code>
-</div>
+</p>
 
 To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
 

@@ -80,7 +80,7 @@ Additionally, if you are planning to use <%= vars.product_short %> with <%= vars
 
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
 
-* **<%= vars.app_runtime_abbr %> CLI:** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
+* **Cloud Foundry CLI (cf CLI):** See [Cloud Foundry CLI](https://github.com/cloudfoundry/cli)
   in GitHub.
 
 
@@ -197,10 +197,10 @@ To replicate your <%= vars.product_short %> images to a private container image 
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
 
-To see a detailed description of each value and its default, run:
-```bash
-helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz
-```
+<p class="note">
+  <strong>Note:</strong> To see a detailed description of each value and its default, run:
+  <code>helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz</code>
+</p>
 
 To configure the <%= vars.product_short %> Helm chart, edit the `values-production.yaml` file:
 
