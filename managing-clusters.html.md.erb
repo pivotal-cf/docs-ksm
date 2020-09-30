@@ -28,7 +28,19 @@ See [Set a Default Kubernetes Cluster](#set-default) below.
 
 ## <a id='create-cluster-file'></a> Create a Cluster Credentials File
 
-You need a cluster credential file to register and set default Kubernetes clusters.
+You need a cluster credential file to register Kubernetes clusters with <%=
+vars.product_short %>. A valid Cluster Credentials File has the following
+structure:
+
+    ```yaml
+    token: TOKEN
+    server: SERVER
+    caData: CA-DATA
+    ```
+    Where:
+    + `TOKEN` is a valid Kubernetes auth token.
+    + `SERVER` is the server address of the Kubernetes cluster.
+    + `CA-DATA` is valid CA data for the Kubernetes cluster.
 
 To create a cluster credentials file:
 
@@ -37,15 +49,11 @@ To create a cluster credentials file:
     ```
     kube_config="PATH_TO_KUBE_CONFIG"
 
-    cluster=`grep current $kube_config|sed "s/ //g"|cut -d ":" -f 2`
+    cluster=$(kubectl config view -o jsonpath="{.contexts[?(@.name == \"$(kubectl config current-context)\")].context.cluster}")
+    server=$(kubectl config view -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.server}")
+    certificate=$(kubectl config view --raw --flatten -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.certificate-authority-data}")
 
     echo "Using cluster $cluster"
-
-    server=`grep -B 2 "name: $cluster\$" $kube_config \
-      |grep server|sed "s/ //g"|sed "s/^[^:]*://g"`
-
-    certificate=`grep -B 2 "name: $cluster\$" $kube_config \
-      |grep certificate|sed "s/ //g"|sed "s/.*://"`
     ```
 
 1. To create a dedicated service account for <%= vars.product_short %> with the `cluster-admin` role
