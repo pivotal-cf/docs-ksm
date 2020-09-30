@@ -108,7 +108,6 @@ methods:
         ./install-dev.sh
         ```
         and then answer the registry details questions
-
     * Create a `registry.yaml` file containing the needed information.
     See an example `registry.yaml` template below:
 
@@ -214,9 +213,7 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 
 <div class="note">
   <strong>Note:</strong> To see a detailed description of each value and its default, run:
-  <pre>
-    helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz
-  </pre>
+  <code>helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz</code>
 </div>
 
 To configure the <%= vars.product_short %>, edit the `values-dev.yaml` file:
