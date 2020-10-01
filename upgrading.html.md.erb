@@ -17,24 +17,47 @@ previous_version = previous_version.join(".")
 
 This topic explains how to upgrade <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
 
-<%= partial vars.path_to_partials + "/upgrade-planner" %>
-
 ## <a id="overview"></a>Overview
 
 <%= partial vars.path_to_partials + "/ksm/incompatible-1-0" %>
 
-To upgrade from <%= vars.product_short %> v0.11:
+### <a id="upgrade-from-beta"></a> Upgrading from Beta (v0.11.XX) to GA (v1.XX)
 
-1. Uninstall <%= vars.product_short %> v0.11.
+To upgrade from <%= vars.product_short %> v0.11.XX:
+
+1. Uninstall <%= vars.product_short %> v0.11.XX.
    See [Uninstall <%= vars.product_short %>](#uninstall) below.
 
 1. Install  <%= vars.product_short %> v1.0.
    See [Installing and Configuring <%= vars.product_full %>](./installing.html).
 
-1. Add and enable access to your service offerings. See [Add a Service Offering to <%= vars.product_short %>](./using.html#add)
-   and [Enable Service Offering Access](./using.html#enable).
+### <a id="upgrade-ga"></a> Upgrading GA releases
 
-## <a id="uninstall"></a> Uninstall <%= vars.product_short %>
+To execute an upgrade between GA releases: 
+
+1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](./upgrading.html#get)
+
+1. Upgrade your <%= vars.product_short %> cli by following the same instructions in here 
+[Install the <%= vars.product_short %> CLI](./installing.html#cli)
+
+1. [Replicate <%= vars.product_short %> Images](./installing.html#replicate-images)
+
+1. Upgrade the <%= vars.product_short %> Helm Chart
+
+    To upgrade the <%= vars.product_short %> Helm chart:
+    
+    1. From the root level of the chart, upgrade the <%= vars.product_short %> Helm chart by running
+    these commands:
+    
+        ```bash
+        helm upgrade RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait --reuse-values
+        ```
+        Where:
+        + `<%= vars.product_short %>-NAMESPACE` is a name you previously used as the <%= vars.product_short %> dedicated namespace.
+        + `RELEASE-NAME` is the name you previously used as the <%= vars.product_short %> release.
+        + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the new <%= vars.product_short %> Helm chart file you downloaded.
+
+## <a id="uninstall"></a> Uninstall <%= vars.product_short %> v0.11.XX
 
 To uninstall <%= vars.product_short %>:
 
@@ -43,18 +66,56 @@ To uninstall <%= vars.product_short %>:
     ```
     helm list --all --all-namespaces
     ```
-    Record the name of the <%= vars.product_short %> release that you
+    Record the name and namespace of the <%= vars.product_short %> release that you
     want to uninstall.
-1. Uninstall <%= vars.product_short %> by running:
+
+1. Uninstall <%= vars.product_short %>:
+    
+    1. Remove the helm installation:
 
     ```
-    helm uninstall RELEASE-NAME
+    helm uninstall RELEASE-NAME -n RELEASE-NAMESPACE
     ```
-    Where `RELEASE-NAME` is the name of the <%= vars.product_short %>
-    release that you recorded in the previous step.
-    <br><br>
+   
+    Where:
+    + `RELEASE-NAME` is the name of the <%= vars.product_short %>
+       release that you recorded in the previous step.
+    + `RELEASE-NAMESPACE` is the namespace of the <%= vars.product_short %>
+       release that you recorded in the previous step.
+
     For example:
 
     <pre class="terminal">
-    helm uninstall my-<%= vars.product_short.downcase %>-release
+    helm uninstall my-<%= vars.product_short.downcase %>-release -n <%= vars.product_short.downcase %>-namespace
     </pre>
+    
+    1. Remove the <%= vars.product_short.downcase %> remaining namespaces: 
+    
+    ```bash
+    kubectl delete ns <%= vars.product_short.downcase %>-system 
+    kubectl delete ns RELEASE-NAMESPACE 
+    ```
+   
+    Where:
+    + `RELEASE-NAMESPACE` is the namespace of the <%= vars.product_short %>
+              release that you recorded in a previous step.
+
+    1. Delete the custom resources: 
+    
+    ```bash
+    kubectl delete crd bindingmetas.services.tanzu.vmware.com   
+    kubectl delete crd clusters.services.tanzu.vmware.com               
+    kubectl delete crd instances.services.tanzu.vmware.com              
+    kubectl delete crd offers.services.tanzu.vmware.com                 
+    ```
+   
+    1. Delete the clusterrole and clusterrolebinding as below:
+   
+    ```bash 
+    kubectl delete clusterrole RELEASE-NAME-tsmgr
+    kubectl delete clusterrolebinding RELEASE-NAME-tsmgr
+    ```
+   
+    Where:
+    + `RELEASE-NAME` is the name of the <%= vars.product_short %>
+       release that you recorded in a previous step.
