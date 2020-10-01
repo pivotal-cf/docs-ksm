@@ -13,27 +13,27 @@ This topic describes how to use <%= vars.product_full %> (<%= vars.product_short
 <%= vars.product_short %> uses the <%= vars.product_short %> (Command Line Interface) CLI and a
 generic broker. You can use <%= vars.product_short %> to:
 
-+ Offer on-demand provisioning of a dedicated service instance for developers through `cf marketplace`.
++ Offer on-demand provisioning of a dedicated service instance for developers through
+`cf marketplace`.
 + Create a catalog of services with customizable plans that can be deployed on multiple clusters.
 
 To add a service offering:
 
-1. Configure the <%= vars.product_short %> CLI. <br>
-See [Configure the <%= vars.product_short %> CLI](#credentials) below.
-1. Package your Helm chart and add the chart to <%= vars.product_short %>. <br>
-See [Add a Service Offering to <%= vars.product_short %>](#add) below.
-1. Enable access to the service offering for your developers to use. <br>
-See [Enable Service Offering Access](#enable) below.
+1. [Configure the <%= vars.product_short %> CLI](#credentials)
+1. [Add a Service Offering to <%= vars.product_short %>](#add)
+1. [Enable Service Offering Access](#enable)
 
 
 ## <a id="prereq"></a> Prerequisites
 
 Before you deploy a service offering, you must have:
 
-* A configured Helm chart. See [Configuring a Helm Chart](./configure-helm.html).
-* A service offering. See [Preparing a Service Offering](./prepare-offer.html).
+* A configured Helm chart.
+For more information, see [Configuring a Helm Chart](./configure-helm.html).
+* A service offering.
+For more information, see [Preparing a Service Offering](./prepare-offer.html).
 * A default cluster set for <%= vars.product_short %>.
-See [Set a Default Kubernetes Cluster](managing-clusters.html#set-default).
+For more information, see [Set a Default Kubernetes Cluster](managing-clusters.html#set-default).
 
 
 ## <a id="credentials"></a> Configure the <%= vars.product_short %> CLI
@@ -67,8 +67,8 @@ directory:
     helm package .
     ```
 
-    Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your
-    Helm chart directory.
+1. Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart
+directory.
 
 1. Add your Helm charts as a dedicated instance service offering to <%= vars.product_short %>
 by doing one of the following:
@@ -159,7 +159,8 @@ To update a service offering in  <%= vars.product_short %>:
 1. For each chart you are updating, after you edit your Helm chart,
   increment the chart version in `Chart.yaml`.
 1. If you have a `<%= vars.product_cli %>.yaml` file for your service offering,
-  update the chart versions in `<%= vars.product_cli %>.yaml` to match the the version in `Chart.yaml`.
+  update the chart versions in `<%= vars.product_cli %>.yaml` to match the the version in
+  `Chart.yaml`.
   For more information about multiple charts and `<%= vars.product_cli %>.yaml`,
     see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 1. If any of your charts include modified Custom Resource Definitions (CRDs),
@@ -168,9 +169,8 @@ To update a service offering in  <%= vars.product_short %>:
     ```
     kubectl apply -f PATH-TO-CRD-MANIFEST.yaml
     ```
-    Where:
-    + `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest.
-    The CRD manifest is in the `crds` directory in the chart.
+    Where `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest. The CRD manifest is in the
+    `crds` directory in the chart.
     <p class="note">
       <strong>Note:</strong> By default, <%= vars.product_short %> rejects an updated service
       offering with any CRD changes in the chart. This is because <%= vars.product_short %> does
@@ -184,8 +184,8 @@ level of your Helm chart directory:
     helm package .
     ```
 
-    Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm
-    chart directory.
+1. Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart
+directory.
 
     <p class="note">
       <strong>Note:</strong> If you are updating multiple charts, run the above command for each
@@ -194,7 +194,7 @@ level of your Helm chart directory:
 
 1. Update the service offering by running one of the following commands:
       <p class="note">
-        <strong>Note:</strong> If you manually applied CRD changes to the cluster in step 3, you can
+        <strong>Note:</strong> If you manually applied CRD changes to the cluster earlier, you can
         safely ignore a CRD warning from <%= vars.product_short %> by adding the
         <code>--ignore-crd-warning</code> flag to the below commands.
       </p>
@@ -242,9 +242,8 @@ To filter services instances by offer name or cluster name, choose one of the fo
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
 After you update your service offering, ask developers to follow this procedure to upgrade their
-service instances.
-For instructions for updating a service offering, see [Update a Service Offering](#update-offering)
-above.
+service instances. For instructions for updating a service offering, see
+[Update a Service Offering](#update-offering) above.
 
 To upgrade service instances:
 
@@ -281,7 +280,7 @@ To upgrade service instances:
     mysql-instance   mysql     small   spring-music   upgrade succeeded  tanzu-service-manager   false
     </pre>
     Service instances are upgraded asynchronously.
-    Wait for the `last operation` for your instance to show as `create succeeded`.
+    Wait for `last operation` for your instance to show as `create succeeded`.
 
 
 ## <a id="delete"></a> Delete a Service Offering
@@ -290,7 +289,7 @@ To upgrade service instances:
   <strong>Note:</strong> <%= vars.product_short %> does not permit deleting service offerings if
   service instances of that offering exist.
   This is because if an offering was deleted while service instances of the offering existed,
-  you could not do operations against that service instance.
+  you could not perform operations against that service instance.
   For example, you could not run <code>cf update-service</code>.
 </p>
 
@@ -330,15 +329,15 @@ For more information about RBAC, see the
 
 The RBAC permissions required within the `<%= vars.product_short %>-NAMESPACE` are:
 
-    ```
-    rules:
-    - apiGroups:
-      - services.tanzu.vmware.com
-      resources:
-      - "*"
-      verbs:
-      - "*"
-    ```
+```
+rules:
+- apiGroups:
+  - services.tanzu.vmware.com
+  resources:
+  - "*"
+  verbs:
+  - "*"
+```
 
 For more information about RBAC and how to set up permissions see the
 [Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
