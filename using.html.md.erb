@@ -146,6 +146,30 @@ To enable access to your service offering:
     ```
     cf marketplace
     ```
+   
+## <a id="provision"></a> Provision a Service Instance 
+After enabling service access for the service offering, the service is now available to developers
+through the cf marketplace. Developers can see the services that they have access to by running:
+```bash
+cf marketplace
+```
+
+Developers can then provision a service instance by running:
+```bash
+cf create-service SERVICE-NAME PLAN-NAME SERVICE-INSTANCE-NAME
+```
+
+<p class="note">
+  <strong>Note:</strong> Developers can override plan and Helm chart values using the <code>-c</code>
+  flag when they provision or update a service instance with the cf CLI.
+  They can use the <code>-c</code> flag to provide service-specific configuration parameters. <br><br>
+  When developers provide these configuration parameters, the JSON configurations are mapped directly
+  on to the chart values and take precedence over any chart default and plan values.
+  For information about service-specific configuration parameters, see
+  <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
+</p>
+
+For more information about the cf cli, see [CF CLI documentation](https://docs.run.pivotal.io/cf-cli/cf7-help.html).
 
 ## <a id="update-offering"></a> Update a Service Offering
 

@@ -62,13 +62,6 @@ environments.
 VMware recommends using a registry in production deployments. You can use a registry such as
 [Harbor](https://network.pivotal.io/products/harbor-container-registry).
 
-* **Verify that a default StorageClass exists on the cluster where you want to install
-<%= vars.product_short %>:**
-If you are using Tanzu Kubernetes Grid Integrated Edition, see
-[Specify a Default StorageClass](https://docs.pivotal.io/tkgi/1-8/volumes.html#default-storage-class).
-For more information about Storage Classes, see
-[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/).
-
 * **Install the Ingress controller on the cluster where you want to install
 <%= vars.product_short %>:** You must also reserve a subdomain for <%= vars.product_short %>
 in your DNS.
@@ -237,7 +230,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     Where:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images,
        for example, `anotherregistry.domain.com/project`.
-    + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
+    + `REGISTRY-INSTANCES-USERNAME` is the username for the registry; this user can have read-only access.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
 
     <%= vars.product_short %> uses this registry as the backing registry for the services that
