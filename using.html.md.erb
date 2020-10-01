@@ -7,10 +7,11 @@ owner: Platform Engineering (TSMGR Team)
 
 This topic describes how to use <%= vars.product_full %> (<%= vars.product_short %>).
 
-##<a id='using'></a> Overview
 
-<%= vars.product_short %> uses the <%= vars.product_short %> (Command Line Interface) CLI and a generic broker.
-You can use <%= vars.product_short %> to do the following:
+## <a id='using'></a> Overview
+
+<%= vars.product_short %> uses the <%= vars.product_short %> (Command Line Interface) CLI and a
+generic broker. You can use <%= vars.product_short %> to:
 
 + Offer on-demand provisioning of a dedicated service instance for developers through `cf marketplace`.
 + Create a catalog of services with customizable plans that can be deployed on multiple clusters.
@@ -24,38 +25,43 @@ See [Add a Service Offering to <%= vars.product_short %>](#add) below.
 1. Enable access to the service offering for your developers to use. <br>
 See [Enable Service Offering Access](#enable) below.
 
-##<a id="prereq"></a>Prerequisites
+
+## <a id="prereq"></a> Prerequisites
 
 Before you deploy a service offering, you must have:
 
 * A configured Helm chart. See [Configuring a Helm Chart](./configure-helm.html).
 * A service offering. See [Preparing a Service Offering](./prepare-offer.html).
-* A default cluster set for <%= vars.product_short %>. See  [Set a Default Kubernetes Cluster](managing-clusters.html#set-default).
+* A default cluster set for <%= vars.product_short %>.
+See [Set a Default Kubernetes Cluster](managing-clusters.html#set-default).
+
 
 ## <a id="credentials"></a> Configure the <%= vars.product_short %> CLI
 
-To use the <%= vars.product_full %> CLI, you need to retrieve the API credentials and export the environment variables.
-
+To configure the <%= vars.product_full %> CLI, retrieve the API credentials and export the
+environment variables:
 
 1. Output the API credentials and environment variables by running:
 
     ```
     helm status RELEASE-NAME -n <%= vars.product_short %>-NAMESPACE
     ```
-
     Where:
-    * `RELEASE-NAME` is the name you chose for the <%= vars.product_full %> release during installation.
-    * `<%= vars.product_short %>-NAMESPACE` is the name you chose for the <%= vars.product_short %> dedicated namespace.
+    * `RELEASE-NAME` is the name you chose for the <%= vars.product_full %> release during
+    installation.
+    * `<%= vars.product_short %>-NAMESPACE` is the name you chose for the <%= vars.product_short %>
+    dedicated namespace.
+
 
 ## <a id="add"></a> Add a Service Offering to <%= vars.product_short %>
 
-You must package your Helm charts and add the offering to <%= vars.product_short %> to enable developers
-to use the service.
+You must package your Helm charts and add the offering to <%= vars.product_short %> to enable
+developers to use the service.
 
 To add your offering to <%= vars.product_short %>:
 
-1. Package your Helm chart by running the following command from the root level of
-your Helm chart directory:
+1. Package your Helm chart by running the following command from the root level of your Helm chart
+directory:
 
     ```
     helm package .
@@ -78,31 +84,35 @@ by doing one of the following:
         <%= vars.product_cli %> offer save /PATH-TO-<%= vars.product_short %>-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz
         ```
         Where:
+        + `PATH-TO-<%= vars.product_short %>-DIRECTORY/` is the path to the `<%= vars.product_cli %>`
+        directory that includes the `<%= vars.product_cli %>.yaml` file for your service offering.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your
+        `<%= vars.product_cli %>.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your
+        `<%= vars.product_cli %>.yaml` file.
 
-        + `PATH-TO-<%= vars.product_short %>-DIRECTORY/` is the path to the `<%= vars.product_cli %>` directory that includes the `<%= vars.product_cli %>.yaml`
-            file for your service offering.
-        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
-        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
-
-        <p class="note"><strong>Note:</strong>
-          If you have already added a packaged chart to <%= vars.product_short %>,
-            you do not need to provide the path to the same chart when you
-            subsequently add service offerings.
+        <p class="note">
+          <strong>Note:</strong> If you have already added a packaged chart to
+          <%= vars.product_short %>, you do not need to provide the path to the same chart when you
+          subsequently add service offerings.
         </p>
-        For more information about offering multiple charts,
-        see [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
+        For more information about offering multiple charts, see
+        [(Optional) Offer Multiple Charts in a Single Offering](./prepare-offer.html#multiple-charts).
 
-    <p class="note"><strong>Note:</strong>
-      If the Helm chart version specified in <code><%= vars.product_cli %>.yaml</code>
-      and <code>Chart.yaml</code> do not match, <%= vars.product_short %>
-      returns a error message similar to the following:
-      <code>Error: The offer yaml version [2.3.0] for chart [mysql] does not match the version [1.3.0] in chart</code>
-    </p>
-1. Ensure your offering has been saved to <%= vars.product_short %> by running:
+        <p class="note">
+          <strong>Note:</strong> If the Helm chart version specified in
+          <code><%= vars.product_cli %>.yaml</code> and <code>Chart.yaml</code> do not match,
+          <%= vars.product_short %> returns a error message similar to
+          <code>Error: The offer yaml version [2.3.0] for chart [mysql] does not match the version
+            [1.3.0] in chart</code>
+        </p>
+
+1. Ensure your offering was saved to <%= vars.product_short %> by running:
 
     ```
     <%= vars.product_cli %> offer list
     ```
+
 
 ## <a id="enable"></a> Enable Service Offering Access
 
@@ -115,14 +125,13 @@ To enable access to your service offering:
     ```
     cf login -a API-URL -u USERNAME -p PASSWORD
     ```
-
     Where:
     + `API-URL` is the API endpoint for your <%= vars.app_runtime_abbr %> instance.
     + `USERNAME` is your username for your <%= vars.app_runtime_abbr %> instance.
     + `PASSWORD` is your password for your <%= vars.app_runtime_abbr %> instance.
 
-    For more information,
-    see [Getting Started with the cf CLI](https://docs.pivotal.io/application-service/2-10/cf-cli/getting-started.html).
+    For more information, see
+    [Getting Started with the cf CLI](https://docs.pivotal.io/application-service/2-10/cf-cli/getting-started.html).
 
 1. Enable access to the service for all orgs by running:
 
@@ -131,7 +140,6 @@ To enable access to your service offering:
     ```
     Where `SERVICE-NAME` is the name of the new service offering that you viewed in step 6 of
     [Add a Service Offering to <%= vars.product_short %>](#add) above.
-
 
 1. View the newly created service plan by running:
 
@@ -157,57 +165,64 @@ To update a service offering in  <%= vars.product_short %>:
 1. If any of your charts include modified Custom Resource Definitions (CRDs),
   for each CRD manifest, manually apply the changes to the cluster by running:
 
-      ```
-      kubectl apply -f PATH-TO-CRD-MANIFEST.yaml
-      ```
-      Where:
-      + `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest.
-      The CRD manifest is in the `crds` directory in the chart.
-      <p class="note"><strong>Note:</strong>
-      By default, <%= vars.product_short %> rejects an updated service offering with any CRD changes in the chart.
-      This is because <%= vars.product_short %> does not modify any CRDs that currently exist on the Kubernetes cluster.
-      </p>
-1. Package an updated version of your Helm chart by running the following command from
-    the root level of your Helm chart directory:
+    ```
+    kubectl apply -f PATH-TO-CRD-MANIFEST.yaml
+    ```
+    Where:
+    + `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest.
+    The CRD manifest is in the `crds` directory in the chart.
+    <p class="note">
+      <strong>Note:</strong> By default, <%= vars.product_short %> rejects an updated service
+      offering with any CRD changes in the chart. This is because <%= vars.product_short %> does
+      not modify any CRDs that currently exist on the Kubernetes cluster.
+    </p>
 
-     ```
-     helm package .
-     ```
+1. Package an updated version of your Helm chart by running the following command from the root
+level of your Helm chart directory:
 
-     Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm chart directory.
+    ```
+    helm package .
+    ```
 
-     <p class="note"><strong>Note:</strong> If you are updating multiple charts,
-       run the above command for each updated chart.
-     </p>
+    Verify that you now have a file named `CHART-NAME-#.#.#.tgz` in the root level of your Helm
+    chart directory.
+
+    <p class="note">
+      <strong>Note:</strong> If you are updating multiple charts, run the above command for each
+      updated chart.
+    </p>
 
 1. Update the service offering by running one of the following commands:
-      <p class="note"><strong>Note:</strong>
-        If you manually applied CRD changes to the cluster in step 3,
-        you can safely ignore a CRD warning from <%= vars.product_short %>
-        by adding the <code>--ignore-crd-warning</code> flag to the below commands.
+      <p class="note">
+        <strong>Note:</strong> If you manually applied CRD changes to the cluster in step 3, you can
+        safely ignore a CRD warning from <%= vars.product_short %> by adding the
+        <code>--ignore-crd-warning</code> flag to the below commands.
       </p>
     + **If you are adding a single chart,** run:
 
         ```
         <%= vars.product_cli %> offer save /PATH-TO-YOUR-CHART.tgz --update
         ```
-        Where `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete. <br><br>
+        Where `PATH-TO-YOUR-CHART.tgz` is the name of the service offering you want to delete.<br><br>
     + **If you are adding a multiple charts,** run:
 
         ```
         <%= vars.product_cli %> offer save /PATH-TO-<%= vars.product_short %>-DIRECTORY/ /PATH-TO-YOUR-CHART_1.tgz /PATH-TO-YOUR-CHART_2.tgz --update
         ```
         Where:
-        + `PATH-TO-<%= vars.product_short %>-DIRECTORY/` is the path to the `<%= vars.product_cli %>` directory that includes
-            the `<%= vars.product_cli %>.yaml` file for your service offering.
-        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
-        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your `<%= vars.product_cli %>.yaml` file.
+        + `PATH-TO-<%= vars.product_short %>-DIRECTORY/` is the path to the `<%= vars.product_cli %>`
+        directory that includes the `<%= vars.product_cli %>.yaml` file for your service offering.
+        + `PATH-TO-YOUR-CHART_1.tgz` is the path to a packaged chart you referenced in your
+        `<%= vars.product_cli %>.yaml` file.
+        + `PATH-TO-YOUR-CHART_2.tgz` is the path to a packaged chart you referenced in your
+        `<%= vars.product_cli %>.yaml` file.
+
 
 ## <a id="list-instance"></a> List Service Instances
+
 You can list existing service instances and filter by offer name or cluster name.
 
-To filter services instances by offer name or cluster name, choose one of the following
-options:
+To filter services instances by offer name or cluster name, choose one of the following options:
 
 - **Filter by offer name by running:**
 
@@ -226,9 +241,10 @@ options:
 
 ## <a id="upgrade-instance"></a> Upgrade a Service Instance
 
-After you update your service offering,
-ask developers to follow this procedure to upgrade their service instances.
-For instructions for updating a service offering, see [Update a Service Offering](#update-offering) above.
+After you update your service offering, ask developers to follow this procedure to upgrade their
+service instances.
+For instructions for updating a service offering, see [Update a Service Offering](#update-offering)
+above.
 
 To upgrade service instances:
 
@@ -238,45 +254,50 @@ To upgrade service instances:
     cf services
     ```
     For example:
-     <pre class="terminal">$ cf services
-     name             service   plan    bound apps     last operation     broker                       upgrade available
-     mysql-instance   mysql     small   spring-music   create succeeded   tanzu-service-manager   true</pre>
+    <pre class="terminal">$ cf services
+    name             service   plan    bound apps     last operation     broker                  upgrade available
+    mysql-instance   mysql     small   spring-music   create succeeded   tanzu-service-manager   true
+    </pre>
 
-     Service instances that are available for upgrade have `true` under the `upgrade available` column.
+    Service instances that are available for upgrade have `true` under the `upgrade available` column.
 
 1. Upgrade the service instance by running:
 
-     ```
-     cf update-service SERVICE-INSTANCE-NAME -u
-     ```
-1. Check the status of your service instance and watch for completion by running:
+    ```
+    cf update-service SERVICE-INSTANCE-NAME -u
+    ```
+
+1. See the status of your service instance and watch for completion by running:
 
     ```
     watch cf services
     ```
     For example:
-  <pre class="terminal">$ watch cf services
-   Getting services in org my-org / space my-space as user...
-   OK
-   name             service   plan    bound apps     last operation     broker                       upgrade available
-   mysql-instance   mysql     small   spring-music   upgrade succeeded  tanzu-service-manager        false
- </pre>
-   Service instances are upgraded asynchronously.
-   Wait for the `last operation` for your instance to show as `create succeeded`.
+
+    <pre class="terminal">$ watch cf services
+    Getting services in org my-org / space my-space as user...
+    OK
+    name             service   plan    bound apps     last operation     broker                  upgrade available
+    mysql-instance   mysql     small   spring-music   upgrade succeeded  tanzu-service-manager   false
+    </pre>
+    Service instances are upgraded asynchronously.
+    Wait for the `last operation` for your instance to show as `create succeeded`.
+
 
 ## <a id="delete"></a> Delete a Service Offering
 
- <p class="note"><strong>Note:</strong>
-   <%= vars.product_short %> does not permit deleting service offerings if service instances of that offering exist.
-   This is because if an offering was deleted while service instances of the offering existed,
-   you could not do operations against that service instance.
-   For example, you could not run <code>cf update-service</code>.
+<p class="note">
+  <strong>Note:</strong> <%= vars.product_short %> does not permit deleting service offerings if
+  service instances of that offering exist.
+  This is because if an offering was deleted while service instances of the offering existed,
+  you could not do operations against that service instance.
+  For example, you could not run <code>cf update-service</code>.
 </p>
 
 To delete a service offering:
 
-1. If service instances of the service offering exist, for each service instance,
-delete the instance by running:
+1. If service instances of the service offering exist, for each service instance, delete the
+instance by running:
 
     ```
     cf delete-service SERVICE-INSTANCE-NAME
@@ -289,30 +310,35 @@ delete the instance by running:
     ```
     Where `OFFER-NAME` is the name of the service offering you want to delete.
 
-    <p class="note"><strong>Note:</strong> If you only have one service offering in
-      <%= vars.product_short %>, you cannot delete it.
+    <p class="note">
+      <strong>Note:</strong> If you only have one service offering in <%= vars.product_short %>,
+      you cannot delete it.
     </p>
+
 
 ## <a id="authentication"></a> User authentication with <%= vars.product_short %>
 
 Users authenticate with <%= vars.product_short %> CLI using a Kubernetes token.
-The steps described in [Configuring the <%= vars.product_short %> CLI](#credentials) above
-will instruct you to configure the CLI with a pre-created Kubernetes service account. This
-service account has been granted the appropriate permissions to work with <%= vars.product_short %>.
+The steps described in [Configuring the <%= vars.product_short %> CLI](#credentials) above instruct
+you to configure the CLI with a pre-created Kubernetes service account.
+This service account has the appropriate permissions to work with <%= vars.product_short %>.
 
-If you would like to use a different token, then you must ensure that the
-Kubernetes actor (user, serviceaccount or group) has the correct [Kubernetes RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
+To use a different token, ensure that the Kubernetes actor -- a user, service account, or group --
+has the correct Kubernetes RBAC.
+For more information about RBAC, see the
+[Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
 
 The RBAC permissions required within the `<%= vars.product_short %>-NAMESPACE` are:
-  ```
-  rules:
-  - apiGroups:
-    - services.tanzu.vmware.com
-    resources:
-    - "*"
-    verbs:
-    - "*"
-  ```
 
-For more information on how to setup a permissions [see the Kubernetes
-RBAC Documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
+    ```
+    rules:
+    - apiGroups:
+      - services.tanzu.vmware.com
+      resources:
+      - "*"
+      verbs:
+      - "*"
+    ```
+
+For more information about RBAC and how to set up permissions see the
+[Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
