@@ -13,6 +13,14 @@ This topic describes how to configure a Helm chart for <%= vars.product_full %>
 <%= vars.product_short %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
+<%= vars.product_short %> will use the description in Chart.yaml as the description of the offer in `cf marketplace`.
+
+<%= vars.product_short %> will surface all values specified in the `values.schema.json` file to the Developer
+ at the time of provision through AppsManager. Refer to [Helm's schema files](https://helm.sh/docs/topics/charts/#schema-files)
+ for more information. The Developer can also override the values file by using `-c` at the time of provision
+ (the CLI does not enforce the schema during provision). See [Provision a Service Instance](./using.html#provision).
+
+
 Before you add a service offering to `cf marketplace`, you must configure your Helm charts to be
 compatible with <%= vars.product_short %>.
 For examples of <%= vars.product_short %>-compatible charts, see

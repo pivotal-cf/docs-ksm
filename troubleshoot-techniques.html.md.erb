@@ -110,34 +110,6 @@ To delete Helm releases and namespaces in a Kubernetes cluster:
     Where `NAMESPACE` is the name of the namespace you are deleting.
 
 
-### <a id='cleanup-script'></a> Cleanup Script
-
-A cleanup script automates the cleanup of a development
-Kubernetes cluster during the development process.
-
-To automate cleanup:
-
-<p class="note warning"><strong>Warning:</strong> Only run this cleanup script against a development cluster.
-The script deletes Helm releases and Kubernetes resources on the cluster.
-Validate the targeted cluster by running <code>kubectl config current-context</code> before running the cleanup script below</a>.
-</p>
-
-1. Automate cleanup by running in CI or manually:
-
-    ```
-    #!/usr/bin/env bash
-    set +e
-
-    helm ls -A | tail -n +2 | awk -F '\t' '{ print "helm uninstall " $1 " -n " $2 }' | xargs -I {} sh -c "{}"
-
-    kubectl get clusterrole        | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrole {}
-    kubectl get clusterrolebinding | grep k-      | cut -d " " -f 1 | xargs -I {} kubectl delete clusterrolebinding {}
-    kubectl get namespace          | grep <%= vars.product_cli %>-    | cut -d " " -f 1 | xargs -I {} kubectl delete namespace {}
-    kubectl get podsecuritypolicies -A | grep <%= vars.product_cli %>-    | cut -d " " -f 1 | xargs -I {} kubectl delete podsecuritypolicy {}
-    kubectl get MutatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete MutatingWebhookConfiguration {}
-    kubectl get ValidatingWebhookConfiguration | grep k-    | cut -d " " -f 1 | xargs -I {} kubectl delete ValidatingWebhookConfiguration {}
-    ```
-
 ## <a id='view-service-instance'></a> View Service Instance Metadata in Kubernetes
 
 When a developer provisions a service instance onto a Kubernetes cluster,
