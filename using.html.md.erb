@@ -315,7 +315,7 @@ instance by running:
     </p>
 
 
-## <a id="authentication"></a> User authentication with <%= vars.product_short %>
+## <a id="authentication"></a> About User Authentication with <%= vars.product_short %>
 
 Users authenticate with <%= vars.product_short %> CLI using a Kubernetes token.
 The steps described in [Configuring the <%= vars.product_short %> CLI](#credentials) above instruct
@@ -324,8 +324,6 @@ This service account has the appropriate permissions to work with <%= vars.produ
 
 To use a different token, ensure that the Kubernetes actor -- a user, service account, or group --
 has the correct Kubernetes RBAC.
-For more information about RBAC, see the
-[Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).
 
 The RBAC permissions required within the `<%= vars.product_short %>-NAMESPACE` are:
 
