@@ -4,8 +4,8 @@ owner: Platform Engineering (TSMGR Team)
 ---
 
 <%# The below uses the local product variable and math so we do not need to update this page
-with every release %>
-<%
+with every release
+
 current_version = product_info['local_product_version']
 
 previous_version = current_version.to_s.split(".")
@@ -21,14 +21,14 @@ This topic explains how to upgrade <%= vars.product_full %> (<%= vars.product_sh
 
 ## <a id="overview"></a>Overview
 
-<%= partial vars.path_to_partials + "/ksm/incompatible" %>
+<%= partial vars.path_to_partials + "/ksm/incompatible-1-0" %>
 
-To upgrade from <%= vars.product_short %> v<%= previous_version %>:
+To upgrade from <%= vars.product_short %> v0.11:
 
-1. Uninstall <%= vars.product_short %> v<%= previous_version %>.
+1. Uninstall <%= vars.product_short %> v0.11.
    See [Uninstall <%= vars.product_short %>](#uninstall) below.
 
-1. Install  <%= vars.product_short %> v<%= current_version %>.
+1. Install  <%= vars.product_short %> v1.0.
    See [Installing and Configuring <%= vars.product_full %>](./installing.html).
 
 1. Add and enable access to your service offerings. See [Add a Service Offering to <%= vars.product_short %>](./using.html#add)
