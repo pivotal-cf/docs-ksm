@@ -149,8 +149,8 @@ To enable access to your service offering:
 
 ## <a id="provision"></a> Provision a Service Instance
 
-After enabling service access for the service offering, the service is now available to developers
-through the Cloud Foundry Marketplace. Developers can see the services that they have access to by
+After enabling service access for the service offering, the service is available to developers
+through Cloud Foundry Marketplace. Developers can see the services that they have access to by
 running:
 
 ```bash
@@ -165,11 +165,11 @@ cf create-service SERVICE-NAME PLAN-NAME SERVICE-INSTANCE-NAME
 
 <p class="note">
   <strong>Note:</strong> Developers can specify service-specific configuration parameters to override
-  plan and Helm chart values. They do this by using the <code>-c</code>
-  flag when they provision or update a service instance with the cf CLI.
+  plan and Helm chart values. They do this by using the <code>-c</code> flag when they provision or
+  update a service instance through the cf CLI.
   <br>
-  The <strong>-c</strong> JSON configuration values are mapped directly
-  onto the chart values and take precedence over any chart default and plan values.
+  The <strong>-c</strong> JSON configuration values are mapped directly on to the chart values and
+  take precedence over any chart default and plan values.
   For information about service-specific configuration parameters, see
   <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
 </p>

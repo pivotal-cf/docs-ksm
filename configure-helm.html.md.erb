@@ -13,13 +13,15 @@ This topic describes how to configure a Helm chart for <%= vars.product_full %>
 <%= vars.product_short %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
-<%= vars.product_short %> will use the description in Chart.yaml as the description of the offer in `cf marketplace`.
+<%= vars.product_short %> uses the description in `Chart.yaml` as the description of the offer in
+`cf marketplace`.
 
-<%= vars.product_short %> will surface all values specified in the `values.schema.json` file to the Developer
- at the time of provision through AppsManager. Refer to [Helm's schema files](https://helm.sh/docs/topics/charts/#schema-files)
- for more information. The Developer can also override the values file by using `-c` at the time of provision
- (the CLI does not enforce the schema during provision). See [Provision a Service Instance](./using.html#provision).
-
+<%= vars.product_short %> surfaces all values specified in the `values.schema.json` file to the
+developer at the time of provision through AppsManager. For more information, see the
+[Helm documentation](https://helm.sh/docs/topics/charts/#schema-files)
+The developer can also override the values file by using `-c` at the time of provision given that the
+CLI does not enforce the schema during provision.
+For more information, see [Provision a Service Instance](./using.html#provision).
 
 Before you add a service offering to `cf marketplace`, you must configure your Helm charts to be
 compatible with <%= vars.product_short %>.
@@ -44,8 +46,8 @@ See [Prevent Secret Regeneration](#secret-regeneration) below.
 
 VMware recommends that you read the following resources when creating your Helm chart:
 
-+ For information about creating your first Helm chart,
-see the [Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
++ For information about creating your first Helm chart, see the
+[Bitnami documentation](https://docs.bitnami.com/kubernetes/how-to/create-your-first-helm-chart/).
 + For information about best practices for creating production-ready Helm charts,
 see the [Bitnami documentation](https://docs.bitnami.com/tutorials/production-ready-charts/).
 + For more information about best practices,
@@ -71,7 +73,7 @@ properties to an `OVERRIDE-FILE.yaml` file.
   you add the service offering to <%= vars.product_short %>.
 </p>
 
-Below are some common scenarios where overriding chart values would be required.
+Below are some common scenarios where overriding chart values is required.
 
 1. Edit your override file to configure storage. Edit the `storageClass:` value to correspond to
 the StorageClass name for your configured <%= vars.k8s_runtime_full %> cluster.
@@ -185,6 +187,7 @@ To prevent secret regeneration:
 For more information about this issue, see
 [Random passwords change on upgrade](https://github.com/helm/charts/issues/5167) in GitHub.
 
+
 ## <a id='values-templating'></a> (Optional) Template Values
 
 Helm uses the literal contents of a `values.yaml` file (in <%= vars.product_short %> context, the
@@ -194,7 +197,8 @@ However, <%= vars.product_short %> uses these values as a template for multiple 
 This difference can create cases where values needs to go through the Helm templating engine
 before any template files in the `/templates` directory are rendered with those values.
 
-Plan and override file contents might need to go through the Helm templating engine in the following cases:
+Plan and override file contents might need to go through the Helm templating engine in the following
+cases:
 
 * When a chart uses Ingress controller. For information, see
 [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
@@ -202,8 +206,8 @@ in the Kubernetes documentation.
 * When there is a unique name, in addition to the release name, required in a chart.
 
 <%= vars.product_short %> runs these values through the Helm templating engine.
-For example, in a chart with ingress hosts, you can edit the plan or override file to use the release name as
-the unique subdomain discriminator in the ingress definition:
+For example, in a chart with ingress hosts, you can edit the plan or override file to use the release
+name as the unique subdomain discriminator in the ingress definition:
 
 ```yaml
 ...
