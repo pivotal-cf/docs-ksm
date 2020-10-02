@@ -10,8 +10,8 @@ for use with <%= vars.product_full %> (<%= vars.product_short %>).
 
 ##<a id='overview'></a> Overview
 
-Before offering a service with <%= vars.product_short %>, you must register the
-Kubernetes clusters that service instances use.
+Before offering a service with <%= vars.product_short %>, you must register the Kubernetes clusters
+that service instances use.
 For more information about how to register your clusters with <%= vars.product_short %>,
 see [Kubernetes Cluster Registration](#registration-management) below.
 
@@ -25,9 +25,20 @@ Provisioning to different clusters allows you to require special cluster configu
 You can also set a default cluster to provision plans to. See [Set a Default Kubernetes Cluster](#set-default) below.
 
 
-##<a id='create-cluster-file'></a> Create a Cluster Credentials File
+## <a id='create-cluster-file'></a> Create a Cluster Credentials File
 
-You need a cluster credential file to register and set default Kubernetes clusters.
+You need a cluster credential file to register Kubernetes clusters with <%= vars.product_short %>.
+A valid Cluster Credentials file has the following structure:
+
+```yaml
+token: TOKEN
+server: SERVER
+caData: CA-DATA
+```
+Where:
++ `TOKEN` is a valid Kubernetes authentication token.
++ `SERVER` is the server address of the Kubernetes cluster.
++ `CA-DATA` is valid CA data for the Kubernetes cluster.
 
 To create a cluster credentials file:
 
@@ -186,8 +197,8 @@ To see a list of registered Kubernetes clusters:
 
 ### <a id='deregistering'></a> Deregister a Kubernetes Cluster
 
-Before deregistering a cluster, ensure that it is not the default cluster, it
-does not have any instances, and the cluster is not associated with any plans in any service offering.
+Before deregistering a cluster, ensure that it is not the default cluster, it does not have any
+instances, and the cluster is not associated with any plans in any service offering.
 
 To deregister a cluster:
 
