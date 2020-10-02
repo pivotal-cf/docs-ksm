@@ -125,7 +125,7 @@ The following table describes the Helm chart configurations in `<%= vars.product
   </tr>
 
   <tr>
-    <td></td>
+    <td><strong><code>scope</code></strong></td>
     <td><code>namespace</code></td>
     <td>If you use this value, the chart is deployed on the cluster every time
       the service is created.</td>
@@ -257,7 +257,7 @@ To override the default settings in `values.yaml` and offer custom plans:
   plan and Helm chart values. They do this by using the <code>-c</code> flag when they provision or
   update a service instance with the cf CLI.
   <br>
-  The <strong>-c</strong> JSON configuration values are mapped directly
+  The <code>-c</code> JSON configuration values are mapped directly
   onto the chart values and take precedence over any chart default and plan values.
   For information about service-specific configuration parameters, see
   <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
