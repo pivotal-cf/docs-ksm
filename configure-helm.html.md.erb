@@ -190,20 +190,19 @@ For more information about this issue, see
 
 ## <a id='values-templating'></a> (Optional) Template Values
 
-Helm uses the literal contents of a `values.yaml` file (in <%= vars.product_short %> context, the
-plan and override file contents) as the concrete set of substitutions when creating a release.
+Helm uses the literal contents of a `values.yaml` file as the concrete set of substitutions when
+creating a release.
+In the context of <%= vars.product_short %>, this is the plan and override file contents.
 However, <%= vars.product_short %> uses these values as a template for multiple releases.
 
-This difference can create cases where values needs to go through the Helm templating engine
-before any template files in the `/templates` directory are rendered with those values.
+This difference can create cases where values need to go through the Helm templating engine before
+any template files in the `/templates` directory are rendered with those values.
 
-Plan and override file contents might need to go through the Helm templating engine in the following
-cases:
+Plan and override file contents might need to go through the Helm templating engine when:
 
-* When a chart uses Ingress controller. For information, see
-[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-in the Kubernetes documentation.
-* When there is a unique name, in addition to the release name, required in a chart.
+* A chart uses Ingress controller. For more information about Ingress, see the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
+* There is a unique name, in addition to the release name, required in a chart.
 
 <%= vars.product_short %> runs these values through the Helm templating engine.
 For example, in a chart with ingress hosts, you can edit the plan or override file to use the release

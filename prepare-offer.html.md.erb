@@ -10,13 +10,14 @@ This topic describes how to prepare an offered service for <%= vars.product_full
 
 **Working examples can be found here:** https://github.com/cf-platform-eng/tsmgr-samples
 
+
 ## <a id='using'></a> Overview
 
 <%= vars.product_short %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
-Before you add a service offering to `cf marketplace`,
-you must configure the <%= vars.product_short %> package.
+Before you add a service offering to `cf marketplace`, you must configure the
+<%= vars.product_short %> package.
 You can also configure the package to enable additional features.
 
 To prepare a service offering:
@@ -44,9 +45,8 @@ For more information, see [Managing Kubernetes Clusters for <%= vars.product_ful
 they must be installed before you offer your service.
 For example, if your Helm chart requires an Ingress controller to enable service through ingress, the
 Ingress controller must be manually installed onto the cluster.<br><br>
-For information about Ingress, see
-[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) in the Kubernetes
-documentation.
+For information about Ingress, see the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
 
 
 ## <a id='offer-init'></a> Create a Sample Service Offering Directory
@@ -78,12 +78,14 @@ To create a sample service offering directory:
       one plan is offered. This plan uses the default values for the Helm chart.
     </p>
 
+
 ## <a id='yaml'></a> (Optional) Create <%= vars.product_cli %>.yaml
 
-The <%= vars.product_cli %>.yaml is required to either offer multiple charts or
-specify a file overriding a chart's default values.
+`<%= vars.product_cli %>.yaml` is required to either offer multiple charts or specify a file
+overriding a chart's default values.
 
-1. Edit the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a template:
+1. Edit the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a
+template:
 
     ```yaml
     offer-name: OFFER-NAME
@@ -94,15 +96,14 @@ specify a file overriding a chart's default values.
         scope: SCOPE-VALUE
         overrideValuesFile: OVERRIDE-FILE.yaml
     ```
-
     Where:
-    + `OFFER-NAME` is the name of the service offering that developers see when they run `cf marketplace`.
-        The service name is listed under `service`.
-    + `CHART-NAME` is the name of a chart that you are including in the service offering.
-    + `CHART-VERSION-NUMBER` is the version of the chart that you are including in the service offering.
-    + `OFFERED-VALUE` is set to either `true` or `false`. For more information, see the below table.
-    + `SCOPE-VALUE` is set to either `cluster` or `namespace`. For more information, see the below table.
-    + `OVERRIDE-FILE.yaml` (optional) is the name of a file in the overrides directory that overrides the chart's default `values.yaml` file.
+    + `OFFER-NAME` is the name of the service offering that developers see when they run
+    `cf marketplace`. The service name is listed under `service`.
+    + `CHART-NAME` is the name of a chart included in the service offering.
+    + `CHART-VERSION-NUMBER` is the version of the chart included in the service offering.
+    + `OFFERED-VALUE` is `true` or `false`. For more information, see the below table.
+    + `SCOPE-VALUE` is `cluster` or `namespace`. For more information, see the below table.
+    + `OVERRIDE-FILE.yaml` is the name of a file in the overrides directory that overrides the chart's default `values.yaml` file. It is optional.
 
 The following table describes the Helm chart configurations in `<%= vars.product_cli %>.yaml`:
 
@@ -133,27 +134,28 @@ The following table describes the Helm chart configurations in `<%= vars.product
   <tr>
     <td><strong><code>offered</code></strong></td>
     <td><code>true</code> | <code>false</code></td>
-    <td>Only a single chart can have <code>offered</code> to <code>true</code>.
+    <td>Only a single chart can have <code>offered</code> as <code>true</code>.
       The chart that is set to <code>true</code> must also have
       <code>scope</code> set to <code>namespace</code>. <br><br>
       The offered chart represents the service the user binds to.
       However, you can expose more resources with <code>cf bind-service</code>.</td>
-
   </tr>
 </table>
 
+
 ## <a id='override'></a> (Optional) Override Chart Values
 
-Within an `OVERRIDE-FILE.yaml` file, you can specify any values that you want to apply across all plans
-that differ from a chart's default `values.yaml`.
+Within an `OVERRIDE-FILE.yaml` file, you can specify any values that you want to apply across all
+plans that differ from a chart's default `values.yaml`.
 
 To override chart values:
 
 1. Create an `overrides` directory and an `overrides/OVERRIDE-FILE.yaml` file. <br><br>
-    Ensure that the properties you add to `OVERRIDE-FILE.yaml` match the properties
-    in `values.yaml`.
+    Ensure that the properties you add to `OVERRIDE-FILE.yaml` match the properties in `values.yaml`.
 
-See <a href="./configure-helm.html#override">Override Chart Values</a> for some common scenarios.
+For some common scenarios, see <a href="./configure-helm.html#override">Override Chart Values</a> for
+some common scenarios.
+
 
 ## <a id='plans'></a> (Optional) Define Plans Configuration
 
@@ -174,7 +176,7 @@ These values are configured in `plans.yaml`.
 For examples of `plans.yaml` files,
 see [<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/tsmgr-samples) on GitHub.
 
-If you want to override the default settings in `values.yaml` and offer custom plans:
+To override the default settings in `values.yaml` and offer custom plans:
 
 1. Create and edit `plans/PLAN-FILE.yaml` with the Helm values that you want to override.
    `PLAN-FILE.yaml` must consist of only lowercase letters, digits, `.`, or `-`.
@@ -230,7 +232,8 @@ If you want to override the default settings in `values.yaml` and offer custom p
     * `PLAN-DESCRIPTION` is the description of the plan that developers see when they run
     `cf marketplace`. The plan description is listed under `description`.
     * `PLAN-FILE` is the name of the plan file in the `plans` subdirectory.
-    * (Optional) `CLUSTER-NAME` is the name of a cluster that is registered with <%= vars.product_short %>.
+    * (Optional) `CLUSTER-NAME` is the name of a cluster that is registered with
+    <%= vars.product_short %>.
     For more information, see [Register a Kubernetes Cluster](managing-clusters.html#registering).
     If omitted, service instances are provisioned to the default cluster.
     For more information, see [Set a Default Cluster](managing-clusters.html#registering).
@@ -275,25 +278,25 @@ To offer a service with multiple Helm charts, you must edit the `<%= vars.produc
 The `charts` section in a `<%= vars.product_cli %>.yaml` file is an ordered list of the charts that
 are included in the service offering.
 
-See [(Optional) Create <%= vars.product_cli %>.yaml](#yaml) for the full details of this file.
+For the full details of this file, see [(Optional) Create <%= vars.product_cli %>.yaml](#yaml).
+
 
 ## <a id='env'></a> (Optional) Create Binding Template for App Consumption
 
-Apps running in <%= vars.app_runtime_abbr %> gain access to bound service instances through an environment
-variable credentials hash called `VCAP_SERVICES`.
-Libraries such as Spring Cloud
-Cloud Foundry Connector automatically support services if their credentials in
-`VCAP_SERVICES` are formatted in a valid JSON object.
+Apps running in <%= vars.app_runtime_abbr %> gain access to bound service instances through an
+environment variable credentials hash called `VCAP_SERVICES`.
+Libraries such as Spring Cloud Cloud Foundry Connector automatically support services if their
+credentials in `VCAP_SERVICES` are formatted in a valid JSON object.
 
-For an example of the requirements for using Spring Cloud
-Cloud Foundry Connector with a MySQL service, see the
+For an example of the requirements for using Spring Cloud Cloud Foundry Connector with a MySQL
+service, see the
 [Spring Cloud Cloud Foundry Connector documentation](https://cloud.spring.io/spring-cloud-connectors/spring-cloud-cloud-foundry-connector.html#_mysql).
 
-Chart authors can edit the `bind.yaml` file to enable the broker to
-return a valid JSON object containing service credentials.
+Chart authors can edit the `bind.yaml` file to enable the broker to return a valid JSON object
+containing service credentials.
 This `bind.yaml` file contains a Jsonnet template.
-When a developer binds the service instance to their app,
-the service credentials are delivered to `VCAP_SERVICES` for app consumption.
+When a developer binds the service instance to their app, the service credentials are delivered to
+`VCAP_SERVICES` for app consumption.
 
 For information about Jsonnet templates, see [Jsonnet](https://jsonnet.org).
 
@@ -426,8 +429,7 @@ object:
           }
         </pre>
 
-    1. Examine the output.
-    The first part shows the available secrets and services information.
+    1. Examine the output. The first part shows the available secrets and services information.
     The `Rendered template` section shows how the `bind.yaml` template rendered the data.
 
 
@@ -456,7 +458,6 @@ For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://goharbor.io/docs/2.0.0/working-with-projects/working-with-images/pulling-pushing-images/)
 in GitHub.
 
-
 1. Confirm that your Helm chart supports the value `global.imageRegistry`. You can look in the
 chart's `values.yaml` file to confirm this. If this `global.imageRegistry` is unset in the chart's
 `values.yaml` and you have set `imageCredentialsForServiceInstances.registry` in the
@@ -472,9 +473,9 @@ pattern:
     ```
     The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
 
-1. For charts that don't support the `global.imageRegistry` pattern, the each image path must
-be individually specified using the value that the chart author chose. Charts also often
-contain multiple images. For example, given the following chart values excerpt:
+1. For charts that do not support the `global.imageRegistry` pattern, each image path must be
+individually specified using the value that the chart author chose. Charts also often contain
+multiple images. For example, given the following chart values excerpt:
 
     ```
     ...
@@ -488,8 +489,9 @@ contain multiple images. For example, given the following chart values excerpt:
       imagePullPolicy: IfNotPresent
     ```
 
-    Both of these images should be individually transformed. For example, if the registry path is `registry.example.com/my-project`,
-    the overrides file would contain
+    Both of these images should be individually transformed.
+    For example, if the registry path is `registry.example.com/my-project`, then the overrides file
+    contains:
 
     ```
     image: "registry.example.com/my-project/mysql"
