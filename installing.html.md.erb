@@ -550,7 +550,7 @@ To install Prometheus to a cluster:
 1. Access the Prometheus UI in your web browser at [http://localhost:9090](http://localhost:9090).
 
 1. To view metrics for <%= vars.product_short %>, type
-`{app_kubernetes_io_name="<%= vars.product_cli %>"}` in the expression box and click **Execute**.
+`{app_kubernetes_io_name=~".*-<%= vars.product_cli %>"}` in the expression box and click **Execute**.
 
 
 ## <a id="next-steps"></a> Next Steps
