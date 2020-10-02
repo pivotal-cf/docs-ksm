@@ -297,7 +297,11 @@ register the broker and populate the catalog:
 1. Enable Ingress service access:
     1. Get the annotation information required by your Ingress controller.
         + **If you are using your own TLS certificates:** Create secrets with TLS certificate data in
-        the same namespace where <%= vars.product_short %> will be installed:
+        the same namespace where <%= vars.product_short %> will be installed. Unless
+        you are using an Istio Ingress controller, then these secrets must be
+        created in the same namespace as the istio-ingressgateway deployment see [Istio
+        documentation for more
+        details](https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/#tls).
 
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
@@ -346,6 +350,12 @@ register the broker and populate the catalog:
             kubernetes.io/ingress.class: istio
             cert-manager.io/issuer: "letsencrypt-prod"
         ```
+
+      <p class="note">
+        <strong>Note:</strong> Ingress Controllers have different implementation
+        details, so you should check the documentation of your chosen Ingress
+        Controller for more detailed usage instructions.
+      </p>
 
 1. Configure the Cloud Foundry environment details:
 
