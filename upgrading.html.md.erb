@@ -18,23 +18,26 @@ previous_version = previous_version.join(".")
 This topic explains how to upgrade <%= vars.product_full %> (<%= vars.product_short %>) using Helm.
 
 
-## <a id="overview"></a>Overview
+## <a id="overview"></a> Overview
+
+The steps to upgrade vary depending on the version of <%= vars.product_short %> installed.
+Follow the procedure below for your version.
+
+
+### <a id="upgrade-from-beta"></a> Upgrade From v0.11 to v1.0 or Later
 
 <%= partial vars.path_to_partials + "/ksm/incompatible-1-0" %>
 
-
-### <a id="upgrade-from-beta"></a> Upgrade from Beta (v0.11) to GA (v1.0)
-
 To upgrade from <%= vars.product_short %> v0.11:
 
-1. [Uninstall <%= vars.product_short %>](#uninstall) v0.11.
+1. [Uninstall <%= vars.product_short %>](#uninstall).
 
-1. [Install and Configure <%= vars.product_full %>](./installing.html) v1.0.
+1. [Install and configure the latest version of <%= vars.product_full %>](./installing.html)
 
 
-### <a id="upgrade-ga"></a> Upgrade GA releases
+### <a id="upgrade-ga"></a> Upgrade From v1.0 or Later
 
-To execute an upgrade between GA releases:
+To upgrade from v1.0 or later:
 
 1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](./installing.html#get)
 
@@ -85,7 +88,7 @@ To uninstall <%= vars.product_short %>:
     helm uninstall my-<%= vars.product_short.downcase %>-release -n <%= vars.product_short.downcase %>-namespace
     </pre>
 
-1. Remove the <%= vars.product_short.downcase %> remaining namespaces by running:
+1. Remove the remaining `<%= vars.product_short.downcase %>` namespaces by running:
 
     ```bash
     kubectl delete ns <%= vars.product_short.downcase %>-system
