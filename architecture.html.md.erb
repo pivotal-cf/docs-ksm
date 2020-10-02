@@ -163,9 +163,9 @@ see [(Optional) Create Binding Template for App Consumption](./prepare-offer.htm
 
 ###<a id='update'></a> Update
 
-When a <%= vars.app_runtime_abbr %>  developer runs `cf update-service`, <%= vars.product_short %> triggers
-the upgrade cycle for Helm. For information about the Helm upgrade cycle,
-see [helm upgrade](https://github.com/helm/helm/blob/master/docs/helm/helm_upgrade.md) on GitHub.
+When a <%= vars.app_runtime_abbr %> developer runs `cf update-service`,
+<%= vars.product_short %> triggers the Helm upgrade process.
+For information about the Helm upgrade, see the [Helm documentation](https://helm.sh/docs/helm/helm_upgrade/).
 
 You can use the `cf update-service` command to add or modify configuration parameters using the `-c`
 flag. The update uses existing values, which means you do not need to resend configuration parameters.
