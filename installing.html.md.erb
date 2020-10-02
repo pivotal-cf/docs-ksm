@@ -298,21 +298,19 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 1. Enable Ingress service access:
     1. Get the annotation information required by your Ingress controller. 
        Use the appropriate section below: 
-
-        + **If you are using an automated certificate management provider such as cert-manager:**
+      + **If you are using an automated certificate management provider such as cert-manager:**
         Follow the procedures to install and configure the prerequisites for the certificate
         management provider you are using.
-        <br><br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
+        <br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
         cluster.
         To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
-        the cert-manager documentation.
-
-        + **If you are using your own TLS certificates:** Create secrets with TLS certificate data in
+        the cert-manager documentation.<br><br>
+      + **If you are using your own TLS certificates:** Create secrets with TLS certificate data in
         the same namespace where <%= vars.product_short %> will be installed. Unless
         you are using an Istio Ingress controller, then these secrets must be
-        created in the same namespace as the istio-ingressgateway deployment see [Istio
-        documentation for more
-        details](https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/#tls).
+        created in the same namespace as the istio-ingressgateway deployment.
+        For details, see the [Istio documentation]
+        (https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/#tls).
 
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
@@ -323,9 +321,10 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
             + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
             + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
-        Ops Manager and Tanzu Application Service need to trust the certificate. Follow 
+        <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate. Follow 
         these [instructions](https://docs.pivotal.io/ops-manager/trusted-certificates.html) to ensure
-        that cloud foundry has the certificate to successfully call <%= vars.product_short %>'s broker.
+        that Cloud Foundry has the certificate to successfully call <%= vars.product_short %>'s broker.
+        <br><br>
 
     1. Add the following to your `<%= vars.product_cli %>/values.yml` file:
 
