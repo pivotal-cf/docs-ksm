@@ -204,7 +204,7 @@ You can modify the following timeouts:
 
 ### <a id="provision-timeout"></a>Modify the Provisioning Timeout
 
-When <%= vars.product_short %> provisions an offer, by default it allows 20 minutes
+When <%= vars.product_short %> provisions an offer, by default, it allows 20 minutes
 for the Kubernetes resources for each Helm chart to become available.
 If any charts take longer than 20 minutes, <%= vars.product_short %> fails the provision.
 
@@ -230,9 +230,9 @@ To modify the provisioning timeout:
 
 ### <a id="cf-broker-register-timeout"></a>Modify the Cloud Foundry Broker Registration Timeout
 
-When <%= vars.product_short %> starts it attempts to register with Cloud Foundry.
+<%= vars.product_short %> attempts to register with Cloud Foundry when it starts.
 If it cannot register, it re-attempts to register four times.
-By default each attempt to register is 20 seconds with a 5 second interval between each attempt.
+By default, each attempt to register is 20 seconds with a 5-second interval between each attempt.
 After four attempts, if it is still failing, the Pod crashes.
 
 A reason Cloud Foundry registration can fail is if Kubernetes is not yet serving Pod traffic.
