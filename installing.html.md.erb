@@ -274,8 +274,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `BROKER-PASSWORD` is a secure password for the <%= vars.product_short %> broker.
     + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
-1. <a id='create-uaa-client'></a>Create a User Account and Authentication (UAA) client that <%= vars.product_short %> will use to
-register the broker and populate the catalog:
+1. <a id='create-uaa-client'></a>Create a User Account and Authentication (UAA) client that
+<%= vars.product_short %> will use to register the broker and populate the catalog:
 
     ```bash
     uaac target uaa.SYSTEM-DOMAIN
@@ -370,18 +370,21 @@ register the broker and populate the catalog:
     ```
     Where:
     + `SYSTEM-DOMAIN` is the system domain for <%= vars.app_runtime_abbr %>.
-    + `CLIENT-ID` is the client id created in the [step above](#create-uaa-client). Or, use an existing client ID
-       for a <%= vars.app_runtime_abbr %> account with `cloud_controller.admin` permissions.
+    + `CLIENT-ID` is the client ID created in the
+    [Create a User Account and Authentication](#create-uaa-client) procedure. Alternatively, you
+    could use an existing client ID for a <%= vars.app_runtime_abbr %> account with
+    `cloud_controller.admin` permissions.
     + `CLIENT-SECRET` is the client secret for the <%= vars.app_runtime_abbr %> account.
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
     <p class="note">
-      <strong>Note:</strong>Alternatively, use the cf username/password,
-      but this is <strong>not recommended for production</strong>!
-      When using username/password, replace `client:` with `username:` and `clientSecret:` with `password:`.
+      <strong>Note:</strong>Alternatively, you can use the Cloud Foundry username and password,
+      but this is discouraged for production.
+      When using the username and password, replace <code>client:</code> with <code>username:</code>
+      and <code>clientSecret:</code> with <code>password:</code>.
     </p>
 
-    You can verify the cf apiAddress by typing the `cf target` command.
+1. Verify the Cloud Foundry `apiAddress` by running the `cf target` command.
 
 1.  Add the credentials for your S3-compatible bucket using the template below:
 
