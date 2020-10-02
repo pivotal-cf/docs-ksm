@@ -146,21 +146,25 @@ To enable access to your service offering:
     ```
     cf marketplace
     ```
-   
-## <a id="provision"></a> Provision a Service Instance 
+
+## <a id="provision"></a> Provision a Service Instance
+
 After enabling service access for the service offering, the service is now available to developers
-through the cf marketplace. Developers can see the services that they have access to by running:
+through the Cloud Foundry Marketplace. Developers can see the services that they have access to by
+running:
+
 ```bash
 cf marketplace
 ```
 
 Developers can then provision a service instance by running:
+
 ```bash
 cf create-service SERVICE-NAME PLAN-NAME SERVICE-INSTANCE-NAME
 ```
 
 <p class="note">
-  <strong>Note:</strong> Developers can specify service-specific configuration parameters to override 
+  <strong>Note:</strong> Developers can specify service-specific configuration parameters to override
   plan and Helm chart values. They do this by using the <code>-c</code>
   flag when they provision or update a service instance with the cf CLI.
   <br>
@@ -170,13 +174,15 @@ cf create-service SERVICE-NAME PLAN-NAME SERVICE-INSTANCE-NAME
   <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
 </p>
 
-For more information about the cf cli, see [CF CLI documentation](https://docs.run.pivotal.io/cf-cli/cf7-help.html).
+For more information, see the
+[Cloud Foundry CLI Reference Guide](https://docs.run.pivotal.io/cf-cli/cf7-help.html).
+
 
 ## <a id="update-offering"></a> Update a Service Offering
 
 When you update a service offering in <%= vars.product_short %>, any newly-created service instances
 use the latest version of the service offering.
-Existing instances must be upgraded using the Cloud Foundry Command Line Interface (cf CLI).
+Existing instances must be upgraded using the cf CLI.
 See [Upgrade a Service Instance](#upgrade-instance) below.
 
 To update a service offering in  <%= vars.product_short %>:
@@ -194,8 +200,8 @@ To update a service offering in  <%= vars.product_short %>:
     ```
     kubectl apply -f PATH-TO-CRD-MANIFEST.yaml
     ```
-    Where `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest. The CRD manifest is in the
-    `crds` directory in the chart.
+    Where `PATH-TO-CRD-MANIFEST.yaml` is the path to the CRD manifest.
+    The CRD manifest is in the `crds` directory in the chart.
     <p class="note">
       <strong>Note:</strong> By default, <%= vars.product_short %> rejects an updated service
       offering with any CRD changes in the chart. This is because <%= vars.product_short %> does
@@ -218,11 +224,11 @@ directory.
     </p>
 
 1. Update the service offering by running one of the following commands:
-      <p class="note">
-        <strong>Note:</strong> If you manually applied CRD changes to the cluster earlier, you can
-        safely ignore a CRD warning from <%= vars.product_short %> by adding the
-        <code>--ignore-crd-warning</code> flag to the below commands.
-      </p>
+    <p class="note">
+      <strong>Note:</strong> If you manually applied CRD changes to the cluster earlier, you can
+      safely ignore a CRD warning from <%= vars.product_short %> by adding the
+      <code>--ignore-crd-warning</code> flag to the below commands.
+    </p>
     + **If you are adding a single chart,** run:
 
         ```
