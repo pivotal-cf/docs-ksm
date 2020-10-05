@@ -163,8 +163,14 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-    docker tag registry.pivotal.io/tanzu-service-manager/broker:0.10.89 \
-    privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
+    $ docker tag registry.pivotal.io/tanzu-service-manager/broker:1.0.1 \
+    privateregistry.domain.com/tanzu-service-manager/broker:1.0.1
+
+    $ docker tag registry.pivotal.io/tanzu-service-manager/daemon:1.0.1 \
+    privateregistry.domain.com/tanzu-service-manager/daemon:1.0.1
+
+    $ docker tag registry.pivotal.io/tanzu-service-manager/chartmuseum:1.0.1 \
+    privateregistry.domain.com/tanzu-service-manager/chartmuseum:1.0.1
     </pre>
 
     Alternatively, if you downloaded the TGZ files, you can verify the versions
@@ -184,7 +190,9 @@ To replicate your <%= vars.product_short %> images to a private container image 
     For example:
 
     <pre class="terminal">
-    docker push privateregistry.domain.com/tanzu-service-manager/broker:0.10.89
+    $ docker push privateregistry.domain.com/tanzu-service-manager/broker:1.0.1
+    $ docker push privateregistry.domain.com/tanzu-service-manager/daemon:1.0.1
+    $ docker push privateregistry.domain.com/tanzu-service-manager/chartmuseum:1.0.1
     </pre>
 
 
