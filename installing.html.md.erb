@@ -21,6 +21,8 @@ To install and configure <%= vars.product_short %> using Helm:
 
 1. [Replicate <%= vars.product_short %> Images](#replicate-images)
 
+1. [(Recommended) Configure Service Mesh](#service-mesh)
+
 1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
 
 1. [Install the <%= vars.product_short %> Helm Chart](#install)
@@ -196,6 +198,28 @@ To replicate your <%= vars.product_short %> images to a private container image 
     $ docker push privateregistry.domain.com/tanzu-service-manager/daemon:1.0.1
     $ docker push privateregistry.domain.com/tanzu-service-manager/chartmuseum:1.0.1
     </pre>
+
+## <a id="service-mesh"></a> (Recommended) Configure Service Mesh
+
+Secure traffic between <%= vars.product_short %> components.
+For example, you can secure traffic using a service mesh such as
+[Istio](https://istio.io/latest/docs/concepts/what-is-istio/).
+For instructions on how to use Istio, see [Configure Service Mesh](#service-mesh) below.
+
+To configure a Istio service mesh:
+
+1. Install Istio on your Kubernetes cluster following the [docs](https://istio.io/latest/docs/setup/install/)
+
+1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed. 
+
+    ```
+    kubectl create ns <%= vars.product_short %>-NAMESPACE
+    kubectl label namespace <%= vars.product_short %>-NAMESPACE istio-injection=enabled
+    ```
+   
+    Where:
+    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
+    dedicated namespace.
 
 
 ## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
@@ -475,67 +499,6 @@ the Kubernetes documentation.
 Some settings can vary between clouds.
 For example, in GKE, network policies are not enabled by default.
 For more information, see your cloud-specific documentation.
-
-1. Secure traffic between <%= vars.product_short %> components.
-For example, you can secure traffic using a service mesh such as
-[Linkerd](https://linkerd.io/2/getting-started/).
-For instructions on how to use Linkerd, see [Configure Service Mesh](#service-mesh) below.
-
-
-### <a id="service-mesh"></a> (Recommended) Configure Service Mesh
-
-To configure a Linkerd service mesh:
-
-1. Install Linkerd on your Kubernetes cluster using one of the following methods:
-      + Install the service mesh using the Linkerd CLI by following the procedures in
-      [Getting Started](https://linkerd.io/2/getting-started/) in the Linkerd documentation.
-      + Install the service mesh using a Helm chart by following the procedures in
-      [Installing Linkerd with Helm](https://linkerd.io/2/tasks/install-helm/) in the Linkerd
-      documentation.
-
-1. Add the following annotations in the <%= vars.product_short %> Helm chart `values-production.yaml`
-file:
-
-    ```yaml
-    broker:
-     annotations:
-       linkerd.io/inject: enabled
-    daemon:
-     annotations:
-       linkerd.io/inject: enabled
-    chartmuseum:
-     replica:
-       annotations:
-         linkerd.io/inject: enabled
-     daemon:
-       annotations:
-         linkerd.io/inject: enabled
-     chartmuseum:
-       replica:
-         annotations:
-           linkerd.io/inject: enabled
-    ```
-
-1. Ensure you have the correct permissions to run `linkerd tap` on the cluster by following the
-procedures in the
-[Securing Your Cluster](https://linkerd.io/2/tasks/securing-your-cluster) in the Linkerd
-documentation.
-
-1. Verify that <%= vars.product_short %> is added to the mesh by running:
-
-    ```bash
-    linkerd stat deployments -n <%= vars.product_short %>-NAMESPACE
-    ```
-    Where `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> is
-    running.
-
-1. Verify that TLS is working on the deployment by running:
-
-    ```bash
-    linkerd -n <%= vars.product_short %>-NAMESPACE tap deploy/DAEMON-DEPLOYMENT
-    ```
-    Where `DAEMON-DEPLOYMENT` is the deployment for the daemon.
-    For example, `RELEASE-NAME-<%= vars.product_cli %>-daemon`.
 
 
 ## <a id="prometheus"></a> (Optional) Install Prometheus
