@@ -1,7 +1,7 @@
 docs-ksm
 ==========
 
-Docs for [Tanzu Service Manager](https://network.pivotal.io/products/tanzu-service-manager/)(Beta)
+Docs for [Tanzu Service Manager](https://network.pivotal.io/products/tanzu-service-manager/)
 
 ## Where is the book repository?
 https://github.com/pivotal-cf/docs-book-ksm
