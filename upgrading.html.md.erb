@@ -24,27 +24,28 @@ The steps to upgrade vary depending on the version of <%= vars.product_short %> 
 Follow the procedure below for your version.
 
 
-### <a id="upgrade-from-beta"></a> Upgrade From v0.11 to v1.0 or Later
+## <a id="upgrade-from-beta"></a> Upgrade From v0.11 to v1.0 or Later
 
 <%= partial vars.path_to_partials + "/ksm/incompatible-1-0" %>
 
 To upgrade from <%= vars.product_short %> v0.11:
 
-1. [Uninstall <%= vars.product_short %>](#uninstall).
+1. [Uninstall <%= vars.product_short %> v0.11](#uninstall).
 
-1. [Install and configure the latest version of <%= vars.product_full %>](./installing.html)
+1. Install the latest version of <%= vars.product_short %> by following the
+procedures in [Installing and Configure <%= vars.product_full %>](./installing.html).
 
 
-### <a id="upgrade-ga"></a> Upgrade From v1.0 or Later
+## <a id="upgrade-ga"></a> Upgrade From v1.0 or Later
 
 To upgrade from v1.0 or later:
 
-1. [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](./installing.html#get)
+1. [Get <%= vars.product_short %> resources from <%= vars.product_network %>](./installing.html#get).
 
 1. Follow the steps in [Install the <%= vars.product_short %> CLI](./installing.html#cli) to replace
 your current version of <%= vars.product_short %> CLI with the latest version.
 
-1. [Replicate <%= vars.product_short %> Images](./installing.html#replicate-images)
+1. [Replicate <%= vars.product_short %> images](./installing.html#replicate-images).
 
 1. Upgrade the <%= vars.product_short %> Helm Chart by running:
 
@@ -92,8 +93,7 @@ To uninstall <%= vars.product_short %>:
 
     ```bash
     kubectl delete ns <%= vars.product_short.downcase %>-system
-    ```
-    ```bash
+
     kubectl delete ns RELEASE-NAMESPACE
     ```
     Where:
@@ -104,14 +104,11 @@ To uninstall <%= vars.product_short %>:
 
     ```bash
     kubectl delete crd bindingmetas.services.tanzu.vmware.com
-    ```
-    ```bash
+
     kubectl delete crd clusters.services.tanzu.vmware.com
-    ```
-    ```bash
+
     kubectl delete crd instances.services.tanzu.vmware.com
-    ```
-    ```bash
+
     kubectl delete crd offers.services.tanzu.vmware.com
     ```
 
@@ -119,8 +116,7 @@ To uninstall <%= vars.product_short %>:
 
     ```bash
     kubectl delete clusterrole RELEASE-NAME-tsmgr
-    ```
-    ```bash
+
     kubectl delete clusterrolebinding RELEASE-NAME-tsmgr
     ```
     Where:
