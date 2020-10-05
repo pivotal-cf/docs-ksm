@@ -46,15 +46,13 @@ To create a cluster credentials file:
 1. Get your server and certificate authority by running:
 
     ```
-    cluster=`grep current $kube_config|sed "s/ //g"|cut -d ":" -f 2`
+    cluster=$(kubectl config view -o jsonpath="{.contexts[?(@.name == \"$(kubectl config current-context)\")].context.cluster}")
+
+    server=$(kubectl config view -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.server}")
+
+    certificate=$(kubectl config view --raw --flatten -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.certificate-authority-data}")
 
     echo "Using cluster $cluster"
-
-    server=`grep -B 2 "name: $cluster\$" $kube_config \
-      |grep server|sed "s/ //g"|sed "s/^[^:]*://g"`
-
-    certificate=`grep -B 2 "name: $cluster\$" $kube_config \
-      |grep certificate|sed "s/ //g"|sed "s/.*://"`
     ```
 
 1. To create a dedicated service account for <%= vars.product_short %>
