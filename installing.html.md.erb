@@ -305,19 +305,17 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
         cluster.
         To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
         the cert-manager documentation.<br><br>
-      + **If you are using your own TLS certificates:** Create secrets with TLS certificate data in
-        the same namespace where <%= vars.product_short %> will be installed. Unless
-        you are using an Istio Ingress controller, then these secrets must be
-        created in the same namespace as the istio-ingressgateway deployment.
-        For details, see the [Istio documentation]
-        (https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/#tls).
+      + **If you are using your own TLS certificates:** Create secrets with TLS certificate data.
 
             ```
             kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
             kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
             ```
             Where:
-            + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed.
+            + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed or,
+              if you use an Istio Ingress controller,
+              `<%= vars.product_short %>-NAMESPACE` is the same namespace as the istio-ingressgateway deployment,
+              typically `istio-system`.
             + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
             + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
@@ -347,14 +345,14 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
         + `INGRESS-PATH` is the path expression to match all paths for your particular ingress controller.
-        Istio Ingress Controller is set to `"/*"`.
-        Nginx Ingress Controller is set to `"/"`.
-        Contour Ingress Controller is set to `"/"`.
+        Istio Ingress controller is set to `"/*"`.
+        Nginx Ingress controller is set to `"/"`.
+        Contour Ingress controller is set to `"/"`.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress
         controller.
 
         These values depend on the Ingress controller and certificate management option you use.
-        For example, see the annotations for Istio Ingress Controller and cert-manager:
+        For example, see the annotations for Istio Ingress controller and cert-manager:
 
         ```
         annotations:
@@ -363,9 +361,9 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
         ```
 
       <p class="note">
-        <strong>Note:</strong> Ingress Controllers have different implementation
+        <strong>Note:</strong> Ingress controllers have different implementation
         details, so you should check the documentation of your chosen Ingress
-        Controller for more detailed usage instructions.
+        controller for more detailed usage instructions.
       </p>
 
 1. Configure the Cloud Foundry environment details:
