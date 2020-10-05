@@ -346,11 +346,12 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
         ```
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
+        + `INGRESS-PATH` is the path expression to match all paths for your particular ingress controller.
+        Istio Ingress Controller is set to `"/*"`.
+        Nginx Ingress Controller is set to `"/"`.
+        Contour Ingress Controller is set to `"/"`.
         + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress
         controller.
-        + `INGRESS-PATH` is the path expression to match all paths for your particular ingress
-        controller. Istio Ingress Controller is set to `"/*"`. Nginx Ingress Controller is set to
-        `"/"`. Contour Ingress Controller is set to `"/"`.
 
         These values depend on the Ingress controller and certificate management option you use.
         For example, see the annotations for Istio Ingress Controller and cert-manager:
