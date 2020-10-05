@@ -39,8 +39,11 @@ see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
 * **Docker CLI:** For information about installing Docker, see [Docker](https://docs.docker.com/get-docker/).
 
-* **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information
-about <%= vars.k8s_runtime_abbr %>, see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+* **A Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports
+<%= vars.k8s_runtime_full %> clusters.
+For supported cluster versions, see the [Product Snapshot](index.html#snapshot).
+For information about <%= vars.k8s_runtime_abbr %>, see
+[<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
 * **Kubernetes CLI:** See [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
@@ -78,7 +81,7 @@ If you want to install manually instead of using the install-dev.sh script,
 skip to <a href="#install-manually">Installing Manually</a> section
 </p>
 
-1. This approach requires a image private registry that will be used to upload the docker installation images, 
+1. This approach requires a image private registry that will be used to upload the docker installation images,
 so start by verifying and recording your private registry endpoint, username and password.
 
 1. Get <%= vars.product_short %> Resources From <%= vars.product_network %>:
@@ -91,7 +94,7 @@ so start by verifying and recording your private registry endpoint, username and
        download the Helm chart TGZ file.
        + **Images**: Click **Images** and download the daemon, broker, minio and chartmuseum Docker images
        + **install-dev.sh script**: Click **<%= vars.product_short %> Dev Environment Installer** and download the install-dev.sh file
-       
+
 1. Make the install-dev.sh file executable by executing the `chmod +x install-dev.sh` command
 1. You need to provide the registry endpoint, username and password during the installation. To do that you can either:
   + Execute the `./install-dev.sh` command and answer the registry details questions, or
@@ -103,12 +106,12 @@ so start by verifying and recording your private registry endpoint, username and
     username: <username>
     password: <password>
     ```
-    
+
 1. Use the command `kubectl get services -n sm` to monitor the provisioning of the External IPs for daemon and broker services
 1. Once the External IP is available for the daemon, you can configure the <%= vars.product_short %> environment variables by running the
   `source ./setSmEnv.sh` command
-1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script: 
-  
+1. Once the External IP is available for the broker, you can configure <%= vars.product_short %> for cf by running the following script:
+
     ```bash
     ./setCfDetails.sh <broker-name> <cf-api-endpoint> <cf-api-client> <cf-api-client-secret>
      where:
@@ -117,7 +120,7 @@ so start by verifying and recording your private registry endpoint, username and
         <cf-api-endpoint> - is the cf client
         <cf-api-endpoint> - is the cf client secret
     ```
-   
+
 1. Test the <%= vars.product_short %> by calling `<%= vars.product_cli %> version` or `<%= vars.product_cli %> offer list` commands
 1. You're done here! Jump to [Next Steps](#next-steps)
 
