@@ -28,7 +28,7 @@ You can also set a default cluster to provision plans to. See [Set a Default Kub
 ## <a id='create-cluster-file'></a> Create a Cluster Credentials File
 
 You need a cluster credential file to register Kubernetes clusters with <%= vars.product_short %>.
-A valid Cluster Credentials file has the following structure:
+A valid cluster credentials file has the following structure:
 
 ```yaml
 token: TOKEN
@@ -36,9 +36,10 @@ server: SERVER
 caData: CA-DATA
 ```
 Where:
+
 + `TOKEN` is a valid Kubernetes authentication token.
 + `SERVER` is the server address of the Kubernetes cluster.
-+ `CA-DATA` is valid CA data for the Kubernetes cluster.
++ `CA-DATA` is valid certificate authority (CA) data for the Kubernetes cluster.
 
 To create a cluster credentials file:
 
