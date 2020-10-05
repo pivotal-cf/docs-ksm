@@ -84,22 +84,10 @@ The following table provides version and version-support information about <%= v
 
 <%= vars.product_short %> requires:
 
-* **<%= vars.product_short %> CLI:** For information about installing the <%= vars.product_short %>
-CLI, see [Install the <%= vars.product_short %> CLI](./installing.html#cli).
-* **Helm 3 CLI:** For information about installing the Helm CLI,
-see the [Helm documentation](https://helm.sh/docs/intro/).
-* **Docker CLI:** For information about installing Docker, see [Docker](https://www.docker.com/).
 * **<%= vars.app_runtime_abbr %> Deployment:** A running <%= vars.app_runtime_abbr %> deployment.
 * **Kubernetes Cluster:** A running Kubernetes cluster. <%= vars.product_short %> supports
 <%= vars.k8s_runtime_full %> clusters. For information about <%= vars.k8s_runtime_abbr %>,
 see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
-* **S3 Compatible Storage:** <%= vars.product_short %> requires an S3-compatible bucket to store
-offered charts and the chart cache.
-For more information, see [Configuring External Storage](./storage.html).
-* **Private Container Registry:** This manages container images in air-gapped environments.
-VMware recommends using a private container registry in production deployments.
-You can use a private container registry such as
-[Harbor](https://network.pivotal.io/products/harbor-container-registry).
 
 
 ## <a id="limitations"></a> Limitations
