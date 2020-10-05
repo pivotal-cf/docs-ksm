@@ -29,7 +29,7 @@ See [Set a Default Kubernetes Cluster](#set-default) below.
 ## <a id='create-cluster-file'></a> Create a Cluster Credentials File
 
 You need a cluster credential file to register Kubernetes clusters with <%= vars.product_short %>.
-A valid Cluster Credentials file has the following structure:
+A valid cluster credentials file has the following structure:
 
 ```yaml
 token: TOKEN
@@ -37,9 +37,10 @@ server: SERVER
 caData: CA-DATA
 ```
 Where:
+
 + `TOKEN` is a valid Kubernetes authentication token.
 + `SERVER` is the server address of the Kubernetes cluster.
-+ `CA-DATA` is valid CA data for the Kubernetes cluster.
++ `CA-DATA` is valid certificate authority (CA) data for the Kubernetes cluster.
 
 To create a cluster credentials file:
 
@@ -47,7 +48,9 @@ To create a cluster credentials file:
 
     ```
     cluster=$(kubectl config view -o jsonpath="{.contexts[?(@.name == \"$(kubectl config current-context)\")].context.cluster}")
+
     server=$(kubectl config view -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.server}")
+
     certificate=$(kubectl config view --raw --flatten -o jsonpath="{.clusters[?(@.name == \"$cluster\")].cluster.certificate-authority-data}")
 
     echo "Using cluster $cluster"
