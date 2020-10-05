@@ -13,6 +13,7 @@ https://github.com/pivotal-cf/docs-book-ksm
 | Branch name | Use for… |
 |-------------| ---------|
 | master      | upcoming releases http://docs-pcf-staging.cfapps.io/tanzu-service-manager/1-n/ - If your PR is not version-specific, please use this branch |
+| 1.0        | v1.0.x  http://docs.pivotal.io/tanzu-service-manager/1-0/ |
 | 0.11       | v0.11.x  http://docs.pivotal.io/tanzu-service-manager/0-11/ |
 | 0.10       | v0.10.x  http://docs.pivotal.io/tanzu-service-manager/0-10/ |
 | 0.9        | v0.9.x  NOT IN USE no longer published   |
