@@ -86,13 +86,13 @@ To uninstall <%= vars.product_short %>:
     For example:
 
     <pre class="terminal">
-    helm uninstall my-<%= vars.product_short.downcase %>-release -n <%= vars.product_short.downcase %>-namespace
+    helm uninstall my-<%= vars.product_cli %>-release -n <%= vars.product_cli %>-namespace
     </pre>
 
-1. Remove the remaining `<%= vars.product_short.downcase %>` namespaces by running:
+1. Remove the remaining `<%= vars.product_cli %>` namespaces by running these commands:
 
     ```bash
-    kubectl delete ns <%= vars.product_short.downcase %>-system
+    kubectl delete ns <%= vars.product_cli %>-system
 
     kubectl delete ns RELEASE-NAMESPACE
     ```
@@ -100,7 +100,7 @@ To uninstall <%= vars.product_short %>:
     + `RELEASE-NAMESPACE` is the namespace of the <%= vars.product_short %> release that you recorded
     earlier in this procedure.
 
-1. Delete the custom resources:
+1. Delete the custom resources by running these commands:
 
     ```bash
     kubectl delete crd bindingmetas.services.tanzu.vmware.com
@@ -112,7 +112,7 @@ To uninstall <%= vars.product_short %>:
     kubectl delete crd offers.services.tanzu.vmware.com
     ```
 
-1. Delete `clusterrole` and `clusterrolebinding` as below:
+1. Delete `clusterrole` and `clusterrolebinding` by running these commands:
 
     ```bash
     kubectl delete clusterrole RELEASE-NAME-tsmgr
