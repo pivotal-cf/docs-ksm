@@ -96,8 +96,7 @@ To uninstall <%= vars.product_short %>:
 
     kubectl delete ns RELEASE-NAMESPACE
     ```
-    Where:
-    + `RELEASE-NAMESPACE` is the namespace of the <%= vars.product_short %> release that you recorded
+    Where `RELEASE-NAMESPACE` is the namespace of the <%= vars.product_short %> release that you recorded
     earlier in this procedure.
 
 1. Delete the custom resources by running these commands:
@@ -119,6 +118,5 @@ To uninstall <%= vars.product_short %>:
 
     kubectl delete clusterrolebinding RELEASE-NAME-tsmgr
     ```
-    Where:
-    + `RELEASE-NAME` is the name of the <%= vars.product_short %> release that you recorded earlier
+    Where `RELEASE-NAME` is the name of the <%= vars.product_short %> release that you recorded earlier
     in the procedure.
