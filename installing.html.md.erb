@@ -300,11 +300,10 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
        Use the appropriate section below:
       + **If you are using an automated certificate management provider such as cert-manager:**
         Follow the procedures to install and configure the prerequisites for the certificate
-        management provider you are using.
+        management provider that you are using.
         <br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
         cluster.
-        To set up an `Issuer`, see [Configuration](https://cert-manager.io/docs/configuration/) in
-        the cert-manager documentation.<br><br>
+        See the [cert-manager documentation](https://cert-manager.io/docs/configuration/).<br><br>
       + **If you are using your own TLS certificates:** Create secrets with TLS certificate data.
 
             ```
