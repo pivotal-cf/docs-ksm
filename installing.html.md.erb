@@ -46,7 +46,7 @@ see the [Helm documentation](https://helm.sh/docs/intro/install/).
 
 * **Kubernetes Cluster:** A running Kubernetes cluster.
   <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters.
-  For supported cluster versions see [Product Snapshot](index.html#snapshot).
+  For supported cluster versions, see the [Product Snapshot](index.html#snapshot).
   For information about <%= vars.k8s_runtime_abbr %>, see
   [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
 
@@ -296,8 +296,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     in the Cloud Foundry documentation.
 
 1. Enable Ingress service access:
-    1. Get the annotation information required by your Ingress controller. 
-       Use the appropriate section below: 
+    1. Get the annotation information required by your Ingress controller.
+       Use the appropriate section below:
       + **If you are using an automated certificate management provider such as cert-manager:**
         Follow the procedures to install and configure the prerequisites for the certificate
         management provider you are using.
@@ -321,7 +321,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
             + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
             + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
-        <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate. Follow 
+        <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate. Follow
         these [instructions](https://docs.pivotal.io/ops-manager/trusted-certificates.html) to ensure
         that Cloud Foundry has the certificate to successfully call <%= vars.product_short %>'s broker.
         <br><br>
