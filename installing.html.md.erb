@@ -139,13 +139,15 @@ To replicate your <%= vars.product_short %> images to a private container image 
 
 1. Tag the images for your registry by running these commands:
 
-    ```bash
+    ```
     docker tag registry.pivotal.io/tanzu-service-manager/broker:VERSION-NUMBER \
      REGISTRY/tanzu-service-manager/broker:VERSION-NUMBER
-
+    ```
+    ```
     docker tag registry.pivotal.io/tanzu-service-manager/daemon:VERSION-NUMBER \
      REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
-
+    ```
+    ```
     docker tag registry.pivotal.io/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
      REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
@@ -171,16 +173,19 @@ To replicate your <%= vars.product_short %> images to a private container image 
     privateregistry.domain.com/tanzu-service-manager/chartmuseum:1.0.1
     </pre>
 
-    Alternatively, if you downloaded the TGZ files, you can verify the versions
-     by running the `docker images` command and looking at the `TAG` column for each referred image.
+    Alternatively, if you downloaded the TGZ files, you can verify the versions by running the
+    `docker images` command and looking at the `TAG` column for each referred image.
 
 1. Create the `tanzu-service-manager` project in your registry.
 
 1. Push the images to your registry by running these commands:
 
-    ```bash
+    ```
     docker push REGISTRY/tanzu-service-manager/broker:VERSION-NUMBER
+    ```
+    ```
     docker push REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
+    ```
     docker push REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
     Where `REGISTRY` is the private container image registry path.
@@ -202,16 +207,17 @@ To configure an Istio service mesh:
 
 1. Go to the [Istio documentation](https://istio.io/latest/docs/setup/install/) for installation.
 
-1. Follow the steps in the installation guide that best meets your needs. <%# Can the reader really follow any of them? And will the reader definitely know which one to use? %>
+1. Follow the steps in the installation guide that best meets your needs.
 
 1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed by running:
 
     ```
     kubectl create ns <%= vars.product_short %>-NAMESPACE
+    ```
+    ```
     kubectl label namespace <%= vars.product_short %>-NAMESPACE istio-injection=enabled
     ```
-    Where:
-    + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
+    Where `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
     dedicated namespace.
 
 
@@ -257,8 +263,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     Where:
     + `REGISTRY-INSTANCES` is the registry you configured to offer images,
        for example, `anotherregistry.domain.com/project`.
-    + `REGISTRY-INSTANCES-USERNAME` is the username for the registry.
-    This user can have read-only access.
+    + `REGISTRY-INSTANCES-USERNAME` is the username for the registry. This user can have read-only
+    access.
     + `REGISTRY-INSTANCES-PASSWORD` is the password for the registry.
 
     <%= vars.product_short %> uses this registry as the backing registry for the services that
