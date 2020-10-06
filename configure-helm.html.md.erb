@@ -12,23 +12,25 @@ This topic describes how to configure a Helm chart for <%= vars.product_full %>
 
 <%= vars.product_short %> enables platform operators to offer Helm charts as
 on-demand services to developers on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+<%= vars.product_short %> uses the description in `Chart.yaml` as the description
+of the offer in `cf marketplace`.
 
-<%= vars.product_short %> uses the description in `Chart.yaml` as the description of the offer in
-`cf marketplace`.
-
-<%= vars.product_short %> surfaces all values specified in the `values.schema.json` file to the
-developer at the time of provision through AppsManager. For more information, see the
-[Helm documentation](https://helm.sh/docs/topics/charts/#schema-files)
-The developer can also override the values file by using `-c` at the time of provision given that the
-CLI does not enforce the schema during provision.
+<%= vars.product_short %> surfaces all values specified in the `values.schema.json`
+file to the developer at the time of provision through Apps Manager.
+For more information about schema files, see the
+[Helm documentation](https://helm.sh/docs/topics/charts/#schema-files).
+Given that the cf CLI does not enforce the schema during provision, developers can
+also override the Helm chart's values file by using the `-c` flag when they provision
+a service instance.
 For more information, see [Provision a Service Instance](./using.html#provision).
 
-Before you add a service offering to `cf marketplace`, you must configure your Helm charts to be
-compatible with <%= vars.product_short %>.
+Before you add a service offering to `cf marketplace`, you must configure your
+Helm charts to be compatible with <%= vars.product_short %>.
 For examples of <%= vars.product_short %>-compatible charts, see
-[<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/tsmgr-samples) on GitHub.
+[<%= vars.product_cli %>-sample](https://github.com/cf-platform-eng/tsmgr-samples)
+on GitHub.
 
-To configure a Helm chart:
+To configure a Helm chart to be compatible with <%= vars.product_short %>:
 
 1. Override values in the chart `values.yaml` file. See [Override Chart Values](#override) below.
 
