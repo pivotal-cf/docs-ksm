@@ -133,7 +133,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
 1. Relocate the images to your local machine:
     * If you recorded the `docker pull` commands in
     [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above,
-    run the `docker_pull` commands to pull the images.
+    run the `docker_pull` commands to pull the images.<br><br>
     The registry credentials are the same as your <%= vars.product_network %> credentials.
     * If you downloaded the `tgz` files instead of the `docker pull` commands,
     load those images by running:
@@ -153,7 +153,6 @@ To replicate your <%= vars.product_short %> images to a private container image 
 
     docker tag registry.pivotal.io/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER \
      REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
-
     ```
     Where:
     + `VERSION-NUMBER` is the <%= vars.product_short %> release version number.
@@ -208,7 +207,7 @@ For instructions on how to use Istio, see [Configure Service Mesh](#service-mesh
 
 To configure a Istio service mesh:
 
-1. Install Istio on your Kubernetes cluster following the [docs](https://istio.io/latest/docs/setup/install/)
+1. Follow the steps in [<%# which guide? There are 4. %>](https://istio.io/latest/docs/setup/install/)
 
 1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed.
 
@@ -216,17 +215,16 @@ To configure a Istio service mesh:
     kubectl create ns <%= vars.product_short %>-NAMESPACE
     kubectl label namespace <%= vars.product_short %>-NAMESPACE istio-injection=enabled
     ```
-
     Where:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
     dedicated namespace.
 
 
-## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart
+## <a id='configure'></a> Configure the <%= vars.product_short %> Helm Chart the thing
 
 <p class="note">
   <strong>Note:</strong> To see a detailed description of each value and its default, run:
-  <code>helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz</code>
+  <code>helm show values <%= vars.product_cli %>-VERSION-NUMBER.tgz</code>.
 </p>
 
 To configure the <%= vars.product_short %> Helm chart, edit the `values-production.yaml` file:
@@ -245,14 +243,14 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `REGISTRY-USERNAME` is the username for the registry.
     + `REGISTRY-PASSWORD` is the password for the registry.
 
-    <%= vars.product_short %> uses this registry for
-    <%= vars.product_short %> installation docker images.
-     A new secret named <code>registrySecretName</code> of type <code>dockerconfigjson</code>
-     is created with these credentials.
+    <%= vars.product_short %> uses this registry for <%= vars.product_short %> installation Docker
+    images.
+    A new secret named <code>registrySecretName</code> of type <code>dockerconfigjson</code>
+    is created with these credentials.
 
-1. Add the credentials for the registry where the service instance images will come from.
+1. Add the credentials for the registry where the service instance images come from.
 
-    Service instance refers to the Helm chart files that <%= vars.product_short %> will manage as
+    Service instance refers to the Helm chart files that <%= vars.product_short %> manages as
     services, such as mysql, postgresql, and etc-operator.
 
     ```yaml
@@ -308,8 +306,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `BROKER-PASSWORD` is a secure password for the <%= vars.product_short %> broker.
     + `CHARTMUSEUM-PASSWORD` is a secure password for ChartMuseum.
 
-1. <a name='create-uaa-client'></a>Create a User Account and Authentication (UAA) client that
-<%= vars.product_short %> will use to register the broker and populate the catalog:
+1. <a name='create-uaa-client'></a> Create a User Account and Authentication (UAA) client for
+<%= vars.product_short %> to use to register the broker and populate the catalog:
 
     ```bash
     uaac target uaa.SYSTEM-DOMAIN
@@ -335,9 +333,9 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
       + **If you are using an automated certificate management provider such as cert-manager:**
         Follow the procedures to install and configure the prerequisites for the certificate
         management provider that you are using.
-        <br>For example, the prerequisite for cert-manager is to set up an `Issuer` on the
+        <br>For example, the prerequisite for `cert-manager` is to set up an `Issuer` on the
         cluster.
-        See the [cert-manager documentation](https://cert-manager.io/docs/configuration/).<br><br>
+        For more information, see the [cert-manager documentation](https://cert-manager.io/docs/configuration/).<br><br>
       + **If you are using your own TLS certificates:** Create secrets with TLS certificate data.
 
             ```
@@ -345,17 +343,17 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
             kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  <%= vars.product_short %>-NAMESPACE
             ```
             Where:
-            + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %> will be installed or,
-              if you use an Istio Ingress controller,
-              `<%= vars.product_short %>-NAMESPACE` is the same namespace as the istio-ingressgateway deployment,
-              typically `istio-system`.
+            + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %>
+            will be installed or, if you use an Istio Ingress controller,
+            `<%= vars.product_short %>-NAMESPACE` is the same namespace as the istio-ingressgateway
+            deployment -- typically `istio-system`.
             + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
             + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
         <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate.
-        To ensure that Cloud Foundry has the certificate to successfully call
-        <%= vars.product_short %>'s broker, follow the instructions in
-        [Setting Trusted Certificates](https://docs.pivotal.io/ops-manager/trusted-certificates.html).
+        Follow the steps in [Setting Trusted Certificates](https://docs.pivotal.io/ops-manager/trusted-certificates.html)
+        to ensure that Cloud Foundry has the certificate to successfully call
+        <%= vars.product_short %>'s broker.
         <br><br>
 
     1. Add the following to your `<%= vars.product_cli %>/values.yml` file:
@@ -378,27 +376,27 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
         ```
         Where:
         + `INGRESS-DOMAIN` is the name of your provisioned domain.
-        + `INGRESS-PATH` is the path expression to match all paths for your particular ingress controller.
-        Istio Ingress controller is set to `"/*"`.
-        Nginx Ingress controller is set to `"/"`.
+        + `INGRESS-PATH` is the path expression to match all paths for your particular ingress
+        controller.<br>
+        Istio Ingress controller is set to `"/*"`.<br>
+        NGINX Ingress controller is set to `"/"`.<br>
         Contour Ingress controller is set to `"/"`.
-        + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation required by your Ingress
-        controller.
+        + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation your Ingress controller requires.
 
         These values depend on the Ingress controller and certificate management option you use.
         For example, see the annotations for Istio Ingress controller and cert-manager:
 
-        ```
-        annotations:
-            kubernetes.io/ingress.class: istio
-            cert-manager.io/issuer: "letsencrypt-prod"
-        ```
+            ```
+            annotations:
+                kubernetes.io/ingress.class: istio
+                cert-manager.io/issuer: "letsencrypt-prod"
+            ```
 
-      <p class="note">
-        <strong>Note:</strong> Ingress controllers have different implementation
-        details, so you should check the documentation of your chosen Ingress
-        controller for more detailed usage instructions.
-      </p>
+        <p class="note">
+          <strong>Note:</strong> Implementation details vary by Ingress controller.
+          For more detailed usage instructions, see the documentation for your chosen Ingress
+          controller.
+        </p>
 
 1. Configure the Cloud Foundry environment details:
 
