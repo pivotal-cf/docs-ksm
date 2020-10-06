@@ -210,13 +210,13 @@ To configure a Istio service mesh:
 
 1. Install Istio on your Kubernetes cluster following the [docs](https://istio.io/latest/docs/setup/install/)
 
-1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed. 
+1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed.
 
     ```
     kubectl create ns <%= vars.product_short %>-NAMESPACE
     kubectl label namespace <%= vars.product_short %>-NAMESPACE istio-injection=enabled
     ```
-   
+
     Where:
     + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
     dedicated namespace.
@@ -352,9 +352,10 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
             + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
             + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
-        <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate. Follow
-        these [instructions](https://docs.pivotal.io/ops-manager/trusted-certificates.html) to ensure
-        that Cloud Foundry has the certificate to successfully call <%= vars.product_short %>'s broker.
+        <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate.
+        To ensure that Cloud Foundry has the certificate to successfully call
+        <%= vars.product_short %>'s broker, follow the instructions in
+        [Setting Trusted Certificates](https://docs.pivotal.io/ops-manager/trusted-certificates.html).
         <br><br>
 
     1. Add the following to your `<%= vars.product_cli %>/values.yml` file:
