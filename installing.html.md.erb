@@ -347,10 +347,9 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
         + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
         + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
-1.  <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate:
-    Follow the steps in [Setting Trusted Certificates](https://docs.pivotal.io/ops-manager/trusted-certificates.html)
-    to ensure that Cloud Foundry has the certificate to successfully call
-    <%= vars.product_short %>'s broker.
+1.  If you are using your own TLS certificates, follow the steps in [Setting Trusted Certificates]
+    (https://docs.pivotal.io/ops-manager/trusted-certificates.html)
+    to ensure that  <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> trust the certificate.
 
 1. Add the following Ingress section to your `<%= vars.product_cli %>/values.yml` file:
 
