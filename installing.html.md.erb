@@ -325,76 +325,74 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     see [User Account and Authentication (UAA) Server](https://docs.cloudfoundry.org/concepts/architecture/uaa.html)
     in the Cloud Foundry documentation.
 
-1. Enable Ingress service access:
-    1. Get the annotation information required by your Ingress controller.
-       Use the appropriate section below:
-      + **If you are using an automated certificate management provider such as cert-manager:**
-        Follow the procedures to install and configure the prerequisites for the certificate
-        management provider that you are using.
-        <br>For example, the prerequisite for `cert-manager` is to set up an `Issuer` on the
-        cluster.
-        For more information, see the [cert-manager documentation](https://cert-manager.io/docs/configuration/).<br><br>
-      + **If you are using your own TLS certificates:** Create secrets with TLS certificate data.
+1. Get the annotation information required by your Ingress controller.
+   Use the appropriate section below:
+  + **If you are using an automated certificate management provider such as cert-manager:**
+    Follow the procedures to install and configure the prerequisites for the certificate
+    management provider that you are using.
+    <br>For example, the prerequisite for `cert-manager` is to set up an `Issuer` on the
+    cluster.
+    For more information, see the [cert-manager documentation](https://cert-manager.io/docs/configuration/).<br><br>
+  + **If you are using your own TLS certificates:** Create secrets with TLS certificate data.
 
-            ```
-            kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  NAMESPACE
-            kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  NAMESPACE
-            ```
-            Where:
-            + `NAMESPACE` is the namespace where <%= vars.product_short %> will be installed or,
-              if you use an Istio Ingress controller,
-              `NAMESPACE` is the same namespace as the istio-ingressgateway deployment,
-              typically `istio-system`.
-            + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
-            + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
-
-        <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate.
-        Follow the steps in [Setting Trusted Certificates](https://docs.pivotal.io/ops-manager/trusted-certificates.html)
-        to ensure that Cloud Foundry has the certificate to successfully call
-        <%= vars.product_short %>'s broker.
-        <br><br>
-
-    1. Add the following to your `<%= vars.product_cli %>/values.yml` file:
-
-        ```yaml
-        ingress:
-         enabled: true
-         hosts:
-         - name: INGRESS-DOMAIN
-           path: INGRESS-PATH
-         annotations:
-           ANNOTATION-KEY: ANNOTATION-VALUE
-         tls:
-         - secretName: daemon-cert
-           hosts:
-             - daemon.INGRESS-DOMAIN
-         - secretName: broker-cert
-           hosts:
-             - broker.INGRESS-DOMAIN
+        ```
+        kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  NAMESPACE
+        kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  NAMESPACE
         ```
         Where:
-        + `INGRESS-DOMAIN` is the name of your provisioned domain.
-        + `INGRESS-PATH` is the path expression to match all paths for your particular ingress
-        controller.<br>
-        Istio Ingress controller is set to `"/*"`.<br>
-        NGINX Ingress controller is set to `"/"`.<br>
-        Contour Ingress controller is set to `"/"`.
-        + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation your Ingress controller requires.
+        + `NAMESPACE` is the namespace where <%= vars.product_short %> will be installed or,
+          if you use an Istio Ingress controller,
+          `NAMESPACE` is the same namespace as the istio-ingressgateway deployment,
+          typically `istio-system`.
+        + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
+        + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
-        These values depend on the Ingress controller and certificate management option you use.
-        For example, see the annotations for Istio Ingress controller and cert-manager:
+1.  <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %> need to trust the certificate:
+    Follow the steps in [Setting Trusted Certificates](https://docs.pivotal.io/ops-manager/trusted-certificates.html)
+    to ensure that Cloud Foundry has the certificate to successfully call
+    <%= vars.product_short %>'s broker.
 
-        ```
-        annotations:
-            kubernetes.io/ingress.class: istio
-            cert-manager.io/issuer: "letsencrypt-prod"
-        ```
+1. Add the following Ingress section to your `<%= vars.product_cli %>/values.yml` file:
 
-        <p class="note">
-          <strong>Note:</strong> Implementation details vary by Ingress controller.
-          For more detailed usage instructions, see the documentation for your chosen Ingress
-          controller.
-        </p>
+    ```yaml
+    ingress:
+     enabled: true
+     hosts:
+     - name: INGRESS-DOMAIN
+       path: INGRESS-PATH
+     annotations:
+       ANNOTATION-KEY: ANNOTATION-VALUE
+     tls:
+     - secretName: daemon-cert
+       hosts:
+         - daemon.INGRESS-DOMAIN
+     - secretName: broker-cert
+       hosts:
+         - broker.INGRESS-DOMAIN
+    ```
+    Where:
+    + `INGRESS-DOMAIN` is the name of your provisioned domain.
+    + `INGRESS-PATH` is the path expression to match all paths for your particular ingress
+    controller.<br>
+    Istio Ingress controller is set to `"/*"`.<br>
+    NGINX Ingress controller is set to `"/"`.<br>
+    Contour Ingress controller is set to `"/"`.
+    + `ANNOTATION-KEY` and `ANNOTATION-VALUE` is the annotation your Ingress controller requires.
+
+    These values depend on the Ingress controller and certificate management option you use.
+    For example, see the annotations for Istio Ingress controller and cert-manager:
+
+    ```
+    annotations:
+        kubernetes.io/ingress.class: istio
+        cert-manager.io/issuer: "letsencrypt-prod"
+    ```
+
+    <p class="note">
+      <strong>Note:</strong> Implementation details vary by Ingress controller.
+      For more detailed usage instructions, see the documentation for your chosen Ingress
+      controller.
+    </p>
 
 1. Configure the Cloud Foundry environment details:
 
