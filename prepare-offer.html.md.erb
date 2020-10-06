@@ -82,10 +82,10 @@ To create a sample service offering directory:
 
 ## <a id='yaml'></a> (Optional) Create <%= vars.product_cli %>.yaml
 
-`<%= vars.product_cli %>.yaml` is required to either offer multiple charts or specify a file
-overriding a chart's default values.
+The `<%= vars.product_cli %>.yaml` file is required to either offer multiple
+charts or specify a file overriding a chart's default values.
 
-1. Edit the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a
+1. Create the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a
 template:
 
     ```yaml
@@ -102,9 +102,10 @@ template:
     `cf marketplace`. The service name is listed under `service`.
     + `CHART-NAME` is the name of a chart included in the service offering.
     + `CHART-VERSION-NUMBER` is the version of the chart included in the service offering.
-    + `OFFERED-VALUE` is `true` or `false`. For more information, see the below table.
-    + `SCOPE-VALUE` is `cluster` or `namespace`. For more information, see the below table.
-    + `OVERRIDE-FILE.yaml` is the name of a file in the overrides directory that overrides the chart's default `values.yaml` file. It is optional.
+    + `OFFERED-VALUE` is either `true` or `false`. For more information, see the below table.
+    + `SCOPE-VALUE` is either `cluster` or `namespace`. For more information, see the below table.
+    + (Optional) `OVERRIDE-FILE.yaml` is the name of a file in the overrides
+    directory that overrides the chart's default `values.yaml` file.
 
 The following table describes the Helm chart configurations in `<%= vars.product_cli %>.yaml`:
 
@@ -116,26 +117,21 @@ The following table describes the Helm chart configurations in `<%= vars.product
   </tr>
 
   <tr>
-    <td><strong><code>scope</code></strong></td>
-    <td><code>cluster</code></td>
-    <td>If you use this value, the chart is only deployed once on a cluster.
+    <td><code>scope</code></td>
+    <td><code>cluster</code> or <code>namespace</code></td>
+    <td><strong>If you use <code>cluster</code>:</strong> The chart is only deployed once on a cluster.
     Subsequent service instances created on the same Kubernetes cluster
-    do not cause a cluster-scoped chart to be deployed additional times.<br><br>
-    You can use this scope for operators and controllers that manage multiple
-    instances from a single deployment.</td>
+    do not cause a cluster-scoped chart to be deployed additional times.
+    Use this scope for operators and controllers that manage multiple
+    instances from a single deployment.<br><br>
+    <strong>If you use <code>namespace</code>:</strong> The chart is deployed on the cluster every time
+    the service is created.
+  </td>
   </tr>
-
   <tr>
-    <td><strong><code>scope</code></strong></td>
-    <td><code>namespace</code></td>
-    <td>If you use this value, the chart is deployed on the cluster every time
-      the service is created.</td>
-  </tr>
-
-  <tr>
-    <td><strong><code>offered</code></strong></td>
-    <td><code>true</code> | <code>false</code></td>
-    <td>Only a single chart can have <code>offered</code> as <code>true</code>.
+    <td><code>offered</code></td>
+    <td><code>true</code> or <code>false</code></td>
+    <td>Only a single chart can have <code>offered</code> set to <code>true</code>.
       The chart that is set to <code>true</code> must also have
       <code>scope</code> set to <code>namespace</code>. <br><br>
       The offered chart represents the service the user binds to.
