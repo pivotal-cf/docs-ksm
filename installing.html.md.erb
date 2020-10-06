@@ -29,8 +29,6 @@ To install and configure <%= vars.product_short %> using Helm:
 
 1. [(Recommended) Configure Security](#security)
 
-1. [(Recommended) Configure Service Mesh](#service-mesh)
-
 1. [(Optional) Install Prometheus](#prometheus)
 
 1. [Next Steps](#next-steps)
@@ -200,14 +198,14 @@ To replicate your <%= vars.product_short %> images to a private container image 
 
 ## <a id="service-mesh"></a> (Recommended) Configure Service Mesh
 
-Secure traffic between <%= vars.product_short %> components.
-For example, you can secure traffic using a service mesh such as
+You can secure traffic between <%= vars.product_short %> components by using a service mesh, such as
 [Istio](https://istio.io/latest/docs/concepts/what-is-istio/).
-For instructions on how to use Istio, see [Configure Service Mesh](#service-mesh) below.
 
-To configure a Istio service mesh:
+To configure an Istio service mesh:
 
-1. Follow the steps in [<%# which guide? There are 4. %>](https://istio.io/latest/docs/setup/install/)
+1. Go to the [Istio documentation](https://istio.io/latest/docs/setup/install/) for installation.
+
+1. Follow the steps in the installation guide that best meets your needs. <%# Can the reader really follow any of them? And will the reader definitely know which one to use? %>
 
 1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed.
 
