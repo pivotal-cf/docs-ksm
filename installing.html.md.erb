@@ -343,17 +343,10 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
             kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  NAMESPACE
             ```
             Where:
-<<<<<<< HEAD
-            + `<%= vars.product_short %>-NAMESPACE` is the namespace where <%= vars.product_short %>
-            will be installed or, if you use an Istio Ingress controller,
-            `<%= vars.product_short %>-NAMESPACE` is the same namespace as the istio-ingressgateway
-            deployment -- typically `istio-system`.
-=======
             + `NAMESPACE` is the namespace where <%= vars.product_short %> will be installed or,
               if you use an Istio Ingress controller,
               `NAMESPACE` is the same namespace as the istio-ingressgateway deployment,
               typically `istio-system`.
->>>>>>> 9c1ff74... Remove TSMGR from NAMESPACE placeholder [#175093112]
             + `DAEMON-KEY-FILE` and `DAEMON-CERT-FILE` are the paths to your TLS private key and certificate for the daemon.
             + `BROKER-KEY-FILE` and `BROKER-CERT-FILE` are the paths to your TLS private key and certificate for the broker.
 
@@ -392,7 +385,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 
         These values depend on the Ingress controller and certificate management option you use.
         For example, see the annotations for Istio Ingress controller and cert-manager:
-        
+
         ```
         annotations:
             kubernetes.io/ingress.class: istio
