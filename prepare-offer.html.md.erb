@@ -253,16 +253,7 @@ To override the default settings in `values.yaml` and offer custom plans:
       clusterName: "medium-cluster"
     ```
 
-<p class="note">
-  <strong>Note:</strong> Developers can specify service-specific configuration parameters to override
-  plan and Helm chart values. They do this by using the <code>-c</code> flag when they provision or
-  update a service instance with the cf CLI.
-  <br>
-  The <code>-c</code> JSON configuration values are mapped directly
-  onto the chart values and take precedence over any chart default and plan values.
-  For information about service-specific configuration parameters, see
-  <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
-</p>
+<%= partial vars.path_to_partials + "/ksm/config-params" %>
 
 
 ## <a id='multiple-charts'></a> (Optional) Offer Multiple Charts in a Single Offering

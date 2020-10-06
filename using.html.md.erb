@@ -150,8 +150,9 @@ To enable access to your service offering:
 ## <a id="provision"></a> Provision a Service Instance
 
 After enabling service access for the service offering, the service is available to developers
-through Cloud Foundry Marketplace. Developers can see the services that they have access to by
-running:
+through the Cloud Foundry Marketplace.
+
+Developers can see the services that they have access to by running:
 
 ```bash
 cf marketplace
@@ -163,19 +164,11 @@ Developers can then provision a service instance by running:
 cf create-service SERVICE-NAME PLAN-NAME SERVICE-INSTANCE-NAME
 ```
 
-<p class="note">
-  <strong>Note:</strong> Developers can specify service-specific configuration parameters to override
-  plan and Helm chart values. They do this by using the <code>-c</code> flag when they provision or
-  update a service instance through the cf CLI.
-  <br>
-  The <code>-c</code> JSON configuration values are mapped directly on to the chart values and
-  take precedence over any chart default and plan values.
-  For information about service-specific configuration parameters, see
-  <a href="https://docs.pivotal.io/application-service/devguide/services/managing-services.html#-arbitrary-parameters">Arbitrary Parameters</a>.
-</p>
+<%= partial vars.path_to_partials + "/ksm/config-params" %>
 
-For more information, see the
-[Cloud Foundry CLI Reference Guide](https://docs.run.pivotal.io/cf-cli/cf7-help.html).
+For more information about cf CLI commands that developers can use with Cloud
+Foundry Marketplace services, see the
+[Cloud Foundry CLI Reference Guide](https://docs.run.pivotal.io/cf-cli/cf7-help.html#services).
 
 
 ## <a id="update-offering"></a> Update a Service Offering
