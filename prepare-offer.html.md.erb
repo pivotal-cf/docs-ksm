@@ -313,10 +313,8 @@ object:
 
 1. Test if the `bind.yaml` template creates the expected JSON object:
 
-    1. Ensure that you have registered a default cluster.
+    1. Ensure that you have registered a cluster.
        See [Managing Clusters](./managing-clusters.html).<br><br>
-
-    1. Use the registered default cluster as your local configuration.<br><br>
 
     1. Ensure that your kubectl points to the registered default cluster.<br><br>
 
@@ -324,6 +322,7 @@ object:
        Wait for the service to be ready and for the public IP address to be available:
 
         ```bash
+        kubectl create namespace NAMESPACE
         helm install RELEASE-NAME HELM-CHART.tgz -n NAMESPACE --set service.type=LoadBalancer --wait
         ```
         Where:
