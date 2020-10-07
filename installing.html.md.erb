@@ -128,7 +128,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
 1. Relocate the images to your local machine:
     * If you recorded the `docker pull` commands in
     [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above,
-    run the `docker_pull` commands to pull the images.<br><br>
+    run the `docker_pull` commands to pull the images.
     The registry credentials are the same as your <%= vars.product_network %> credentials.
     * If you downloaded the `tgz` files instead of the `docker pull` commands,
     load those images by running:
@@ -185,6 +185,7 @@ To replicate your <%= vars.product_short %> images to a private container image 
     ```
     ```
     docker push REGISTRY/tanzu-service-manager/daemon:VERSION-NUMBER
+    ```
     ```
     docker push REGISTRY/tanzu-service-manager/chartmuseum:CHARTMUSEUM-VERSION-NUMBER
     ```
@@ -340,6 +341,8 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 
         ```
         kubectl create secret tls daemon-cert --key DAEMON-KEY-FILE --cert DAEMON-CERT-FILE -n  NAMESPACE
+        ```
+        ```
         kubectl create secret tls broker-cert --key BROKER-KEY-FILE --cert BROKER-CERT-FILE -n  NAMESPACE
         ```
         Where:
@@ -416,7 +419,7 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
     + `INGRESS-DOMAIN` is the name of your provisioned domain.
 
     <p class="note">
-      <strong>Note:</strong>Alternatively, you can use the Cloud Foundry username and password,
+      <strong>Note:</strong> Alternatively, you can use the Cloud Foundry username and password,
       but this is discouraged for production.
       When using the username and password, replace <code>client:</code> with <code>username:</code>
       and <code>clientSecret:</code> with <code>password:</code>.
@@ -469,6 +472,8 @@ these commands:
 
     ```bash
     kubectl create ns <%= vars.product_short %>-NAMESPACE
+    ```
+    ```
     helm install RELEASE-NAME <%= vars.product_cli %>-VERSION-NUMBER.tgz  -n <%= vars.product_short %>-NAMESPACE --wait -f values-production.yaml
     ```
     Where:
@@ -511,6 +516,7 @@ To install Prometheus to a cluster:
     kubectl create ns prometheus
 
     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
     helm install my-prometheus prometheus-community/prometheus -n prometheus
     ```
 
