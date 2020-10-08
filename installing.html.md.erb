@@ -88,7 +88,6 @@ To get the resources needed from <%= vars.product_network %> to install <%= vars
     the CLI for your operating system.
     + **Docker `pull` commands:** Click **Artifact References** and record the `docker pull`
     commands for the **broker**, **daemon**, and **chartmuseum**.
-    You can alternatively download the image `tgz` files from the `images` directory.
     + **Helm chart TGZ file:** Click **<%= vars.product_cli %>-VERSION-NUMBER.tgz** and download the
     Helm chart
     for <%= vars.product_short %>.
@@ -126,16 +125,8 @@ To install the <%= vars.product_short %> Command Line Interface (CLI):
 To replicate your <%= vars.product_short %> images to a private container image registry:
 
 1. Relocate the images to your local machine:
-    * If you recorded the `docker pull` commands in
-    [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above,
-    run the `docker pull` commands to pull the images.
-    The registry credentials are the same as your <%= vars.product_network %> credentials.
-    * If you downloaded the `tgz` files instead of the `docker pull` commands,
-    load those images by running:
-
-        ```
-        docker load -i PATH-TO-TGZ-FILES
-        ```
+    Run the `docker pull` commands recorded in [Get <%= vars.product_short %> Resources From <%= vars.product_network %>](#get) above,
+    to pull the images. The registry credentials are the same as your <%= vars.product_network %> credentials.
 
 1. Tag the images for your registry by running these commands:
 
