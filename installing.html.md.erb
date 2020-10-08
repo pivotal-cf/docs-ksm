@@ -210,7 +210,7 @@ To configure an Istio service mesh:
 [Istio documentation](https://istio.io/latest/docs/setup/install/).
 Follow the steps in the installation guide that best meets your needs.
 
-1. Inject Istio into the namespace where <%= vars.product_short %> will be deployed by running:
+1. Configure Istio automatic sidecar into the namespace where <%= vars.product_short %> will be deployed by running:
 
     ```
     kubectl create ns <%= vars.product_short %>-NAMESPACE
@@ -462,7 +462,6 @@ To configure the <%= vars.product_short %> Helm chart, edit the `values-producti
 
 1. Save the `values-production.yaml` file.
 
-
 ## <a id='install'></a> Install the <%= vars.product_short %> Helm Chart
 
 To install the <%= vars.product_short %> Helm chart:
@@ -485,7 +484,20 @@ these commands:
     + `<%= vars.product_cli %>-VERSION-NUMBER.tgz` is the <%= vars.product_short %> Helm chart file
     you downloaded earlier.
 
+## <a id='validate-istio'> (Optional) Validate that Istio sidecar is being used by pods
 
+You can validate the Istio sidecar being used by the pods by executing `kubectl describe pod POD-NAME -n <%= vars.product_short %>-NAMESPACE`
+and looking for the `sidecar.istio.io/status` annotation:
+
+    ```yaml
+    Annotations: sidecar.istio.io/status: {"version":"8e6e902b765af607513b28d284940ee1421e9a0d07698741693b2663c7161c11","initContainers":["istio-init"],"containers":["istio-proxy"]...
+    ```
+    
+    Where:
+        + `POD-NAME` is a name of any <%= vars.product_short %> POD.
+        + `<%= vars.product_short %>-NAMESPACE` is a name you choose for the <%= vars.product_short %>
+        dedicated namespace.
+        
 ## <a id="security"></a> (Recommended) Configure Security
 
 VMware recommends configuring security on your Kubernetes cluster for <%= vars.product_short %>.
