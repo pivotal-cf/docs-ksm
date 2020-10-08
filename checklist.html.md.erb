@@ -1,13 +1,13 @@
 ---
-title: Getting Started Checklist
+title: Overview
 owner: Platform Engineering (TSMGR Team)
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to minimally configure <%= vars.product_full %>
-(<%= vars.product_short %>) for evaluation or testing purposes.
-This topic does not include procedures for adding custom service offerings.
+This checklist provides an overview of configuring and installing
+ <%= vars.product_full %> <%= vars.product_short %>). Each item 
+ links to more detailed instructions. 
 
 
 ## <a id="overview"></a> Overview
@@ -18,14 +18,24 @@ To get started with <%= vars.product_short %>:
   <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information about
   <%= vars.k8s_runtime_abbr %>,
   see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+
 1. **Install and configure <%= vars.product_short %>:**
-  See [Installing and Configuring <%= vars.product_full %>](./installing.html).
+  You can choose to install <%= vars.product_short %> quickly for evaluation, 
+  or install it configured for a production environment.
+
+  * See [Installing and Configurint in Dev Mode](./installing-dev.html)
+      for use in labs and evaluation environments.
+
+  * See [Installing and Configuring](./installing.html) for production. 
+
 1. **Configure the <%= vars.product_short %> CLI:**
   See [Configure the <%= vars.product_short %> CLI](./using.html#credentials).
-1. **Register your Kubernetes cluster with <%= vars.product_short %>:**
-    You can register clusters individually or set a default one.
+
+1. **Register your Kubernetes workload clusters with <%= vars.product_short %>:**
+    You can register clusters as well as set a default cluster.
     See [Register a Kubernetes Cluster](./managing-clusters.html#registering)
     or [Set a Default Kubernetes Cluster](./managing-clusters.html#set-default).
+
 1. **Add an example service offering:**
   For evaluation or testing purposes,
   you can add the Bitnami MySQL chart to <%= vars.product_short %>.
@@ -34,15 +44,18 @@ To get started with <%= vars.product_short %>:
 
           ```
           git clone https://github.com/bitnami/charts.git
+          
           ```
       1. Add the MySQL service offering by following the procedure in
           [Add a Service Offering to <%= vars.product_short %>](./using.html#add).
+
 1. **Enable developer access to the service offering:**
-  See [Enable Service Offering Access](.//using.html#enable).
+  See [Enable Service Offering Access](./using.html#enable).
 
 After you follow the above procedure,
 a developer can use Cloud Foundry Command Line Interface (cf CLI) commands to
 manage a MySQL service instance. This service instance runs on a Kubernetes cluster.
 
-If you want to configure a custom service offering,
-follow the procedures in [Configuring a Helm Chart](./configure-helm.html) and [Preparing a Service Offering](./prepare-offer.html).
+Follow the procedures in [Configuring a Helm Chart](./configure-helm.html) 
+and [Preparing a Service Offering](./prepare-offer.html) to add additional services
+to your marketplace.  
