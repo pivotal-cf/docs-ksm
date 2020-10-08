@@ -5,8 +5,8 @@ owner: Platform Engineering (TSMGR Team)
 
 <strong><%= modified_date %></strong>
 
-This checklist provides an overview of configuring and installing
- <%= vars.product_full %> <%= vars.product_short %>). Each item 
+This topic provides an overview of configuring and installing
+ <%= vars.product_full %> (<%= vars.product_short %>). Each item 
  links to more detailed instructions. 
 
 
@@ -17,16 +17,15 @@ To get started with <%= vars.product_short %>:
 1. **Install and configure a Kubernetes cluster:**
   <%= vars.product_short %> supports <%= vars.k8s_runtime_full %> clusters. For information about
   <%= vars.k8s_runtime_abbr %>,
-  see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/pks/index.html).
+  see [<%= vars.k8s_runtime_full %>](https://docs.pivotal.io/tkgi/index.html).
 
 1. **Install and configure <%= vars.product_short %>:**
-  You can choose to install <%= vars.product_short %> quickly for evaluation, 
-  or install it configured for a production environment.
-
-  * See [Installing and Configurint in Dev Mode](./installing-dev.html)
-      for use in labs and evaluation environments.
-
-  * See [Installing and Configuring](./installing.html) for production. 
+  You can choose to install <%= vars.product_short %> quickly for evaluation 
+  or to install it configured for a production environment.
+    * For lab and evaluation environments,
+      see [Installing and Configuring in Development Mode](./installing-dev.html).
+    * For production environments,
+      see [Installing and Configuring](./installing.html).
 
 1. **Configure the <%= vars.product_short %> CLI:**
   See [Configure the <%= vars.product_short %> CLI](./using.html#credentials).
@@ -52,8 +51,10 @@ To get started with <%= vars.product_short %>:
 1. **Enable developer access to the service offering:**
   See [Enable Service Offering Access](./using.html#enable).
 
-After you follow the above procedure,
-a developer can use Cloud Foundry Command Line Interface (cf CLI) commands to
+##<a id="next-steps"></a> Next Steps
+
+After completing the process outlined above,
+developers can use Cloud Foundry Command Line Interface (cf CLI) commands to
 manage a MySQL service instance. This service instance runs on a Kubernetes cluster.
 
 Follow the procedures in [Configuring a Helm Chart](./configure-helm.html) 
