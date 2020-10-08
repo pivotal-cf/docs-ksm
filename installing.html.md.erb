@@ -487,7 +487,7 @@ these commands:
 ## <a id='validate-istio'> (Optional) Validate that Istio sidecar is being used by pods
 
 You can validate the Istio sidecar being used by the pods by executing `kubectl describe pod POD-NAME -n <%= vars.product_short %>-NAMESPACE`
-and looking for the `sidecar.istio.io/status` annotation:
+and looking for the `sidecar.istio.io/status` annotation (more info at https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection):
 
     ```yaml
     Annotations: sidecar.istio.io/status: {"version":"8e6e902b765af607513b28d284940ee1421e9a0d07698741693b2663c7161c11","initContainers":["istio-init"],"containers":["istio-proxy"]...
