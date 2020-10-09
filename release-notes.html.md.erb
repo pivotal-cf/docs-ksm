@@ -26,10 +26,24 @@ These are release notes for <%= vars.product_full %> (<%= vars.product_short %>)
 
 **Release Date:** October 9, 2020
 
-* Improve `install-dev.sh` to pull images from registry.pivotal.io
-* Add labels to better support Istio service mesh
-* Improve `<%= vars.product_cli %> instance list -o json` output
-* No longer exporting installation images as tarballs directly to <%= vars.product_network %> 
+### Features
+
+New features and changes in this release:
+
+* **Improvements to the install dev  script:**
+  `install-dev.sh` pulls images directly from registry.pivotal.io.
+* **Installation images are no longer on <%= vars.product_network %>:**
+  You pull images directly from registry.pivotal.io.
+* **Improve output of  `<%= vars.product_cli %> instance list -o json` commmand:**
+  This makes the output more usable in scripts.
+* **Labels to better support Istio service mesh:**
+  Additional labels have been added to the pods.
+
+### Known Issue
+
+This release has the following issue:
+
+<%= partial vars.path_to_partials + "/ksm/custom-resources" %>
 
 ## <a id="1-0-1"></a> v1.0.1
 
