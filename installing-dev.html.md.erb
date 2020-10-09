@@ -52,6 +52,11 @@ For information about <%= vars.k8s_runtime_abbr %>, see
 * **Kubernetes CLI:** For more information, see the
 [Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
+* **Private Container Image Registry:** You need this to manage container images in air-gapped
+environments.
+VMware recommends using a registry in production deployments. You can use a registry such as
+[Harbor](https://network.pivotal.io/products/harbor-container-registry).
+
 * **A default StorageClass on the cluster where you want to install <%= vars.product_short %>:**
 If you are using <%= vars.k8s_runtime_abbr %>, see
 [Specify a Default StorageClass](https://docs.pivotal.io/tkgi/volumes.html#default-storage-class).
@@ -77,26 +82,20 @@ endpoint, username, and password.
 more visibility into the process.
 
 
-### <a id="install-dev"></a> Install Using the install-dev.sh Script
+## <a id="install-dev"></a> Install Using the install-dev.sh Script
 
-This approach requires a private image registry that uploads the Docker installation images.
-To use the `install-dev.sh` script to install <%= vars.product_short %>:
+To install using the `install-dev.sh` script:
 
-1. Verify and record your private registry endpoint, username, and password.
-
-1. Go to [<%= vars.product_network %>](https://network.pivotal.io/products/tanzu-service-manager).
-
-1. Sign in, if you are not already signed in.
-
-1. Download:
+1. Download artifacts from [<%= vars.product_network %>](https://network.pivotal.io/products/tanzu-service-manager) to an empty directory:
     * **The <%= vars.product_short %> Command Line Interface (CLI):** Click **CLIs** and download
     the CLI for your operating system.
     * **<%= vars.product_short %> Helm chart TGZ file:** Click
     **Helm Chart for <%= vars.product_short %>** and download the Helm chart TGZ file.
-    * **Images**: Click **Images** and download the daemon, broker, Minio, and ChartMuseum Docker
-    images.
     * **install-dev.sh script**: Click **<%= vars.product_short %> Dev Environment Installer** and
     download the `install-dev.sh` file.
+    
+1. Run `docker login registry.pivotal.io` so that the script can pull the installation images.
+   The credentials are the same as the <%= vars.product_network %> credentials.
 
 1. Make the `install-dev.sh` file executable by running:
 
@@ -104,13 +103,19 @@ To use the `install-dev.sh` script to install <%= vars.product_short %>:
     chmod +x install-dev.sh
     ```
 
+1. For the private image registry that you will use to upload the Docker installation images,
+   verify and record the following:
+   + Endpoint
+   + Username
+   + Password
+
 1. Provide the registry endpoint, username, and password during the installation by doing one of these
 methods:
     * Run
         ```
         ./install-dev.sh
         ```
-        and then answer the registry details questions
+        and then answer the registry details questions, or
     * Create a `registry.yaml` file containing the needed information.
     See an example `registry.yaml` template below:
 
