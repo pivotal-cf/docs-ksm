@@ -107,11 +107,20 @@ by doing one of the following:
             [1.3.0] in chart</code>
         </p>
 
-1. Ensure your offering was saved to <%= vars.product_short %> by running:
+1. Ensure your offering is saved to <%= vars.product_short %> by running:
 
     ```
     <%= vars.product_cli %> offer list
     ```
+   
+    For example: 
+    ```bash
+    $ <%= vars.product_cli %> offer list
+    OFFER                	INCLUDED CHARTS                 	PLANS
+    mysql-with-monitoring	[*mysql:1.6.6 prometheus:11.9.0]	[small medium]
+    ```
+    
+    Note that the chart with a star (*mysql:1.6.6) is the one offered in `cf marketplace`.
 
 
 ## <a id="enable"></a> Enable Service Offering Access
