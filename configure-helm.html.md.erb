@@ -94,7 +94,7 @@ For more information, see
 
 1. Edit your override file to enable service access.
 <%= vars.product_short %> supports using a load balancer, Ingress, or ExternalDNS to access services.
-    + **If want your service to be accessed directly using a load balancer,** set
+    + **If you want your service to be accessed directly using a load balancer,** set
     `services.type:` to `LoadBalancer`. For example:
 
         ```yaml
@@ -104,7 +104,7 @@ For more information, see
           port: 3306
         ...
         ```
-    + **If want your service to be accessed using Ingress or ExternalDNS:**
+    + **If you want your service to be accessed using Ingress or ExternalDNS:**
     Edit the value of the `hosts.name` to include a templatized value for uniqueness.
     For example:
 
@@ -120,7 +120,7 @@ For more information, see
     For more information, see [(Optional) Template Values](#values-templating).
 
     <p class="note">
-      <strong>Note:</strong> The Ingress controller or ExternalDNS controller need to be installed
+      <strong>Note:</strong> The Ingress controller or ExternalDNS controller needs to be installed
       and configured manually.<br><br>
       For information about Ingress, see the
       <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Kubernetes documentation</a>.
@@ -128,7 +128,7 @@ For more information, see
       <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a> in GitHub.
     </p>
 
-1. Edit the `<%= vars.product_cli %>.yaml` file to use the override file you created in step 1.
+1. Edit the `<%= vars.product_cli %>.yaml` file to use the override file you created earlier.
 <br><br>
 For example:
 
@@ -151,7 +151,7 @@ For example:
 Helm 2 and Helm 3 use different methods to install CRDs. <%= vars.product_short %> requires Helm 3,
 while Helm 2 is optional.
 
-If you are using a Helm 2 chart, use both the Helm 2 and Helm 3 CLIs methods:
+If you are using a Helm 2 chart, use both the Helm 2 CLI and Helm 3 CLI methods:
 
 1. Define your CRDs using the Helm 3 method by referring to the
 [Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource). Helm 3 uses a `crds` directory to install CRDs.
@@ -192,13 +192,17 @@ For more information about this issue, see
 
 ## <a id='values-templating'></a> (Optional) Template Values
 
-Helm uses the literal contents of a `values.yaml` file as the concrete set of substitutions when
-creating a release.
-In the context of <%= vars.product_short %>, this is the plan and override file contents.
-However, <%= vars.product_short %> uses these values as a template for multiple releases.
+<%# Maybe use this as an opener early given, first and foremost, the reader wants to know if they
+have to do anything: |If your chart uses Ingress controller or your chart requires a unique name in
+addition to the release name, edit the plan or override file:| %>
 
-This difference can create cases where values need to go through the Helm templating engine before
-any template files in the `/templates` directory are rendered with those values.
+Helm uses the literal contents of a `values.yaml` file as the concrete set of substitutions when
+creating a release. In the context of <%= vars.product_short %>, this is the plan and override file
+contents.
+
+<%= vars.product_short %> uses these values as a template for multiple releases, which can create
+cases where values need to go through the Helm templating engine before any template files in the
+`/templates` directory are rendered with those values.
 
 Plan and override file contents might need to go through the Helm templating engine when:
 
@@ -207,8 +211,8 @@ Plan and override file contents might need to go through the Helm templating eng
 * There is a unique name, in addition to the release name, required in a chart.
 
 <%= vars.product_short %> runs these values through the Helm templating engine.
-For example, in a chart with ingress hosts, you can edit the plan or override file to use the release
-name as the unique subdomain discriminator in the ingress definition:
+For example, in a chart with ingress hosts, you can edit the plan file or override file to use the
+release name as the unique subdomain discriminator in the ingress definition:
 
 ```yaml
 ...
