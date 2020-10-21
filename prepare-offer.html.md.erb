@@ -123,23 +123,25 @@ The following table describes the Helm chart configurations in `<%= vars.product
   <tr>
     <td><code>scope</code></td>
     <td><code>cluster</code> or <code>namespace</code></td>
-    <td><strong>If you use <code>cluster</code>:</strong> The chart is only deployed once on a cluster.
-    Subsequent service instances created on the same Kubernetes cluster
-    do not cause a cluster-scoped chart to be deployed additional times.
-    Use this scope for operators and controllers that manage multiple
-    instances from a single deployment.<br><br>
-    <strong>If you use <code>namespace</code>:</strong> The chart is deployed on the cluster every time
-    the service is created.
-  </td>
+    <td><strong>If you use <code>cluster</code>:</strong> The chart is only deployed once on a
+      cluster.
+      Subsequent service instances created on the same Kubernetes cluster do not cause a
+      cluster-scoped chart to be deployed additional times.
+      Use this scope for operators and controllers that manage multiple instances from a single
+      deployment.<br><br>
+      <strong>If you use <code>namespace</code>:</strong> The chart is deployed on the cluster every
+      time the service is created.
+    </td>
   </tr>
   <tr>
     <td><code>offered</code></td>
     <td><code>true</code> or <code>false</code></td>
-    <td>Only a single chart can have <code>offered</code> set to <code>true</code>.
-      The chart that is set to <code>true</code> must also have
-      <code>scope</code> set to <code>namespace</code>. <br><br>
+    <td><strong>If you use <code>true</code>:</strong> The <code>scope</code> must be set to
+      <code>namespace</code>. Only one chart can be <code>true</code>.
       The offered chart represents the service the user binds to.
-      However, you can expose more resources with <code>cf bind-service</code>.</td>
+      However, you can expose more resources with <code>cf bind-service</code>.<br><br>
+      <strong>If you use <code>false</code>:</strong> The chart is not offered.
+    </td>
   </tr>
 </table>
 
@@ -197,7 +199,8 @@ To override the default settings in `values.yaml` and offer custom plans:
 
 1. (Optional) Create and edit `resource-quotas/RESOURCE-QUOTA-FILE.yaml`
     with the `ResourceQuota` definition you want to use.
-    This `ResourceQuota` is created in each Kubernetes namespace where a service instance is provisioned.
+    This `ResourceQuota` is created in each Kubernetes namespace where a service instance is
+    provisioned.
     For more information about `ResourceQuota` objects, see the
     [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/).
     <br><br>
@@ -449,24 +452,30 @@ For example, if you use Harbor, follow the instructions in
 [Pulling and pushing images using Docker client](https://goharbor.io/docs/2.0.0/working-with-projects/working-with-images/pulling-pushing-images/)
 in GitHub.
 
-1. Confirm that your Helm chart supports the value `global.imageRegistry`. You can look in the
-chart's `values.yaml` file to confirm this. If this `global.imageRegistry` is unset in the chart's
-`values.yaml` and you have set `imageCredentialsForServiceInstances.registry` in the
-<%= vars.product_short %> Helm chart `values.yaml` file, then <%= vars.product_short %> transforms
-the Helm chart's images and pull them from the private registry.<br><br>
-For example, if you use a chart with an empty global.imageRegistry key and the chart supports this
-pattern:
 
-    ```
-    ---
-    global:
-      imageRegistry:
-    ```
-    The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
+## <a id='access'></a> Ensure Your Images are Accessible
 
-1. For charts that do not support the `global.imageRegistry` pattern, each image path must be
-individually specified using the value that the chart author chose. Charts also often contain
-multiple images. For example, given the following chart values excerpt:
+To ensure your images are accessible:
+
+1. Check the chart's `values.yaml` file for the value `global.imageRegistry`:
+
+    * If `global.imageRegistry` is unset in the chart's `values.yaml`, and you have set
+    `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart
+    `values.yaml` file, then <%= vars.product_short %> transforms the Helm chart's images and pulls
+    them from the private registry.<br><br>
+    For example, if you use a chart with an empty `global.imageRegistry` key and the chart supports
+    this pattern:
+
+        ```
+        ---
+        global:
+          imageRegistry:
+        ```
+        The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
+
+    * If your chart does not support the `global.imageRegistry` pattern, edit the `overrides.yaml`
+    to override the image fields to point to the private registry where their images are hosted.
+    Charts also often contain multiple images. For example, given the following chart values excerpt:
 
     ```
     ...
@@ -481,8 +490,8 @@ multiple images. For example, given the following chart values excerpt:
     ```
 
     Both of these images should be individually transformed.
-    For example, if the registry path is `registry.example.com/my-project`, then the overrides file
-    contains:
+    For example, if the registry path were `registry.example.com/my-project`, then the overrides
+    file would contain:
 
     ```
     image: "registry.example.com/my-project/mysql"
