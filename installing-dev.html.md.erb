@@ -135,14 +135,14 @@ methods:
 running:
 
     ```
-    kubectl get services -n tsmgr-dev
+    kubectl get services -n <%= vars.product_cli %>-dev
     ```
 
 1. After the external IP address is available for the daemon, configure the <%= vars.product_short %>
 environment variables by running:
 
     ```
-    source ./set-tsmgr-env.sh
+    source ./set-<%= vars.product_cli %>-env.sh
     ```
 
 1. After the external IP address is available for the broker, configure
