@@ -100,7 +100,7 @@ To install using the `install-dev.sh` script:
 1. Make the `install-dev.sh` file executable by running:
 
     ```
-    chmod +x install-dev.sh
+    chmod +x install-dev-<version>.sh
     ```
 
 1. For the private image registry that you will use to upload the Docker installation images,
@@ -135,7 +135,7 @@ methods:
 running:
 
     ```
-    kubectl get services -n <%= vars.product_short %>-dev
+    kubectl get services -n tsmgr-dev
     ```
 
 1. After the external IP address is available for the daemon, configure the <%= vars.product_short %>
