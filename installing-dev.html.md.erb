@@ -100,8 +100,13 @@ To install using the `install-dev.sh` script:
 1. Make the `install-dev.sh` file executable by running:
 
     ```
-    chmod +x install-dev-<version>.sh
+    chmod +x install-dev-VERSION.sh
     ```
+    Where `VERSION` is the version number of <%= vars.product_short %> that you are installing.
+
+    For example:
+
+    <pre class="terminal">$ chmod +x install-dev-1.0.11.sh</pre>
 
 1. For the private image registry that you will use to upload the Docker installation images,
    verify and record the following:
