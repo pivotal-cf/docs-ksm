@@ -41,7 +41,7 @@ To prepare a service offering:
 Before you add your service offering to <%= vars.product_short %>, you must:
 
 + **Determine which YAML files you want to include in the service offering:**
-  For more infomation, see [About Service Offerings](./about-offer.html).
+  For more information, see [About Service Offerings](./about-offer.html).
 + **Install the <%= vars.product_short %> Command Line Interface (CLI):**
 For more information, see [Install the <%= vars.product_short %> CLI](installing.html#cli).
 + **Register a Kubernetes cluster using the <%= vars.product_short %> CLI:**
@@ -89,8 +89,8 @@ To create a sample service offering directory:
 The `<%= vars.product_cli %>.yaml` file is required to either offer multiple
 charts or specify a file overriding a chart's default values.
 
-1. Create the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as a
-template:
+1. Create the `<%= vars.product_cli %>.yaml` file using either the `init` output or the following as
+a template:
 
     ```yaml
     offer-name: OFFER-NAME
@@ -354,7 +354,7 @@ object:
         + `NAMESPACE` is the name of the namespace in which you installed your Helm chart.
 
         For example:
-        <pre class="terminal">
+        <pre<%# Put a newline between the stem and the opening code tag. %> class="terminal">
           $ <%= vars.product_cli %> test-bind-template my-cluster mysql-ns ./bind.yaml
           Services, secrets, and ingress:
           {
@@ -458,11 +458,9 @@ in GitHub.
 To ensure your images are accessible:
 
 1. Check the chart's `values.yaml` file for the value `global.imageRegistry`:
-
     * If `global.imageRegistry` is unset in the chart's `values.yaml`, and you have set
     `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart
-    `values.yaml` file, then <%= vars.product_short %> transforms the Helm chart's images and pulls
-    them from the private registry.<br><br>
+    `values.yaml` file, then <%= vars.product_short %> transforms the Helm chart
     For example, if you use a chart with an empty `global.imageRegistry` key and the chart supports
     this pattern:
 

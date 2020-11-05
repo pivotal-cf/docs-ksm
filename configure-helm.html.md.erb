@@ -190,29 +190,29 @@ For more information about this issue, see
 [Random passwords change on upgrade](https://github.com/helm/charts/issues/5167) in GitHub.
 
 
-## <a id='values-templating'></a> (Optional) Template Values
+## <a id='values-templating'></a> Configure Template Values
 
-<%# Maybe use this as an opener early given, first and foremost, the reader wants to know if they
-have to do anything: |If your chart uses Ingress controller or your chart requires a unique name in
-addition to the release name, edit the plan or override file:| %>
+If you know that you do not need, or want, to configure template values then you can skip this
+section. Otherwise, read on.
 
 Helm uses the literal contents of a `values.yaml` file as the concrete set of substitutions when
-creating a release. In the context of <%= vars.product_short %>, this is the plan and override file
-contents.
+creating a release. In the context of <%= vars.product_short %>, this is the contents of the plan
+file and the override file.
 
 <%= vars.product_short %> uses these values as a template for multiple releases, which can create
 cases where values need to go through the Helm templating engine before any template files in the
 `/templates` directory are rendered with those values.
 
-Plan and override file contents might need to go through the Helm templating engine when:
+There are various cases where the contents of the plan file and the override file might need to go
+through the Helm templating engine. Such cases include when a chart:
 
-* A chart uses Ingress controller. For more information about Ingress, see the
+* Requires a unique name in addition to the release name.
+* Uses Ingress controller. For more information about Ingress, see the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/).
-* There is a unique name, in addition to the release name, required in a chart.
 
-<%= vars.product_short %> runs these values through the Helm templating engine.
-For example, in a chart with ingress hosts, you can edit the plan file or override file to use the
-release name as the unique subdomain discriminator in the ingress definition:
+For example, in a chart with ingress hosts you can, if necessary, edit the plan file or override file
+to use the release name as the unique subdomain discriminator in the ingress definition, as seen in
+the snippet below:
 
 ```yaml
 ...
@@ -222,3 +222,8 @@ ingress:
   - name: "{{ .Release.Name }}.example.com"
 ...
 ```
+
+To configure the override file and plan file:
+
+1. Follow the procedure in [Override Chart Values](prepare-offer.html#override).
+1. Follow the procedure in [Define Plans Configuration](prepare-offer.html#plans).
