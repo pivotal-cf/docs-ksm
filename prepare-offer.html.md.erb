@@ -354,7 +354,7 @@ object:
         + `NAMESPACE` is the name of the namespace in which you installed your Helm chart.
 
         For example:
-        <pre<%# Put a newline between the stem and the opening code tag. %> class="terminal">
+        <pre class="terminal">
           $ <%= vars.product_cli %> test-bind-template my-cluster mysql-ns ./bind.yaml
           Services, secrets, and ingress:
           {
@@ -429,7 +429,7 @@ object:
 
 ## <a id='images'></a> Load Container Images into a Private Container Registry
 
-VMware recommends using a private container registry in production.
+VMware recommends using a private container image registry in production.
 <%= vars.product_short %> can then modify your Helm charts to point to images in the private
 container registry.
 
@@ -457,10 +457,11 @@ in GitHub.
 
 To ensure your images are accessible:
 
-1. Check the chart's `values.yaml` file for the value `global.imageRegistry`:
+1. Search the chart's `values.yaml` file for the value `global.imageRegistry`:
+    * If `global.imageRegistry` is set in the chart's `values.yaml`, no further action is required.
     * If `global.imageRegistry` is unset in the chart's `values.yaml`, and you have set
     `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart
-    `values.yaml` file, then <%= vars.product_short %> transforms the Helm chart
+    `values.yaml` file, then <%= vars.product_short %> transforms the Helm chart.<br>
     For example, if you use a chart with an empty `global.imageRegistry` key and the chart supports
     this pattern:
 
@@ -470,10 +471,11 @@ To ensure your images are accessible:
           imageRegistry:
         ```
         The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
-
-    * If your chart does not support the `global.imageRegistry` pattern, edit the `overrides.yaml`
-    to override the image fields to point to the private registry where their images are hosted.
-    Charts also often contain multiple images. For example, given the following chart values excerpt:
+        No further action is required.
+    * If your chart does not support the `global.imageRegistry` pattern, edit `overrides.yaml`
+    to override the image fields to point to the private registry where the images are hosted.
+    Charts often contain multiple images. For example, given the following chart values excerpt
+    below, both of the images should be individually transformed:
 
     ```
     ...
@@ -486,13 +488,13 @@ To ensure your images are accessible:
       imageTag: v0.10.0
       imagePullPolicy: IfNotPresent
     ```
-
-    Both of these images should be individually transformed.
-    For example, if the registry path were `registry.example.com/my-project`, then the overrides
-    file would contain:
+    If the registry path were `registry.example.com/my-project`, then `overrides.yaml` should
+    contain:
 
     ```
     image: "registry.example.com/my-project/mysql"
     metrics:
       image: registry.example.com/my-project/prom/mysqld-exporter
     ```
+    To edit `overrides.yaml`, follow the procedure in
+    [Override Chart Values](prepare-offer.html#override).
