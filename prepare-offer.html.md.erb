@@ -477,24 +477,24 @@ To ensure your images are accessible:
     Charts often contain multiple images. For example, given the following chart values excerpt
     below, both of the images should be individually transformed:
 
-    ```
-    ...
-    image: "mysql"
-    imageTag: "5.7.30"
-    ...
-    metrics:
-      enabled: false
-      image: prom/mysqld-exporter
-      imageTag: v0.10.0
-      imagePullPolicy: IfNotPresent
-    ```
-    If the registry path were `registry.example.com/my-project`, then `overrides.yaml` should
-    contain:
+        ```
+        ...
+        image: "mysql"
+        imageTag: "5.7.30"
+        ...
+        metrics:
+          enabled: false
+          image: prom/mysqld-exporter
+          imageTag: v0.10.0
+          imagePullPolicy: IfNotPresent
+        ```
+        If the registry path were `registry.example.com/my-project`, then `overrides.yaml` should
+        contain:
 
-    ```
-    image: "registry.example.com/my-project/mysql"
-    metrics:
-      image: registry.example.com/my-project/prom/mysqld-exporter
-    ```
-    To edit `overrides.yaml`, follow the procedure in
-    [Override Chart Values](prepare-offer.html#override).
+        ```
+        image: "registry.example.com/my-project/mysql"
+        metrics:
+          image: registry.example.com/my-project/prom/mysqld-exporter
+        ```
+        To edit `overrides.yaml`, follow the procedure in
+        [Override Chart Values](prepare-offer.html#override).
