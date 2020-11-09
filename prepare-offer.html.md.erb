@@ -460,23 +460,14 @@ To ensure your images are accessible:
 
 1. Search the chart's `values.yaml` file for the value `global.imageRegistry`:
     * If `global.imageRegistry` is set in the chart's `values.yaml`, no further action is required.
-    * If `global.imageRegistry` is unset in the chart's `values.yaml`, and you have set
-    `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart
-    `values.yaml` file, then <%= vars.product_short %> transforms the Helm chart.<br>
-    For example, if you use a chart with an empty `global.imageRegistry` key and the chart supports
-    this pattern:
-
-        ```
-        ---
-        global:
-          imageRegistry:
-        ```
-        The private registry configured at `imageCredentialsForServiceInstances.registry` is used.
-        No further action is required.
+    * If `global.imageRegistry` is supported and unset in the chart's `values.yaml`, set
+    `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart.<br>
+     <%= vars.product_short %> will pull images from `imageCredentialsForServiceInstances.registry`
+     when the service's instance chart is deployed.
     * If your chart does not support the `global.imageRegistry` pattern, edit `overrides.yaml`
     to override the image fields to point to the private registry where the images are hosted.
-    Charts often contain multiple images. For example, given the following chart values excerpt
-    below, both of the images should be individually transformed:
+    Charts often contain multiple images. For example, in the following chart values excerpt
+    below, we have set values for both the mysql and mysqld-exporter images:
 
         ```
         ...
