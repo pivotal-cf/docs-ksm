@@ -32,10 +32,10 @@ on GitHub.
 
 To configure a Helm chart to be compatible with <%= vars.product_short %>:
 
-1. Override values in the chart `values.yaml` file. See [Override Chart Values](#override) below.
+1. [Override Chart Values](#override)
 
-1. If you are using Helm 2 charts, define Custom Resource Definitions (CRDs) using Helm 2 and Helm 3
-methods. See [Define Custom Resource Definitions](#crd) below.
+1. If you are using Helm 2 charts, [Define Custom Resource Definitions](#crd) using Helm 2 and Helm 3
+methods.
 
     <p class="note">
       <strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
@@ -43,8 +43,9 @@ methods. See [Define Custom Resource Definitions](#crd) below.
       <a href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/">Helm documentation</a>.
     </p>
 
-1. Prevent secret regeneration for Helm charts with secret pattern definitions.
-See [Prevent Secret Regeneration](#secret-regeneration) below.
+1. [Prevent Secret Regeneration](#secret-regeneration)
+
+1. [Configure Template Values](#values-templating)
 
 VMware recommends that you read the following resources when creating your Helm chart:
 
@@ -154,7 +155,8 @@ while Helm 2 is optional.
 If you are using a Helm 2 chart, use both the Helm 2 CLI and Helm 3 CLI methods:
 
 1. Define your CRDs using the Helm 3 method by referring to the
-[Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource). Helm 3 uses a `crds` directory to install CRDs.
+[Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
+Helm 3 uses a `crds` directory to install CRDs.
 
 1. Define your CRDs using the Helm 2 method by referring to the
 [Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
@@ -193,7 +195,7 @@ For more information about this issue, see
 ## <a id='values-templating'></a> Configure Template Values
 
 If you know that you do not need, or want, to configure template values then you can skip this
-section. Otherwise, read on.
+section.
 
 Helm uses the literal contents of a `values.yaml` file as the concrete set of substitutions when
 creating a release. In the context of <%= vars.product_short %>, this is the contents of the plan
