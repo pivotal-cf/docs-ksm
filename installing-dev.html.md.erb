@@ -17,18 +17,14 @@ This topic describes how to install and configure <%= vars.product_full %>
 
 ## <a id="overview"></a> Overview
 
-Helm is a Kubernetes open-source package manager.
-You can use a Helm chart to install and configure <%= vars.product_short %>.
+There are two methods for installing the <%= vars.product_short %> environment for development:
 
-To install and configure <%= vars.product_short %> using Helm:
+* [Install Using the install-dev.sh Script](#install-dev): The `install-dev.sh` script automates
+the installation steps. This option only requires you to download files and provide private registry
+endpoint, username, and password.
 
-1. [Get <%= vars.product_short %> Resources from <%= vars.product_network %>](#get)
-
-1. [Install the <%= vars.product_short %> CLI](#cli)
-
-1. [Configure the <%= vars.product_short %> Helm Chart](#configure)
-
-1. [Install the Helm Chart](#install)
+* [Install Manually](#install-manually): This option requires more input from you, but gives you
+more visibility into the process.
 
 
 ## <a id="prereq"></a> Prerequisites
@@ -70,18 +66,6 @@ For more information about storage classes, see the
   See [Using Services with Tanzu Service Manager](using.html).
 
 
-## <a id="choose-install"></a> Choose an Installation Method
-
-There are two methods for installing the <%= vars.product_short %> environment:
-
-* [Install Using the `install-dev.sh` Script](#install-dev): The `install-dev.sh` script automates
-the installation steps. This option only requires you to download files and provide private registry
-endpoint, username, and password.
-
-* [Install Manually](#install-manually): This option requires more input from you, but gives you
-more visibility into the process.
-
-
 ## <a id="install-dev"></a> Install Using the install-dev.sh Script
 
 To install using the `install-dev.sh` script:
@@ -93,7 +77,7 @@ To install using the `install-dev.sh` script:
     **Helm Chart for <%= vars.product_short %>** and download the Helm chart TGZ file.
     * **install-dev.sh script**: Click **<%= vars.product_short %> Dev Environment Installer** and
     download the `install-dev.sh` file.
-    
+
 1. Run `docker login registry.pivotal.io` so that the script can pull the installation images.
    The credentials are the same as the <%= vars.product_network %> credentials.
 
