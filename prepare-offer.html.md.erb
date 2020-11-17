@@ -456,18 +456,20 @@ in GitHub.
 
 ## <a id='access'></a> Ensure Your Images are Accessible
 
-To ensure your images are accessible:
+When you provision a service, the image paths in your Helm charts need to be
+accurate so that Kubernetes can pull the images from the correct repository.
 
-1. Search the chart's `values.yaml` file for the value `global.imageRegistry`:
+To configure the image paths:
+
+1. Search your service's Helm chart `values.yaml` file for `global.imageRegistry`:
     * If `global.imageRegistry` is set in the chart's `values.yaml`, no further action is required.
     * If `global.imageRegistry` is supported and unset in the chart's `values.yaml`, set
     `imageCredentialsForServiceInstances.registry` in the <%= vars.product_short %> Helm chart.<br>
-     <%= vars.product_short %> will pull images from `imageCredentialsForServiceInstances.registry`
-     when the service's instance chart is deployed.
+     <%= vars.product_short %> pulls the images from the registry at `imageCredentialsForServiceInstances.registry`.
     * If your chart does not support the `global.imageRegistry` pattern, edit `overrides.yaml`
-    to override the image fields to point to the private registry where the images are hosted.
-    Charts often contain multiple images. For example, in the following chart values excerpt
-    below, we have set values for both the mysql and mysqld-exporter images:
+    to override the image fields to point to the private registry where the images are hosted.<br>
+    Charts often contain multiple images. For example, the chart values excerpt below
+    sets values for both the `mysql` and `mysqld-exporter` images:
 
         ```
         ...
@@ -480,7 +482,7 @@ To ensure your images are accessible:
           imageTag: v0.10.0
           imagePullPolicy: IfNotPresent
         ```
-        If the registry path were `registry.example.com/my-project`, then `overrides.yaml` should
+        If the registry path were `registry.example.com/my-project`, then `overrides.yaml` must
         contain:
 
         ```
