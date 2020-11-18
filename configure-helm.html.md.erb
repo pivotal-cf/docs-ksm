@@ -34,8 +34,7 @@ To configure a Helm chart to be compatible with <%= vars.product_short %>:
 
 1. [Override Chart Values](#override)
 
-1. If you are using Helm 2 charts, [Define Custom Resource Definitions](#crd) using Helm 2 and Helm 3
-methods.
+1. [Define Custom Resource Definitions](#crd)
 
     <p class="note">
       <strong>Note:</strong> Helm 3 handles CRDs differently from other Kubernetes Resources.
@@ -149,16 +148,18 @@ For example:
 ## <a id='crd'></a> Define Custom Resource Definitions
 
 <%= vars.product_short %> supports charts that use the Helm 2 and Helm 3 CLIs.
-Helm 2 and Helm 3 use different methods to install CRDs. <%= vars.product_short %> requires Helm 3,
-while Helm 2 is optional.
+Helm 2 and Helm 3 use different methods to install CRDs.
 
-If you are using a Helm 2 chart, use both the Helm 2 CLI and Helm 3 CLI methods:
+If you are using a Helm 2 chart, use both the Helm 2 CLI and Helm 3 CLI methods.
+If you are using a Helm 3 chart, use the Helm 3 CLI method only.
+
+To define CRDs:
 
 1. Define your CRDs using the Helm 3 method by referring to the
 [Helm 3 documentation](https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
 Helm 3 uses a `crds` directory to install CRDs.
 
-1. Define your CRDs using the Helm 2 method by referring to the
+1. If you are using a Helm 2 chart, define your CRDs using the Helm 2 method by referring to the
 [Helm 2 documentation](https://v2.helm.sh/docs/charts_hooks/#defining-a-crd-with-the-crd-install-hook).
 Helm 2 uses a hook annotation to install CRDs.
 
