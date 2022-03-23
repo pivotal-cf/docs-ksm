@@ -8,13 +8,12 @@ owner: Platform Engineering (TSMGR Team)
 This topic provides platform operators with solutions for specific errors that might occur in
 <%= vars.product_full %> (<%= vars.product_short %>).
 
-<pre>
+```
 erb
 api-ca=<<span>%</span>= p("demo.tls.ca") <span>%</span>>
 api-certificate=<<span>%</span>= p("demo.tls.certificate") <span>%</span>>
-api-private-key=<<span>%</span>= p("demo.tls.private_key") <span>%</span>v>
-</pre>
-
+api-private-key=<<span>%</span>= p("demo.tls.private_key") <span>%</span>>
+```
 ## <a id='errors'></a> Troubleshoot Errors
 
 <%# The below partial is in https://github.com/pivotal-cf/docs-partials %>
